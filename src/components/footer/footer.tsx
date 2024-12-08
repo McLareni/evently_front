@@ -4,12 +4,16 @@ import { Link } from 'react-router-dom';
 
 import { Container } from '../container/Container';
 import { MainLogo } from '../ui/Logo';
+import { FooterLines } from './footerLines';
+import { MainLines } from '../main/MainLines';
 
 export const Footer: React.FC = () => {
   const iconsStyles = 'w-6 h-6 mr-6 hover:[color:#9B8FF3] cursor-pointer';
 
   return (
-    <Container className="flex pl-[130px] pb-[40px]">
+    <Container className="relative flex pl-[130px] pb-10 pt-10 bg-background">
+      <FooterLines/>
+      <MainLines/>
       <div className="pr-[159px] flex flex-col gap-[64px]">
         <MainLogo />
         <a href="tel:+380995745676">+380(99) 574 56 76</a>

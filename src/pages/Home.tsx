@@ -3,7 +3,6 @@ import { useLazyGetAllEventsQueryWithTrigger } from '@/hooks/query/useLazyGetAll
 import { AllEvents } from '@/components/allEvents/AllEvents';
 import { Container } from '@/components/container/Container';
 import { FAQ } from '@/components/faq/FAQ';
-import { Footer } from '@/components/footer/footer';
 import { Hero } from '@/components/hero/Hero';
 import { Main } from '@/components/main/Main';
 import { Organizers } from '@/components/organizers/Organizers';
@@ -36,7 +35,6 @@ const Home: React.FC = () => {
       </>
       <Organizers />
       <FAQ />
-      <Footer />
     </Main>
   );
 };

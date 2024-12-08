@@ -15,7 +15,6 @@ import { useScrollToTop } from '@/hooks/useScrollToTop';
 
 import { AllEvents } from '@/components/allEvents/AllEvents';
 import { FilterEvents } from '@/components/filters/FilterEvents';
-import { Footer } from '@/components/footer/footer';
 import { Main } from '@/components/main/Main';
 import Spinner from '@/components/ui/Spinner';
 
@@ -80,7 +79,7 @@ const AllEventsPage: React.FC = () => {
   if (isLoading) return <Spinner />;
 
   return (
-    <Main className="flex flex-col gap-16">
+    <Main className="flex flex-col gap-16 pb-16">
       <div className="flex gap-[24px]">
         <FilterEvents
           filterEvents={filterEvents}
@@ -95,7 +94,6 @@ const AllEventsPage: React.FC = () => {
           eventsLoaded && <span>Нічого не знайдено</span>
         )}
       </div>
-      <Footer />
     </Main>
   );
 };

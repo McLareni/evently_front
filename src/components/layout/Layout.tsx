@@ -5,6 +5,7 @@ import { useResetAllFiltersAfterRouting } from '@/hooks/filters/useResetAllFilte
 
 import { Header } from '../header/Header';
 import { MainLines } from '../main/MainLines';
+import { Footer } from '../footer/footer';
 
 export const Layout = () => {
   useResetAllFiltersAfterRouting();
@@ -18,7 +19,7 @@ export const Layout = () => {
         </Suspense>
         <MainLines />
       </main>
-      {/* <Footer /> */}
+      <Footer />
     </>
   );
 };
