@@ -144,7 +144,7 @@ a {
 }
 
 .animate-wave1 {
-  animation: wave1 10s cubic-bezier(.27,0,.79,1.03) infinite forwards;
+  animation: wave1 10s cubic-bezier(0.27, 0, 0.79, 1.03) infinite forwards;
 }
 
 @keyframes wave2 {
@@ -163,5 +163,9 @@ a {
 }
 
 .animate-wave2 {
-  animation: wave2 10s cubic-bezier(.27,0,.79,1.03) infinite forwards;
+  animation: wave2 10s cubic-bezier(0.27, 0, 0.79, 1.03) infinite forwards;
+}
+
+.clip-half {
+  clip-path: inset(0 50% 0 0);
 }

@@ -13,7 +13,7 @@ interface Event {
     venue: string | null;
   };
   numberOfTickets: number;
-  organizers: [];
+  organizers: User[];
   phoneNumber: string;
   photoUrl: string;
   price: number;
