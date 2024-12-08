@@ -21,12 +21,15 @@ interface EventCardProps {
   event: Event;
   top?: boolean;
   status?: boolean;
+  // eslint-disable-next-line no-unused-vars
+  setEvent?: (event?: Event) => void;
 }
 
 export const EventCard: React.FC<EventCardProps> = ({
   event,
   top = false,
   status = false,
+  setEvent = () => {},
 }) => {
   const [isLiked, setIsLiked] = useState(false);
 
@@ -93,6 +96,7 @@ export const EventCard: React.FC<EventCardProps> = ({
 
   return (
     <div
+      onClick={() => setEvent(event)}
       id={`${eventId}`}
       className={`group relative flex overflow-hidden items-start rounded-[20px] shadow-eventCardShadow w-[312px] h-[514px] ${
         top ? 'mb-[10px]' : ''

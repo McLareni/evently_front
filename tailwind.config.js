@@ -73,6 +73,9 @@ export default {
         'filter-btn-gradient':
           'linear-gradient(123.03deg, #9B8FF3 0%, #38F6F9 100%)',
       },
+      gridTemplateColumns: {
+        custom: 'repeat(2, minmax(0, auto))',
+      },
     },
   },
   // variants: {
