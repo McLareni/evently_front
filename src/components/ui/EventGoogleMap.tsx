@@ -1,9 +1,4 @@
-import {
-  APIProvider,
-  AdvancedMarker,
-  Map,
-  Marker,
-} from '@vis.gl/react-google-maps';
+import { APIProvider, AdvancedMarker, Map } from '@vis.gl/react-google-maps';
 
 const API_KEY = import.meta.env.VITE_GOOGLE_MAPS_API_KEY;
 
@@ -20,9 +15,13 @@ export const EventGoogleMap = ({ lat, lng }: EventGoogleMapProps) => {
         defaultCenter={{ lat, lng }}
         defaultZoom={12}
         gestureHandling={'greedy'}
-        disableDefaultUI={true}
+        disableDefaultUI={false}
       >
-        <AdvancedMarker position={{ lat, lng }} clickable={true} />
+        <AdvancedMarker
+          position={{ lat, lng }}
+          clickable={true}
+          onClick={() => alert('Подія')}
+        />
       </Map>
     </APIProvider>
   );
