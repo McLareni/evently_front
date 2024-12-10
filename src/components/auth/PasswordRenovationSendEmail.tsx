@@ -5,8 +5,11 @@ import { renovationPasswordByEmail } from '@/api/renovationPasswordByEmail';
 import { validateEmail } from '@/utils';
 
 import { SharedBtn, SharedInput, SharedItemStatusBar } from '../ui';
+import Spinner from '../ui/Spinner';
 
 export const PasswordRenovationSendEmail: React.FC = () => {
+  const [isLoading, setIsLoading] = useState(false);
+
   const [emailUser, setEmailUser] = useState<string>('');
   const [errorMessage, setErrorMessage] = useState<string>('');
   const [isSubmitted, setIsSubmitted] = useState(false);
@@ -32,7 +35,9 @@ export const PasswordRenovationSendEmail: React.FC = () => {
 
   useEffect(() => {
     if (!emailUser) return;
+
     const getUser = async (email: string) => {
+      setIsLoading(true);
       try {
         const { status } = await renovationPasswordByEmail(email);
 
@@ -48,6 +53,7 @@ export const PasswordRenovationSendEmail: React.FC = () => {
       } catch (error) {
         console.log(error);
       }
+      setIsLoading(false);
     };
 
     getUser(emailUser);
@@ -112,6 +118,7 @@ export const PasswordRenovationSendEmail: React.FC = () => {
           </div>
         </>
       )}
+      {isLoading && <Spinner rounded />}
     </div>
   );
 };

@@ -23,12 +23,12 @@ const ModalDecision: React.FC<IProps> = ({ event }) => {
   console.log(event);
 
   return (
-    <div className="relative p-8 pr-16 flex gap-10">
+    <div className="relative p-8 pr-16 flex gap-10 h-[520px] w-[944px]">
       <div className="">
         <img
           src={event?.photoUrl}
           alt="Event"
-          className="w-[266px] h-[392px] rounded-[20px]"
+          className="min-w-[266px] w-[266px] h-[392px] min-h-[392px] rounded-[20px]"
         />
         <ImageNavigation
           activeImage={activeImage}
@@ -69,33 +69,33 @@ const ModalDecision: React.FC<IProps> = ({ event }) => {
             </p>
           </div>
           <div className="flex flex-col gap-2">
-            <p className="font-lato text-base text-textDart">
+            <p className="font-lato text-base leading-[19px] text-textDart">
               <span className="font-bold">Місце: </span>
               {event?.location.city}, {event?.location.street}
             </p>
-            <p className="font-lato text-base text-textDart">
+            <p className="font-lato text-base leading-[19px] text-textDart">
               <span className="font-bold">Дата: </span>
               {event?.date.day}
             </p>
-            <p className="font-lato text-base text-textDart">
+            <p className="font-lato text-base leading-[19px] text-textDart">
               <span className="font-bold">Час: </span>
               {event?.date.time}
             </p>
-            <p className="font-lato text-base text-textDart">
+            <p className="font-lato text-base leading-[19px] text-textDart">
               <span className="font-bold">Ціна: </span>
               {event?.price}
             </p>
-            <p className="font-lato text-base text-textDart">
+            <p className="font-lato text-base leading-[19px] text-textDart">
               <span className="font-bold">Кількість квитків: </span>
               {event?.tickets}
             </p>
           </div>
         </div>
         <div>
-          <h2 className="text-textDark font-medium text-2xl mb-4 mt-[10px]">
+          <h2 className="text-textDark font-medium text-2xl leading-[36px] mb-4 mt-[10px]">
             Опис події
           </h2>
-          <p className="text-wrap max-w-[550px] max-h-[150px] overflow-y-scroll">
+          <p className="text-wrap overflow-y-scroll text-base leading-[19px]">
             {event?.description}
           </p>
         </div>
