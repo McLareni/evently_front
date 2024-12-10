@@ -4,9 +4,10 @@ import { eventsGPS } from '@/assets/fakeData/eventsGPS';
 import { isPointWithinRadius } from 'geolib';
 
 import { ListEvents } from '@/components/listEvents/ListEvents';
+import { GoogleForm } from '@/components/ui/GoogleForm';
 
 const MyEvent = () => {
-  console.log(eventsGPS);
+  // console.log(eventsGPS);
 
   // вулиця Зоряна, 8, Київ, Україна, 02000
   const defaultAddress = { latitude: 50.489775, longitude: 30.436815 };
@@ -17,7 +18,7 @@ const MyEvent = () => {
     isPointWithinRadius(address.location, defaultAddress, radiusInMeters)
   );
 
-  console.log('Під домом:', addressesWithinRadius);
+  // console.log('Під домом:', addressesWithinRadius);
 
   const getMyPosition = () =>
     navigator.geolocation.getCurrentPosition(
@@ -36,6 +37,8 @@ const MyEvent = () => {
 
   return (
     <>
+      <GoogleForm />
+
       <button style={{ border: '1px solid tomato' }} onClick={getMyPosition}>
         Поділитись гео
       </button>
