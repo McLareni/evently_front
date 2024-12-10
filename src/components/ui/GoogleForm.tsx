@@ -5,9 +5,9 @@ import { Autocomplete, useLoadScript } from '@react-google-maps/api';
 
 import { GoogleMapsInput } from './GoogleMapsInput';
 
-const libraries = ['places'];
-
 const API_KEY = import.meta.env.VITE_GOOGLE_MAPS_API_KEY;
+
+const libraries = ['places'];
 
 export const GoogleForm = () => {
   const [autocomplete, setAutocomplete] = useState(null);

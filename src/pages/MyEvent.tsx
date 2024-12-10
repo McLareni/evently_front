@@ -38,7 +38,6 @@ const MyEvent = () => {
   return (
     <>
       <GoogleForm />
-
       <button style={{ border: '1px solid tomato' }} onClick={getMyPosition}>
         Поділитись гео
       </button>
