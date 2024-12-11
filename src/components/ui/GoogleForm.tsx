@@ -1,25 +1,59 @@
-/* eslint-disable no-undef */
-import { useState } from 'react';
-import { useForm } from 'react-hook-form';
+import { Controller, useForm } from 'react-hook-form';
 
 import { GoogleMapsInput } from './GoogleMapsInput';
 
+type Address = {
+  address: {
+    formatted: string;
+    lat: number;
+    lng: number;
+    name: string;
+    city: string;
+  };
+};
+
 export const GoogleForm = () => {
-  const [selectedPlace, setSelectedPlace] =
-    useState<google.maps.places.PlaceResult | null>(null);
+  const { handleSubmit, control, setValue } = useForm<Address>({
+    mode: 'onChange',
+  });
 
-  const { handleSubmit } = useForm({ mode: 'onChange' });
-
-  const onSubmit = () => {
-    console.log(selectedPlace);
+  const onSubmit = (data: Address) => {
+    console.log(data.address);
   };
 
   return (
     <form onSubmit={handleSubmit(onSubmit)}>
-      <GoogleMapsInput onPlaceSelect={setSelectedPlace} />
-      <button type="submit" disabled={!selectedPlace}>
-        OK
-      </button>
+      <Controller
+        name="address"
+        control={control}
+        defaultValue={{
+          formatted: '',
+          lat: 0,
+          lng: 0,
+          name: '',
+          city: 'Київ',
+        }}
+        render={({ field }) => (
+          <GoogleMapsInput
+            onPlaceSelect={place => {
+              if (!place || !place.geometry) return;
+
+              const formattedPlace = {
+                formatted: place.formatted_address || '',
+                lat: place.geometry.location?.lat() || 0,
+                lng: place.geometry.location?.lng() || 0,
+                name: place.name || '',
+                city: 'Київ',
+              };
+
+              setValue('address', formattedPlace);
+              field.onChange(formattedPlace);
+            }}
+          />
+        )}
+      />
+
+      <button type="submit">OK</button>
     </form>
   );
 };
