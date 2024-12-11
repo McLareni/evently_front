@@ -1,20 +1,41 @@
-import { HTMLProps, forwardRef } from 'react';
+/* eslint-disable no-undef */
 
-type InputProps = {
-  label?: string;
-} & HTMLProps<HTMLInputElement>;
+/* eslint-disable no-unused-vars */
+import { useEffect, useRef, useState } from 'react';
 
-type Ref = HTMLInputElement;
+import { useMapsLibrary } from '@vis.gl/react-google-maps';
 
-export const GoogleMapsInput = forwardRef<Ref, InputProps>(
-  ({ label, ...props }, ref) => {
-    return (
-      <fieldset className="w-full">
-        <label htmlFor={props.htmlFor}>{label}</label>
-        <input className="w-full" autoComplete="true" ref={ref} {...props} />
-      </fieldset>
-    );
-  }
-);
+interface PlaceAutocompleteProps {
+  onPlaceSelect: (place: google.maps.places.PlaceResult | null) => void;
+}
 
-GoogleMapsInput.displayName = 'Input';
+export const GoogleMapsInput = ({ onPlaceSelect }: PlaceAutocompleteProps) => {
+  const [placeAutocomplete, setPlaceAutocomplete] =
+    useState<google.maps.places.Autocomplete | null>(null);
+  const inputRef = useRef<HTMLInputElement>(null);
+  const places = useMapsLibrary('places');
+
+  useEffect(() => {
+    if (!places || !inputRef.current) return;
+    const options = {
+      fields: ['geometry', 'name', 'formatted_address'],
+      componentRestrictions: { country: 'ua' },
+    };
+
+    setPlaceAutocomplete(new places.Autocomplete(inputRef.current, options));
+  }, [places]);
+
+  useEffect(() => {
+    if (!placeAutocomplete) return;
+
+    placeAutocomplete.addListener('place_changed', () => {
+      onPlaceSelect(placeAutocomplete.getPlace());
+    });
+  }, [onPlaceSelect, placeAutocomplete]);
+
+  return (
+    <div>
+      <input ref={inputRef} className="w-full" />
+    </div>
+  );
+};
