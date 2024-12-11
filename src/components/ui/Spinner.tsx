@@ -1,6 +1,19 @@
-const Spinner = () => {
+import React from 'react';
+
+import clsx from 'clsx';
+
+interface IProps {
+  rounded?: boolean;
+}
+
+const Spinner: React.FC<IProps> = ({ rounded = false }) => {
   return (
-    <div className="fixed z-50 flex items-center justify-center inset-0 bg-slate-500 bg-opacity-50">
+    <div
+      className={clsx(
+        'fixed z-50 flex items-center justify-center inset-0 bg-slate-500 bg-opacity-50',
+        { 'rounded-[19px]': rounded }
+      )}
+    >
       <div className="w-60 h-60 rounded-full overflow-hidden bg-background relative  scale-50">
         <div className="w-[1000px] h-60 absolute [transform:rotateY(180deg)] animate-wave2">
           <svg

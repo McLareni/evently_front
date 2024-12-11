@@ -6,6 +6,7 @@ import { useAppDispatch } from '@/redux/hooks';
 
 import authImg from '../../../public/images/auth-img.webp';
 import BackButton from '../ui/BackButton';
+import Spinner from '../ui/Spinner';
 import { Login } from './Login';
 import { PasswordRenovationInputPassword } from './PasswordRenovationInputPassword';
 import { PasswordRenovationSendEmail } from './PasswordRenovationSendEmail';
@@ -24,6 +25,8 @@ export const Auth: React.FC<AuthProps> = ({
   isEmailConfirmed,
   resetPasswordByToken,
 }) => {
+  const [isLoading, setIsLoading] = useState(false);
+
   const [token] = useState(resetPasswordByToken);
   const [userData, setUserData] = useState({
     name: '',
@@ -71,6 +74,8 @@ export const Auth: React.FC<AuthProps> = ({
   useEffect(() => {
     if (!userData.email || !userData.password || !userData.name) return;
 
+    setIsLoading(true);
+
     const onRegisterUser = async () => {
       try {
         const result = await dispatch(registerUser(userData as RegisterUser));
@@ -85,6 +90,7 @@ export const Auth: React.FC<AuthProps> = ({
       }
     };
     onRegisterUser();
+    setIsLoading(false);
   }, [userData.email, userData.password, userData.name]);
 
   return (
@@ -133,6 +139,7 @@ export const Auth: React.FC<AuthProps> = ({
         )}
       </div>
       <img src={authImg} alt="colage_posters" className="w-[415px] h-[650px]" />
+      {isLoading && <Spinner rounded />}
     </div>
   );
 };

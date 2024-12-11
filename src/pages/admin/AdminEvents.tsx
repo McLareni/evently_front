@@ -25,7 +25,9 @@ const AdminEvents = () => {
   const handleChangePage = (direction: 'up' | 'down') => {
     setPage(prevPage => {
       if (direction === 'up') {
-        return prevPage + 1;
+        return prevPage >= Math.ceil((events?.length || 0) / 9)
+          ? prevPage
+          : prevPage + 1;
       } else {
         return prevPage === 1 ? 1 : prevPage - 1;
       }
@@ -53,7 +55,12 @@ const AdminEvents = () => {
         events={events?.slice(0 + (page - 1) * 9, 9 * page) || []}
         setEvent={openModal}
       />
-      <div className="absolute bottom-0 right-6">
+      <div className="absolute bottom-0 right-6 flex items-center">
+        <p className="h-fit w-fit rounded-[10px] border border-buttonPurple bg-background p-[3px_6px] mr-[10px]">
+          {9 * (page - 1) + 1}-{page * 9 > (events?.length || 0) ? events?.length : page * 9}{' '}
+          з {events?.length}
+        </p>
+        <p className="mr-4">Кількість користувачів</p>
         <Navigation page={page} changePage={handleChangePage} />
       </div>
     </main>

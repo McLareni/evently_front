@@ -100,11 +100,11 @@ export const EventCard: React.FC<EventCardProps> = ({
       id={`${eventId}`}
       className={`group relative flex overflow-hidden items-start rounded-[20px] shadow-eventCardShadow w-[312px] h-[514px] ${
         top ? 'mb-[10px]' : ''
-      }`}
+      }${status && 'hover:cursor-pointer'}`}
     >
       <img src={photoUrl} alt={title} width={'100%'} />
       <div className={`flex absolute justify-between p-6 w-full`}>
-        {category === 'TOP_EVENTS' && (
+        {category === 'TOP_EVENTS' && !status && (
           <div className="flex justify-center items-center w-[58px] h-[35px] bg-badge-gradient rounded-[20px]">
             <span className="text-background">ТОП</span>
           </div>
@@ -126,7 +126,7 @@ export const EventCard: React.FC<EventCardProps> = ({
       <div
         className={`absolute flex flex-col items-start gap-2 justify-between w-full py-4 px-5 h-[365px]
           rounded-t-[20px] bg-hoverCard transition-all ease-in-out duration-300 -bottom-[101px]
-          ${category === 'TOP_EVENTS' ? 'group-hover:-bottom-0' : 'group-hover:-bottom-10'}
+          ${category === 'TOP_EVENTS' && !status ? 'group-hover:-bottom-0' : 'group-hover:-bottom-10'}
           `}
       >
         <div
@@ -137,6 +137,7 @@ export const EventCard: React.FC<EventCardProps> = ({
             {type}
           </p>
         </div>
+
         <h2
           className={`min-h-[72px] text-2xl text-textDark group-hover:line-clamp-none`}
         >

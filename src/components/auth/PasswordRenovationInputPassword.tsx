@@ -13,6 +13,7 @@ import {
   SharedItemStatusBar,
   StatusBarPassword,
 } from '../ui';
+import Spinner from '../ui/Spinner';
 
 interface PasswordRenovationInputPasswordProps {
   token: string | null;
@@ -22,6 +23,8 @@ interface PasswordRenovationInputPasswordProps {
 export const PasswordRenovationInputPassword: React.FC<
   PasswordRenovationInputPasswordProps
 > = ({ token, setStatusAuth }) => {
+  const [isLoading, setIsLoading] = useState(false);
+
   const [isSubmitted, setIsSubmitted] = useState(false);
   const [isBluredNameInput, setIsBluredNameInput] = useState('');
   const [onInputPassword, setOnInputPassword] = useState('');
@@ -53,6 +56,8 @@ export const PasswordRenovationInputPassword: React.FC<
 
     if (!token) return;
 
+    setIsLoading(true);
+
     try {
       const { status } = await sendNewPassword(password, token);
 
@@ -67,6 +72,8 @@ export const PasswordRenovationInputPassword: React.FC<
       toast.error('Термін токену вичерпано, повторіть спробу!');
       console.log(error);
     }
+
+    setIsLoading(false);
   };
 
   useEffect(() => {
@@ -159,6 +166,7 @@ export const PasswordRenovationInputPassword: React.FC<
         </form>
         <PrivacyAgreement />
       </div>
+      {isLoading && <Spinner rounded />}
     </div>
   );
 };

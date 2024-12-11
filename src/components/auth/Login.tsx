@@ -10,6 +10,7 @@ import { validateEmail, validatePassword } from '@/utils';
 import { GoogleLoginButton, SharedInput, SharedItemStatusBar } from '../ui';
 import { CustomCheckbox } from '../ui/CustomCheckBox';
 import { SharedBtn } from '../ui/SharedBtn';
+import Spinner from '../ui/Spinner';
 
 export interface IData {
   accessToken: string | boolean;
@@ -31,6 +32,8 @@ export const Login: React.FC<LoginProps> = ({
   onCloseModal,
   setStatusAuth,
 }) => {
+  const [isLoading, setIsLoading] = useState(false);
+
   const [emailLoginError, setEmailLoginError] = useState(false);
   const [passwordLoginError, setPasswordLoginError] = useState(false);
   const [errorMessage, setErrorMessage] = useState('');
@@ -57,6 +60,7 @@ export const Login: React.FC<LoginProps> = ({
     setPasswordLoginError(false);
     setEmailLoginError(false);
     setIsBluredNameInput('');
+    setIsLoading(true);
 
     const { email, password, rememberMe } = data;
     try {
@@ -64,7 +68,6 @@ export const Login: React.FC<LoginProps> = ({
         logIn({ email, password, rememberMe })
       );
       const { userName, status, message } = payload;
-      console.log(userName);
 
       if (status === 403 && message === 'User banned.') {
         setEmailLoginError(true);
@@ -92,6 +95,7 @@ export const Login: React.FC<LoginProps> = ({
     } catch (error) {
       console.error(error);
     }
+    setIsLoading(false);
   };
 
   // Error handling on blur
@@ -214,6 +218,7 @@ export const Login: React.FC<LoginProps> = ({
           Увійти
         </SharedBtn>
       </form>
+      {isLoading && <Spinner rounded />}
     </>
   );
 };
