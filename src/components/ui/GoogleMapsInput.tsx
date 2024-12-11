@@ -35,7 +35,7 @@ export const GoogleMapsInput = ({ onPlaceSelect }: PlaceAutocompleteProps) => {
 
   return (
     <div>
-      <input ref={inputRef} className="w-full" />
+      <input ref={inputRef} className="w-full h-[52px] px-[15px]" />
     </div>
   );
 };
