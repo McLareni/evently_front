@@ -33,6 +33,7 @@ export const logIn = createAsyncThunk(
   async (user: LoginUser, thunkAPI) => {
     try {
       const { data } = await axios.post('authorize/login', user);
+      console.log(data);
 
       if (!data.accessToken) {
         return thunkAPI.rejectWithValue(data);
