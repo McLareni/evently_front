@@ -18,18 +18,18 @@ export const GoogleMapsInput = ({ onPlaceSelect }: PlaceAutocompleteProps) => {
   useEffect(() => {
     if (!places || !inputRef.current) return;
 
-    const kyivBounds = {
-      north: 50.590798,
-      south: 50.213273,
-      east: 30.825941,
-      west: 30.23944,
-    };
+    // const kyivBounds = {
+    //   north: 50.590798,
+    //   south: 50.213273,
+    //   east: 30.825941,
+    //   west: 30.23944,
+    // };
 
     const options = {
       fields: ['geometry', 'name', 'formatted_address'],
       componentRestrictions: { country: 'ua' },
-      bounds: kyivBounds,
-      strictBounds: true,
+      // bounds: kyivBounds,
+      // strictBounds: true,
     };
 
     setPlaceAutocomplete(new places.Autocomplete(inputRef.current, options));
