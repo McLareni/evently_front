@@ -7,16 +7,17 @@ import Stars from './Stars';
 
 interface IProps {
   event?: Event;
+  openModal: () => void;
 }
 
-const ModalDecision: React.FC<IProps> = ({ event }) => {
+const ModalDecision: React.FC<IProps> = ({ event, openModal }) => {
   const [activeImage, setActiveImage] = useState(1);
 
   const handleChangeActiveImage = (direction: 'up' | 'down') => {
     if (direction === 'up') {
-      setActiveImage(prev => (prev === 3 ? 3 : prev + 1));
+      setActiveImage(prev => (prev === 3 ? 1 : prev + 1));
     } else {
-      setActiveImage(prev => (prev === 1 ? 1 : prev - 1));
+      setActiveImage(prev => (prev === 1 ? 3 : prev - 1));
     }
   };
 
@@ -57,7 +58,11 @@ const ModalDecision: React.FC<IProps> = ({ event }) => {
             </div>
           </div>
           <div>
-            <img src="" alt="" className="h-[72px] w-[72px] rounded-full" />
+            <img
+              src="https://t4.ftcdn.net/jpg/02/24/86/95/360_F_224869519_aRaeLneqALfPNBzg0xxMZXghtvBXkfIA.jpg"
+              alt=""
+              className="h-[72px] w-[72px] rounded-full object-cover"
+            />
             <h2 className="text-textDark font-lato text-2xl underline my-2">
               {event?.organizers[0].name}
             </h2>
@@ -101,11 +106,17 @@ const ModalDecision: React.FC<IProps> = ({ event }) => {
         </div>
       </div>
       <div className="absolute -bottom-16 right-0 flex gap-8 ">
-        <button className="flex gap-2 justify-center items-center w-[180px] h-12 border border-textDark rounded-[10px] bg-lightGreen">
+        <button
+          onClick={openModal}
+          className="flex gap-2 justify-center items-center w-[180px] h-12 border border-textDark rounded-[10px] bg-lightGreen"
+        >
           <MdDone className="h-6 w-6" />
           Схвалити
         </button>
-        <button className="flex border justify-center items-center w-[180px] h-12 border-textDark rounded-[10px] bg-lightRed">
+        <button
+          onClick={openModal}
+          className="flex border justify-center items-center w-[180px] h-12 border-textDark rounded-[10px] bg-lightRed"
+        >
           <RxCross2 className="h-6 w-6" />
           Відхилити
         </button>

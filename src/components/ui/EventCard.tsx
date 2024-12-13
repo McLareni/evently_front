@@ -22,7 +22,8 @@ interface EventCardProps {
   top?: boolean;
   status?: boolean;
   // eslint-disable-next-line no-unused-vars
-  setEvent?: (event?: Event) => void;
+  setEvent?: (event?: Event, target?: HTMLElement) => void;
+  changeStatus?: () => void;
 }
 
 export const EventCard: React.FC<EventCardProps> = ({
@@ -30,6 +31,7 @@ export const EventCard: React.FC<EventCardProps> = ({
   top = false,
   status = false,
   setEvent = () => {},
+  changeStatus = () => {},
 }) => {
   const [isLiked, setIsLiked] = useState(false);
 
@@ -96,7 +98,7 @@ export const EventCard: React.FC<EventCardProps> = ({
 
   return (
     <div
-      onClick={() => setEvent(event)}
+      onClick={e => setEvent(event, e.target as HTMLElement)}
       id={`${eventId}`}
       className={`group relative flex overflow-hidden items-start rounded-[20px] shadow-eventCardShadow w-[312px] h-[514px] ${
         top ? 'mb-[10px]' : ''
@@ -167,10 +169,16 @@ export const EventCard: React.FC<EventCardProps> = ({
 
         {status ? (
           <div className="w-full flex justify-center gap-4 text-base mt-4">
-            <button className="border border-buttonPurple bg-lightPurple rounded-[10px] w-[110px] h-[33px] focus:outline-0">
+            <button
+              onClick={changeStatus}
+              className="border border-buttonPurple bg-lightPurple rounded-[10px] w-[110px] h-[33px] focus:outline-0"
+            >
               Схвалити
             </button>
-            <button className="border border-buttonPurple rounded-[10px] w-[110px] h-[33px] focus:outline-0">
+            <button
+              onClick={changeStatus}
+              className="border border-buttonPurple rounded-[10px] w-[110px] h-[33px] focus:outline-0"
+            >
               Відхилити
             </button>
           </div>
