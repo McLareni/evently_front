@@ -4,7 +4,6 @@ import { toast } from 'react-toastify';
 import { register as registerUser } from '@/redux/auth/operations';
 import { useAppDispatch } from '@/redux/hooks';
 
-import authImg from '../../../public/images/auth-img.webp';
 import BackButton from '../ui/BackButton';
 import Spinner from '../ui/Spinner';
 import { Login } from './Login';
@@ -13,6 +12,7 @@ import { PasswordRenovationSendEmail } from './PasswordRenovationSendEmail';
 import { RegisterConfirmEmail } from './RegisterConfirmEmail';
 import { RegisterInputEmail } from './RegisterInputEmail';
 import { RegisterInputPassword } from './RegisterInputPassword';
+import authImg from '/images/auth-img.webp';
 
 interface AuthProps {
   onCloseModal: () => void;

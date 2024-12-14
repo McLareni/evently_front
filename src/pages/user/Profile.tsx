@@ -2,11 +2,11 @@ import React, { useEffect, useState } from 'react';
 
 // Імпорт попапу для логінізації
 import { selectIsLoggedIn } from '@/redux/auth/selectors';
-
-import { Auth } from '../auth/Auth';
-import { Modal } from '../ui/Modal';
-import Information from './Information';
 import { useAppSelector } from '@/redux/hooks';
+
+import { Auth } from '../../components/auth/Auth';
+import Information from '../../components/profile/Information';
+import { Modal } from '../../components/ui/Modal';
 
 const Profile: React.FC = () => {
   const [isModalOpen, setIsModalOpen] = useState(false);
