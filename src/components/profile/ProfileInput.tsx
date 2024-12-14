@@ -12,9 +12,16 @@ export const ProfileInput = forwardRef<Ref, ProfileInputProps>(
     const [isFocused, setIsFocused] = useState(false);
 
     const inputStyles = `w-[312px] h-[64px] border-[2px] rounded-[10px]
-  px-[24px] outline-none bg-background text-[24px]
-  focus:placeholder-transparent
-  ${isFocused ? 'border-buttonPurple' : 'border-lightPurple'}`;
+    px-[24px] outline-none bg-background text-[24px]
+    focus:placeholder-transparent
+    ${isFocused ? 'border-buttonPurple' : 'border-lightPurple'}`;
+
+    const labelStyles = `absolute left-6 transition-all ease-in-out duration-300
+    bg-background px-1 ${
+      isFocused
+        ? '-top-3 scale-100 visible opacity-100'
+        : 'top-4 scale-125 invisible opacity-0'
+    }`;
 
     return (
       <fieldset className="relative">
@@ -29,11 +36,9 @@ export const ProfileInput = forwardRef<Ref, ProfileInputProps>(
           ref={ref}
           {...props}
         />
-        {isFocused && (
-          <label className="absolute -top-3 left-4 bg-background px-1">
-            {children}
-          </label>
-        )}
+        <label htmlFor={props.htmlFor} className={labelStyles}>
+          {children}
+        </label>
         <div className="h-[24px]">
           {error && <span className="text-error">{error}</span>}
         </div>
