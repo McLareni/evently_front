@@ -12,17 +12,19 @@ export const ProfileInput: React.FC<ProfileInputProps> = ({
 }) => {
   const [isFocused, setIsFocused] = useState(false);
 
+  const inputStyles = `w-[312px] h-[64px] border-[2px] rounded-[10px]
+  px-[24px] outline-none bg-background text-[24px]
+  ${isFocused ? 'border-buttonPurple' : 'border-lightPurple'}`;
+
   return (
     <fieldset className="relative">
       <input
         onFocus={() => setIsFocused(true)}
         onBlur={() => setIsFocused(false)}
         autoComplete="true"
-        {...props}
         placeholder={isFocused ? '' : props.placeholder}
-        className={`w-[312px] h-[64px] border-[2px] rounded-[10px]
-          px-[24px] outline-none bg-background text-[24px]
-          ${isFocused ? 'border-buttonPurple' : 'border-lightPurple'}`}
+        className={inputStyles}
+        {...props}
       />
       {isFocused && (
         <label className="absolute -top-3 left-4 bg-background px-1">
