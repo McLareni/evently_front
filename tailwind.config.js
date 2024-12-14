@@ -32,6 +32,7 @@ export default {
         darkGray: '#D0D5D8',
         textDark: '#062341',
         lightRed: '#FF6262',
+        uploadBtnBg: '#D9D9D9',
 
         // Other color
         success: '#3BE660',

@@ -1,3 +1,4 @@
+import { AiOutlineUpload } from 'react-icons/ai';
 import { MdEmail } from 'react-icons/md';
 import { PiPhoneCall } from 'react-icons/pi';
 
@@ -9,7 +10,14 @@ const Information = () => {
 
   return (
     <div>
-      <p className="text-xl">Вітаємо у вашому профілі!</p>
+      <div className="h-[214px] bg-bg-gradient rounded-[20px] p-[32px] flex gap-[48px]">
+        <button className="w-[150px] h-[150px] bg-uploadBtnBg rounded-full flex justify-center items-center">
+          <AiOutlineUpload size={32} />
+        </button>
+        <p className=" font-oswald text-[64px] bg-gradient-to-r from-blue-600 to-indigo-400 inline-block text-transparent bg-clip-text">
+          Привіт, {name}
+        </p>
+      </div>
       <div>
         <div className="mt-4 flex gap-4">
           <div className="bg-white rounded-full w-16 h-16"></div>
