@@ -13,7 +13,7 @@ import PromoEvents from '@/pages/admin/PromoEvents';
 import AllEventsPage from '@/pages/events/AllEventsPage';
 import { action as editEventAction } from '@/pages/events/EventEdit';
 import EventEdit from '@/pages/events/EventEdit';
-import Profile from '@/pages/user/profile';
+import Profile from '@/pages/user/Profile';
 
 import { Layout } from '@/components/layout/Layout';
 
