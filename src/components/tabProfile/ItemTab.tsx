@@ -32,7 +32,6 @@ const ItemTab: React.FC<IProps> = ({
   if (user.role !== 'ADMIN' && isAdmin) {
     return;
   }
-  console.log(user);
 
   return (
     <li key={title}>

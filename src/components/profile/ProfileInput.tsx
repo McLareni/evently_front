@@ -13,6 +13,7 @@ export const ProfileInput = forwardRef<Ref, ProfileInputProps>(
 
     const inputStyles = `w-[312px] h-[64px] border-[2px] rounded-[10px]
   px-[24px] outline-none bg-background text-[24px]
+  focus:placeholder-transparent
   ${isFocused ? 'border-buttonPurple' : 'border-lightPurple'}`;
 
     return (
@@ -24,7 +25,6 @@ export const ProfileInput = forwardRef<Ref, ProfileInputProps>(
             onBlur?.(event);
           }}
           autoComplete="true"
-          placeholder={isFocused ? '' : props.placeholder}
           className={inputStyles}
           ref={ref}
           {...props}
