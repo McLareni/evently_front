@@ -1,7 +1,7 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
 
-import logo from '../../../public/images/logo.svg';
+import logo from '/images/logo.svg';
 
 export const MainLogo: React.FC = () => {
   const scrollToTop = () => {
