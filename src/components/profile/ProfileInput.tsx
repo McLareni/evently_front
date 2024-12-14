@@ -1,37 +1,45 @@
-import { HTMLProps, PropsWithChildren, useState } from 'react';
+import { HTMLProps, PropsWithChildren, forwardRef, useState } from 'react';
 
 interface ProfileInputProps
   extends PropsWithChildren<HTMLProps<HTMLInputElement>> {
   error?: string;
 }
 
-export const ProfileInput: React.FC<ProfileInputProps> = ({
-  children,
-  error,
-  ...props
-}) => {
-  const [isFocused, setIsFocused] = useState(false);
+type Ref = HTMLInputElement;
 
-  const inputStyles = `w-[312px] h-[64px] border-[2px] rounded-[10px]
+export const ProfileInput = forwardRef<Ref, ProfileInputProps>(
+  ({ children, error, onBlur, ...props }, ref) => {
+    const [isFocused, setIsFocused] = useState(false);
+
+    const inputStyles = `w-[312px] h-[64px] border-[2px] rounded-[10px]
   px-[24px] outline-none bg-background text-[24px]
   ${isFocused ? 'border-buttonPurple' : 'border-lightPurple'}`;
 
-  return (
-    <fieldset className="relative">
-      <input
-        onFocus={() => setIsFocused(true)}
-        onBlur={() => setIsFocused(false)}
-        autoComplete="true"
-        placeholder={isFocused ? '' : props.placeholder}
-        className={inputStyles}
-        {...props}
-      />
-      {isFocused && (
-        <label className="absolute -top-3 left-4 bg-background px-1">
-          {children}
-        </label>
-      )}
-      <div>{error && <span>{error}</span>}</div>
-    </fieldset>
-  );
-};
+    return (
+      <fieldset className="relative">
+        <input
+          onFocus={() => setIsFocused(true)}
+          onBlur={event => {
+            setIsFocused(false);
+            onBlur?.(event);
+          }}
+          autoComplete="true"
+          placeholder={isFocused ? '' : props.placeholder}
+          className={inputStyles}
+          ref={ref}
+          {...props}
+        />
+        {isFocused && (
+          <label className="absolute -top-3 left-4 bg-background px-1">
+            {children}
+          </label>
+        )}
+        <div className="h-[24px]">
+          {error && <span className="text-error">{error}</span>}
+        </div>
+      </fieldset>
+    );
+  }
+);
+
+ProfileInput.displayName = 'ProfileInput';
