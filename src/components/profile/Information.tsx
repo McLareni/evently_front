@@ -1,4 +1,3 @@
-import { AiOutlineUpload } from 'react-icons/ai';
 import { MdEmail } from 'react-icons/md';
 import { PiPhoneCall } from 'react-icons/pi';
 
@@ -6,6 +5,7 @@ import { selectUser } from '@/redux/auth/selectors';
 import { useAppSelector } from '@/redux/hooks';
 
 import { ProfileForm } from './ProfileForm';
+import { UploadButton } from './UploadButton';
 
 const Information = () => {
   const { name, role, email, phone } = useAppSelector(selectUser);
@@ -13,9 +13,7 @@ const Information = () => {
   return (
     <div>
       <div className="-mx-[15px] -mt-[15px] h-[214px] bg-bg-gradient rounded-[20px] p-[32px] flex gap-[48px]">
-        <button className="w-[150px] h-[150px] bg-uploadBtnBg rounded-full flex justify-center items-center">
-          <AiOutlineUpload size={32} />
-        </button>
+        <UploadButton />
         <p className="font-oswald text-[64px] bg-gradient-to-r from-blue-600 to-indigo-400 inline-block text-transparent bg-clip-text">
           Привіт, {name}
         </p>

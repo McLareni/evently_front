@@ -31,12 +31,14 @@ export const ProfileInput = forwardRef<Ref, ProfileInputProps>(
             setIsFocused(false);
             onBlur?.(event);
           }}
+          autoComplete="true"
           className={inputStyles}
           ref={ref}
           {...props}
         />
-        <label className={labelStyles}>{children}</label>
-
+        <label htmlFor={props.htmlFor} className={labelStyles}>
+          {children}
+        </label>
         <div className="h-[24px]">
           {error && <span className="text-error">{error}</span>}
         </div>
