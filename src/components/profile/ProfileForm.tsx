@@ -20,13 +20,13 @@ interface ProfileFormProps {
 }
 
 export const ProfileForm: FC<ProfileFormProps> = ({ image }) => {
-  const { name } = useAppSelector(selectUser);
+  const { name, phone } = useAppSelector(selectUser);
 
   const defaultValues: UserInfo = {
     name: name || '',
     surname: name || '',
-    birthday: name || '',
-    phoneNumber: name || '',
+    birthday: phone || '',
+    phoneNumber: phone || '',
     userImage: image || null,
   };
 
@@ -74,7 +74,9 @@ export const ProfileForm: FC<ProfileFormProps> = ({ image }) => {
           {...register('birthday', {
             validate: {
               required: value =>
-                value.trim().length > 1 || 'Введіть дату народження',
+                value.trim().length === 0 ||
+                value.trim().length === 10 ||
+                'Введіть номер телефону',
             },
           })}
           placeholder="Дата народження"
@@ -90,7 +92,9 @@ export const ProfileForm: FC<ProfileFormProps> = ({ image }) => {
           {...register('phoneNumber', {
             validate: {
               required: value =>
-                value.trim().length > 1 || 'Введіть номер телефону',
+                value.trim().length === 0 ||
+                value.trim().length === 12 ||
+                'Введіть номер телефону',
             },
           })}
           placeholder="Номер телефону"
