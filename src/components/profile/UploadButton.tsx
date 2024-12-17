@@ -30,12 +30,20 @@ export const UploadButton: FC<UploadButtonProps> = ({ getImage }) => {
         onChange={handleFileChange}
       />
       <label htmlFor="avatar" className={labelStyles}>
-        <img
-          src={image ? URL.createObjectURL(image) : '/images/user-logo.jpg'}
-          width={150}
-          height={150}
-          alt="user logo"
-        />
+        {image ? (
+          <img
+            className="object-cover h-[100%]"
+            src={URL.createObjectURL(image)}
+            alt="user logo"
+          />
+        ) : (
+          <img
+            src="/images/user-logo.jpg"
+            width={150}
+            height={150}
+            alt="user logo"
+          />
+        )}
         <div className="flex gap-[6px] items-center absolute -bottom-[24px] text-uploadBtnBg">
           <span className="text-[12px]">Додайте аватар</span>
           <AiOutlineUpload size={16} />
