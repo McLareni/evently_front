@@ -49,31 +49,21 @@ export const ProfileForm: FC<ProfileFormProps> = ({ image }) => {
     <form className="flex flex-col" onSubmit={handleSubmit(onSubmit)}>
       <div className="flex gap-[24px] mb-[8px]">
         <ProfileInput
-          {...register('name', {
-            validate: {
-              required: value => value.trim().length > 1 || "Введіть ім'я",
-            },
-          })}
+          {...register('name')}
           placeholder="Ім'я"
           id="name"
           htmlFor="name"
           type="text"
-          error={errors?.name?.message}
         >
           Ім&apos;я
         </ProfileInput>
 
         <ProfileInput
-          {...register('surname', {
-            validate: {
-              required: value => value.trim().length > 1 || 'Введіть прізвище',
-            },
-          })}
+          {...register('surname')}
           placeholder="Прізвище"
           id="surname"
           htmlFor="surname"
           type="text"
-          error={errors?.surname?.message}
         >
           Прізвище
         </ProfileInput>
