@@ -1,3 +1,4 @@
+import { useState } from 'react';
 import { MdEmail } from 'react-icons/md';
 import { PiPhoneCall } from 'react-icons/pi';
 
@@ -8,12 +9,20 @@ import { ProfileForm } from './ProfileForm';
 import { UploadButton } from './UploadButton';
 
 const Information = () => {
+  const [image, setImage] = useState<File | null>(null);
+
   const { name, role, email, phone } = useAppSelector(selectUser);
+
+  const getImage = (image: File) => {
+    setImage(image);
+  };
+
+  console.log(image);
 
   return (
     <div>
       <div className="-mx-[15px] -mt-[15px] h-[214px] bg-bg-gradient rounded-[20px] p-[32px] flex gap-[48px]">
-        <UploadButton />
+        <UploadButton getImage={getImage} />
         <p
           className="font-oswald text-[64px] inline-block"
           style={{
