@@ -1,4 +1,8 @@
+import { FC, useEffect } from 'react';
 import { SubmitHandler, useForm } from 'react-hook-form';
+
+import { selectUser } from '@/redux/auth/selectors';
+import { useAppSelector } from '@/redux/hooks';
 
 import Button from '../ui/Button';
 import { ProfileInput } from './ProfileInput';
@@ -8,27 +12,44 @@ interface UserInfo {
   surname: string;
   birthday: string;
   phoneNumber: string;
+  userImage: File | null;
 }
 
-export const ProfileForm = () => {
+interface ProfileFormProps {
+  image: File | null;
+}
+
+export const ProfileForm: FC<ProfileFormProps> = ({ image }) => {
+  const { name } = useAppSelector(selectUser);
+
+  const defaultValues: UserInfo = {
+    name: name || '',
+    surname: name || '',
+    birthday: name || '',
+    phoneNumber: name || '',
+    userImage: image || null,
+  };
+
   const {
     register,
     handleSubmit,
-    reset,
+    setValue,
     formState: { errors, isValid },
-  } = useForm<UserInfo>({ mode: 'onChange' });
+  } = useForm<UserInfo>({ mode: 'onChange', defaultValues });
 
   const onSubmit: SubmitHandler<UserInfo> = data => {
     console.log(data);
-    reset();
   };
+
+  useEffect(() => {
+    setValue('userImage', image || null);
+  }, [image, setValue]);
 
   return (
     <form className="flex flex-col" onSubmit={handleSubmit(onSubmit)}>
       <div className="flex gap-[24px] mb-[8px]">
         <ProfileInput
           {...register('name', {
-            required: "Це обов'язкове поле!",
             validate: {
               required: value => value.trim().length > 1 || "Введіть ім'я",
             },
@@ -44,7 +65,6 @@ export const ProfileForm = () => {
 
         <ProfileInput
           {...register('surname', {
-            required: "Це обов'язкове поле!",
             validate: {
               required: value => value.trim().length > 1 || 'Введіть прізвище',
             },
@@ -62,7 +82,6 @@ export const ProfileForm = () => {
       <div className="flex gap-[24px] mb-[32px]">
         <ProfileInput
           {...register('birthday', {
-            required: "Це обов'язкове поле!",
             validate: {
               required: value =>
                 value.trim().length > 1 || 'Введіть дату народження',
@@ -79,7 +98,6 @@ export const ProfileForm = () => {
 
         <ProfileInput
           {...register('phoneNumber', {
-            required: "Це обов'язкове поле!",
             validate: {
               required: value =>
                 value.trim().length > 1 || 'Введіть номер телефону',
