@@ -1,11 +1,9 @@
-import { AiOutlineUpload } from 'react-icons/ai';
-
 export const UploadButton = () => {
   const labelStyles = `w-[150px] h-[150px] bg-uploadBtnBg rounded-full
-  flex justify-center items-center cursor-pointer`;
+  flex justify-center items-center cursor-pointer relative overflow-hidden`;
 
   return (
-    <div className="relative">
+    <div className="relative overflow-hidden">
       <input
         id="avatar"
         type="file"
@@ -13,7 +11,12 @@ export const UploadButton = () => {
         className="hidden"
       />
       <label htmlFor="avatar" className={labelStyles}>
-        <AiOutlineUpload size={32} />
+        <img
+          src="/images/user-logo.jpg"
+          width={150}
+          height={150}
+          alt="user logo"
+        />
       </label>
     </div>
   );

@@ -14,7 +14,16 @@ const Information = () => {
     <div>
       <div className="-mx-[15px] -mt-[15px] h-[214px] bg-bg-gradient rounded-[20px] p-[32px] flex gap-[48px]">
         <UploadButton />
-        <p className="font-oswald text-[64px] bg-gradient-to-r from-blue-600 to-indigo-400 inline-block text-transparent bg-clip-text">
+        <p
+          className="font-oswald text-[64px] inline-block"
+          style={{
+            background:
+              'linear-gradient(98.01deg, #12C2E9 2.11%, #C471ED 75.16%)',
+            WebkitBackgroundClip: 'text',
+            backgroundClip: 'text',
+            color: 'transparent',
+          }}
+        >
           Привіт, {name}
         </p>
       </div>
