@@ -1,5 +1,6 @@
 import { FC, useEffect } from 'react';
 import { SubmitHandler, useForm } from 'react-hook-form';
+import { toast } from 'react-toastify';
 
 import { selectUser } from '@/redux/auth/selectors';
 import { useAppSelector } from '@/redux/hooks';
@@ -7,27 +8,19 @@ import { useAppSelector } from '@/redux/hooks';
 import Button from '../ui/Button';
 import { ProfileInput } from './ProfileInput';
 
-interface UserInfo {
-  name: string;
-  surname: string;
-  birthday: string;
-  phoneNumber: string;
-  userImage: File | null;
-}
-
 interface ProfileFormProps {
   image: File | null;
 }
 
-export const ProfileForm: FC<ProfileFormProps> = ({ image }) => {
-  const { name, phone } = useAppSelector(selectUser);
+export const ProfileForm: FC<ProfileFormProps> = ({ image: userImage }) => {
+  const { name, surname, birthday, phone, image } = useAppSelector(selectUser);
 
   const defaultValues: UserInfo = {
     name: name || '',
-    surname: name || '',
-    birthday: phone || '',
-    phoneNumber: phone || '',
-    userImage: image || null,
+    surname: surname || '',
+    birthday: birthday || '',
+    phone: phone || '',
+    image: image || '',
   };
 
   const {
@@ -37,13 +30,31 @@ export const ProfileForm: FC<ProfileFormProps> = ({ image }) => {
     formState: { errors, isValid },
   } = useForm<UserInfo>({ mode: 'onChange', defaultValues });
 
+  const ObjectsAreEqual = (obj1: UserInfo, obj2: UserInfo) => {
+    return (
+      obj1.name === obj2.name &&
+      obj1.surname === obj2.surname &&
+      obj1.birthday === obj2.birthday &&
+      obj1.phone === obj2.phone
+      // TODO
+      // obj2.userImage instanceof File &&
+      // obj1.userImage === obj2.userImage?.name
+    );
+  };
+
   const onSubmit: SubmitHandler<UserInfo> = data => {
-    console.log(data);
+    if (ObjectsAreEqual(defaultValues, data)) {
+      console.log(data, defaultValues);
+      return toast.error('Немає що змінювати');
+    }
+    console.log(data, defaultValues);
   };
 
   useEffect(() => {
-    setValue('userImage', image || null);
-  }, [image, setValue]);
+    if (userImage instanceof File) {
+      setValue('image', userImage);
+    }
+  }, [userImage, setValue]);
 
   return (
     <form className="flex flex-col" onSubmit={handleSubmit(onSubmit)}>
@@ -89,7 +100,7 @@ export const ProfileForm: FC<ProfileFormProps> = ({ image }) => {
         </ProfileInput>
 
         <ProfileInput
-          {...register('phoneNumber', {
+          {...register('phone', {
             validate: {
               required: value =>
                 value.trim().length === 0 ||
@@ -101,7 +112,7 @@ export const ProfileForm: FC<ProfileFormProps> = ({ image }) => {
           id="phoneNumber"
           htmlFor="phoneNumber"
           type="tel"
-          error={errors?.phoneNumber?.message}
+          error={errors?.phone?.message}
         >
           Номер телефону
         </ProfileInput>

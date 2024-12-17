@@ -1,5 +1,6 @@
 import { FC, useState } from 'react';
 import { AiOutlineUpload } from 'react-icons/ai';
+import { toast } from 'react-toastify';
 
 interface UploadButtonProps {
   // eslint-disable-next-line no-unused-vars
@@ -15,6 +16,9 @@ export const UploadButton: FC<UploadButtonProps> = ({ getImage }) => {
   const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     if (e.target.files) {
       const file = e.target.files[0];
+      if (file.type !== 'image/jpeg') {
+        return toast.error('Невірний тип зображення');
+      }
       getImage(file);
       setImage(file);
     }

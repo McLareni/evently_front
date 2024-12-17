@@ -1,26 +1,18 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import {
+  clearAuthToken,
   getUser,
   logIn,
-  logOut,
-  refreshUser,
   register,
-  updateUser,
 } from '@/redux/auth/operations';
 
 import { PayloadAction, createSlice, isAnyOf } from '@reduxjs/toolkit';
-import { UnknownAction } from 'redux';
 
 export interface GoogleLoginResponse {
   name: string;
   email: string;
   token: string;
 }
-
-// export interface User {
-//   name: string | null;
-//   email: string | null;
-// }
 
 export interface UserLoggingFulfilled {
   user: User;
@@ -43,9 +35,8 @@ const authSlice = createSlice({
   name: 'auth',
   initialState: {
     userId: null as null | number,
-    user: {} as User,
+    user: { name: '', email: '' } as User,
     token: null as null | string,
-    // theme: 'light',
     currentDate: Date.now(),
     isLoggedIn: false,
     isRefreshing: false,
@@ -53,12 +44,10 @@ const authSlice = createSlice({
   },
 
   reducers: {
-    // setTheme(state, action) {
-    //   state.theme = action.payload;
-    // },
     setCurrentDate(state, action) {
       state.currentDate = action.payload;
     },
+
     googleLogin(state, action: PayloadAction<GoogleLoginResponse>) {
       const { name, email, token } = action.payload;
       state.user.name = name;
@@ -67,31 +56,31 @@ const authSlice = createSlice({
       state.isLoggedIn = true;
       state.error = null;
     },
+
+    handleLogOut(state) {
+      clearAuthToken();
+      state.user = { name: '', email: '' } as User;
+      state.token = null;
+      state.isLoggedIn = false;
+      state.error = null;
+    },
   },
 
   extraReducers: builder => {
     builder
-      .addCase(refreshUser.pending, handleRefreshUserPending)
-      .addCase(refreshUser.fulfilled, handleRefreshUserFulfilled)
-      .addCase(updateUser.fulfilled, handleUpdateUserFulfilled)
-      .addCase(logOut.fulfilled, handleLogOut)
       .addCase(getUser.fulfilled, handleGetFullInfomation)
       .addMatcher(
         isAnyOf(...getActionGeneratorsWithType(STATUS.FULFILLED)),
         handleUserLoggingFulfilled
       )
       .addMatcher(
-        isAnyOf(
-          ...getActionGeneratorsWithType(STATUS.REJECTED),
-          updateUser.rejected,
-          refreshUser.rejected
-        ),
+        isAnyOf(...getActionGeneratorsWithType(STATUS.REJECTED)),
         handleUserRejected
       );
   },
 });
 
-function handleUserLoggingFulfilled(state: any, action: any): void {
+function handleUserLoggingFulfilled(state: any, action: any) {
   state.user.id = action.payload.userId;
   state.user.name = action.payload.userName;
   state.token = action.payload.accessToken;
@@ -101,46 +90,21 @@ function handleUserLoggingFulfilled(state: any, action: any): void {
   state.error = null;
 }
 
-function handleUpdateUserFulfilled(state: any, action: UnknownAction): void {
-  state.user = action.payload;
-  state.error = null;
-}
-
-function handleLogOut(state: any): void {
-  state.user = {};
-  state.token = null;
-  state.isLoggedIn = false;
-  state.error = null;
-}
-function handleRefreshUserPending(state: any): void {
-  state.isRefreshing = true;
-  state.error = null;
-}
-
-function handleRefreshUserFulfilled(state: any, action: UnknownAction): void {
-  state.user = action.payload;
-  state.isLoggedIn = true;
-  state.isRefreshing = false;
-  state.error = null;
-}
-
-interface State {
-  isRefreshing: boolean;
-  error: any;
-}
-function handleUserRejected(state: State, action: any): void {
+function handleUserRejected(
+  state: { isRefreshing: boolean; error: any },
+  action: any
+) {
   state.isRefreshing = false;
   state.error = action.payload;
 }
 
-function handleGetFullInfomation(state: any, action: UnknownAction): void {
+function handleGetFullInfomation(
+  state: { user: User },
+  action: PayloadAction<User>
+) {
   state.user = action.payload;
 }
 
-export const {
-  // setTheme,
-  setCurrentDate,
-  googleLogin,
-} = authSlice.actions;
+export const { handleLogOut, setCurrentDate, googleLogin } = authSlice.actions;
 
 export const authReducer = authSlice.reducer;

@@ -11,9 +11,9 @@ import {
 } from 'react-icons/io5';
 import { PiFlowerLotusLight } from 'react-icons/pi';
 import { TbCalendarEvent } from 'react-icons/tb';
-import { useLocation, useNavigate } from 'react-router-dom';
+import { useLocation } from 'react-router-dom';
 
-import { logOut } from '@/redux/auth/operations';
+import { handleLogOut } from '@/redux/auth/authSlice';
 import { useAppDispatch } from '@/redux/hooks';
 
 import clsx from 'clsx';
@@ -69,29 +69,21 @@ const tabAdmin = [
 
 const ProfileTab = () => {
   const [isActiveAdmin, setIsActiveAdmin] = useState(false);
-  const { pathname } = useLocation();
-  const navigate = useNavigate();
-  const { t } = useTranslation('tabProfile');
-  const dispatch = useAppDispatch();
   const [confirmLogout, setConfirmLogout] = useState(false);
 
-  const tabs = t('tabs', { returnObjects: true });
+  const { pathname } = useLocation();
+  const { t } = useTranslation('tabProfile');
+  const dispatch = useAppDispatch();
 
-  useEffect(() => {
-    if (pathname.includes('admin')) {
-      setIsActiveAdmin(true);
-    }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
+  const tabs = t('tabs', { returnObjects: true });
 
   const handleOpenAdminTab = () => {
     setIsActiveAdmin(prev => !prev);
   };
 
-  const handleLogout = async () => {
-    await dispatch(logOut());
-    navigate('/');
+  const handleLogout = () => {
     setConfirmLogout(false);
+    dispatch(handleLogOut());
   };
 
   const startLogout = () => {
@@ -101,6 +93,13 @@ const ProfileTab = () => {
   const endLogout = () => {
     setConfirmLogout(false);
   };
+
+  useEffect(() => {
+    if (pathname.includes('admin')) {
+      setIsActiveAdmin(true);
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
 
   return (
     <>
