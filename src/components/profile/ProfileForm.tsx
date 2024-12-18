@@ -18,15 +18,15 @@ export const ProfileForm: FC<ProfileFormProps> = ({ image: userImage }) => {
   const { name, surname, birthday, phone, image } = useAppSelector(selectUser);
   const isLoading = useAppSelector(selectIsLoading);
 
-  console.log(image, userImage, isLoading);
+  console.log(image, userImage, isLoading, phone);
 
   const dispatch = useAppDispatch();
 
   const defaultValues: UserInfo = {
     name: name || '',
-    surname: surname || '',
-    birthday: birthday || '',
-    phone: phone || '',
+    surname: surname || 'Тут буде прізвище',
+    birthday: birthday || 'Тут буде день народження',
+    phone: phone || 'Тут буде номер телефону',
     // image: image || '',
   };
 
@@ -102,7 +102,7 @@ export const ProfileForm: FC<ProfileFormProps> = ({ image: userImage }) => {
               required: value =>
                 value.trim().length === 0 ||
                 value.trim().length === 10 ||
-                'Введіть номер телефону',
+                'Введіть дату народження',
             },
           })}
           placeholder="Дата народження"
@@ -132,6 +132,30 @@ export const ProfileForm: FC<ProfileFormProps> = ({ image: userImage }) => {
           Номер телефону
         </ProfileInput>
       </div>
+
+      {/* Паролі */}
+      <div className="flex flex-col gap-[8px]">
+        <p className="mb-[32px] font-oswald text-[24px] font-medium">
+          Змінити пароль
+        </p>
+        <ProfileInput
+          forPassword
+          placeholder="Введіть новий пароль"
+          id="changePassword"
+          htmlFor="changePassword"
+        >
+          Введіть новий пароль
+        </ProfileInput>
+        <ProfileInput
+          forPassword
+          placeholder="Повторіть пароль"
+          id="repeatPassword"
+          htmlFor="repeatPassword"
+        >
+          Повторіть пароль
+        </ProfileInput>
+      </div>
+
       <div className="ml-auto">
         <Button type="submit" disabled={!isValid}>
           Зберегти
