@@ -1,4 +1,4 @@
-import { FC } from 'react';
+import { FC, useEffect } from 'react';
 import { SubmitHandler, useForm } from 'react-hook-form';
 import { toast } from 'react-toastify';
 
@@ -27,22 +27,22 @@ export const ProfileForm: FC<ProfileFormProps> = ({ image: userImage }) => {
     surname: surname || '',
     birthday: birthday || '',
     phone: phone || '',
-    // image: image || '',
+    image: image || '',
   };
 
   const {
     register,
     handleSubmit,
-    // setValue,
+    setValue,
     formState: { errors, isValid },
   } = useForm<UserInfo>({ mode: 'onChange', defaultValues });
 
   const ObjectsAreEqual = (obj1: UserInfo, obj2: UserInfo) => {
     return (
-      obj1.name === obj2.name &&
-      obj1.surname === obj2.surname &&
-      obj1.birthday === obj2.birthday &&
-      obj1.phone === obj2.phone
+      obj1.name === obj2.name
+      // obj1.surname === obj2.surname &&
+      // obj1.birthday === obj2.birthday &&
+      // obj1.phone === obj2.phone
       // TODO
       // obj2.userImage instanceof File &&
       // obj1.userImage === obj2.userImage?.name
@@ -57,18 +57,17 @@ export const ProfileForm: FC<ProfileFormProps> = ({ image: userImage }) => {
       name: data.name,
     };
 
-    console.log(newObj);
+    console.log(newObj, data);
     dispatch(updateUserInfo(newObj));
     // eslint-disable-next-line @typescript-eslint/no-unused-expressions
     !isLoading && dispatch(getUser());
   };
 
-  // Add later
-  // useEffect(() => {
-  //   if (userImage instanceof File) {
-  //     setValue('image', userImage);
-  //   }
-  // }, [userImage, setValue]);
+  useEffect(() => {
+    if (userImage instanceof File) {
+      setValue('image', userImage);
+    }
+  }, [userImage, setValue]);
 
   return (
     <form className="flex flex-col" onSubmit={handleSubmit(onSubmit)}>
