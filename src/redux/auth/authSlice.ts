@@ -4,6 +4,7 @@ import {
   getUser,
   logIn,
   register,
+  updateUserInfo,
 } from '@/redux/auth/operations';
 
 import { PayloadAction, createSlice, isAnyOf } from '@reduxjs/toolkit';
@@ -39,6 +40,7 @@ const authSlice = createSlice({
     token: null as null | string,
     currentDate: Date.now(),
     isLoggedIn: false,
+    isLoading: false,
     error: null,
   },
 
@@ -68,6 +70,9 @@ const authSlice = createSlice({
   extraReducers: builder => {
     builder
       .addCase(getUser.fulfilled, handleGetFullInfomation)
+      .addCase(updateUserInfo.pending, handleUpdateUserInfoPending)
+      .addCase(updateUserInfo.fulfilled, handleUpdateUserFulfilled)
+      .addCase(updateUserInfo.rejected, handleUpdateUserRejected)
       .addMatcher(
         isAnyOf(...getActionGeneratorsWithType(STATUS.FULFILLED)),
         handleUserLoggingFulfilled
@@ -79,12 +84,32 @@ const authSlice = createSlice({
   },
 });
 
+function handleUpdateUserInfoPending(state: any) {
+  console.log('pending');
+
+  state.isLoading = true;
+}
+
+function handleUpdateUserFulfilled(state: any, action: PayloadAction<User>) {
+  console.log('fulfilled', action.payload.name);
+
+  state.isLoading = false;
+  state.user.name = action.payload.name;
+}
+
+function handleUpdateUserRejected(state: any, action: any) {
+  console.log('error', action.payload.name);
+
+  state.isLoading = false;
+  state.error = action.payload;
+}
+
 function handleUserLoggingFulfilled(state: any, action: any) {
   state.user.id = action.payload.userId;
   state.user.name = action.payload.userName;
   state.token = action.payload.accessToken;
   state.user.userId = action.payload.userId;
-  state.user.name = action.payload.userName;
+  state.user.userSurname = action.payload.userSurname;
   state.isLoggedIn = true;
   state.error = null;
 }

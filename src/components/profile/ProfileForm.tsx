@@ -2,10 +2,12 @@ import { FC } from 'react';
 import { SubmitHandler, useForm } from 'react-hook-form';
 import { toast } from 'react-toastify';
 
-import { selectUser } from '@/redux/auth/selectors';
-import { useAppSelector } from '@/redux/hooks';
+import { getUser, updateUserInfo } from '@/redux/auth/operations';
+import { selectIsLoading, selectUser } from '@/redux/auth/selectors';
+import { useAppDispatch, useAppSelector } from '@/redux/hooks';
 
 import Button from '../ui/Button';
+import Spinner from '../ui/Spinner';
 import { ProfileInput } from './ProfileInput';
 
 interface ProfileFormProps {
@@ -14,8 +16,11 @@ interface ProfileFormProps {
 
 export const ProfileForm: FC<ProfileFormProps> = ({ image: userImage }) => {
   const { name, surname, birthday, phone, image } = useAppSelector(selectUser);
+  const isLoading = useAppSelector(selectIsLoading);
 
-  console.log(image, userImage);
+  console.log(image, userImage, isLoading);
+
+  const dispatch = useAppDispatch();
 
   const defaultValues: UserInfo = {
     name: name || '',
@@ -46,10 +51,16 @@ export const ProfileForm: FC<ProfileFormProps> = ({ image: userImage }) => {
 
   const onSubmit: SubmitHandler<UserInfo> = data => {
     if (ObjectsAreEqual(defaultValues, data)) {
-      console.log(data, defaultValues);
       return toast.error('Немає що змінювати');
     }
-    console.log(data, defaultValues);
+    const newObj = {
+      name: data.name,
+    };
+
+    console.log(newObj);
+    dispatch(updateUserInfo(newObj));
+    // eslint-disable-next-line @typescript-eslint/no-unused-expressions
+    !isLoading && dispatch(getUser());
   };
 
   // Add later
@@ -61,6 +72,7 @@ export const ProfileForm: FC<ProfileFormProps> = ({ image: userImage }) => {
 
   return (
     <form className="flex flex-col" onSubmit={handleSubmit(onSubmit)}>
+      {isLoading && <Spinner />}
       <div className="flex gap-[24px] mb-[8px]">
         <ProfileInput
           {...register('name')}
@@ -121,7 +133,9 @@ export const ProfileForm: FC<ProfileFormProps> = ({ image: userImage }) => {
         </ProfileInput>
       </div>
       <div className="ml-auto">
-        <Button disabled={!isValid}>Зберегти</Button>
+        <Button type="submit" disabled={!isValid}>
+          Зберегти
+        </Button>
       </div>
     </form>
   );

@@ -45,18 +45,21 @@ export const logIn = createAsyncThunk(
   }
 );
 
-export const updateUser = createAsyncThunk<User, User, { state: RootState }>(
-  'users/edit',
-  async (user, thunkAPI) => {
-    try {
-      const state = thunkAPI.getState();
-      const response = await axios.patch(`/users/${state.auth.user.id}`, user);
-      return response.data;
-    } catch (error) {
-      return thunkAPI.rejectWithValue((error as Error).message);
-    }
+export const updateUserInfo = createAsyncThunk<
+  User,
+  { name: string },
+  { state: RootState }
+>('users', async (user, thunkAPI) => {
+  try {
+    const state = thunkAPI.getState();
+    const response = await axios.patch(`users/${state.auth.user.id}`, user);
+    console.log(response);
+
+    return response.data;
+  } catch (error) {
+    return thunkAPI.rejectWithValue((error as Error).message);
   }
-);
+});
 
 export const getUser = createAsyncThunk<User, void, { state: RootState }>(
   'auth/getUser',
