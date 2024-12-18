@@ -20,12 +20,15 @@ export const ProfileInput = forwardRef<Ref, ProfileInputProps>(
     ${isFocused ? 'border-buttonPurple' : 'border-lightPurple'}
     ${forPassword && 'pr-[72px]'}`;
 
-    const labelStyles = `absolute left-6 transition-all ease-in-out duration-300
-    bg-background px-1 ${
+    const labelStyles = `absolute left-6 transition-all ease-in-out
+    duration-300 bg-background px-1 ${
       isFocused
         ? '-top-3 scale-100 visible opacity-100'
         : 'top-4 scale-125 invisible opacity-0'
     }`;
+
+    const buttonStyles = `absolute top-[50%] -translate-y-2/4 right-[24px] 
+    focus:outline-none`;
 
     const toggleVisibility = () => {
       setPasswordVisible(!passwordVisible);
@@ -49,7 +52,7 @@ export const ProfileInput = forwardRef<Ref, ProfileInputProps>(
           />
           {forPassword && (
             <button
-              className="absolute top-[50%] -translate-y-2/4 right-[24px]"
+              className={buttonStyles}
               onClick={toggleVisibility}
               type="button"
             >
