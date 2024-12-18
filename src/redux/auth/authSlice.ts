@@ -39,7 +39,6 @@ const authSlice = createSlice({
     token: null as null | string,
     currentDate: Date.now(),
     isLoggedIn: false,
-    isRefreshing: false,
     error: null,
   },
 
@@ -90,11 +89,7 @@ function handleUserLoggingFulfilled(state: any, action: any) {
   state.error = null;
 }
 
-function handleUserRejected(
-  state: { isRefreshing: boolean; error: any },
-  action: any
-) {
-  state.isRefreshing = false;
+function handleUserRejected(state: { error: any }, action: any) {
   state.error = action.payload;
 }
 

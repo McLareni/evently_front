@@ -7,6 +7,8 @@ interface UploadButtonProps {
   getImage: (image: File) => void;
 }
 
+const imageTypes = ['image/jpeg', 'image/webp', 'image/svg', 'image/png'];
+
 export const UploadButton: FC<UploadButtonProps> = ({ getImage }) => {
   const [image, setImage] = useState<File | null>(null);
 
@@ -16,7 +18,7 @@ export const UploadButton: FC<UploadButtonProps> = ({ getImage }) => {
   const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     if (e.target.files) {
       const file = e.target.files[0];
-      if (file.type !== 'image/jpeg') {
+      if (!imageTypes.some(type => type === file.type)) {
         return toast.error('Невірний тип зображення');
       }
       getImage(file);
@@ -29,7 +31,7 @@ export const UploadButton: FC<UploadButtonProps> = ({ getImage }) => {
       <input
         id="avatar"
         type="file"
-        accept="image/png, image/jpeg"
+        accept={imageTypes.join(',')}
         className="hidden"
         onChange={handleFileChange}
       />
