@@ -15,4 +15,7 @@ interface User {
   status: 'ACTIVE' | 'BANNED';
 }
 
-type UserInfo = Pick<User, 'name' | 'surname' | 'birthday' | 'phone' | 'image'>;
+// Change later
+// type UserInfo = Pick<User, 'name' | 'surname' | 'birthday' | 'phone' | 'image'>;
+
+type UserInfo = Pick<User, 'name' | 'surname' | 'birthday' | 'phone'>;

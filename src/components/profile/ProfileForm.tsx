@@ -1,4 +1,4 @@
-import { FC, useEffect } from 'react';
+import { FC } from 'react';
 import { SubmitHandler, useForm } from 'react-hook-form';
 import { toast } from 'react-toastify';
 
@@ -15,18 +15,20 @@ interface ProfileFormProps {
 export const ProfileForm: FC<ProfileFormProps> = ({ image: userImage }) => {
   const { name, surname, birthday, phone, image } = useAppSelector(selectUser);
 
+  console.log(image, userImage);
+
   const defaultValues: UserInfo = {
     name: name || '',
     surname: surname || '',
     birthday: birthday || '',
     phone: phone || '',
-    image: image || '',
+    // image: image || '',
   };
 
   const {
     register,
     handleSubmit,
-    setValue,
+    // setValue,
     formState: { errors, isValid },
   } = useForm<UserInfo>({ mode: 'onChange', defaultValues });
 
@@ -50,11 +52,12 @@ export const ProfileForm: FC<ProfileFormProps> = ({ image: userImage }) => {
     console.log(data, defaultValues);
   };
 
-  useEffect(() => {
-    if (userImage instanceof File) {
-      setValue('image', userImage);
-    }
-  }, [userImage, setValue]);
+  // Add later
+  // useEffect(() => {
+  //   if (userImage instanceof File) {
+  //     setValue('image', userImage);
+  //   }
+  // }, [userImage, setValue]);
 
   return (
     <form className="flex flex-col" onSubmit={handleSubmit(onSubmit)}>
