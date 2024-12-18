@@ -24,9 +24,9 @@ export const ProfileForm: FC<ProfileFormProps> = ({ image: userImage }) => {
 
   const defaultValues: UserInfo = {
     name: name || '',
-    surname: surname || 'Тут буде прізвище',
-    birthday: birthday || 'Тут буде день народження',
-    phone: phone || 'Тут буде номер телефону',
+    surname: surname || '',
+    birthday: birthday || '',
+    phone: phone || '',
     // image: image || '',
   };
 
@@ -143,6 +143,7 @@ export const ProfileForm: FC<ProfileFormProps> = ({ image: userImage }) => {
           placeholder="Введіть новий пароль"
           id="changePassword"
           htmlFor="changePassword"
+          autoComplete="new-password"
         >
           Введіть новий пароль
         </ProfileInput>

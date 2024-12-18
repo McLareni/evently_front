@@ -40,7 +40,6 @@ export const ProfileInput = forwardRef<Ref, ProfileInputProps>(
               setIsFocused(false);
               onBlur?.(event);
             }}
-            autoComplete="off"
             className={inputStyles}
             type={
               forPassword ? (passwordVisible ? 'text' : 'password') : props.type
