@@ -15,6 +15,7 @@ import {
 } from '@/redux/events/operations';
 import { useAppSelector } from '@/redux/hooks';
 
+import { formatDateToDayMonth } from '@/helpers/formatDateToDayMonth';
 import { useGetLikedEventsWithSkip } from '@/hooks/query/useGetLikedEventsWithSkip';
 
 import { SharedBtn } from './SharedBtn';
@@ -89,6 +90,8 @@ export const EventCard: React.FC<EventCardProps> = ({
       deleteFromLiked();
     }
   };
+
+  const formattedDate = formatDateToDayMonth(date.day);
 
   useEffect(() => {
     if (likedEventsAll) {
@@ -172,7 +175,7 @@ export const EventCard: React.FC<EventCardProps> = ({
         >
           <li className="flex items-center gap-[18px]">
             <AiOutlineCalendar size="24px" />
-            <p>{`${date?.day}, ${date?.time}`}</p>
+            <p>{`${formattedDate}, ${date?.time}`}</p>
           </li>
           <li className="flex items-center gap-[18px]">
             <GrLocation size="24px" />

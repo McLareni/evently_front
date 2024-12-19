@@ -63,7 +63,8 @@
     "vite-env.d.ts",
     "custom.d.ts",
     "src/@types/**/*.d.ts",
-    "src/**/*.json"
+    "src/**/*.json",
+    "vitest.config.ts"
   ],
   "exclude": [
     "node_modules",

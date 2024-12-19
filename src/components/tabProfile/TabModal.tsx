@@ -1,3 +1,5 @@
+import { NavLink } from 'react-router-dom';
+
 import { Modal, SharedBtn } from '../ui';
 
 interface IProps {
@@ -14,14 +16,16 @@ const TabModal: React.FC<IProps> = ({ isOpen, onClose, clickYes }) => {
           Ви впевнені, що хочете вийти ?
         </p>
         <div className="flex justify-between mt-6">
-          <SharedBtn
-            type="button"
-            primary
-            className="w-[120px] h-8 !py-0"
-            onClick={clickYes}
-          >
-            Taк
-          </SharedBtn>
+          <NavLink to={'/'}>
+            <SharedBtn
+              type="button"
+              primary
+              className="w-[120px] h-8 !py-0"
+              onClick={clickYes}
+            >
+              Taк
+            </SharedBtn>
+          </NavLink>
           <SharedBtn
             type="button"
             secondary
