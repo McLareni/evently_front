@@ -19,7 +19,7 @@ import { usersReducer } from './users/usersSlice';
 const authPersistConfig = {
   key: 'auth',
   storage,
-  whitelist: ['token', 'theme', 'isLoggedIn', 'user'],
+  whitelist: ['token', 'isLoggedIn', 'user'],
 };
 
 const filterPersistConfig = {
