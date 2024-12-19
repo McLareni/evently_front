@@ -2,6 +2,8 @@ import React, { useState } from 'react';
 import { MdDone } from 'react-icons/md';
 import { RxCross2 } from 'react-icons/rx';
 
+import clsx from 'clsx';
+
 import ImageNavigation from './ImageNavigation';
 import Stars from './Stars';
 
@@ -50,8 +52,14 @@ const ModalDecision: React.FC<IProps> = ({ event, openModal }) => {
               >
                 <p className="px-4 py-2.5">{event?.type}</p>
               </div>
+
               <div
-                className={`flex items-center justify-center h-8 rounded-[20px] bg-lightPurple`}
+                className={clsx(
+                  `flex items-center justify-center h-8 rounded-[20px]`,
+                  event?.eventUrl
+                    ? 'bg-buttonPurple text-background'
+                    : 'bg-lightPurple'
+                )}
               >
                 <p className="px-4 py-2.5">Офлайн</p>
               </div>
@@ -76,7 +84,8 @@ const ModalDecision: React.FC<IProps> = ({ event, openModal }) => {
           <div className="flex flex-col gap-2">
             <p className="font-lato text-base leading-[19px] text-textDart">
               <span className="font-bold">Місце: </span>
-              {event?.location.city}, {event?.location.street}
+              {event?.eventUrl ||
+                `${event?.location.city} ${event?.location.street}`}
             </p>
             <p className="font-lato text-base leading-[19px] text-textDart">
               <span className="font-bold">Дата: </span>
@@ -88,7 +97,7 @@ const ModalDecision: React.FC<IProps> = ({ event, openModal }) => {
             </p>
             <p className="font-lato text-base leading-[19px] text-textDart">
               <span className="font-bold">Ціна: </span>
-              {event?.price}
+              {event?.price || 'необмежена'}
             </p>
             <p className="font-lato text-base leading-[19px] text-textDart">
               <span className="font-bold">Кількість квитків: </span>
@@ -108,17 +117,17 @@ const ModalDecision: React.FC<IProps> = ({ event, openModal }) => {
       <div className="absolute -bottom-16 right-0 flex gap-8 ">
         <button
           onClick={openModal}
-          className="flex gap-2 justify-center items-center w-[180px] h-12 border border-textDark rounded-[10px] bg-lightGreen"
-        >
-          <MdDone className="h-6 w-6" />
-          Схвалити
-        </button>
-        <button
-          onClick={openModal}
           className="flex border justify-center items-center w-[180px] h-12 border-textDark rounded-[10px] bg-lightRed"
         >
           <RxCross2 className="h-6 w-6" />
           Відхилити
+        </button>
+        <button
+          onClick={openModal}
+          className="flex gap-2 justify-center items-center w-[180px] h-12 border border-textDark rounded-[10px] bg-lightGreen"
+        >
+          <MdDone className="h-6 w-6" />
+          Схвалити
         </button>
       </div>
     </div>
