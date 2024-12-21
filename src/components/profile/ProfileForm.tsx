@@ -109,15 +109,14 @@ export const ProfileForm: FC<ProfileFormProps> = ({ image: userImage }) => {
       </div>
 
       <div className="flex gap-[24px] mb-[32px]">
-        <ProfileInput
+        <ProfileInputMask
           {...register('birthday', {
             validate: {
               required: value =>
-                value.trim().length === 0 ||
-                value.trim().length === 10 ||
-                'Введіть дату народження',
+                !value.includes('_') || 'Введіть дату народження',
             },
           })}
+          mask="99.99.9999"
           placeholder="Дата народження"
           id="birthday"
           htmlFor="birthday"
@@ -125,9 +124,7 @@ export const ProfileForm: FC<ProfileFormProps> = ({ image: userImage }) => {
           error={errors?.birthday?.message}
         >
           Дата народження
-        </ProfileInput>
-
-        {/* маска */}
+        </ProfileInputMask>
 
         <ProfileInputMask
           {...register('phone', {
