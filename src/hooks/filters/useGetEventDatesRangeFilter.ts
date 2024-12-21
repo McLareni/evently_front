@@ -9,7 +9,7 @@ import {
 } from '@/redux/filters/selectors';
 import { useAppDispatch, useAppSelector } from '@/redux/hooks';
 
-import { rangeDays } from '@/helpers/rangeDays';
+import { rangeDays } from '@/helpers/filters/rangeDays';
 
 export function useGetEventDatesRangeFilter() {
   const dispatch = useAppDispatch();

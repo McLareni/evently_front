@@ -3,9 +3,6 @@ import { expect, test } from 'vitest';
 import { formatDateToDayMonth } from './formatDateToDayMonth';
 
 test('formats date string YYYY.MM.DD to DD MM in Ukrainian', () => {
-  expect(formatDateToDayMonth('2024/01/15')).toBe('15 січня');
-  expect(formatDateToDayMonth('2024.02.13')).toBe('13 лютого');
-
   expect(formatDateToDayMonth('2024-01-15')).toBe('15 січня');
   expect(formatDateToDayMonth('2024-02-13')).toBe('13 лютого');
   expect(formatDateToDayMonth('2024-03-20')).toBe('20 березня');
@@ -19,4 +16,6 @@ test('formats date string YYYY.MM.DD to DD MM in Ukrainian', () => {
   expect(formatDateToDayMonth('2024-11-01')).toBe('1 листопада');
   expect(formatDateToDayMonth('2024-12-25')).toBe('25 грудня');
   expect(formatDateToDayMonth('2024-02-29')).toBe('29 лютого');
+  expect(formatDateToDayMonth('2024/01/15')).toBe('15 січня');
+  expect(formatDateToDayMonth('2024.02.13')).toBe('13 лютого');
 });

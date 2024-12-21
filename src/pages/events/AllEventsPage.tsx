@@ -8,7 +8,7 @@ import {
 import { getFilteredEventsId, getFirstRender } from '@/redux/filters/selectors';
 import { useAppDispatch, useAppSelector } from '@/redux/hooks';
 
-import { filterByPrice } from '@/helpers/filterByPrice';
+import { filterByPrice } from '@/helpers/filters/filterByPrice';
 import { useFilter } from '@/hooks/filters/useFilter';
 import { useLazyGetAllEventsQueryWithTrigger } from '@/hooks/query/useLazyGetAllEventsQueryWithTrigger';
 import { useScrollToTop } from '@/hooks/useScrollToTop';

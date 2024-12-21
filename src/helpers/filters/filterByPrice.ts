@@ -7,6 +7,7 @@ export const filterByPrice = ({
   filteredEventsByDateOrRangeResult,
   selectedPrices,
 }: filterByPriceProps) => {
+  // all
   if (selectedPrices.length === 0 || selectedPrices.length === 3) {
     return filteredEventsByDateOrRangeResult;
   }
@@ -53,14 +54,14 @@ export const filterByPrice = ({
     );
     return newArray;
   }
-  // 0 && 501-1000
+  // 0 && 500-1000
   if (
     selectedPrices.length === 2 &&
     selectedPrices.includes(0) &&
     selectedPrices.includes(1000)
   ) {
     const newArray = filteredEventsByDateOrRangeResult.filter(
-      item => item.price === 0 || (item.price > 500 && item.price <= 1000)
+      item => item.price === 0 || (item.price >= 500 && item.price <= 1000)
     );
     return newArray;
   }
