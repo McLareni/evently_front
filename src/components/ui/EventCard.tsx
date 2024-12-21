@@ -35,6 +35,7 @@ export const EventCard: React.FC<EventCardProps> = ({
   changeStatus = () => {},
 }) => {
   const [isLiked, setIsLiked] = useState(false);
+  console.log(event.date.day);
 
   const {
     id: eventId,
