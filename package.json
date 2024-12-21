@@ -5,13 +5,12 @@
   "type": "module",
   "scripts": {
     "dev": "vite --open",
-    "build": "vite build",
     "lint": "eslint ./src",
-    "preview": "vite preview",
-    "toc": "i18next-resources-for-ts toc -i ./src/i18next/locales/ua -o ./src/@types/resources.ts",
     "test": "vitest",
-    "coverage": "vitest --coverage",
-    "coverage-ui": "vitest --coverage --ui"
+    "coverage-ui": "vitest --coverage --ui",
+    "build": "vite build",
+    "preview": "vite preview",
+    "toc": "i18next-resources-for-ts toc -i ./src/i18next/locales/ua -o ./src/@types/resources.ts"
   },
   "dependencies": {
     "@react-oauth/google": "^0.12.1",
