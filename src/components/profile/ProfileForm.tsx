@@ -1,10 +1,13 @@
+/* eslint-disable @typescript-eslint/no-unused-expressions */
 import { FC, useEffect } from 'react';
-import { SubmitHandler, useForm } from 'react-hook-form';
+import { Controller, SubmitHandler, useForm } from 'react-hook-form';
 import { toast } from 'react-toastify';
 
 import { getUser, updateUserInfo } from '@/redux/auth/operations';
 import { selectIsLoading, selectUser } from '@/redux/auth/selectors';
 import { useAppDispatch, useAppSelector } from '@/redux/hooks';
+
+import { useMask } from '@react-input/mask';
 
 import Button from '../ui/Button';
 import Spinner from '../ui/Spinner';
@@ -30,19 +33,30 @@ export const ProfileForm: FC<ProfileFormProps> = ({ image: userImage }) => {
     image: image || '',
   };
 
+  const birthdayInputRef = useMask({
+    mask: '__.__.____',
+    replacement: { _: /\d/ },
+  });
+
+  const phoneInputRef = useMask({
+    mask: '+__(___)___-__-__',
+    replacement: { _: /\d/ },
+  });
+
   const {
     register,
     handleSubmit,
     setValue,
+    control,
     formState: { errors, isValid },
   } = useForm<UserInfo>({ mode: 'onChange', defaultValues });
 
   const ObjectsAreEqual = (obj1: UserInfo, obj2: UserInfo) => {
     return (
-      obj1.name === obj2.name
-      // obj1.surname === obj2.surname &&
+      obj1.name === obj2.name &&
+      obj1.surname === obj2.surname &&
       // obj1.birthday === obj2.birthday &&
-      // obj1.phone === obj2.phone
+      obj1.phone === obj2.phone
       // TODO
       // obj2.userImage instanceof File &&
       // obj1.userImage === obj2.userImage?.name
@@ -50,16 +64,27 @@ export const ProfileForm: FC<ProfileFormProps> = ({ image: userImage }) => {
   };
 
   const onSubmit: SubmitHandler<UserInfo> = data => {
+    console.log(data);
+
+    const formatPhoneNumber = () => {
+      return data.phone.replace(/\D/g, '');
+    };
+    const formattedPhoneNumber = formatPhoneNumber();
+    console.log(data, formattedPhoneNumber);
     if (ObjectsAreEqual(defaultValues, data)) {
       return toast.error('Немає що змінювати');
     }
+
     const newObj = {
       name: data.name,
+      surname: data.surname,
+      birthday: data.birthday,
+      phoneNumber: formattedPhoneNumber,
     };
 
-    console.log(newObj, data);
+    console.log(newObj);
     dispatch(updateUserInfo(newObj));
-    // eslint-disable-next-line @typescript-eslint/no-unused-expressions
+
     !isLoading && dispatch(getUser());
   };
 
@@ -79,9 +104,8 @@ export const ProfileForm: FC<ProfileFormProps> = ({ image: userImage }) => {
           id="name"
           htmlFor="name"
           type="text"
-        >
-          Ім&apos;я
-        </ProfileInput>
+          label="Ім'я"
+        />
 
         <ProfileInput
           {...register('surname')}
@@ -89,47 +113,48 @@ export const ProfileForm: FC<ProfileFormProps> = ({ image: userImage }) => {
           id="surname"
           htmlFor="surname"
           type="text"
-        >
-          Прізвище
-        </ProfileInput>
+          label="Прізвище"
+        />
       </div>
 
       <div className="flex gap-[24px] mb-[32px]">
-        <ProfileInput
-          {...register('birthday', {
-            validate: {
-              required: value =>
-                value.trim().length === 0 ||
-                value.trim().length === 10 ||
-                'Введіть дату народження',
-            },
-          })}
-          placeholder="Дата народження"
-          id="birthday"
-          htmlFor="birthday"
-          type="numeric"
-          error={errors?.birthday?.message}
-        >
-          Дата народження
-        </ProfileInput>
+        <Controller
+          name="birthday"
+          control={control}
+          render={({ field }) => (
+            <ProfileInput
+              {...field}
+              ref={birthdayInputRef}
+              placeholder="Дата народження"
+              id="birthday"
+              htmlFor="birthday"
+              type="numeric"
+              label="Дата народження"
+              error={errors?.birthday?.message}
+            />
+          )}
+        />
 
-        <ProfileInput
-          {...register('phone', {
-            validate: {
-              required: value =>
-                value.trim().length === 0 ||
-                value.trim().length === 12 ||
-                'Введіть номер телефону',
-            },
-          })}
-          placeholder="Номер телефону"
-          id="phoneNumber"
-          htmlFor="phoneNumber"
-          type="tel"
-          error={errors?.phone?.message}
-        >
-          Номер телефону
-        </ProfileInput>
+        <Controller
+          name="phone"
+          control={control}
+          render={({ field }) => (
+            <ProfileInput
+              {...field}
+              ref={phoneInputRef}
+              placeholder="Номер телефону"
+              id="phoneNumber"
+              htmlFor="phoneNumber"
+              type="tel"
+              label="Номер телефону"
+              error={errors?.phone?.message}
+            />
+          )}
+          // rules={{
+          //   required: "Це поле обов'язкове",
+          //   validate: value => value.length === 17 || 'Введіть номер телефону',
+          // }}
+        />
       </div>
 
       {/* Паролі */}
@@ -143,24 +168,21 @@ export const ProfileForm: FC<ProfileFormProps> = ({ image: userImage }) => {
           id="changePassword"
           htmlFor="changePassword"
           autoComplete="new-password"
-        >
-          Введіть новий пароль
-        </ProfileInput>
+          label="Введіть новий пароль"
+        />
+
         <ProfileInput
           forPassword
           placeholder="Повторіть пароль"
           id="repeatPassword"
           htmlFor="repeatPassword"
-        >
-          Повторіть пароль
-        </ProfileInput>
+          label="Повторіть пароль"
+        />
       </div>
 
-      <div className="ml-auto">
-        <Button type="submit" disabled={!isValid}>
-          Зберегти
-        </Button>
-      </div>
+      <Button type="submit" disabled={!isValid}>
+        Зберегти
+      </Button>
     </form>
   );
 };
