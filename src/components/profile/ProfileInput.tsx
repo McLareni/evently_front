@@ -1,14 +1,14 @@
-import { HTMLProps, PropsWithChildren, forwardRef, useState } from 'react';
+import { HTMLProps, forwardRef, useState } from 'react';
 import { AiOutlineEye, AiOutlineEyeInvisible } from 'react-icons/ai';
 
-export interface ProfileInputProps
-  extends PropsWithChildren<HTMLProps<HTMLInputElement>> {
+export interface ProfileInputProps extends HTMLProps<HTMLInputElement> {
   forPassword?: boolean;
   error?: string;
+  label: string;
 }
 
 export const ProfileInput = forwardRef<HTMLInputElement, ProfileInputProps>(
-  ({ children, error, forPassword = false, onBlur, ...props }, ref) => {
+  ({ label, error, forPassword = false, onBlur, ...props }, ref) => {
     const [isFocused, setIsFocused] = useState(false);
     const [passwordVisible, setPasswordVisible] = useState(false);
 
@@ -63,7 +63,7 @@ export const ProfileInput = forwardRef<HTMLInputElement, ProfileInputProps>(
           )}
         </div>
         <label htmlFor={props.htmlFor} className={labelStyles}>
-          {children}
+          {label}
         </label>
         <div className="h-[24px]">
           {error && <span className="text-error">{error}</span>}

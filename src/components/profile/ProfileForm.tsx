@@ -1,15 +1,17 @@
+/* eslint-disable @typescript-eslint/no-unused-expressions */
 import { FC, useEffect } from 'react';
-import { SubmitHandler, useForm } from 'react-hook-form';
+import { Controller, SubmitHandler, useForm } from 'react-hook-form';
 import { toast } from 'react-toastify';
 
 import { getUser, updateUserInfo } from '@/redux/auth/operations';
 import { selectIsLoading, selectUser } from '@/redux/auth/selectors';
 import { useAppDispatch, useAppSelector } from '@/redux/hooks';
 
+import { useMask } from '@react-input/mask';
+
 import Button from '../ui/Button';
 import Spinner from '../ui/Spinner';
 import { ProfileInput } from './ProfileInput';
-import { ProfileInputMask } from './ProfileInputMask';
 
 interface ProfileFormProps {
   image: File | null;
@@ -31,10 +33,21 @@ export const ProfileForm: FC<ProfileFormProps> = ({ image: userImage }) => {
     image: image || '',
   };
 
+  const birthdayInputRef = useMask({
+    mask: '__.__.____',
+    replacement: { _: /\d/ },
+  });
+
+  const phoneInputRef = useMask({
+    mask: '+38(0__)___-__-__',
+    replacement: { _: /\d/ },
+  });
+
   const {
     register,
     handleSubmit,
     setValue,
+    control,
     formState: { errors, isValid },
   } = useForm<UserInfo>({ mode: 'onChange', defaultValues });
 
@@ -51,13 +64,10 @@ export const ProfileForm: FC<ProfileFormProps> = ({ image: userImage }) => {
   };
 
   const onSubmit: SubmitHandler<UserInfo> = data => {
+    console.log(data);
+
     const formatPhoneNumber = () => {
-      return data.phone
-        .replace('+', '')
-        .replace('(', '')
-        .replace(')', '')
-        .replace('-', '')
-        .replace('-', '');
+      return data.phone.replace(/\D/g, '');
     };
     const formattedPhoneNumber = formatPhoneNumber();
     console.log(data, formattedPhoneNumber);
@@ -68,12 +78,13 @@ export const ProfileForm: FC<ProfileFormProps> = ({ image: userImage }) => {
     const newObj = {
       name: data.name,
       surname: data.surname,
+      birthday: data.birthday,
       phoneNumber: formattedPhoneNumber,
     };
 
-    console.log(newObj, data);
+    console.log(newObj);
     dispatch(updateUserInfo(newObj));
-    // eslint-disable-next-line @typescript-eslint/no-unused-expressions
+
     !isLoading && dispatch(getUser());
   };
 
@@ -93,9 +104,8 @@ export const ProfileForm: FC<ProfileFormProps> = ({ image: userImage }) => {
           id="name"
           htmlFor="name"
           type="text"
-        >
-          Ім&apos;я
-        </ProfileInput>
+          label="Ім'я"
+        />
 
         <ProfileInput
           {...register('surname')}
@@ -103,45 +113,48 @@ export const ProfileForm: FC<ProfileFormProps> = ({ image: userImage }) => {
           id="surname"
           htmlFor="surname"
           type="text"
-        >
-          Прізвище
-        </ProfileInput>
+          label="Прізвище"
+        />
       </div>
 
       <div className="flex gap-[24px] mb-[32px]">
-        <ProfileInputMask
-          {...register('birthday', {
-            validate: {
-              required: value =>
-                !value.includes('_') || 'Введіть дату народження',
-            },
-          })}
-          mask="99.99.9999"
-          placeholder="Дата народження"
-          id="birthday"
-          htmlFor="birthday"
-          type="numeric"
-          error={errors?.birthday?.message}
-        >
-          Дата народження
-        </ProfileInputMask>
+        <Controller
+          name="birthday"
+          control={control}
+          render={({ field }) => (
+            <ProfileInput
+              {...field}
+              ref={birthdayInputRef}
+              placeholder="Дата народження"
+              id="birthday"
+              htmlFor="birthday"
+              type="numeric"
+              label="Дата народження"
+              error={errors?.birthday?.message}
+            />
+          )}
+        />
 
-        <ProfileInputMask
-          {...register('phone', {
-            validate: {
-              required: value =>
-                !value.includes('_') || 'Введіть номер телефону',
-            },
-          })}
-          mask="+38(099)999-99-99"
-          placeholder="Номер телефону"
-          id="phoneNumber"
-          htmlFor="phoneNumber"
-          type="tel"
-          error={errors?.phone?.message}
-        >
-          Номер телефону
-        </ProfileInputMask>
+        <Controller
+          name="phone"
+          control={control}
+          render={({ field }) => (
+            <ProfileInput
+              {...field}
+              ref={phoneInputRef}
+              placeholder="Номер телефону"
+              id="phoneNumber"
+              htmlFor="phoneNumber"
+              type="tel"
+              label="Номер телефону"
+              error={errors?.phone?.message}
+            />
+          )}
+          // rules={{
+          //   required: "Це поле обов'язкове",
+          //   validate: value => value.length === 17 || 'Введіть номер телефону',
+          // }}
+        />
       </div>
 
       {/* Паролі */}
@@ -155,17 +168,16 @@ export const ProfileForm: FC<ProfileFormProps> = ({ image: userImage }) => {
           id="changePassword"
           htmlFor="changePassword"
           autoComplete="new-password"
-        >
-          Введіть новий пароль
-        </ProfileInput>
+          label="Введіть новий пароль"
+        />
+
         <ProfileInput
           forPassword
           placeholder="Повторіть пароль"
           id="repeatPassword"
           htmlFor="repeatPassword"
-        >
-          Повторіть пароль
-        </ProfileInput>
+          label="Повторіть пароль"
+        />
       </div>
 
       <div className="ml-auto">
