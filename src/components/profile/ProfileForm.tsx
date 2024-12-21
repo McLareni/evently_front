@@ -9,6 +9,7 @@ import { useAppDispatch, useAppSelector } from '@/redux/hooks';
 import Button from '../ui/Button';
 import Spinner from '../ui/Spinner';
 import { ProfileInput } from './ProfileInput';
+import { ProfileInputMask } from './ProfileInputMask';
 
 interface ProfileFormProps {
   image: File | null;
@@ -39,10 +40,10 @@ export const ProfileForm: FC<ProfileFormProps> = ({ image: userImage }) => {
 
   const ObjectsAreEqual = (obj1: UserInfo, obj2: UserInfo) => {
     return (
-      obj1.name === obj2.name
-      // obj1.surname === obj2.surname &&
+      obj1.name === obj2.name &&
+      obj1.surname === obj2.surname &&
       // obj1.birthday === obj2.birthday &&
-      // obj1.phone === obj2.phone
+      obj1.phone === obj2.phone
       // TODO
       // obj2.userImage instanceof File &&
       // obj1.userImage === obj2.userImage?.name
@@ -50,11 +51,24 @@ export const ProfileForm: FC<ProfileFormProps> = ({ image: userImage }) => {
   };
 
   const onSubmit: SubmitHandler<UserInfo> = data => {
+    const formatPhoneNumber = () => {
+      return data.phone
+        .replace('+', '')
+        .replace('(', '')
+        .replace(')', '')
+        .replace('-', '')
+        .replace('-', '');
+    };
+    const formattedPhoneNumber = formatPhoneNumber();
+    console.log(data, formattedPhoneNumber);
     if (ObjectsAreEqual(defaultValues, data)) {
       return toast.error('Немає що змінювати');
     }
+
     const newObj = {
       name: data.name,
+      surname: data.surname,
+      phoneNumber: formattedPhoneNumber,
     };
 
     console.log(newObj, data);
@@ -113,15 +127,16 @@ export const ProfileForm: FC<ProfileFormProps> = ({ image: userImage }) => {
           Дата народження
         </ProfileInput>
 
-        <ProfileInput
+        {/* маска */}
+
+        <ProfileInputMask
           {...register('phone', {
             validate: {
               required: value =>
-                value.trim().length === 0 ||
-                value.trim().length === 12 ||
-                'Введіть номер телефону',
+                !value.includes('_') || 'Введіть номер телефону',
             },
           })}
+          mask="+38(099)999-99-99"
           placeholder="Номер телефону"
           id="phoneNumber"
           htmlFor="phoneNumber"
@@ -129,7 +144,7 @@ export const ProfileForm: FC<ProfileFormProps> = ({ image: userImage }) => {
           error={errors?.phone?.message}
         >
           Номер телефону
-        </ProfileInput>
+        </ProfileInputMask>
       </div>
 
       {/* Паролі */}

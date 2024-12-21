@@ -47,7 +47,11 @@ export const logIn = createAsyncThunk(
 
 export const updateUserInfo = createAsyncThunk<
   User,
-  { name: string },
+  {
+    name: string;
+    phoneNumber: string;
+    surname: string;
+  },
   { state: RootState }
 >('users', async (user, thunkAPI) => {
   try {

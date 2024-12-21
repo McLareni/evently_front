@@ -1,15 +1,13 @@
 import { HTMLProps, PropsWithChildren, forwardRef, useState } from 'react';
 import { AiOutlineEye, AiOutlineEyeInvisible } from 'react-icons/ai';
 
-interface ProfileInputProps
+export interface ProfileInputProps
   extends PropsWithChildren<HTMLProps<HTMLInputElement>> {
   forPassword?: boolean;
   error?: string;
 }
 
-type Ref = HTMLInputElement;
-
-export const ProfileInput = forwardRef<Ref, ProfileInputProps>(
+export const ProfileInput = forwardRef<HTMLInputElement, ProfileInputProps>(
   ({ children, error, forPassword = false, onBlur, ...props }, ref) => {
     const [isFocused, setIsFocused] = useState(false);
     const [passwordVisible, setPasswordVisible] = useState(false);
