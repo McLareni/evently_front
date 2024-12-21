@@ -180,11 +180,9 @@ export const ProfileForm: FC<ProfileFormProps> = ({ image: userImage }) => {
         />
       </div>
 
-      <div className="ml-auto">
-        <Button type="submit" disabled={!isValid}>
-          Зберегти
-        </Button>
-      </div>
+      <Button type="submit" disabled={!isValid}>
+        Зберегти
+      </Button>
     </form>
   );
 };
