@@ -39,7 +39,7 @@ export const ProfileForm: FC<ProfileFormProps> = ({ image: userImage }) => {
   });
 
   const phoneInputRef = useMask({
-    mask: '+38(0__)___-__-__',
+    mask: '+__(___)___-__-__',
     replacement: { _: /\d/ },
   });
 
