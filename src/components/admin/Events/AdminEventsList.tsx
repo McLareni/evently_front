@@ -5,7 +5,7 @@ import { EventCard } from '../../ui';
 interface IProps {
   events: Event[];
   // eslint-disable-next-line no-unused-vars
-  setEvent: (event?: Event, target?: HTMLElement) => void;
+  setEvent: (event: Event, target: HTMLElement, actionStatus: 'APPROVED' | 'CANCELLED' | '') => void;
 }
 
 export const AdminEventsList: React.FC<IProps> = ({

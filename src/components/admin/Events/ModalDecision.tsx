@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import { HiOutlineTicket } from 'react-icons/hi';
 import { MdDone } from 'react-icons/md';
 import { RxCross2 } from 'react-icons/rx';
 
@@ -9,7 +10,8 @@ import Stars from './Stars';
 
 interface IProps {
   event?: Event;
-  openModal: () => void;
+  // eslint-disable-next-line no-unused-vars
+  openModal: (status: 'APPROVED' | 'CANCELLED' | '') => void;
 }
 
 const ModalDecision: React.FC<IProps> = ({ event, openModal }) => {
@@ -82,11 +84,22 @@ const ModalDecision: React.FC<IProps> = ({ event, openModal }) => {
             </p>
           </div>
           <div className="flex flex-col gap-2">
-            <p className="font-lato text-base leading-[19px] text-textDart">
-              <span className="font-bold">Місце: </span>
-              {event?.eventUrl ||
-                `${event?.location.city} ${event?.location.street}`}
-            </p>
+            {event?.eventUrl ? (
+              <a
+                href={event.eventUrl}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="font-lato text-base leading-[19px] text-textDark"
+              >
+                <span className="font-bold">Місце: </span>
+                {event.eventUrl}
+              </a>
+            ) : (
+              <p className="font-lato text-base leading-[19px] text-textDart">
+                <span className="font-bold">Місце: </span>
+                {`${event?.location.city} ${event?.location.street}`}
+              </p>
+            )}
             <p className="font-lato text-base leading-[19px] text-textDart">
               <span className="font-bold">Дата: </span>
               {event?.date.day}
@@ -97,11 +110,12 @@ const ModalDecision: React.FC<IProps> = ({ event, openModal }) => {
             </p>
             <p className="font-lato text-base leading-[19px] text-textDart">
               <span className="font-bold">Ціна: </span>
-              {event?.price || 'необмежена'}
+              {event?.price + ' ₴' || 'необмежена'}
             </p>
-            <p className="font-lato text-base leading-[19px] text-textDart">
-              <span className="font-bold">Кількість квитків: </span>
-              {event?.tickets}
+            <p className="font-lato text-base leading-[19px] text-textDart flex">
+              <span className="font-bold mr-1">Кількість квитків: </span>
+              {event?.tickets}{' '}
+              <HiOutlineTicket className="h-[19px] w-[19px] ml-1" />
             </p>
           </div>
         </div>
@@ -109,26 +123,26 @@ const ModalDecision: React.FC<IProps> = ({ event, openModal }) => {
           <h2 className="text-textDark font-medium text-2xl leading-[36px] mb-4 mt-[10px]">
             Опис події
           </h2>
-          <p className="text-wrap overflow-y-scroll text-base leading-[19px]">
+          <p className="text-wrap overflow-y-scroll text-base leading-[19px] pb-1 max-h-[114px]">
             {event?.description}
           </p>
         </div>
       </div>
       <div className="absolute -bottom-16 right-0 flex gap-8 ">
-        <button
-          onClick={openModal}
+        {event?.eventStatus !== 'CANCELLED' && <button
+          onClick={() => openModal('CANCELLED')}
           className="flex border justify-center items-center w-[180px] h-12 border-textDark rounded-[10px] bg-lightRed"
         >
           <RxCross2 className="h-6 w-6" />
           Відхилити
-        </button>
-        <button
-          onClick={openModal}
+        </button>}
+        {event?.eventStatus !== 'APPROVED' && <button
+          onClick={() => openModal('APPROVED')}
           className="flex gap-2 justify-center items-center w-[180px] h-12 border border-textDark rounded-[10px] bg-lightGreen"
         >
           <MdDone className="h-6 w-6" />
           Схвалити
-        </button>
+        </button>}
       </div>
     </div>
   );

@@ -24,8 +24,15 @@ interface EventCardProps {
   event: Event;
   top?: boolean;
   isAdmin?: boolean;
-  // eslint-disable-next-line no-unused-vars
-  setEvent?: (event?: Event, target?: HTMLElement) => void;
+
+  setEvent?: (
+    // eslint-disable-next-line no-unused-vars
+    event: Event,
+    // eslint-disable-next-line no-unused-vars
+    target: HTMLElement,
+    // eslint-disable-next-line no-unused-vars
+    actionStatus: 'APPROVED' | 'CANCELLED' | ''
+  ) => void;
 }
 
 export const EventCard: React.FC<EventCardProps> = ({
@@ -101,7 +108,7 @@ export const EventCard: React.FC<EventCardProps> = ({
 
   return (
     <div
-      onClick={e => setEvent(event, e.target as HTMLElement)}
+      onClick={e => setEvent(event, e.target as HTMLElement, '')}
       id={`${eventId}`}
       className={`group relative flex overflow-hidden items-start rounded-[20px] shadow-eventCardShadow w-[312px] h-[514px] ${
         top ? 'mb-[10px]' : ''
@@ -155,7 +162,7 @@ export const EventCard: React.FC<EventCardProps> = ({
                 <MdDone className="w-6 h-6 fill-success" />
               )}
               {event.eventStatus === 'CANCELLED' && (
-                <RxCross2 className="w-6 h-6 fill-error" />
+                <RxCross2 className="w-6 h-6 text-error" />
               )}
               {event.eventStatus === 'PENDING' && (
                 <AiOutlineExclamation className="w-6 h-6 fill-[#F4E544]" />
@@ -193,18 +200,39 @@ export const EventCard: React.FC<EventCardProps> = ({
 
         {isAdmin ? (
           <div className="w-full flex justify-center gap-4 text-base mt-4">
-            <button
-              onClick={e => setEvent(event, e.target as HTMLElement)}
-              className="border border-buttonPurple rounded-[10px] w-[110px] h-[33px] focus:outline-0"
-            >
-              Відхилити
-            </button>
-            <button
-              onClick={e => setEvent(event, e.target as HTMLElement)}
-              className="border border-buttonPurple bg-lightPurple rounded-[10px] w-[110px] h-[33px] focus:outline-0"
-            >
-              Схвалити
-            </button>
+            {event.eventStatus === 'PENDING' ? (
+              <>
+                <button
+                  onClick={e =>
+                    setEvent(event, e.target as HTMLElement, 'CANCELLED')
+                  }
+                  className="border border-buttonPurple rounded-[10px] w-[110px] h-[33px] focus:outline-0"
+                >
+                  Відхилити
+                </button>
+                <button
+                  onClick={e =>
+                    setEvent(event, e.target as HTMLElement, 'APPROVED')
+                  }
+                  className="border border-buttonPurple bg-lightPurple rounded-[10px] w-[110px] h-[33px] focus:outline-0"
+                >
+                  Схвалити
+                </button>
+              </>
+            ) : (
+              <button
+                onClick={e =>
+                  setEvent(
+                    event,
+                    e.target as HTMLElement,
+                    event.eventStatus === 'APPROVED' ? 'APPROVED' : 'CANCELLED'
+                  )
+                }
+                className="border border-buttonPurple bg-lightPurple rounded-[10px] w-full h-[33px] focus:outline-0"
+              >
+                {event.eventStatus === 'APPROVED' ? 'Відхилити' : 'Схвалити'}
+              </button>
+            )}
           </div>
         ) : (
           <>
