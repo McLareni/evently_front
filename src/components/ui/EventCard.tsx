@@ -13,7 +13,7 @@ import {
 } from '@/redux/events/operations';
 import { useAppSelector } from '@/redux/hooks';
 
-import { formatDateToDayMonth } from '@/helpers/formatDateToDayMonth';
+import { formatDateToDayMonth } from '@/helpers/filters/formatDateToDayMonth';
 import { useGetLikedEventsWithSkip } from '@/hooks/query/useGetLikedEventsWithSkip';
 
 import { SharedBtn } from './SharedBtn';

@@ -5,12 +5,12 @@
   "type": "module",
   "scripts": {
     "dev": "vite --open",
-    "build": "vite build",
     "lint": "eslint ./src",
-    "preview": "vite preview",
-    "toc": "i18next-resources-for-ts toc -i ./src/i18next/locales/ua -o ./src/@types/resources.ts",
     "test": "vitest",
-    "coverage": "vitest --coverage"
+    "coverage-ui": "vitest --coverage --ui",
+    "build": "vite build",
+    "preview": "vite preview",
+    "toc": "i18next-resources-for-ts toc -i ./src/i18next/locales/ua -o ./src/@types/resources.ts"
   },
   "dependencies": {
     "@react-oauth/google": "^0.12.1",
@@ -51,6 +51,7 @@
     "@typescript-eslint/parser": "^8.15.0",
     "@vitejs/plugin-react": "^4.3.1",
     "@vitest/coverage-v8": "^2.1.8",
+    "@vitest/ui": "^2.1.8",
     "autoprefixer": "^10.4.20",
     "eslint": "^9.15.0",
     "eslint-plugin-react": "^7.37.2",
