@@ -6,8 +6,8 @@ import {
 } from '@/redux/filters/selectors';
 import { useAppSelector } from '@/redux/hooks';
 
-import { thisWeekDays } from '@/helpers/thisWeekDays';
-import { thisWeekendDays } from '@/helpers/thisWeekendDays';
+import { thisWeekDays } from '@/helpers/filters/thisWeekDays';
+import { thisWeekendDays } from '@/helpers/filters/thisWeekendDays';
 
 interface useGetFilteredEventsByDateProps {
   filteredEventsByType: Event[];

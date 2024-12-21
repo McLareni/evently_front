@@ -13,7 +13,7 @@ import {
 } from '@/redux/events/operations';
 import { useAppSelector } from '@/redux/hooks';
 
-import { formatDateToDayMonth } from '@/helpers/formatDateToDayMonth';
+import { formatDateToDayMonth } from '@/helpers/filters/formatDateToDayMonth';
 import { useGetLikedEventsWithSkip } from '@/hooks/query/useGetLikedEventsWithSkip';
 
 import { SharedBtn } from './SharedBtn';
@@ -35,7 +35,6 @@ export const EventCard: React.FC<EventCardProps> = ({
   changeStatus = () => {},
 }) => {
   const [isLiked, setIsLiked] = useState(false);
-  console.log(event.date.day);
 
   const {
     id: eventId,
