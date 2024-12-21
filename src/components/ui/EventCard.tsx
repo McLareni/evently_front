@@ -1,9 +1,11 @@
 import { useEffect, useState } from 'react';
-import { AiOutlineCalendar } from 'react-icons/ai';
+import { AiOutlineCalendar, AiOutlineExclamation } from 'react-icons/ai';
 import { FaRegMoneyBillAlt } from 'react-icons/fa';
 import { GrLocation } from 'react-icons/gr';
+import { MdDone } from 'react-icons/md';
 import { PiHeartLight } from 'react-icons/pi';
 import { PiHeartFill } from 'react-icons/pi';
+import { RxCross2 } from 'react-icons/rx';
 import { toast } from 'react-toastify';
 
 import { selectUser } from '@/redux/auth/selectors';
@@ -21,18 +23,23 @@ import { SharedBtn } from './SharedBtn';
 interface EventCardProps {
   event: Event;
   top?: boolean;
-  status?: boolean;
-  // eslint-disable-next-line no-unused-vars
-  setEvent?: (event?: Event, target?: HTMLElement) => void;
-  changeStatus?: () => void;
+  isAdmin?: boolean;
+
+  setEvent?: (
+    // eslint-disable-next-line no-unused-vars
+    event: Event,
+    // eslint-disable-next-line no-unused-vars
+    target: HTMLElement,
+    // eslint-disable-next-line no-unused-vars
+    actionStatus: 'APPROVED' | 'CANCELLED' | ''
+  ) => void;
 }
 
 export const EventCard: React.FC<EventCardProps> = ({
   event,
   top = false,
-  status = false,
+  isAdmin = false,
   setEvent = () => {},
-  changeStatus = () => {},
 }) => {
   const [isLiked, setIsLiked] = useState(false);
 
@@ -101,20 +108,20 @@ export const EventCard: React.FC<EventCardProps> = ({
 
   return (
     <div
-      onClick={e => setEvent(event, e.target as HTMLElement)}
+      onClick={e => setEvent(event, e.target as HTMLElement, '')}
       id={`${eventId}`}
       className={`group relative flex overflow-hidden items-start rounded-[20px] shadow-eventCardShadow w-[312px] h-[514px] ${
         top ? 'mb-[10px]' : ''
-      }${status && 'hover:cursor-pointer'}`}
+      }${isAdmin && 'hover:cursor-pointer'}`}
     >
       <img src={photoUrl} alt={title} width={'100%'} />
       <div className={`flex absolute justify-between p-6 w-full`}>
-        {category === 'TOP_EVENTS' && !status && (
+        {category === 'TOP_EVENTS' && !isAdmin && (
           <div className="flex justify-center items-center w-[58px] h-[35px] bg-badge-gradient rounded-[20px]">
             <span className="text-background">ТОП</span>
           </div>
         )}
-        {!status && (
+        {!isAdmin && (
           <button
             type="button"
             onClick={toggleIsLiked}
@@ -129,18 +136,39 @@ export const EventCard: React.FC<EventCardProps> = ({
         )}
       </div>
       <div
-        className={`absolute flex flex-col items-start gap-2 justify-between w-full py-4 px-5 h-[365px]
+        className={`absolute flex flex-col items-start gap-2 w-full py-4 px-5 h-[365px]
           rounded-t-[20px] bg-hoverCard transition-all ease-in-out duration-300 -bottom-[101px]
-          ${category === 'TOP_EVENTS' && !status ? 'group-hover:-bottom-0' : 'group-hover:-bottom-10'}
+          ${category === 'TOP_EVENTS' && !isAdmin ? 'group-hover:-bottom-0' : 'group-hover:-bottom-10'}
           `}
       >
-        <div
-          className={`flex items-center justify-center h-8 rounded-[20px]
+        <div className="flex justify-between w-full">
+          <div
+            className={`flex items-center justify-center h-8 rounded-[20px]
                  border-[2px] border-borderColor bg-bg-gradient`}
-        >
-          <p className={`font-normal text-md text-textDark px-4 py-2.5 `}>
-            {type}
-          </p>
+          >
+            <p className={`font-normal text-md text-textDark px-4 py-2.5 `}>
+              {type}
+            </p>
+          </div>
+          {isAdmin && (
+            <div
+              className={`w-10 h-10 rounded-full border-2 flex justify-center items-center 
+              ${event.eventStatus === 'APPROVED' && 'border-success'} 
+              ${event.eventStatus === 'PENDING' && 'border-[#F4E544]'} 
+              ${event.eventStatus === 'CANCELLED' && 'border-error'}
+              `}
+            >
+              {event.eventStatus === 'APPROVED' && (
+                <MdDone className="w-6 h-6 fill-success" />
+              )}
+              {event.eventStatus === 'CANCELLED' && (
+                <RxCross2 className="w-6 h-6 text-error" />
+              )}
+              {event.eventStatus === 'PENDING' && (
+                <AiOutlineExclamation className="w-6 h-6 fill-[#F4E544]" />
+              )}
+            </div>
+          )}
         </div>
 
         <h2
@@ -170,27 +198,54 @@ export const EventCard: React.FC<EventCardProps> = ({
           </li>
         </ul>
 
-        {status ? (
+        {isAdmin ? (
           <div className="w-full flex justify-center gap-4 text-base mt-4">
-            <button
-              onClick={changeStatus}
-              className="border border-buttonPurple bg-lightPurple rounded-[10px] w-[110px] h-[33px] focus:outline-0"
-            >
-              Схвалити
-            </button>
-            <button
-              onClick={changeStatus}
-              className="border border-buttonPurple rounded-[10px] w-[110px] h-[33px] focus:outline-0"
-            >
-              Відхилити
-            </button>
+            {event.eventStatus === 'PENDING' ? (
+              <>
+                <button
+                  onClick={e =>
+                    setEvent(event, e.target as HTMLElement, 'CANCELLED')
+                  }
+                  className="border border-buttonPurple rounded-[10px] w-[110px] h-[33px] focus:outline-0"
+                >
+                  Відхилити
+                </button>
+                <button
+                  onClick={e =>
+                    setEvent(event, e.target as HTMLElement, 'APPROVED')
+                  }
+                  className="border border-buttonPurple bg-lightPurple rounded-[10px] w-[110px] h-[33px] focus:outline-0"
+                >
+                  Схвалити
+                </button>
+              </>
+            ) : (
+              <button
+                onClick={e =>
+                  setEvent(
+                    event,
+                    e.target as HTMLElement,
+                    event.eventStatus === 'APPROVED' ? 'APPROVED' : 'CANCELLED'
+                  )
+                }
+                className="border border-buttonPurple bg-lightPurple rounded-[10px] w-full h-[33px] focus:outline-0"
+              >
+                {event.eventStatus === 'APPROVED' ? 'Відхилити' : 'Схвалити'}
+              </button>
+            )}
           </div>
         ) : (
-          <SharedBtn type="button" primary className="w-[230px] h-12 mx-auto">
-            Хочу
-          </SharedBtn>
+          <>
+            <SharedBtn
+              type="button"
+              primary
+              className="w-[230px] h-12 mx-auto mt-4"
+            >
+              Хочу
+            </SharedBtn>
+            <p className="text-error mx-auto">Залишилось 30 квитків</p>
+          </>
         )}
-        <p className="text-error mx-auto">Залишилось 30 квитків</p>
       </div>
     </div>
   );

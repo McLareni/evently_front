@@ -73,7 +73,7 @@ const AdminUsers = () => {
         ></AdminTable>
       </div>
       <div className="flex items-center justify-end mt-[13px] text-xs font-lato text-textDark">
-        <p className="h-fit w-fit rounded-[10px] border border-buttonPurple bg-background p-[3px_6px] mr-[10px]">
+        <p className="h-fit w-fit rounded-[10px] border border-buttonPurple bg-background p-[3px_6px] mr-[10px] text-xs">
           {minUserPage}-{maxUserPage} з {totalUser}
         </p>
         <p className="mr-4">Кількість користувачів</p>
