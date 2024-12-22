@@ -76,12 +76,12 @@ const ModalDecision: React.FC<IProps> = ({ event, openModal }) => {
             <h2 className="text-textDark font-lato text-2xl underline my-2">
               {event?.organizers[0].name}
             </h2>
-            <p className="flex">
+            <div className="flex">
               <span className="mr-2">
                 <Stars rating={event?.rating || 0} />
               </span>
               ({event?.rating})
-            </p>
+            </div>
           </div>
           <div className="flex flex-col gap-2">
             {event?.eventUrl ? (
