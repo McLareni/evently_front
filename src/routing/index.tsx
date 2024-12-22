@@ -13,6 +13,7 @@ import PromoEvents from '@/pages/admin/PromoEvents';
 import AllEventsPage from '@/pages/events/AllEventsPage';
 import { action as editEventAction } from '@/pages/events/EventEdit';
 import EventEdit from '@/pages/events/EventEdit';
+import CreateEventForm from '@/pages/events/CreateEvent/CreateEventForm';
 
 import { Layout } from '@/components/layout/Layout';
 import Profile from '@/components/profile/profile';
@@ -38,6 +39,10 @@ const router = createBrowserRouter([
       {
         path: 'events',
         element: <Events />,
+      },
+      {
+          path: 'CreateEvent',
+          element: <CreateEventForm/>
       },
       {
         path: 'events/:idEvent',
