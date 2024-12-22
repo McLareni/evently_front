@@ -27,8 +27,8 @@ const ImageNavigation: React.FC<IProps> = ({
         {dotsList.map(dot => (
           <li key={dot}>
             <div
-              className={clsx('rounded-full h-3 w-3 bg-darkGray', {
-                'h-4 w-4 !bg-black': dot === activeImage,
+              className={clsx('rounded-full !h-2 !w-2 bg-darkGray', {
+                '!h-3 !w-3 !bg-black': dot === activeImage,
               })}
             ></div>
           </li>

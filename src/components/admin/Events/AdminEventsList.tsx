@@ -5,14 +5,12 @@ import { EventCard } from '../../ui';
 interface IProps {
   events: Event[];
   // eslint-disable-next-line no-unused-vars
-  setEvent: (event?: Event, target?: HTMLElement) => void;
-  changeStatus: () => void;
+  setEvent: (event: Event, target: HTMLElement, actionStatus: 'APPROVED' | 'CANCELLED' | '') => void;
 }
 
 export const AdminEventsList: React.FC<IProps> = ({
   events,
   setEvent,
-  changeStatus,
 }) => {
   return (
     <div className={'flex flex-wrap justify-start gap-6 mb-3'}>
@@ -20,9 +18,8 @@ export const AdminEventsList: React.FC<IProps> = ({
         <EventCard
           key={nanoid()}
           event={event}
-          status={true}
+          isAdmin={true}
           setEvent={setEvent}
-          changeStatus={changeStatus}
         />
       ))}
     </div>
