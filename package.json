@@ -5,12 +5,15 @@
   "type": "module",
   "scripts": {
     "dev": "vite --open",
-    "build": "vite build",
     "lint": "eslint ./src",
+    "test": "vitest",
+    "coverage-ui": "vitest --coverage --ui",
+    "build": "vite build",
     "preview": "vite preview",
     "toc": "i18next-resources-for-ts toc -i ./src/i18next/locales/ua -o ./src/@types/resources.ts"
   },
   "dependencies": {
+    "@react-input/mask": "^2.0.4",
     "@react-oauth/google": "^0.12.1",
     "@reduxjs/toolkit": "^2.2.7",
     "axios": "^1.7.4",
@@ -49,6 +52,8 @@
     "@typescript-eslint/eslint-plugin": "^8.15.0",
     "@typescript-eslint/parser": "^8.15.0",
     "@vitejs/plugin-react": "^4.3.1",
+    "@vitest/coverage-v8": "^2.1.8",
+    "@vitest/ui": "^2.1.8",
     "autoprefixer": "^10.4.20",
     "eslint": "^9.15.0",
     "eslint-plugin-react": "^7.37.2",
@@ -60,7 +65,8 @@
     "tailwindcss": "^3.4.9",
     "typescript": "^5.5.3",
     "typescript-eslint": "^8.0.0",
-    "vite": "^5.4.5"
+    "vite": "^5.4.5",
+    "vitest": "^2.1.8"
   },
   "description": "This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.",
   "main": "eslint.config.js",

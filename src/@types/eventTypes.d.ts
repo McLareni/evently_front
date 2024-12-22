@@ -1,26 +1,58 @@
 interface Event {
-  category: 'TOP_EVENTS' | string | null;
-  creationDate: Date;
-  date: {
-    day: string;
-    time: string;
-  };
-  description: string;
   id: string;
+  title: string;
+  description: string;
+  photoUrl: string;
+  creationDate: Date;
+  phoneNumber: string;
   location: {
     city: string;
     street: string | null;
     venue: string | null;
+    latitude: string;
+    longitude: string;
   };
-  numberOfTickets: number;
-  organizers: [];
-  phoneNumber: string;
-  photoUrl: string;
-  price: number;
+  organizers: User[];
   rating: number;
+  eventUrl: string | null;
+  eventStatus: 'PENDING' | 'APPROVED' | 'CANCELLED';
+  APPROVED;
+  CANCELLED;
+  date: {
+    day: string;
+    time: string;
+    endTime: string;
+  };
   tickets: number;
-  title: string;
+  price: number;
   type: string;
+  category: 'TOP_EVENTS' | 'POPULAR' | 'RECOMMENDED';
+
+  // ?
+  numberOfTickets: number;
+}
+
+interface EventDTO {
+  id: string;
+  title: string;
+  description: string;
+  photoUrl: string;
+  creationDate: Date;
+  phoneNumber: string;
+  ticketPrice: number;
+  numberOfTickets: number;
+  availableTickets: number;
+  location: {
+    city: string;
+    street: string | null;
+    venue: string | null;
+    latitude: string;
+    longitude: string;
+  };
+  organizers: User[];
+  eventUrl: string;
+  eventStatus: 'PENDING' | 'APPROVED' | 'CANCELLED';
+  deleted: boolean;
 }
 
 // TODO

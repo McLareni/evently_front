@@ -1,5 +1,5 @@
-export function formattedDate() {
-  const date = new Date(Date.now());
+export function formatDateToDayMonth(dateYearMonthDay: string) {
+  const date = new Date(dateYearMonthDay);
   const day = date.getDate();
   const months = [
     'січня',
@@ -16,5 +16,6 @@ export function formattedDate() {
     'грудня',
   ];
   const month = months[date.getMonth()];
+
   return `${day} ${month}`;
 }

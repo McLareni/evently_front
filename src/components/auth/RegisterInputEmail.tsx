@@ -11,6 +11,7 @@ import {
   SharedItemStatusBar,
 } from '../ui';
 import { SharedBtn } from '../ui/SharedBtn';
+import Spinner from '../ui/Spinner';
 
 interface RegisterInputEmailProps {
   setUserData: React.Dispatch<React.SetStateAction<RegisterUser>>;
@@ -34,6 +35,8 @@ export const RegisterInputEmail: React.FC<RegisterInputEmailProps> = ({
     mode: 'onChange',
   });
 
+  const [isLoading, setIsLoading] = useState(false);
+
   const [emailUser, setEmailUser] = useState<string>('');
   const [emailError, setEmailError] = useState(false);
   const [errorMessage, setErrorMessage] = useState('');
@@ -49,7 +52,9 @@ export const RegisterInputEmail: React.FC<RegisterInputEmailProps> = ({
 
   useEffect(() => {
     if (!emailUser) return;
+
     const getUser = async (email: string) => {
+      setIsLoading(true);
       try {
         const response = await getUserByEmail(email);
 
@@ -66,6 +71,7 @@ export const RegisterInputEmail: React.FC<RegisterInputEmailProps> = ({
       } catch (error) {
         console.log(error);
       }
+      setIsLoading(false);
     };
 
     getUser(emailUser);
@@ -117,6 +123,7 @@ export const RegisterInputEmail: React.FC<RegisterInputEmailProps> = ({
         </form>
         <PrivacyAgreement />
       </div>
+      {isLoading && <Spinner rounded />}
     </>
   );
 };

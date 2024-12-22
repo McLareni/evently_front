@@ -13,10 +13,11 @@ import PromoEvents from '@/pages/admin/PromoEvents';
 import AllEventsPage from '@/pages/events/AllEventsPage';
 import { action as editEventAction } from '@/pages/events/EventEdit';
 import EventEdit from '@/pages/events/EventEdit';
+import Profile from '@/pages/user/Profile';
 import CreateEventForm from '@/pages/events/CreateEvent/CreateEventForm';
 
+
 import { Layout } from '@/components/layout/Layout';
-import Profile from '@/components/profile/profile';
 
 import { loader as eventLoader } from '../pages/events/Event';
 import AdminRouter from './privateRouters/AdminRouter';

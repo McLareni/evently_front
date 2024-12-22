@@ -3,8 +3,6 @@ import { useEffect, useState } from 'react';
 import { getIsCalendarShown } from '@/redux/filters/selectors';
 import { useAppSelector } from '@/redux/hooks';
 
-import { parseDateWithTime } from '@/helpers/parseDateWithTime';
-
 interface useGetFilteredEventsByRangeProps {
   filteredEventsByType: Event[];
   rangeDatesArray: string[];
@@ -27,9 +25,7 @@ export function useGetFilteredEventsByRange({
   useEffect(() => {
     if (isShownCalendar && rangeDatesArray.length !== 0) {
       const filteredArray = filteredEventsByType.filter(item =>
-        rangeDatesArray.includes(
-          getDateOnly(parseDateWithTime({ dateString: item.date.day }))
-        )
+        rangeDatesArray.includes(getDateOnly(item.date.day))
       );
       setFilteredEventsByRange(filteredArray);
       return;

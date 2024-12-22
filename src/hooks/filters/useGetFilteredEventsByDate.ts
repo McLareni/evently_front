@@ -6,9 +6,8 @@ import {
 } from '@/redux/filters/selectors';
 import { useAppSelector } from '@/redux/hooks';
 
-import { parseDateWithTime } from '@/helpers/parseDateWithTime';
-import { thisWeekDays } from '@/helpers/thisWeekDays';
-import { thisWeekendDays } from '@/helpers/thisWeekendDays';
+import { thisWeekDays } from '@/helpers/filters/thisWeekDays';
+import { thisWeekendDays } from '@/helpers/filters/thisWeekendDays';
 
 interface useGetFilteredEventsByDateProps {
   filteredEventsByType: Event[];
@@ -22,11 +21,7 @@ export function useGetFilteredEventsByDate({
   const isShownCalendar = useAppSelector(getIsCalendarShown);
   const selectedDates = useAppSelector(getSelectedDates);
 
-  const dayToday = '2024-11-12T10:00:00';
-
-  const getDateOnly = (date: string) => {
-    return date.slice(0, 10);
-  };
+  const dayToday = '2025-11-12';
 
   const todayFilter = selectedDates.includes('Сьогодні');
   const onWeekendFilter = selectedDates.includes('На вихідних');
@@ -47,9 +42,7 @@ export function useGetFilteredEventsByDate({
     // today only
     if (selectedDates.length === 1 && todayFilter) {
       const filteredArray = filteredEventsByType.filter(
-        item =>
-          getDateOnly(parseDateWithTime({ dateString: item.date.day })) ===
-          getDateOnly(dayToday)
+        item => item.date.day === dayToday
       );
       setFilteredEventsByDate(filteredArray);
       return;
@@ -57,9 +50,7 @@ export function useGetFilteredEventsByDate({
     // on weekend only
     if (selectedDates.length === 1 && onWeekendFilter) {
       const filteredArray = filteredEventsByType.filter(item =>
-        thisWeekendDaysArray.includes(
-          getDateOnly(parseDateWithTime({ dateString: item.date.day }))
-        )
+        thisWeekendDaysArray.includes(item.date.day)
       );
       setFilteredEventsByDate(filteredArray);
       return;
@@ -67,9 +58,7 @@ export function useGetFilteredEventsByDate({
     // this week
     if (thisWeekFilter) {
       const filteredArray = filteredEventsByType.filter(item =>
-        thisWeekDaysArray.includes(
-          getDateOnly(parseDateWithTime({ dateString: item.date.day }))
-        )
+        thisWeekDaysArray.includes(item.date.day)
       );
       setFilteredEventsByDate(filteredArray);
       return;
@@ -78,11 +67,8 @@ export function useGetFilteredEventsByDate({
     if (selectedDates.length === 2 && !thisWeekFilter) {
       const filteredArray = filteredEventsByType.filter(
         item =>
-          getDateOnly(parseDateWithTime({ dateString: item.date.day })) ===
-            getDateOnly(dayToday) ||
-          thisWeekendDaysArray.includes(
-            getDateOnly(parseDateWithTime({ dateString: item.date.day }))
-          )
+          item.date.day === dayToday ||
+          thisWeekendDaysArray.includes(item.date.day)
       );
       setFilteredEventsByDate(filteredArray);
       return;

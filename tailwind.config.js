@@ -32,6 +32,7 @@ export default {
         darkGray: '#D0D5D8',
         textDark: '#062341',
         lightRed: '#FF6262',
+        uploadBtnBg: '#ABAFB1',
 
         // Other color
         success: '#3BE660',
@@ -72,6 +73,9 @@ export default {
         'badge-gradient': 'linear-gradient(90deg, #12C2E9 0%, #C471ED 90%)',
         'filter-btn-gradient':
           'linear-gradient(123.03deg, #9B8FF3 0%, #38F6F9 100%)',
+      },
+      gridTemplateColumns: {
+        custom: 'minmax(300px, 1fr) 1fr',
       },
     },
   },

@@ -1,6 +1,6 @@
 import { useEffect } from 'react';
 
-import { logOut } from '@/redux/auth/operations';
+import { handleLogOut } from '@/redux/auth/authSlice';
 import { selectToken } from '@/redux/auth/selectors';
 import { useAppDispatch, useAppSelector } from '@/redux/hooks';
 
@@ -23,7 +23,7 @@ export function useLogOutAfterTokenExpires() {
       expirationDateFormatted &&
       todayDateFormatted > expirationDateFormatted
     ) {
-      dispatch(logOut());
+      dispatch(handleLogOut());
     }
   }, [dispatch, expirationDateFormatted, todayDateFormatted]);
 }

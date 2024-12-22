@@ -6,7 +6,7 @@ import ProfileTab from '../tabProfile/ProfileTab';
 
 export const ProfileTabLayout = () => {
   return (
-    <main className="flex gap-[25px] relative p-[0px_55px] ">
+    <main className="flex gap-[25px] relative p-[0px_55px_55px_55px] ">
       <MainLines />
       <ProfileTab />
 
