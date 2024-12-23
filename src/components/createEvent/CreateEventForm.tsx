@@ -17,7 +17,7 @@ const categories: { name: string }[] = [
   { name: 'Інше' },
 ];
 
-type FormProps = {
+type CreateEventFormProps = {
   eventName: string;
   price: string;
   // onCategorieChange: (categorie: string) => void;
@@ -27,7 +27,7 @@ type FormProps = {
   onPriceChange: (price: string) => void;
 };
 // { name, description, onNameChange, onDescriptionChange }
-const EventForm: React.FC<FormProps> = ({
+const CreateEventForm: React.FC<CreateEventFormProps> = ({
   eventName,
   price,
   onEventNameChange,
@@ -333,4 +333,4 @@ const EventForm: React.FC<FormProps> = ({
   );
 };
 
-export default EventForm;
+export default CreateEventForm;
