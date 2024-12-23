@@ -1,5 +1,8 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
+
 /* eslint-disable no-unused-vars */
 import { useEffect, useState } from 'react';
+import { Controller, useForm } from 'react-hook-form';
 // import { register } from 'module';
 // import { useForm } from 'react-hook-form';
 import { AiOutlineCalendar } from 'react-icons/ai';
@@ -9,6 +12,7 @@ import { BiTimeFive } from 'react-icons/bi';
 import { SharedBtn } from '@/components/ui';
 
 import { CreateEventCalendar } from './CreateEventCalendar';
+import { GoogleMapsInput } from './GoogleMapsInput';
 
 const categories: { name: string }[] = [
   { name: 'Концерт' },
@@ -43,6 +47,14 @@ const CreateEventForm: React.FC<CreateEventFormProps> = ({
   const [ticketsType, setTicketsType] = useState<boolean>(true);
   const [eventType, setEventType] = useState<boolean>(true);
   const [isCalendarShown, setIsCalendarShown] = useState(false);
+
+  const { handleSubmit, control, setValue } = useForm({
+    mode: 'onChange',
+  });
+
+  const onSubmit = (data: any) => {
+    console.log(data.address);
+  };
 
   const toggleIsCalendarShown = () => {
     setIsCalendarShown(!isCalendarShown);
@@ -92,174 +104,170 @@ const CreateEventForm: React.FC<CreateEventFormProps> = ({
     setOptions(generatedOptions);
   }, []);
   return (
-    <>
-      <div className="">
-        <div className="w-[760px] h-[321px] mb-8 rounded-[20px] border-buttonPurple border-2">
-          <div>
-            <div className="relative">
-              <input type="file" />
-              <p></p>
-            </div>
+    <form onSubmit={handleSubmit(onSubmit)}>
+      <div className="w-[760px] h-[321px] mb-8 rounded-[20px] border-buttonPurple border-2">
+        <div>
+          <div className="relative">
+            <input type="file" />
             <p></p>
           </div>
-          <div>
-            <div className="relative">
-              <img src="" alt="" />
-              <p></p>
-            </div>
-            <p></p>
-          </div>
-          <div>
-            <div className="relative">
-              <img src="" alt="" />
-              <p></p>
-            </div>
-            <p></p>
-          </div>
+          <p></p>
         </div>
-        <div className="w-[760px] h-[553px] rounded-[20px] border-2 border-buttonPurple flex flex-col py-10 px-10 mb-8">
-          <div className="flex flex-col pb-6">
-            <label className="pb-3 text-2xl">Назва події</label>
-            {/*  bg-gradient-to-br from-[#9B8FF3] to-[#38F6F9] */}
-            <input
-              type="text"
-              className="w-[679px] h-[52px] p-4 border-2 rounded-[10px] "
-              placeholder="Назви подію так, щоб людям було одразу зрозуміло, про що вона"
-              onChange={e => onEventNameChange(e.target.value)}
-            />
+        <div>
+          <div className="relative">
+            <img src="" alt="" />
+            <p></p>
           </div>
-          <div className="flex flex-col pb-[42px]">
-            <label htmlFor="" className="pb-4 text-2xl">
-              Опис
-            </label>
-            <textarea
-              className="w-[679px] h-[128px] p-4 border-2 rounded-[10px]"
-              name=""
-              id=""
-              placeholder="Коротко опиши ідею та концепцію події"
-            ></textarea>
+          <p></p>
+        </div>
+        <div>
+          <div className="relative">
+            <img src="" alt="" />
+            <p></p>
           </div>
-          <div>
-            <div className="flex flex-col">
-              <span className="pb-4 text-2xl">Категорія</span>
-              <div className="flex break-words w-[669px] h-[112px] flex-wrap">
-                {categories.map(category => (
-                  <div
-                    key={category.name}
-                    className="cursor-pointer flex items-center rounded-[20px] border-[1px] border-borderColor text-xl mr-4 last:pr-0 h-12 px-[18px] 
+          <p></p>
+        </div>
+      </div>
+      <div className="w-[760px] h-[553px] rounded-[20px] border-2 border-buttonPurple flex flex-col py-10 px-10 mb-8">
+        <div className="flex flex-col pb-6">
+          <label className="pb-3 text-2xl">Назва події</label>
+          {/*  bg-gradient-to-br from-[#9B8FF3] to-[#38F6F9] */}
+          <input
+            type="text"
+            className="w-[679px] h-[52px] p-4 border-2 rounded-[10px] "
+            placeholder="Назви подію так, щоб людям було одразу зрозуміло, про що вона"
+            onChange={e => onEventNameChange(e.target.value)}
+          />
+        </div>
+        <div className="flex flex-col pb-[42px]">
+          <label htmlFor="" className="pb-4 text-2xl">
+            Опис
+          </label>
+          <textarea
+            className="w-[679px] h-[128px] p-4 border-2 rounded-[10px]"
+            name=""
+            id=""
+            placeholder="Коротко опиши ідею та концепцію події"
+          ></textarea>
+        </div>
+        <div>
+          <div className="flex flex-col">
+            <span className="pb-4 text-2xl">Категорія</span>
+            <div className="flex break-words w-[669px] h-[112px] flex-wrap">
+              {categories.map(category => (
+                <div
+                  key={category.name}
+                  className="cursor-pointer flex items-center rounded-[20px] border-[1px] border-borderColor text-xl mr-4 last:pr-0 h-12 px-[18px] 
                             min-w-[80px] max-w-[223px] bg-gradient-to-r from-[#E9E6FF] to-[#D5FEFF]"
-                  >
-                    {category.name}
-                  </div>
-                ))}
-              </div>
+                >
+                  {category.name}
+                </div>
+              ))}
             </div>
           </div>
         </div>
-        <div className="w-[760px] rounded-[20px] border-2 border-buttonPurple flex flex-col py-10 px-10 mb-8">
-          <span className="pb-4 text-2xl">Дата та час</span>
-          <div className="flex gap-4">
-            <div className="w-[245px]">
-              <span>Дата</span>
-              <div
-                className="border-2 border-buttonPurple rounded-[10px] overflow-hidden 
+      </div>
+      <div className="w-[760px] rounded-[20px] border-2 border-buttonPurple flex flex-col py-10 px-10 mb-8">
+        <span className="pb-4 text-2xl">Дата та час</span>
+        <div className="flex gap-4">
+          <div className="w-[245px]">
+            <span>Дата</span>
+            <div
+              className="border-2 border-buttonPurple rounded-[10px] overflow-hidden 
                         w-[245px] mb-[18px]"
+            >
+              <button
+                onClick={toggleIsCalendarShown}
+                className="flex justify-between items-center w-full h-[34px] px-[12px] focus:outline-none"
               >
-                <button
-                  onClick={toggleIsCalendarShown}
-                  className="flex justify-between items-center w-full h-[34px] px-[12px] focus:outline-none"
-                >
-                  <AiOutlineCalendar size="24px" />
-                  <BiChevronDown />
-                </button>
-                {isCalendarShown && <CreateEventCalendar />}
-              </div>
+                <AiOutlineCalendar size="24px" />
+                <BiChevronDown />
+              </button>
+              {isCalendarShown && <CreateEventCalendar />}
             </div>
-            <div>
-              <span>Початок</span>
-              <div
-                className="border-2 border-buttonPurple rounded-[10px] overflow-hidden 
+          </div>
+          <div>
+            <span>Початок</span>
+            <div
+              className="border-2 border-buttonPurple rounded-[10px] overflow-hidden 
                         w-[210px] max-h-[230px] mb-[18px]"
+            >
+              <button
+                className="flex justify-between items-center w-full h-[34px] px-[12px] focus:outline-none"
+                onClick={() => {
+                  setstartDaySelect(true);
+                }}
               >
-                <button
-                  className="flex justify-between items-center w-full h-[34px] px-[12px] focus:outline-none"
-                  onClick={() => {
-                    setstartDaySelect(true);
-                  }}
-                >
-                  <BiTimeFive size="24px" />
-                  <BiChevronDown />
-                </button>
-                {startDaySelect && (
-                  <div className="pl-[10px] pt-[12px] h-[215px] overflow-auto border-t-2 border-buttonPurple">
-                    {options.map(option => (
-                      <div
-                        className="cursor-pointer h-[31px]"
-                        key={option.value}
-                      >
-                        {option.label}
-                      </div>
-                    ))}
-                  </div>
-                )}
-              </div>
-            </div>
-            <div>
-              <span>Кінець</span>
-              <div className="inline-block border-2 border-buttonPurple rounded-[10px] overflow-hidden w-[210px] max-h-[230px] mb-[18px] ">
-                <button
-                  className="flex justify-between items-center w-full h-[34px] px-[12px] focus:outline-none"
-                  onClick={() => {
-                    setendDaySelect(true);
-                  }}
-                >
-                  <BiTimeFive size="24px" />
-                  <BiChevronDown />
-                </button>
-                {endDaySelect && (
-                  <ul className="absolute pl-[10px] pt-[12px] pr-[20px] h-[215px] border-buttonPurple border-0 overflow-auto border-t-2 border-buttonPurple">
-                    {options.map(option => (
-                      <li
-                        className="cursor-pointer h-[31px] hover:bg-lightPurple"
-                        key={option.value}
-                      >
-                        {option.label}
-                      </li>
-                    ))}
-                  </ul>
-                )}
-              </div>
+                <BiTimeFive size="24px" />
+                <BiChevronDown />
+              </button>
+              {startDaySelect && (
+                <div className="pl-[10px] pt-[12px] h-[215px] overflow-auto border-t-2 border-buttonPurple">
+                  {options.map(option => (
+                    <div className="cursor-pointer h-[31px]" key={option.value}>
+                      {option.label}
+                    </div>
+                  ))}
+                </div>
+              )}
             </div>
           </div>
-          <span className="pb-4 text-2xl">Оберіть формат події</span>
-          <div className="pb-6">
-            <button
-              className={`${
-                eventType
-                  ? 'bg-lightPurple text-gray-700'
-                  : 'bg-buttonPurple text-white'
-              }font-normal text-xl rounded-[20px] mr-4 py-[12.5px] px-[18px]`}
-              onClick={() => setEventType(false)}
-            >
-              Оффлайн
-            </button>
-            <button
-              className={`${
-                eventType
-                  ? 'bg-buttonPurple text-white'
-                  : 'bg-lightPurple text-gray-700'
-              }font-normal text-xl rounded-[20px] mr-4 py-[12.5px] px-[18px]`}
-              onClick={() => setEventType(true)}
-            >
-              Онлайн
-            </button>
+          <div>
+            <span>Кінець</span>
+            <div className="inline-block border-2 border-buttonPurple rounded-[10px] overflow-hidden w-[210px] max-h-[230px] mb-[18px] ">
+              <button
+                className="flex justify-between items-center w-full h-[34px] px-[12px] focus:outline-none"
+                onClick={() => {
+                  setendDaySelect(true);
+                }}
+              >
+                <BiTimeFive size="24px" />
+                <BiChevronDown />
+              </button>
+              {endDaySelect && (
+                <ul className="absolute pl-[10px] pt-[12px] pr-[20px] h-[215px] border-buttonPurple border-0 overflow-auto border-t-2 border-buttonPurple">
+                  {options.map(option => (
+                    <li
+                      className="cursor-pointer h-[31px] hover:bg-lightPurple"
+                      key={option.value}
+                    >
+                      {option.label}
+                    </li>
+                  ))}
+                </ul>
+              )}
+            </div>
           </div>
-          <div className="flex">
-            <div className="flex flex-col  pr-4">
-              <label id="city" className="pb-4">
-                Mісто
-              </label>
-              {/* <ul className="overflow-auto border-t-2 border-buttonPurple">
+        </div>
+        <span className="pb-4 text-2xl">Оберіть формат події</span>
+        <div className="pb-6">
+          <button
+            className={`${
+              eventType
+                ? 'bg-lightPurple text-gray-700'
+                : 'bg-buttonPurple text-white'
+            }font-normal text-xl rounded-[20px] mr-4 py-[12.5px] px-[18px]`}
+            onClick={() => setEventType(false)}
+          >
+            Оффлайн
+          </button>
+          <button
+            className={`${
+              eventType
+                ? 'bg-buttonPurple text-white'
+                : 'bg-lightPurple text-gray-700'
+            }font-normal text-xl rounded-[20px] mr-4 py-[12.5px] px-[18px]`}
+            onClick={() => setEventType(true)}
+          >
+            Онлайн
+          </button>
+        </div>
+        <div className="flex">
+          <div className="flex flex-col  pr-4">
+            <label id="city" className="pb-4">
+              Mісто
+            </label>
+            {/* <ul className="overflow-auto border-t-2 border-buttonPurple">
                 {cityOptions.map((option) => (
                   <li className='cursor-pointer'
                   key={option.value}>
@@ -267,80 +275,101 @@ const CreateEventForm: React.FC<CreateEventFormProps> = ({
                   </li>
                   ))}
               </ul> */}
-            </div>
-            <div className="flex flex-col">
-              <label id="adress" className="pb-4">
-                Адреса
-              </label>
-              <input
-                id="adress"
-                type="text"
-                className="w-[245px] h-[52px] p-4 border-2 rounded-[10px] mr-4 "
-                placeholder="Щекавицька, 42а"
-                // onChange={(e) => onPriceChange(e.target.value)}
-              />
-            </div>
           </div>
-        </div>
-        <div className="w-[760px] h-[265px] rounded-[20px] border-2 border-buttonPurple flex flex-col p-8 pb-[32px]">
-          <span className="pb-4 text-2xl">Вартість квитків</span>
-          <div className="pb-6 ">
-            <button
-              className={`${
-                ticketsType
-                  ? 'bg-lightPurple text-gray-700'
-                  : 'bg-buttonPurple text-white'
-              }font-normal text-xl rounded-[20px] mr-4 py-[12.5px] px-[18px]`}
-              onClick={() => setTicketsType(false)}
-            >
-              Платні
-            </button>
-            <button
-              className={`${
-                ticketsType
-                  ? 'bg-buttonPurple text-white'
-                  : 'bg-lightPurple text-gray-700'
-              }font-normal text-xl rounded-[20px] mr-4 py-[12.5px] px-[18px]`}
-              onClick={() => setTicketsType(true)}
-            >
-              Безкоштовно
-            </button>
+          <div className="flex flex-col">
+            <label id="adress" className="pb-4">
+              Адреса
+            </label>
+            <Controller
+              name="address"
+              control={control}
+              defaultValue={{
+                formatted: '',
+                lat: 0,
+                lng: 0,
+                name: '',
+                city: 'Київ',
+              }}
+              render={({ field }) => (
+                <GoogleMapsInput
+                  onPlaceSelect={place => {
+                    if (!place || !place.geometry) return;
+
+                    const formattedPlace = {
+                      formatted: place.formatted_address || '',
+                      lat: place.geometry.location?.lat() || 0,
+                      lng: place.geometry.location?.lng() || 0,
+                      name: place.name || '',
+                      city: 'Київ',
+                    };
+
+                    setValue('address', formattedPlace);
+                    field.onChange(formattedPlace);
+                  }}
+                />
+              )}
+            />
           </div>
-          <div className="flex">
-            <div className="flex flex-col">
-              <label htmlFor="" id="" className="mb-3">
-                Ціна
-              </label>
-              <input
-                type="number"
-                className="w-[245px] h-[52px] p-4 border-2 rounded-[10px] mr-4 [appearance:textfield] [&::-webkit-outer-spin-button]:appearance-none [&::-webkit-inner-spin-button]:appearance-none"
-                placeholder="100 ₴"
-                onChange={e => onPriceChange(e.target.value)}
-              />
-            </div>
-            <div className="flex flex-col">
-              <label htmlFor="" id="" className="mb-3">
-                Кількість квитків
-              </label>
-              <input
-                type="number"
-                className="w-[245px] h-[52px] p-4 border-2 rounded-[10px] [appearance:textfield] [&::-webkit-outer-spin-button]:appearance-none [&::-webkit-inner-spin-button]:appearance-none"
-                placeholder="100"
-                // onChange={(e) => onPriceChange(e.target.value)}
-              />
-            </div>
-          </div>
-        </div>
-        <div className="text-center">
-          <SharedBtn
-            type="submit"
-            className="mt-8 bg-gradient-to-r from-[#9B8FF3] to-[#38F6F9] w-[230px] h-[48px]"
-          >
-            Створити подію
-          </SharedBtn>
         </div>
       </div>
-    </>
+      <div className="w-[760px] h-[265px] rounded-[20px] border-2 border-buttonPurple flex flex-col p-8 pb-[32px]">
+        <span className="pb-4 text-2xl">Вартість квитків</span>
+        <div className="pb-6 ">
+          <button
+            className={`${
+              ticketsType
+                ? 'bg-lightPurple text-gray-700'
+                : 'bg-buttonPurple text-white'
+            }font-normal text-xl rounded-[20px] mr-4 py-[12.5px] px-[18px]`}
+            onClick={() => setTicketsType(false)}
+          >
+            Платні
+          </button>
+          <button
+            className={`${
+              ticketsType
+                ? 'bg-buttonPurple text-white'
+                : 'bg-lightPurple text-gray-700'
+            }font-normal text-xl rounded-[20px] mr-4 py-[12.5px] px-[18px]`}
+            onClick={() => setTicketsType(true)}
+          >
+            Безкоштовно
+          </button>
+        </div>
+        <div className="flex">
+          <div className="flex flex-col">
+            <label htmlFor="" id="" className="mb-3">
+              Ціна
+            </label>
+            <input
+              type="number"
+              className="w-[245px] h-[52px] p-4 border-2 rounded-[10px] mr-4 [appearance:textfield] [&::-webkit-outer-spin-button]:appearance-none [&::-webkit-inner-spin-button]:appearance-none"
+              placeholder="100 ₴"
+              onChange={e => onPriceChange(e.target.value)}
+            />
+          </div>
+          <div className="flex flex-col">
+            <label htmlFor="" id="" className="mb-3">
+              Кількість квитків
+            </label>
+            <input
+              type="number"
+              className="w-[245px] h-[52px] p-4 border-2 rounded-[10px] [appearance:textfield] [&::-webkit-outer-spin-button]:appearance-none [&::-webkit-inner-spin-button]:appearance-none"
+              placeholder="100"
+              // onChange={(e) => onPriceChange(e.target.value)}
+            />
+          </div>
+        </div>
+      </div>
+      <div className="text-center">
+        <SharedBtn
+          type="submit"
+          className="mt-8 bg-gradient-to-r from-[#9B8FF3] to-[#38F6F9] w-[230px] h-[48px]"
+        >
+          Створити подію
+        </SharedBtn>
+      </div>
+    </form>
   );
 };
 
