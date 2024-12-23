@@ -1,12 +1,12 @@
-
-
-import { SharedBtn } from '@/components/ui';
+/* eslint-disable no-unused-vars */
 import { useEffect, useState } from 'react';
 // import { register } from 'module';
 // import { useForm } from 'react-hook-form';
 import { AiOutlineCalendar } from 'react-icons/ai';
 import { BiChevronDown } from 'react-icons/bi';
 import { BiTimeFive } from 'react-icons/bi';
+
+import { SharedBtn } from '@/components/ui';
 
 const categories: { name: string }[] = [
   { name: 'Концерт' },
@@ -16,8 +16,6 @@ const categories: { name: string }[] = [
   { name: 'Бізнес та нетворкінг' },
   { name: 'Інше' },
 ];
-
-
 
 type FormProps = {
   eventName: string;
@@ -40,10 +38,8 @@ const EventForm: React.FC<FormProps> = ({
   const [options, setOptions] = useState<{ label: string; value: string }[]>(
     []
   );
-  const [ticketsType, setTicketsType] = useState<boolean>(true)
+  const [ticketsType, setTicketsType] = useState<boolean>(true);
   const [eventType, setEventType] = useState<boolean>(true);
-  
-
 
   const handleClickOutside = () => {
     setstartDaySelect(false);
@@ -139,12 +135,13 @@ const EventForm: React.FC<FormProps> = ({
             <div className="flex flex-col">
               <span className="pb-4 text-2xl">Категорія</span>
               <div className="flex break-words w-[669px] h-[112px] flex-wrap">
-                {categories.map(categorie => (
+                {categories.map(category => (
                   <div
+                    key={category.name}
                     className="cursor-pointer flex items-center rounded-[20px] border-[1px] border-borderColor text-xl mr-4 last:pr-0 h-12 px-[18px] 
                             min-w-[80px] max-w-[223px] bg-gradient-to-r from-[#E9E6FF] to-[#D5FEFF]"
                   >
-                    {categorie.name}
+                    {category.name}
                   </div>
                 ))}
               </div>
@@ -291,7 +288,7 @@ const EventForm: React.FC<FormProps> = ({
               className={`${
                 ticketsType
                   ? 'bg-buttonPurple text-white'
-                  : 'bg-lightPurple text-gray-700' 
+                  : 'bg-lightPurple text-gray-700'
               }font-normal text-xl rounded-[20px] mr-4 py-[12.5px] px-[18px]`}
               onClick={() => setTicketsType(true)}
             >
@@ -323,12 +320,15 @@ const EventForm: React.FC<FormProps> = ({
             </div>
           </div>
         </div>
-        <div className='text-center'>
-        <SharedBtn type='submit' className='mt-8 bg-gradient-to-r from-[#9B8FF3] to-[#38F6F9] w-[230px] h-[48px]' >Створити подію</SharedBtn>
+        <div className="text-center">
+          <SharedBtn
+            type="submit"
+            className="mt-8 bg-gradient-to-r from-[#9B8FF3] to-[#38F6F9] w-[230px] h-[48px]"
+          >
+            Створити подію
+          </SharedBtn>
         </div>
-        
       </div>
-      
     </>
   );
 };
