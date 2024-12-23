@@ -8,6 +8,8 @@ import { BiTimeFive } from 'react-icons/bi';
 
 import { SharedBtn } from '@/components/ui';
 
+import { CreateEventCalendar } from './CreateEventCalendar';
+
 const categories: { name: string }[] = [
   { name: 'Концерт' },
   { name: 'Майстер клас' },
@@ -40,11 +42,17 @@ const CreateEventForm: React.FC<CreateEventFormProps> = ({
   );
   const [ticketsType, setTicketsType] = useState<boolean>(true);
   const [eventType, setEventType] = useState<boolean>(true);
+  const [isCalendarShown, setIsCalendarShown] = useState(false);
+
+  const toggleIsCalendarShown = () => {
+    setIsCalendarShown(!isCalendarShown);
+  };
 
   const handleClickOutside = () => {
     setstartDaySelect(false);
     setendDaySelect(false);
   };
+
   useEffect(() => {
     if (eventName === '') {
       onEventNameChange('Назва події');
@@ -148,7 +156,7 @@ const CreateEventForm: React.FC<CreateEventFormProps> = ({
             </div>
           </div>
         </div>
-        <div className="w-[760px] h-[413px] rounded-[20px] border-2 border-buttonPurple flex flex-col py-10 px-10 mb-8">
+        <div className="w-[760px] rounded-[20px] border-2 border-buttonPurple flex flex-col py-10 px-10 mb-8">
           <span className="pb-4 text-2xl">Дата та час</span>
           <div className="flex gap-4">
             <div className="w-[245px]">
@@ -157,11 +165,14 @@ const CreateEventForm: React.FC<CreateEventFormProps> = ({
                 className="border-2 border-buttonPurple rounded-[10px] overflow-hidden 
                         w-[245px] mb-[18px]"
               >
-                <button className="flex justify-between items-center w-full h-[34px] px-[12px] focus:outline-none">
+                <button
+                  onClick={toggleIsCalendarShown}
+                  className="flex justify-between items-center w-full h-[34px] px-[12px] focus:outline-none"
+                >
                   <AiOutlineCalendar size="24px" />
                   <BiChevronDown />
                 </button>
-                {/* <DateRange isShownCalendar={isShownCalendar} /> */}
+                {isCalendarShown && <CreateEventCalendar />}
               </div>
             </div>
             <div>
