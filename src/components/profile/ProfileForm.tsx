@@ -22,8 +22,6 @@ export const ProfileForm: FC<ProfileFormProps> = ({ image: userImage }) => {
     useAppSelector(selectUser);
   const isLoading = useAppSelector(selectIsLoading);
 
-  console.log(image, userImage, isLoading, phoneNumber);
-
   const dispatch = useAppDispatch();
 
   const formatPhoneToMask = () => {
@@ -31,11 +29,25 @@ export const ProfileForm: FC<ProfileFormProps> = ({ image: userImage }) => {
     const maskedNumber = `+${n[0]}${n[1]}(${n[2]}${n[3]}${n[4]})${n[5]}${n[6]}${n[7]}-${n[8]}${n[9]}-${n[10]}${n[11]}`;
     return maskedNumber;
   };
-  console.log(formatPhoneToMask());
 
   const formatBirthDateToMask = () => {
     const dateToArray = birthdayDate.split('-').reverse().join('.');
     return dateToArray;
+  };
+
+  const formatBirthDateFromMask = (data: string) => {
+    const dateToArray = data.split('.').reverse().join('-');
+    return dateToArray;
+  };
+
+  const isValueDate = (value: string) => {
+    const date = new Date(formatBirthDateFromMask(value));
+    try {
+      date.toISOString();
+      return true;
+    } catch {
+      return false;
+    }
   };
 
   const defaultValues: UserInfo = {
@@ -68,7 +80,7 @@ export const ProfileForm: FC<ProfileFormProps> = ({ image: userImage }) => {
     return (
       obj1.name === obj2.name &&
       obj1.surname === obj2.surname &&
-      // obj1.birthday === obj2.birthday &&
+      obj1.birthdayDate === obj2.birthdayDate &&
       obj1.phoneNumber === obj2.phoneNumber
       // TODO
       // obj2.userImage instanceof File &&
@@ -77,32 +89,22 @@ export const ProfileForm: FC<ProfileFormProps> = ({ image: userImage }) => {
   };
 
   const onSubmit: SubmitHandler<UserInfo> = data => {
-    console.log(data);
-
     const formatPhoneNumber = () => {
       return data.phoneNumber.replace(/\D/g, '');
     };
 
-    const formatBirthDate = () => {
-      const dateToArray = data.birthdayDate.split('.').reverse().join('-');
-      return dateToArray;
+    const newObj = {
+      name: data.name,
+      surname: data.surname,
+      birthdayDate: formatBirthDateFromMask(data.birthdayDate),
+      phoneNumber: formatPhoneNumber(),
+      image: '',
     };
 
-    console.log('date', formatBirthDate());
-
-    console.log(data);
     if (ObjectsAreEqual(defaultValues, data)) {
       return toast.error('Немає що змінювати');
     }
 
-    const newObj = {
-      name: data.name,
-      surname: data.surname,
-      birthdayDate: formatBirthDate(),
-      phoneNumber: formatPhoneNumber(),
-    };
-
-    console.log(newObj);
     dispatch(updateUserInfo(newObj));
 
     !isLoading && dispatch(getUser());
@@ -119,21 +121,37 @@ export const ProfileForm: FC<ProfileFormProps> = ({ image: userImage }) => {
       {isLoading && <Spinner />}
       <div className="flex gap-[24px] mb-[8px]">
         <ProfileInput
-          {...register('name')}
+          {...register('name', {
+            validate: {
+              required: value =>
+                value.trim().length === 0 ||
+                (value.trim().length > 1 && value.trim().length <= 50) ||
+                "Введіть ім'я (від 2 до 50 символів)",
+            },
+          })}
           placeholder="Ім'я"
           id="name"
           htmlFor="name"
           type="text"
           label="Ім'я"
+          error={errors?.name?.message}
         />
 
         <ProfileInput
-          {...register('surname')}
+          {...register('surname', {
+            validate: {
+              required: value =>
+                value.trim().length === 0 ||
+                (value.trim().length > 1 && value.trim().length <= 50) ||
+                'Введіть прізвище (від 2 до 50 символів)',
+            },
+          })}
           placeholder="Прізвище"
           id="surname"
           htmlFor="surname"
           type="text"
           label="Прізвище"
+          error={errors?.surname?.message}
         />
       </div>
 
@@ -153,6 +171,17 @@ export const ProfileForm: FC<ProfileFormProps> = ({ image: userImage }) => {
               error={errors?.birthdayDate?.message}
             />
           )}
+          rules={{
+            required: false,
+            validate: value => {
+              if (value.length > 0 && value.length < 10) {
+                return 'Введіть дату народження';
+              }
+              if (!isValueDate(value)) {
+                return 'Невірний формат дати';
+              }
+            },
+          }}
         />
 
         <Controller
@@ -170,14 +199,14 @@ export const ProfileForm: FC<ProfileFormProps> = ({ image: userImage }) => {
               error={errors?.phoneNumber?.message}
             />
           )}
-          // rules={{
-          //   required: "Це поле обов'язкове",
-          //   validate: value => value.length === 17 || 'Введіть номер телефону',
-          // }}
+          rules={{
+            required: false,
+            validate: value => value.length === 17 || 'Введіть номер телефону',
+          }}
         />
       </div>
 
-      {/* Паролі */}
+      {/* Паролі не підключені */}
       <div className="flex flex-col gap-[8px]">
         <p className="mb-[32px] font-oswald text-[24px] font-medium">
           Змінити пароль
