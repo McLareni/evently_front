@@ -18,7 +18,7 @@ interface ProfileFormProps {
 }
 
 export const ProfileForm: FC<ProfileFormProps> = ({ image: userImage }) => {
-  const { name, surname, birthday, phoneNumber, image } =
+  const { name, surname, birthdayDate, phoneNumber, image } =
     useAppSelector(selectUser);
   const isLoading = useAppSelector(selectIsLoading);
 
@@ -27,16 +27,21 @@ export const ProfileForm: FC<ProfileFormProps> = ({ image: userImage }) => {
   const dispatch = useAppDispatch();
 
   const formatPhoneToMask = () => {
-    const num = phoneNumber.split('');
-    const maskedNumber = `+${num[0]}${num[1]}(${num[2]}${num[3]}${num[4]})${num[5]}${num[6]}${num[7]}-${num[8]}${num[9]}-${num[10]}${num[11]}`;
+    const n = phoneNumber.split('');
+    const maskedNumber = `+${n[0]}${n[1]}(${n[2]}${n[3]}${n[4]})${n[5]}${n[6]}${n[7]}-${n[8]}${n[9]}-${n[10]}${n[11]}`;
     return maskedNumber;
   };
   console.log(formatPhoneToMask());
 
+  const formatBirthDateToMask = () => {
+    const dateToArray = birthdayDate.split('-').reverse().join('.');
+    return dateToArray;
+  };
+
   const defaultValues: UserInfo = {
     name: name || '',
     surname: surname || '',
-    birthday: birthday || '',
+    birthdayDate: formatBirthDateToMask() || '',
     phoneNumber: formatPhoneToMask() || '',
     image: image || '',
   };
@@ -77,8 +82,15 @@ export const ProfileForm: FC<ProfileFormProps> = ({ image: userImage }) => {
     const formatPhoneNumber = () => {
       return data.phoneNumber.replace(/\D/g, '');
     };
-    const formattedPhoneNumber = formatPhoneNumber();
-    console.log(data, formattedPhoneNumber);
+
+    const formatBirthDate = () => {
+      const dateToArray = data.birthdayDate.split('.').reverse().join('-');
+      return dateToArray;
+    };
+
+    console.log('date', formatBirthDate());
+
+    console.log(data);
     if (ObjectsAreEqual(defaultValues, data)) {
       return toast.error('Немає що змінювати');
     }
@@ -86,8 +98,8 @@ export const ProfileForm: FC<ProfileFormProps> = ({ image: userImage }) => {
     const newObj = {
       name: data.name,
       surname: data.surname,
-      // birthday: data.birthday,
-      phoneNumber: formattedPhoneNumber,
+      birthdayDate: formatBirthDate(),
+      phoneNumber: formatPhoneNumber(),
     };
 
     console.log(newObj);
@@ -127,7 +139,7 @@ export const ProfileForm: FC<ProfileFormProps> = ({ image: userImage }) => {
 
       <div className="flex gap-[24px] mb-[32px]">
         <Controller
-          name="birthday"
+          name="birthdayDate"
           control={control}
           render={({ field }) => (
             <ProfileInput
@@ -138,7 +150,7 @@ export const ProfileForm: FC<ProfileFormProps> = ({ image: userImage }) => {
               htmlFor="birthday"
               type="numeric"
               label="Дата народження"
-              error={errors?.birthday?.message}
+              error={errors?.birthdayDate?.message}
             />
           )}
         />

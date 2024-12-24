@@ -47,6 +47,7 @@ export const updateUserInfo = createAsyncThunk<
   {
     name: string;
     surname: string;
+    birthdayDate: string;
     phoneNumber: string;
   },
   { state: RootState }

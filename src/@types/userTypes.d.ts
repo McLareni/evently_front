@@ -3,7 +3,7 @@ interface User {
 
   name: string;
   surname: string;
-  birthday: string;
+  birthdayDate: string;
   phoneNumber: string;
   image: string | File;
 
@@ -17,5 +17,5 @@ interface User {
 
 type UserInfo = Pick<
   User,
-  'name' | 'surname' | 'birthday' | 'phoneNumber' | 'image'
+  'name' | 'surname' | 'birthdayDate' | 'phoneNumber' | 'image'
 >;
