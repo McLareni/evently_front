@@ -34,6 +34,9 @@ export const ProfileForm: FC<ProfileFormProps> = ({ image: userImage }) => {
   };
 
   const formatBirthDateToMask = () => {
+    if (birthdayDate.length === 0) {
+      return '';
+    }
     const dateToArray = birthdayDate.split('-').reverse().join('.');
     return dateToArray;
   };
