@@ -7,6 +7,15 @@ import { getUser, updateUserInfo } from '@/redux/auth/operations';
 import { selectIsLoading, selectUser } from '@/redux/auth/selectors';
 import { useAppDispatch, useAppSelector } from '@/redux/hooks';
 
+import {
+  formatBirthDateFromMask,
+  formatPhoneNumberFromMask,
+  isValueDate,
+} from '@/helpers/userForm/formatFromMask';
+import {
+  formatBirthDateToMask,
+  formatPhoneToMask,
+} from '@/helpers/userForm/formatToMask';
 import { useMask } from '@react-input/mask';
 
 import Button from '../ui/Button';
@@ -24,46 +33,11 @@ export const ProfileForm: FC<ProfileFormProps> = ({ image: userImage }) => {
 
   const dispatch = useAppDispatch();
 
-  const formatPhoneToMask = () => {
-    if (phoneNumber.length === 0) {
-      return '';
-    }
-    const n = phoneNumber.split('');
-    const maskedNumber = `+${n[0]}${n[1]}(${n[2]}${n[3]}${n[4]})${n[5]}${n[6]}${n[7]}-${n[8]}${n[9]}-${n[10]}${n[11]}`;
-    return maskedNumber;
-  };
-
-  const formatBirthDateToMask = () => {
-    if (birthdayDate.length === 0) {
-      return '';
-    }
-    const dateToArray = birthdayDate.split('-').reverse().join('.');
-    return dateToArray;
-  };
-
-  const formatBirthDateFromMask = (data: string) => {
-    const dateToArray = data.split('.').reverse().join('-');
-    return dateToArray;
-  };
-
-  const isValueDate = (value: string) => {
-    const date = new Date(formatBirthDateFromMask(value));
-    try {
-      date.toISOString();
-      if (new Date(date.toISOString()) > new Date()) {
-        return false;
-      }
-      return true;
-    } catch {
-      return false;
-    }
-  };
-
   const defaultValues: UserInfo = {
     name: name || '',
     surname: surname || '',
-    birthdayDate: formatBirthDateToMask(),
-    phoneNumber: formatPhoneToMask(),
+    birthdayDate: formatBirthDateToMask(birthdayDate),
+    phoneNumber: formatPhoneToMask(phoneNumber),
     image: image || '',
     changePassword: '',
     repeatPassword: '',
@@ -101,18 +75,11 @@ export const ProfileForm: FC<ProfileFormProps> = ({ image: userImage }) => {
   };
 
   const onSubmit: SubmitHandler<UserInfo> = data => {
-    const formatPhoneNumber = () => {
-      if (data.phoneNumber.length === 0) {
-        return '';
-      }
-      return data.phoneNumber.replace(/\D/g, '');
-    };
-
     const newObj = {
       name: data.name,
       surname: data.surname,
       birthdayDate: formatBirthDateFromMask(data.birthdayDate),
-      phoneNumber: formatPhoneNumber(),
+      phoneNumber: formatPhoneNumberFromMask(data.phoneNumber),
       avatarUrl: 'https://cdn3.pixelcut.app/7/20/uncrop_hero_bdf08a8ca6.jpg',
     };
 
