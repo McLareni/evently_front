@@ -80,15 +80,11 @@ export const ProfileForm: FC<ProfileFormProps> = ({ image: userImage }) => {
       surname: data.surname,
       birthdayDate: formatBirthDateFromMask(data.birthdayDate),
       phoneNumber: formatPhoneNumberFromMask(data.phoneNumber),
-      avatarUrl: 'https://cdn3.pixelcut.app/7/20/uncrop_hero_bdf08a8ca6.jpg',
     };
-
     if (ObjectsAreEqual(defaultValues, data)) {
       return toast.error('Немає що змінювати');
     }
-
     dispatch(updateUserInfo(newObj));
-
     !isLoading && dispatch(getUser());
   };
 
