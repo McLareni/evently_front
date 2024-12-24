@@ -73,7 +73,7 @@ export const ProfileForm: FC<ProfileFormProps> = ({ image: userImage }) => {
   });
 
   const phoneInputRef = useMask({
-    mask: '+__(___)___-__-__',
+    mask: '+38(___)___-__-__',
     replacement: { _: /\d/ },
   });
 
@@ -175,7 +175,7 @@ export const ProfileForm: FC<ProfileFormProps> = ({ image: userImage }) => {
             <ProfileInput
               {...field}
               ref={birthdayInputRef}
-              placeholder="Дата народження"
+              placeholder="ДД.ММ.РРРР"
               id="birthday"
               htmlFor="birthday"
               type="numeric"
@@ -203,7 +203,7 @@ export const ProfileForm: FC<ProfileFormProps> = ({ image: userImage }) => {
             <ProfileInput
               {...field}
               ref={phoneInputRef}
-              placeholder="Номер телефону"
+              placeholder="099 999 99 99"
               id="phoneNumber"
               htmlFor="phoneNumber"
               type="tel"
