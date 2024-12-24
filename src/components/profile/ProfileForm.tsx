@@ -62,8 +62,8 @@ export const ProfileForm: FC<ProfileFormProps> = ({ image: userImage }) => {
   const defaultValues: UserInfo = {
     name: name || '',
     surname: surname || '',
-    birthdayDate: formatBirthDateToMask() || '',
-    phoneNumber: formatPhoneToMask() || '',
+    birthdayDate: formatBirthDateToMask(),
+    phoneNumber: formatPhoneToMask(),
     image: image || '',
   };
 
