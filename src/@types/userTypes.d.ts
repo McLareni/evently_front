@@ -4,7 +4,7 @@ interface User {
   name: string;
   surname: string;
   birthday: string;
-  phone: string;
+  phoneNumber: string;
   image: string | File;
 
   email: string;
@@ -15,4 +15,7 @@ interface User {
   status: 'ACTIVE' | 'BANNED';
 }
 
-type UserInfo = Pick<User, 'name' | 'surname' | 'birthday' | 'phone' | 'image'>;
+type UserInfo = Pick<
+  User,
+  'name' | 'surname' | 'birthday' | 'phoneNumber' | 'image'
+>;

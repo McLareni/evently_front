@@ -18,18 +18,26 @@ interface ProfileFormProps {
 }
 
 export const ProfileForm: FC<ProfileFormProps> = ({ image: userImage }) => {
-  const { name, surname, birthday, phone, image } = useAppSelector(selectUser);
+  const { name, surname, birthday, phoneNumber, image } =
+    useAppSelector(selectUser);
   const isLoading = useAppSelector(selectIsLoading);
 
-  console.log(image, userImage, isLoading, phone);
+  console.log(image, userImage, isLoading, phoneNumber);
 
   const dispatch = useAppDispatch();
+
+  const formatPhoneToMask = () => {
+    const num = phoneNumber.split('');
+    const maskedNumber = `+${num[0]}${num[1]}(${num[2]}${num[3]}${num[4]})${num[5]}${num[6]}${num[7]}-${num[8]}${num[9]}-${num[10]}${num[11]}`;
+    return maskedNumber;
+  };
+  console.log(formatPhoneToMask());
 
   const defaultValues: UserInfo = {
     name: name || '',
     surname: surname || '',
     birthday: birthday || '',
-    phone: phone || '',
+    phoneNumber: formatPhoneToMask() || '',
     image: image || '',
   };
 
@@ -56,7 +64,7 @@ export const ProfileForm: FC<ProfileFormProps> = ({ image: userImage }) => {
       obj1.name === obj2.name &&
       obj1.surname === obj2.surname &&
       // obj1.birthday === obj2.birthday &&
-      obj1.phone === obj2.phone
+      obj1.phoneNumber === obj2.phoneNumber
       // TODO
       // obj2.userImage instanceof File &&
       // obj1.userImage === obj2.userImage?.name
@@ -67,7 +75,7 @@ export const ProfileForm: FC<ProfileFormProps> = ({ image: userImage }) => {
     console.log(data);
 
     const formatPhoneNumber = () => {
-      return data.phone.replace(/\D/g, '');
+      return data.phoneNumber.replace(/\D/g, '');
     };
     const formattedPhoneNumber = formatPhoneNumber();
     console.log(data, formattedPhoneNumber);
@@ -78,7 +86,7 @@ export const ProfileForm: FC<ProfileFormProps> = ({ image: userImage }) => {
     const newObj = {
       name: data.name,
       surname: data.surname,
-      birthday: data.birthday,
+      // birthday: data.birthday,
       phoneNumber: formattedPhoneNumber,
     };
 
@@ -136,7 +144,7 @@ export const ProfileForm: FC<ProfileFormProps> = ({ image: userImage }) => {
         />
 
         <Controller
-          name="phone"
+          name="phoneNumber"
           control={control}
           render={({ field }) => (
             <ProfileInput
@@ -147,7 +155,7 @@ export const ProfileForm: FC<ProfileFormProps> = ({ image: userImage }) => {
               htmlFor="phoneNumber"
               type="tel"
               label="Номер телефону"
-              error={errors?.phone?.message}
+              error={errors?.phoneNumber?.message}
             />
           )}
           // rules={{
