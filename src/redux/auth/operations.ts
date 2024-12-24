@@ -9,6 +9,7 @@ axios.defaults.baseURL = `${URL}`;
 const setAuthToken = (token: string) => {
   axios.defaults.headers.common.Authorization = `Bearer ${token}`;
 };
+
 export const clearAuthToken = () => {
   axios.defaults.headers.common.Authorization = '';
 };
@@ -58,12 +59,8 @@ export const updateUserInfo = createAsyncThunk<
     if (!token) {
       throw new Error('Token not found');
     }
-    const headers = {
-      Authorization: `Bearer ${token}`,
-    };
-    const response = await axios.patch(`users/${state.auth.user.id}`, user, {
-      headers,
-    });
+    setAuthToken(token);
+    const response = await axios.patch(`users/${state.auth.user.id}`, user);
     return response.data;
   } catch (error) {
     return thunkAPI.rejectWithValue((error as Error).message);
@@ -79,12 +76,8 @@ export const getUser = createAsyncThunk<User, void, { state: RootState }>(
       if (!token) {
         throw new Error('Token not found');
       }
-      const headers = {
-        Authorization: `Bearer ${token}`,
-      };
-      const response = await axios.get(`/users/${state.auth.user.id}`, {
-        headers,
-      });
+      setAuthToken(token);
+      const response = await axios.get(`/users/${state.auth.user.id}`);
       return response.data;
     } catch (error) {
       return thunkAPI.rejectWithValue((error as Error).message);
