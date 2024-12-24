@@ -65,6 +65,8 @@ export const ProfileForm: FC<ProfileFormProps> = ({ image: userImage }) => {
     birthdayDate: formatBirthDateToMask(),
     phoneNumber: formatPhoneToMask(),
     image: image || '',
+    changePassword: '',
+    repeatPassword: '',
   };
 
   const birthdayInputRef = useMask({
@@ -82,6 +84,7 @@ export const ProfileForm: FC<ProfileFormProps> = ({ image: userImage }) => {
     handleSubmit,
     setValue,
     control,
+    getValues,
     formState: { errors, isValid },
   } = useForm<UserInfo>({ mode: 'onChange', defaultValues });
 
@@ -110,7 +113,7 @@ export const ProfileForm: FC<ProfileFormProps> = ({ image: userImage }) => {
       surname: data.surname,
       birthdayDate: formatBirthDateFromMask(data.birthdayDate),
       phoneNumber: formatPhoneNumber(),
-      image: '',
+      avatarUrl: 'https://cdn3.pixelcut.app/7/20/uncrop_hero_bdf08a8ca6.jpg',
     };
 
     if (ObjectsAreEqual(defaultValues, data)) {
@@ -227,20 +230,43 @@ export const ProfileForm: FC<ProfileFormProps> = ({ image: userImage }) => {
           Змінити пароль
         </p>
         <ProfileInput
+          {...register('changePassword', {
+            validate: {
+              required: value =>
+                value.trim().length === 0 ||
+                value.length === 8 ||
+                'Введіть пароль (8 символів)',
+            },
+          })}
           forPassword
           placeholder="Введіть новий пароль"
           id="changePassword"
           htmlFor="changePassword"
           autoComplete="new-password"
           label="Введіть новий пароль"
+          error={errors?.changePassword?.message}
         />
 
         <ProfileInput
+          {...register('repeatPassword', {
+            validate: {
+              required: value => {
+                if (value.trim().length > 0 && value.trim().length < 8) {
+                  return 'Повторіть пароль (8 символів)';
+                }
+                const password = getValues('changePassword');
+                if (value.trim() !== password) {
+                  return 'Паролі не збігаються';
+                }
+              },
+            },
+          })}
           forPassword
           placeholder="Повторіть пароль"
           id="repeatPassword"
           htmlFor="repeatPassword"
           label="Повторіть пароль"
+          error={errors?.repeatPassword?.message}
         />
       </div>
 

@@ -13,9 +13,18 @@ interface User {
   role: 'VISITOR' | 'ORGANIZER' | 'ADMIN';
   location: string;
   status: 'ACTIVE' | 'BANNED';
+
+  changePassword: string;
+  repeatPassword: string;
 }
 
 type UserInfo = Pick<
   User,
-  'name' | 'surname' | 'birthdayDate' | 'phoneNumber' | 'image'
+  | 'name'
+  | 'surname'
+  | 'birthdayDate'
+  | 'phoneNumber'
+  | 'image'
+  | 'changePassword'
+  | 'repeatPassword'
 >;
