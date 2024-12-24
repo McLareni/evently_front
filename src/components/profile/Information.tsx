@@ -15,6 +15,10 @@ const Information = () => {
     setImage(image);
   };
 
+  const isFakeName = () => {
+    return name.length === 0 ? 'гість' : name;
+  };
+
   return (
     <div>
       <div className="-mx-[15px] -mt-[15px] h-[214px] bg-bg-gradient rounded-[20px] p-[32px] flex gap-[48px]">
@@ -29,7 +33,7 @@ const Information = () => {
             color: 'transparent',
           }}
         >
-          Привіт, {name}
+          Привіт, {isFakeName()}
         </p>
       </div>
       <p className="my-[32px] font-oswald text-[24px] font-medium">

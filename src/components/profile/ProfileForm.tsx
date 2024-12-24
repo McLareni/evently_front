@@ -25,6 +25,9 @@ export const ProfileForm: FC<ProfileFormProps> = ({ image: userImage }) => {
   const dispatch = useAppDispatch();
 
   const formatPhoneToMask = () => {
+    if (phoneNumber.length === 0) {
+      return '';
+    }
     const n = phoneNumber.split('');
     const maskedNumber = `+${n[0]}${n[1]}(${n[2]}${n[3]}${n[4]})${n[5]}${n[6]}${n[7]}-${n[8]}${n[9]}-${n[10]}${n[11]}`;
     return maskedNumber;
@@ -90,6 +93,9 @@ export const ProfileForm: FC<ProfileFormProps> = ({ image: userImage }) => {
 
   const onSubmit: SubmitHandler<UserInfo> = data => {
     const formatPhoneNumber = () => {
+      if (data.phoneNumber.length === 0) {
+        return '';
+      }
       return data.phoneNumber.replace(/\D/g, '');
     };
 
@@ -177,7 +183,7 @@ export const ProfileForm: FC<ProfileFormProps> = ({ image: userImage }) => {
               if (value.length > 0 && value.length < 10) {
                 return 'Введіть дату народження';
               }
-              if (!isValueDate(value)) {
+              if (!isValueDate(value) && value.length !== 0) {
                 return 'Невірний формат дати';
               }
             },
@@ -201,7 +207,10 @@ export const ProfileForm: FC<ProfileFormProps> = ({ image: userImage }) => {
           )}
           rules={{
             required: false,
-            validate: value => value.length === 17 || 'Введіть номер телефону',
+            validate: value =>
+              value.length === 0 ||
+              value.length === 17 ||
+              'Введіть номер телефону',
           }}
         />
       </div>
