@@ -50,6 +50,9 @@ export const ProfileForm: FC<ProfileFormProps> = ({ image: userImage }) => {
     const date = new Date(formatBirthDateFromMask(value));
     try {
       date.toISOString();
+      if (new Date(date.toISOString()) > new Date()) {
+        return false;
+      }
       return true;
     } catch {
       return false;
