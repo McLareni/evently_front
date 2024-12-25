@@ -11,6 +11,7 @@ import AdminUsers from '@/pages/admin/AdminUsers';
 import Notifications from '@/pages/admin/Notification';
 import PromoEvents from '@/pages/admin/PromoEvents';
 import AllEventsPage from '@/pages/events/AllEventsPage';
+import CreateEventForm from '@/pages/events/CreateEventPage';
 import { action as editEventAction } from '@/pages/events/EventEdit';
 import EventEdit from '@/pages/events/EventEdit';
 import Profile from '@/pages/user/Profile';
@@ -38,6 +39,10 @@ const router = createBrowserRouter([
       {
         path: 'events',
         element: <Events />,
+      },
+      {
+        path: 'CreateEvent',
+        element: <CreateEventForm />,
       },
       {
         path: 'events/:idEvent',
