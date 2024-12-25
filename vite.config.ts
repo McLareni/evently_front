@@ -5,12 +5,12 @@ import { defineConfig } from 'vite';
 export default defineConfig({
   plugins: [react()],
   base: '/',
-  build:{
-    outDir: 'dist'
+  build: {
+    outDir: 'dist',
   },
   resolve: {
     alias: {
-      '@': path.resolve(__dirname, './src/'), // Set up path alias for `@` to `./src/`
+      '@': path.resolve(__dirname, './src/'),
       components: path.resolve(__dirname, './src/components/'),
       public: path.resolve(__dirname, './public/'),
       pages: path.resolve(__dirname, './src/pages'),
