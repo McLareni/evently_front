@@ -7,6 +7,15 @@ import { getUser, updateUserInfo } from '@/redux/auth/operations';
 import { selectIsLoading, selectUser } from '@/redux/auth/selectors';
 import { useAppDispatch, useAppSelector } from '@/redux/hooks';
 
+import {
+  formatBirthDateFromMask,
+  formatPhoneNumberFromMask,
+  isValueDate,
+} from '@/helpers/userForm/formatFromMask';
+import {
+  formatBirthDateToMask,
+  formatPhoneToMask,
+} from '@/helpers/userForm/formatToMask';
 import { useMask } from '@react-input/mask';
 
 import Button from '../ui/Button';
@@ -18,19 +27,20 @@ interface ProfileFormProps {
 }
 
 export const ProfileForm: FC<ProfileFormProps> = ({ image: userImage }) => {
-  const { name, surname, birthday, phone, image } = useAppSelector(selectUser);
+  const { name, surname, birthdayDate, phoneNumber, image } =
+    useAppSelector(selectUser);
   const isLoading = useAppSelector(selectIsLoading);
-
-  console.log(image, userImage, isLoading, phone);
 
   const dispatch = useAppDispatch();
 
   const defaultValues: UserInfo = {
     name: name || '',
     surname: surname || '',
-    birthday: birthday || '',
-    phone: phone || '',
+    birthdayDate: formatBirthDateToMask(birthdayDate),
+    phoneNumber: formatPhoneToMask(phoneNumber),
     image: image || '',
+    changePassword: '',
+    repeatPassword: '',
   };
 
   const birthdayInputRef = useMask({
@@ -39,7 +49,7 @@ export const ProfileForm: FC<ProfileFormProps> = ({ image: userImage }) => {
   });
 
   const phoneInputRef = useMask({
-    mask: '+__(___)___-__-__',
+    mask: '+38(___)___-__-__',
     replacement: { _: /\d/ },
   });
 
@@ -48,6 +58,7 @@ export const ProfileForm: FC<ProfileFormProps> = ({ image: userImage }) => {
     handleSubmit,
     setValue,
     control,
+    getValues,
     formState: { errors, isValid },
   } = useForm<UserInfo>({ mode: 'onChange', defaultValues });
 
@@ -55,8 +66,8 @@ export const ProfileForm: FC<ProfileFormProps> = ({ image: userImage }) => {
     return (
       obj1.name === obj2.name &&
       obj1.surname === obj2.surname &&
-      // obj1.birthday === obj2.birthday &&
-      obj1.phone === obj2.phone
+      obj1.birthdayDate === obj2.birthdayDate &&
+      obj1.phoneNumber === obj2.phoneNumber
       // TODO
       // obj2.userImage instanceof File &&
       // obj1.userImage === obj2.userImage?.name
@@ -64,27 +75,16 @@ export const ProfileForm: FC<ProfileFormProps> = ({ image: userImage }) => {
   };
 
   const onSubmit: SubmitHandler<UserInfo> = data => {
-    console.log(data);
-
-    const formatPhoneNumber = () => {
-      return data.phone.replace(/\D/g, '');
-    };
-    const formattedPhoneNumber = formatPhoneNumber();
-    console.log(data, formattedPhoneNumber);
-    if (ObjectsAreEqual(defaultValues, data)) {
-      return toast.error('Немає що змінювати');
-    }
-
     const newObj = {
       name: data.name,
       surname: data.surname,
-      birthday: data.birthday,
-      phoneNumber: formattedPhoneNumber,
+      birthdayDate: formatBirthDateFromMask(data.birthdayDate),
+      phoneNumber: formatPhoneNumberFromMask(data.phoneNumber),
     };
-
-    console.log(newObj);
+    if (ObjectsAreEqual(defaultValues, data)) {
+      return toast.error('Немає що змінювати');
+    }
     dispatch(updateUserInfo(newObj));
-
     !isLoading && dispatch(getUser());
   };
 
@@ -99,84 +99,137 @@ export const ProfileForm: FC<ProfileFormProps> = ({ image: userImage }) => {
       {isLoading && <Spinner />}
       <div className="flex gap-[24px] mb-[8px]">
         <ProfileInput
-          {...register('name')}
+          {...register('name', {
+            validate: {
+              required: value =>
+                value.trim().length === 0 ||
+                (value.trim().length > 1 && value.trim().length <= 50) ||
+                "Введіть ім'я (від 2 до 50 символів)",
+            },
+          })}
           placeholder="Ім'я"
           id="name"
           htmlFor="name"
           type="text"
           label="Ім'я"
+          error={errors?.name?.message}
         />
 
         <ProfileInput
-          {...register('surname')}
+          {...register('surname', {
+            validate: {
+              required: value =>
+                value.trim().length === 0 ||
+                (value.trim().length > 1 && value.trim().length <= 50) ||
+                'Введіть прізвище (від 2 до 50 символів)',
+            },
+          })}
           placeholder="Прізвище"
           id="surname"
           htmlFor="surname"
           type="text"
           label="Прізвище"
+          error={errors?.surname?.message}
         />
       </div>
 
       <div className="flex gap-[24px] mb-[32px]">
         <Controller
-          name="birthday"
+          name="birthdayDate"
           control={control}
           render={({ field }) => (
             <ProfileInput
               {...field}
               ref={birthdayInputRef}
-              placeholder="Дата народження"
+              placeholder="ДД.ММ.РРРР"
               id="birthday"
               htmlFor="birthday"
               type="numeric"
               label="Дата народження"
-              error={errors?.birthday?.message}
+              error={errors?.birthdayDate?.message}
             />
           )}
+          rules={{
+            required: false,
+            validate: value => {
+              if (value.length > 0 && value.length < 10) {
+                return 'Введіть дату народження';
+              }
+              if (!isValueDate(value) && value.length !== 0) {
+                return 'Невірний формат дати';
+              }
+            },
+          }}
         />
 
         <Controller
-          name="phone"
+          name="phoneNumber"
           control={control}
           render={({ field }) => (
             <ProfileInput
               {...field}
               ref={phoneInputRef}
-              placeholder="Номер телефону"
+              placeholder="099 999 99 99"
               id="phoneNumber"
               htmlFor="phoneNumber"
               type="tel"
               label="Номер телефону"
-              error={errors?.phone?.message}
+              error={errors?.phoneNumber?.message}
             />
           )}
-          // rules={{
-          //   required: "Це поле обов'язкове",
-          //   validate: value => value.length === 17 || 'Введіть номер телефону',
-          // }}
+          rules={{
+            required: false,
+            validate: value =>
+              value.length === 0 ||
+              value.length === 17 ||
+              'Введіть номер телефону',
+          }}
         />
       </div>
 
-      {/* Паролі */}
+      {/* Паролі не підключені */}
       <div className="flex flex-col gap-[8px]">
         <p className="mb-[32px] font-oswald text-[24px] font-medium">
           Змінити пароль
         </p>
         <ProfileInput
+          {...register('changePassword', {
+            validate: {
+              required: value =>
+                value.trim().length === 0 ||
+                value.length === 8 ||
+                'Введіть пароль (8 символів)',
+            },
+          })}
           forPassword
           placeholder="Введіть новий пароль"
           id="changePassword"
           htmlFor="changePassword"
           autoComplete="new-password"
           label="Введіть новий пароль"
+          error={errors?.changePassword?.message}
         />
 
         <ProfileInput
+          {...register('repeatPassword', {
+            validate: {
+              required: value => {
+                if (value.trim().length > 0 && value.trim().length < 8) {
+                  return 'Повторіть пароль (8 символів)';
+                }
+                const password = getValues('changePassword');
+                if (value.trim() !== password) {
+                  return 'Паролі не збігаються';
+                }
+              },
+            },
+          })}
           forPassword
           placeholder="Повторіть пароль"
           id="repeatPassword"
           htmlFor="repeatPassword"
           label="Повторіть пароль"
+          error={errors?.repeatPassword?.message}
         />
       </div>
 

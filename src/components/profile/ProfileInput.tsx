@@ -36,6 +36,7 @@ export const ProfileInput = forwardRef<HTMLInputElement, ProfileInputProps>(
       <fieldset className="relative w-[312px]">
         <div className="relative">
           <input
+            autoComplete="on"
             onFocus={() => setIsFocused(true)}
             onBlur={event => {
               setIsFocused(false);
