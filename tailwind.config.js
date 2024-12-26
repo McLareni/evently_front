@@ -43,6 +43,9 @@ export default {
         shadowPrimaryBtn: '-5px 5px 36.7px 0px rgba(0, 0, 0, 0.25) inset',
         shadowSecondaryBtn: `inset 0 0 9px 0 rgba(155, 143, 243, 1)`,
         eventCardShadow: `4px 4px 4px rgba(155, 143, 243, 0.2);`,
+
+        shadowActivePrimaryBtn: '-5px 5px 50px 0px rgba(255, 255, 255, 0.70) inset',
+        shadowActiveSecondaryBtn: '9px 5px 30px 0px #9B8FF3 inset',
       },
       opacity: {
         disabled: '0.5',
