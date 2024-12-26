@@ -1,13 +1,13 @@
-export const formatBirthDateToMask = (birthdayDate: string) => {
-  if (birthdayDate.length === 0) {
+export const formatBirthDateToMask = (birthdayDate: string | null) => {
+  if (!birthdayDate || birthdayDate.length === 0) {
     return '';
   }
   const dateToArray = birthdayDate.split('-').reverse().join('.');
   return dateToArray;
 };
 
-export const formatPhoneToMask = (phoneNumber: string) => {
-  if (phoneNumber.length === 0) {
+export const formatPhoneToMask = (phoneNumber: string | null) => {
+  if (!phoneNumber || phoneNumber.length === 0) {
     return '';
   }
   const n = phoneNumber.split('');
