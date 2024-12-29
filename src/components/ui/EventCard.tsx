@@ -98,7 +98,7 @@ export const EventCard: React.FC<EventCardProps> = ({
     }
   };
 
-  const formattedDate = formatDateToDayMonth(date.day);
+  const formattedDate = formatDateToDayMonth(date?.day);
 
   useEffect(() => {
     if (likedEventsAll) {
