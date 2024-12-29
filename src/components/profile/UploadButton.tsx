@@ -1,5 +1,5 @@
 import { FC, useState } from 'react';
-import { BiPencil } from 'react-icons/bi';
+import { BiPencil, BiTrash } from 'react-icons/bi';
 import { toast } from 'react-toastify';
 
 interface UploadButtonProps {
@@ -29,6 +29,11 @@ export const UploadButton: FC<UploadButtonProps> = ({ getImage }) => {
     }
   };
 
+  const deleteImage = (event: React.MouseEvent<HTMLButtonElement>) => {
+    event.preventDefault();
+    setImage(null);
+  };
+
   return (
     <div className="relative">
       <input
@@ -54,7 +59,16 @@ export const UploadButton: FC<UploadButtonProps> = ({ getImage }) => {
           />
         )}
         <div className={imageWrapper}>
-          <BiPencil size={18} />
+          {image ? (
+            <button
+              onClick={deleteImage}
+              className="w-[24px] h-[24px] flex justify-center items-center rounded-full"
+            >
+              <BiTrash size={18} />
+            </button>
+          ) : (
+            <BiPencil size={18} />
+          )}
         </div>
       </label>
     </div>
