@@ -1,5 +1,5 @@
 import { FC, useState } from 'react';
-import { AiOutlineUpload } from 'react-icons/ai';
+import { BiPencil } from 'react-icons/bi';
 import { toast } from 'react-toastify';
 
 interface UploadButtonProps {
@@ -14,6 +14,9 @@ export const UploadButton: FC<UploadButtonProps> = ({ getImage }) => {
 
   const labelStyles = `w-[150px] h-[150px] bg-uploadBtnBg rounded-full
   flex justify-center items-center cursor-pointer overflow-hidden`;
+
+  const imageWrapper = `w-[24px] h-[24px] rounded-full flex justify-center
+  items-center absolute bottom-[10px] right-[10px] bg-background`;
 
   const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     if (e.target.files) {
@@ -44,16 +47,14 @@ export const UploadButton: FC<UploadButtonProps> = ({ getImage }) => {
           />
         ) : (
           <img
-            // src="https://cdn3.pixelcut.app/7/20/uncrop_hero_bdf08a8ca6.jpg"
             src="/images/user-logo.jpg"
             width={150}
             height={150}
             alt="user logo"
           />
         )}
-        <div className="flex gap-[6px] items-center absolute -bottom-[24px] text-uploadBtnBg">
-          <span className="text-[12px]">Додайте аватар</span>
-          <AiOutlineUpload size={16} />
+        <div className={imageWrapper}>
+          <BiPencil size={18} />
         </div>
       </label>
     </div>
