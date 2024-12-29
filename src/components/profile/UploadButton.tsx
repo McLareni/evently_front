@@ -1,16 +1,16 @@
-import { FC, useState } from 'react';
+import { FC, HTMLProps } from 'react';
 import { BiPencil, BiTrash } from 'react-icons/bi';
-import { toast } from 'react-toastify';
 
-interface UploadButtonProps {
-  // eslint-disable-next-line no-unused-vars
-  getImage: (image: File) => void;
+// import { toast } from 'react-toastify';
+
+interface UploadButtonProps extends HTMLProps<HTMLInputElement> {
+  cropData: string;
 }
 
 const imageTypes = ['image/jpeg', 'image/webp', 'image/svg', 'image/png'];
 
-export const UploadButton: FC<UploadButtonProps> = ({ getImage }) => {
-  const [image, setImage] = useState<File | null>(null);
+export const UploadButton: FC<UploadButtonProps> = ({ cropData, ...props }) => {
+  // const [image, setImage] = useState<File | null>(null);
 
   const labelStyles = `w-[150px] h-[150px] bg-uploadBtnBg rounded-full
   flex justify-center items-center cursor-pointer overflow-hidden`;
@@ -18,20 +18,20 @@ export const UploadButton: FC<UploadButtonProps> = ({ getImage }) => {
   const imageWrapper = `w-[24px] h-[24px] rounded-full flex justify-center
   items-center absolute bottom-[10px] right-[10px] bg-background`;
 
-  const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    if (e.target.files) {
-      const file = e.target.files[0];
-      if (!imageTypes.some(type => type === file.type)) {
-        return toast.error('Невірний тип зображення');
-      }
-      getImage(file);
-      setImage(file);
-    }
-  };
+  // const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+  //   if (e.target.files) {
+  //     const file = e.target.files[0];
+  //     if (!imageTypes.some(type => type === file.type)) {
+  //       return toast.error('Невірний тип зображення');
+  //     }
+  //     // getImage(file);
+  //     setImage(file);
+  //   }
+  // };
 
   const deleteImage = (event: React.MouseEvent<HTMLButtonElement>) => {
     event.preventDefault();
-    setImage(null);
+    // setImage(null);
   };
 
   return (
@@ -41,13 +41,14 @@ export const UploadButton: FC<UploadButtonProps> = ({ getImage }) => {
         type="file"
         accept={imageTypes.join(',')}
         className="hidden"
-        onChange={handleFileChange}
+        {...props}
+        // onChange={handleFileChange}
       />
       <label htmlFor="avatar" className={labelStyles}>
-        {image ? (
+        {cropData ? (
           <img
             className="object-cover h-[100%]"
-            src={URL.createObjectURL(image)}
+            src={cropData}
             alt="user logo"
           />
         ) : (
@@ -59,7 +60,7 @@ export const UploadButton: FC<UploadButtonProps> = ({ getImage }) => {
           />
         )}
         <div className={imageWrapper}>
-          {image ? (
+          {cropData ? (
             <button
               onClick={deleteImage}
               className="w-[24px] h-[24px] flex justify-center items-center rounded-full"
