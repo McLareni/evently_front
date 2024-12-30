@@ -20,6 +20,7 @@ export const Dots = <T,>({
         <button
           key={nanoid()}
           onClick={() => setSlideByDot(slides.indexOf(slide))}
+          aria-label="change slide dot"
           className={`rounded-full flex items-center cursor-pointer focus:outline-none
           ${slides.indexOf(slide) === currentSlide ? 'bg-textDark size-3 ' : 'bg-darkGray size-2'}
           `}
