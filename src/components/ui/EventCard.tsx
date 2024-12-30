@@ -98,7 +98,7 @@ export const EventCard: React.FC<EventCardProps> = ({
     }
   };
 
-  const formattedDate = formatDateToDayMonth(date.day);
+  const formattedDate = formatDateToDayMonth(date?.day);
 
   useEffect(() => {
     if (likedEventsAll) {
@@ -225,7 +225,7 @@ export const EventCard: React.FC<EventCardProps> = ({
                   setEvent(
                     event,
                     e.target as HTMLElement,
-                    event.eventStatus === 'APPROVED' ? 'APPROVED' : 'CANCELLED'
+                    event.eventStatus === 'APPROVED' ? 'CANCELLED' : 'APPROVED'
                   )
                 }
                 className="border border-buttonPurple bg-lightPurple rounded-[10px] w-full h-[33px] focus:outline-0"
