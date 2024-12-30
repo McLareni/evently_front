@@ -125,6 +125,7 @@ export const EventCard: React.FC<EventCardProps> = ({
           <button
             type="button"
             onClick={toggleIsLiked}
+            aria-label="like button"
             className={`focus:outline-none ml-auto bg-background w-[32px] h-[32px] flex items-center justify-center rounded-full opacity-60`}
           >
             {isLiked ? (
@@ -203,6 +204,7 @@ export const EventCard: React.FC<EventCardProps> = ({
             <>
               {event.eventStatus !== 'CANCELLED' && (
                 <button
+                  aria-label="reject button"
                   onClick={e =>
                     setEvent(event, e.target as HTMLElement, 'CANCELLED')
                   }
@@ -213,6 +215,7 @@ export const EventCard: React.FC<EventCardProps> = ({
               )}
               {event.eventStatus !== 'APPROVED' && (
                 <button
+                  aria-label="approve button"
                   onClick={e =>
                     setEvent(event, e.target as HTMLElement, 'APPROVED')
                   }
