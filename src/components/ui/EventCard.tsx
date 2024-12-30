@@ -223,21 +223,8 @@ export const EventCard: React.FC<EventCardProps> = ({
                 >
                   Схвалити
                 </button>
-              </>
-            ) : (
-              <button
-                onClick={e =>
-                  setEvent(
-                    event,
-                    e.target as HTMLElement,
-                    event.eventStatus === 'APPROVED' ? 'CANCELLED' : 'APPROVED'
-                  )
-                }
-                className="border border-buttonPurple bg-lightPurple rounded-[10px] w-full h-[33px] focus:outline-0"
-              >
-                {event.eventStatus === 'APPROVED' ? 'Відхилити' : 'Схвалити'}
-              </button>
-            )}
+              )}
+            </>
           </div>
         ) : (
           <>
