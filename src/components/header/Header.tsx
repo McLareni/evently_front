@@ -7,7 +7,6 @@ import { useAppSelector } from '@/redux/hooks';
 import { Container } from '../container/Container';
 import { SharedBtn } from '../ui';
 import { MainLogo } from '../ui/Logo';
-import { HeaderLines } from './HeaderLines';
 import { Navigation } from './Navigation';
 import { UserNavigation } from './UserNavigation';
 import { VerticalLines } from './VerticalLines';
@@ -28,10 +27,9 @@ export const Header: React.FC = () => {
   };
 
   return (
-    <div className="pb-[34px] w-[1440px] font-lato bg-background fixed top-0 z-20">
+    <div className="w-[1440px] font-lato bg-background fixed top-0 z-20">
       <Container className="relative">
-        <HeaderLines />
-        <header className="p-4 bg-gray-100">
+        <header className="px-4 py-2 bg-gray-100">
           <div className="flex justify-center items-center h-[84px]">
             <MainLogo />
             <Navigation />
