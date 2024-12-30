@@ -6,20 +6,36 @@ import { PiHeartFill } from 'react-icons/pi';
 import { SharedBtn } from '@/components/ui';
 
 import exampleCard from '/images/exampleCard.svg';
+import { useEffect, useState } from 'react';
 
 type CardProps = {
-  // categorie: string;
   eventName: string;
   // date: number;
   // place: string;
   price: string;
+  photo: string | null;
+  category: string;
 };
 
-const CreateEventCard: React.FC<CardProps> = ({ eventName, price }) => {
+const CreateEventCard: React.FC<CardProps> = ({ eventName, price, photo, category }) => {
+  const [getPrice, setGetPrice] = useState<boolean>(true)
+  useEffect(() => {
+    if (price != 'Ціна') {
+      setGetPrice(false);
+    } else {
+      setGetPrice(true)
+    }
+  }, [price])
+  
   return (
     <>
-      <div className=" sticky group relative flex overflow-hidden items-start rounded-[20px] shadow-eventCardShadow max-h-[514px] max-w-[312px] w-[312px] h-[514px] top-[150px] mr-[135px]">
-        <img src={exampleCard} width={'100%'} alt="Example Card" />
+      <div className=" sticky group relative flex overflow-hidden items-start rounded-[20px] 
+      shadow-eventCardShadow max-h-[514px] max-w-[312px] w-[312px] h-[514px] top-[150px] mr-[135px] ">
+         {photo ? (
+            <img className='' src={photo} width={'100%'} alt="Example Card" />
+          ) : (
+            <img className='opacity-20' src={exampleCard} width={'100%'} alt="Example Card" />
+          )}
         <div className="flex absolute justify-between p-6 w-full">
           <div className="focus:outline-none ml-auto bg-background w-[32px] h-[32px] flex items-center justify-center rounded-full opacity-60">
             <PiHeartFill className="w-6 h-6 text-borderColor cursor-pointer" />
@@ -36,7 +52,7 @@ const CreateEventCard: React.FC<CardProps> = ({ eventName, price }) => {
                  border-[2px] border-borderColor bg-bg-gradient"
           >
             <p className="font-normal text-md text-textDark px-4 py-2.5">
-              Категорія
+            {category || 'Категорія'}
             </p>
           </div>
           <h2 className="min-h-[72px] text-2xl text-textDark group-hover:line-clamp-none">
@@ -53,7 +69,7 @@ const CreateEventCard: React.FC<CardProps> = ({ eventName, price }) => {
             </li>
             <li className="flex items-center gap-[18px]">
               <FaRegMoneyBillAlt size="24px" />
-              <p>{price}</p>
+              {getPrice ? <p>{price}</p> : <p>{price} ₴</p>}
             </li>
           </ul>
           <SharedBtn type="button" primary className="w-[230px] h-12 mx-auto">

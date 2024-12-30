@@ -2,7 +2,7 @@ import { useState } from 'react';
 
 import { Container } from '@/components/container/Container';
 import CreateEventCard from '@/components/createEvent/CreateEventCard';
-import CreateEventForm from '@/components/createEvent/CreateEventForm';
+import CreateEventForm from '@/components/createEvent/createEventForm/CreateEventForm';
 
 // import  hero  from "/images/heroForCreatEventForm.svg"
 
@@ -28,7 +28,16 @@ const CreateEventPage: React.FC = () => {
   const handlePriceChange = (newPrice: string) => {
     setPriece(newPrice);
   };
+  const [selectedCategory, setSelectedCategory] = useState<string>('');
+  const [photos, setPhotos] = useState<(string | null)[]>([null, null, null]);
 
+  const handlePhotoChange = (id: number, photo: string | null) => {
+    setPhotos((prevPhotos) => {
+      const updatedPhotos = [...prevPhotos];
+      updatedPhotos[id] = photo;
+      return updatedPhotos;
+    });
+  };
   return (
     <>
       <Container className="flex flex-col gap-16 pb-16">
@@ -38,12 +47,15 @@ const CreateEventPage: React.FC = () => {
           </h1>
         </div>
         <div className="flex gap-6">
-          <CreateEventCard eventName={eventName} price={price} />
+          <CreateEventCard eventName={eventName} price={price} photo={photos[0]} category={selectedCategory}/>
           <CreateEventForm
             eventName={eventName}
+            photos={photos} 
             price={price}
             onEventNameChange={handleEventNameChange}
+            onCategoryChange={setSelectedCategory}
             onPriceChange={handlePriceChange}
+            onPhotoChange={handlePhotoChange}
           />
         </div>
       </Container>
