@@ -28,7 +28,7 @@ const ModalDecision: React.FC<IProps> = ({ event, openModal }) => {
   console.log(event);
 
   return (
-    <div className="relative p-8 pr-16 flex gap-10 h-[520px] w-[944px]">
+    <div className="relative p-8 pr-16 flex gap-10 h-[630px] w-[944px]">
       <div className="">
         <img
           src={event?.photoUrl}
@@ -89,7 +89,7 @@ const ModalDecision: React.FC<IProps> = ({ event, openModal }) => {
                 href={event.eventUrl}
                 target="_blank"
                 rel="noopener noreferrer"
-                className="font-lato text-base leading-[19px] text-textDark"
+                className="font-lato text-base leading-[19px] text-textDark underline"
               >
                 <span className="font-bold">Місце: </span>
                 {event.eventUrl}
@@ -120,29 +120,33 @@ const ModalDecision: React.FC<IProps> = ({ event, openModal }) => {
           </div>
         </div>
         <div>
-          <h2 className="text-textDark font-medium text-2xl leading-[36px] mb-4 mt-[10px]">
+          <h2 className="text-textDark font-medium text-2xl leading-[36px] mb-4 mt-8">
             Опис події
           </h2>
           <p className="text-wrap overflow-y-scroll text-base leading-[19px] pb-1 max-h-[114px]">
             {event?.description}
           </p>
         </div>
-      </div>
-      <div className="absolute -bottom-16 right-0 flex gap-8 ">
-        {event?.eventStatus !== 'CANCELLED' && <button
-          onClick={() => openModal('CANCELLED')}
-          className="flex border justify-center items-center w-[180px] h-12 border-textDark rounded-[10px] bg-lightRed"
-        >
-          <RxCross2 className="h-6 w-6" />
-          Відхилити
-        </button>}
-        {event?.eventStatus !== 'APPROVED' && <button
-          onClick={() => openModal('APPROVED')}
-          className="flex gap-2 justify-center items-center w-[180px] h-12 border border-textDark rounded-[10px] bg-lightGreen"
-        >
-          <MdDone className="h-6 w-6" />
-          Схвалити
-        </button>}
+        <div className="flex justify-around gap-8 mt-8">
+          {event?.eventStatus !== 'CANCELLED' && (
+            <button
+              onClick={() => openModal('CANCELLED')}
+              className="flex gap-2 justify-center items-center w-[180px] h-12 border border-buttonPurple bg-background rounded-[10px] focus:outline-0 hover:shadow-shadowSecondaryBtn"
+            >
+              <RxCross2 className="h-6 w-6" />
+              Відхилити
+            </button>
+          )}
+          {event?.eventStatus !== 'APPROVED' && (
+            <button
+              onClick={() => openModal('APPROVED')}
+              className="flex gap-2 justify-center items-center w-[180px] h-12 border border-buttonPurple bg-lightPurple rounded-[10px] focus:outline-0 hover:shadow-shadowPrimaryBtn active:shadow-primaryBtnActive"
+            >
+              <MdDone className="h-6 w-6" />
+              Схвалити
+            </button>
+          )}
+        </div>
       </div>
     </div>
   );

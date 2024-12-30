@@ -12,6 +12,7 @@ export const PrevNextBtn: React.FC<PrevNextBtnProps> = ({
   return (
     <button
       {...props}
+      aria-label="change slide button"
       className={`${className} flex items-center w-[48px] h-[48px] justify-center
       focus:outline-none transition-all duration-300 active:scale-90`}
     >
