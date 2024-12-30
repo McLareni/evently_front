@@ -98,7 +98,7 @@ export const EventCard: React.FC<EventCardProps> = ({
     }
   };
 
-  const formattedDate = formatDateToDayMonth(date.day);
+  const formattedDate = formatDateToDayMonth(date?.day);
 
   useEffect(() => {
     if (likedEventsAll) {
@@ -116,7 +116,7 @@ export const EventCard: React.FC<EventCardProps> = ({
     >
       <img src={photoUrl} alt={title} width={'100%'} />
       <div className={`flex absolute justify-between p-6 w-full`}>
-        {category === 'TOP_EVENTS' && !isAdmin && (
+        {category === 'TOP_EVENTS' && event.eventStatus === 'APPROVED' && (
           <div className="flex justify-center items-center w-[58px] h-[35px] bg-badge-gradient rounded-[20px]">
             <span className="text-background">ТОП</span>
           </div>
@@ -200,39 +200,28 @@ export const EventCard: React.FC<EventCardProps> = ({
 
         {isAdmin ? (
           <div className="w-full flex justify-center gap-4 text-base mt-4">
-            {event.eventStatus === 'PENDING' ? (
-              <>
+            <>
+              {event.eventStatus !== 'CANCELLED' && (
                 <button
                   onClick={e =>
                     setEvent(event, e.target as HTMLElement, 'CANCELLED')
                   }
-                  className="border border-buttonPurple rounded-[10px] w-[110px] h-[33px] focus:outline-0"
+                  className="border border-buttonPurple rounded-[10px] w-[110px] h-[33px] focus:outline-0 flex-1 hover:shadow-shadowSecondaryBtn"
                 >
                   Відхилити
                 </button>
+              )}
+              {event.eventStatus !== 'APPROVED' && (
                 <button
                   onClick={e =>
                     setEvent(event, e.target as HTMLElement, 'APPROVED')
                   }
-                  className="border border-buttonPurple bg-lightPurple rounded-[10px] w-[110px] h-[33px] focus:outline-0"
+                  className="border border-buttonPurple bg-lightPurple rounded-[10px] w-[110px] h-[33px] focus:outline-0 flex-1 hover:shadow-shadowPrimaryBtn active:shadow-primaryBtnActive"
                 >
                   Схвалити
                 </button>
-              </>
-            ) : (
-              <button
-                onClick={e =>
-                  setEvent(
-                    event,
-                    e.target as HTMLElement,
-                    event.eventStatus === 'APPROVED' ? 'APPROVED' : 'CANCELLED'
-                  )
-                }
-                className="border border-buttonPurple bg-lightPurple rounded-[10px] w-full h-[33px] focus:outline-0"
-              >
-                {event.eventStatus === 'APPROVED' ? 'Відхилити' : 'Схвалити'}
-              </button>
-            )}
+              )}
+            </>
           </div>
         ) : (
           <>

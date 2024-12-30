@@ -13,7 +13,7 @@ export const AdminEventsList: React.FC<IProps> = ({
   setEvent,
 }) => {
   return (
-    <div className={'flex flex-wrap justify-start gap-6 mb-3'}>
+    <div className={'flex flex-wrap justify-start gap-5 mb-3 mx-auto'}>
       {events?.map(event => (
         <EventCard
           key={nanoid()}
