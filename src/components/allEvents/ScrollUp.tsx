@@ -36,7 +36,7 @@ const ScrollUp = () => {
         onClick={handleScrollToTop}
         className="fixed right-[60px] bottom-[60px] focus:outline-none z-20"
       >
-        <FaCircleArrowUp className="h-10 w-10 fill-borderColor active:-translate-y-4" />
+        <FaCircleArrowUp className="h-10 w-10 fill-borderColor bg-white rounded-full active:-translate-y-4" />
       </button>
     )
   );
