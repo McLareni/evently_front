@@ -203,7 +203,7 @@ const DateAndPlace = () => {
       {eventType ? (
         <div className="flex">
           <div className="flex flex-col">
-            <label id="adress" className="pb-4">
+            <label id="adress" className="pb-3">
               Адреса
             </label>
             <Controller
@@ -218,6 +218,7 @@ const DateAndPlace = () => {
               }}
               render={({ field }) => (
                 <GoogleMapsInput
+                  className='w-[696px] border-buttonPurple'
                   onPlaceSelect={place => {
                     if (!place || !place.geometry) return;
                     const formattedPlace = {
