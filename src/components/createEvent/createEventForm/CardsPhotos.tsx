@@ -1,9 +1,9 @@
 import React, { useState, useRef } from "react";
 import { AiOutlineUpload } from "react-icons/ai";
 import { BiTrash } from "react-icons/bi";
-import { GoPencil } from "react-icons/go"; // Іконка пензля
-import Cropper from "react-cropper"; // Correct import
-import "cropperjs/dist/cropper.css"; // Required CSS for cropper
+import { GoPencil } from "react-icons/go"; 
+import Cropper from "react-cropper"; 
+import "cropperjs/dist/cropper.css"; 
 
 interface PhotoCardProps {
   title: string;
@@ -15,55 +15,54 @@ interface PhotoCardProps {
 
 const PhotoCard: React.FC<PhotoCardProps> = ({ title, subtitle, id, photo, onPhotoChange }) => {
   const [isHovered, setIsHovered] = useState(false);
-  const [showCropper, setShowCropper] = useState(false); // State to show the cropper modal
-  const [imageToCrop, setImageToCrop] = useState<string | null>(null); // Store image to crop
-  const [croppedImage, setCroppedImage] = useState<string | null>(null); // Store cropped image
+  const [showCropper, setShowCropper] = useState(false);
+  const [imageToCrop, setImageToCrop] = useState<string | null>(null);
+  const [croppedImage, setCroppedImage] = useState<string | null>(null);
   const cropperRef = useRef<any>(null);
 
   const handlePhotoUpload = (event: React.ChangeEvent<HTMLInputElement>) => {
     if (event.target.files && event.target.files[0]) {
       const reader = new FileReader();
       reader.onload = () => {
-        onPhotoChange(id, reader.result as string); // Send the image to parent
+        onPhotoChange(id, reader.result as string);
       };
       reader.readAsDataURL(event.target.files[0]);
     }
   };
 
   const handleRemovePhoto = () => {
-    onPhotoChange(id, null); // Remove photo
+    onPhotoChange(id, null); 
   };
 
   const handleEditPhoto = () => {
     if (photo) {
-      setImageToCrop(photo); // Set the image to crop
-      setShowCropper(true); // Show cropper modal
+      setImageToCrop(photo); 
+      setShowCropper(true); 
     }
   };
 
   const handleSaveCroppedImage = () => {
     if (cropperRef.current) {
-      // Get the cropped canvas and convert it to data URL
       const croppedDataUrl = cropperRef.current.getCroppedCanvas({
-        width: 400, // Set the output width to 400px
-        height: 400, // Set the output height to 400px
+        width: 400, 
+        height: 400,
       }).toDataURL();
 
-      setCroppedImage(croppedDataUrl); // Set the cropped image
-      onPhotoChange(id, croppedDataUrl); // Update the parent component with cropped image
-      setShowCropper(false); // Close cropper modal
+      setCroppedImage(croppedDataUrl); 
+      onPhotoChange(id, croppedDataUrl); 
+      setShowCropper(false); 
     }
   };
 
   const handleCloseCropper = () => {
-    setShowCropper(false); // Close cropper modal
+    setShowCropper(false);
   };
 
   return (
     <div className="py-8">
       <div
         className="relative flex flex-col items-center justify-center w-[189px] h-[229px] bg-gray-100 rounded-[10px] hover:shadow-md cursor-pointer"
-        onClick={() => document.getElementById(`file-input-${id}`)?.click()} // Open file input on click
+        onClick={() => document.getElementById(`file-input-${id}`)?.click()} 
         onMouseEnter={() => setIsHovered(true)}
         onMouseLeave={() => setIsHovered(false)}
       >
@@ -101,7 +100,7 @@ const PhotoCard: React.FC<PhotoCardProps> = ({ title, subtitle, id, photo, onPho
         type="file"
         accept="image/*"
         className="hidden"
-        onChange={handlePhotoUpload} // Handles file input
+        onChange={handlePhotoUpload}
       />
       <div className="text-[12px] text-gray-300 max-w-[210px] mt-3.5">{subtitle}</div>
 
@@ -119,9 +118,9 @@ const PhotoCard: React.FC<PhotoCardProps> = ({ title, subtitle, id, photo, onPho
               src={imageToCrop || ""}
               style={{ width: "100%", height: "400px" }}
               initialAspectRatio={1}
-              aspectRatio={1} // Ensures square crop (400x400)
+              aspectRatio={1} 
               guides={false}
-              ref={cropperRef} // Correctly typed ref
+              ref={cropperRef}
             />
             <div className="mt-4 flex justify-between">
               <button onClick={handleCloseCropper} className="bg-gray-300 p-2 rounded">
