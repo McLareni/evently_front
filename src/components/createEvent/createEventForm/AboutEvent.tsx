@@ -63,7 +63,7 @@ const AboutEvent: React.FC<AboutEventProps> = ({
                 key={category.name}
                 onClick={() => handleCategoryClick(category.name)}
                 className="bg-gradient-to-r hover:from-[#12C2E9] hover:to-[#C471ED] transition ease-in-out duration-700 cursor-pointer flex items-center rounded-[20px] border-[1px] border-borderColor text-xl mr-4 last:pr-0 h-12 px-[18px] 
-                                    min-w-[80px] max-w-[223px] bg-gradient-to-r from-[#E9E6FF] to-[#D5FEFF]"
+                                    min-w-[80px] max-w-[223px] from-[#E9E6FF] to-[#D5FEFF]"
               >
                 {category.name}
               </div>

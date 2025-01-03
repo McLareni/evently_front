@@ -42,8 +42,8 @@ const CreateEventPage: React.FC = () => {
     <>
       <Container className="flex flex-col gap-16 pb-16">
         <div>
-          <h1 className="content-center text-center bg-[url('/images/heroForCreatEventForm.svg')]  w-[1320px] h-[223px]">
-            Твій івент - твоя історія!
+          <h1 className=" content-center text-center bg-[url('/images/heroForCreatEventForm.svg')]  w-[1320px] h-[223px]">
+            <span className='bg-gradient-to-r from-[#12C2E9] to-[#C471ED] bg-clip-text text-transparent'>Твій івент - твоя історія!</span>
           </h1>
         </div>
         <div className="flex gap-6">

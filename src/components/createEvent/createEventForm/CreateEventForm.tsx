@@ -7,11 +7,11 @@ import { useForm } from 'react-hook-form';
 
 import { SharedBtn } from '@/components/ui';
 
-import PhotoUploadSection from './CardsPhotos';
 
 import AboutEvent from './AboutEvent';
 import DateAndPlace from './DateAndPlace';
 import TicketPrice from './TicketPrice';
+import PhotoCard from './CardsPhotos';
 
 
 
@@ -47,10 +47,29 @@ const CreateEventForm: React.FC<CreateEventFormProps> = ({
     console.log(data.address);
   };
 
+  
+
+  const subtitles = [
+    "Рекомендований розмір 400х400",
+    "Максимальний розмір файлу: 50 МБ",
+    "Підтримувані файли: .JPEG, .PNG",
+  ];
+
   return (
     <form onSubmit={handleSubmit(onSubmit)}>
       <div className="w-[760px] h-[321px] mb-8 rounded-[20px] border-buttonPurple border-2">
-        <PhotoUploadSection photos={photos} onPhotoChange={onPhotoChange} />
+      <div className="flex flex-wrap items-center justify-center gap-16">
+      {[0, 1, 2].map((id) => (
+        <PhotoCard
+          key={id}
+          title={'Додати фото події'}
+          subtitle={subtitles[id]}
+          id={id}
+          photo={photos[id]}
+          onPhotoChange={onPhotoChange}
+        />
+      ))}
+    </div>
       </div>
       <AboutEvent eventName={eventName} onEventNameChange={onEventNameChange} onCategoryChange={onCategoryChange}/>
       <DateAndPlace/>
