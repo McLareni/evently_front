@@ -8,6 +8,7 @@ import StatusBar from '@/components/admin/Events/StatusBar';
 import ModalAdmin from '@/components/admin/ModalAdmin';
 import Navigation from '@/components/admin/Navigation';
 import { Modal } from '@/components/ui';
+import Spinner from '@/components/ui/Spinner';
 
 export type FilterStatus = 'PENDING' | 'APPROVED' | 'CANCELLED' | '';
 
@@ -19,10 +20,13 @@ const AdminEvents = () => {
   const [confirmationModal, setConfirmationModal] = useState(false);
   const [filterStatus, setFilterStatus] = useState<FilterStatus>('');
   const [action, setAction] = useState<'APPROVED' | 'CANCELLED' | ''>('');
+  const [loading, setLoading] = useState<boolean>(false);
 
   useEffect(() => {
     const getEvents = async () => {
+      setLoading(true);
       setEvents(await fetchAdminEvent());
+      setLoading(false);
     };
 
     getEvents();
@@ -111,6 +115,7 @@ const AdminEvents = () => {
 
   return (
     <main className="relative pb-10 h-full">
+      {loading && <Spinner />}
       <Modal isOpen={modalIsOpen} onClose={handleCloseModal}>
         <ModalDecision event={currEvent} openModal={handleOpenModal} />
       </Modal>
@@ -127,7 +132,7 @@ const AdminEvents = () => {
         <p className="h-fit w-fit rounded-[10px] border border-buttonPurple bg-background p-[3px_6px] mr-[10px] text-xs leading-5">
           {startCountPage}-{endCountPage} з {totalEvents}
         </p>
-        <p className="mr-4 text-xs leading-5">Кількість користувачів</p>
+        <p className="mr-4 text-xs leading-5">Кількість подій</p>
         <Navigation page={page} changePage={handleChangePage} />
       </div>
       <ModalAdmin

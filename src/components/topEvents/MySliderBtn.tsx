@@ -23,6 +23,7 @@ export const MySliderBtn: React.FC<CustomArrowProps> = ({
   return (
     <button
       {...props}
+      aria-label="change slide button"
       className={clsx(
         `absolute -top-20 flex items-center justify-center w-[40px] h-[40px] rounded-full 
          focus:outline-none transition-all duration-300 active:scale-90`,
