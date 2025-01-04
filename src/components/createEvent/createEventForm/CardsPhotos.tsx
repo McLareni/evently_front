@@ -28,6 +28,7 @@ const PhotoCard: React.FC<PhotoCardProps> = ({
   const [showCropper, setShowCropper] = useState(false);
   const [imageToCrop, setImageToCrop] = useState<string | null>(null);
   const [croppedImage, setCroppedImage] = useState<string | null>(null);
+
   const cropperRef = useRef<any>(null);
 
   const handlePhotoUpload = (event: React.ChangeEvent<HTMLInputElement>) => {
@@ -55,11 +56,8 @@ const PhotoCard: React.FC<PhotoCardProps> = ({
 
   const handleSaveCroppedImage = () => {
     if (cropperRef.current) {
-      const croppedDataUrl = cropperRef.current
-        .getCroppedCanvas({
-          width: 400,
-          height: 400,
-        })
+      const croppedDataUrl = cropperRef.current.cropper
+        .getCroppedCanvas()
         .toDataURL();
 
       setCroppedImage(croppedDataUrl);
