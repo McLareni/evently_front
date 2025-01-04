@@ -134,20 +134,24 @@ const PhotoCard: React.FC<PhotoCardProps> = ({
             </button>
             <Cropper
               src={imageToCrop || ''}
-              style={{ width: '100%', height: '400px' }}
+              style={{ width: '100%' }}
               initialAspectRatio={1}
               aspectRatio={1}
               guides={false}
               ref={cropperRef}
+              minCropBoxHeight={100}
+              minCropBoxWidth={100}
             />
             <div className="mt-4 flex justify-between">
               <button
+                type="button"
                 onClick={handleCloseCropper}
                 className="bg-gray-300 p-2 rounded"
               >
                 Cancel
               </button>
               <button
+                type="button"
                 onClick={handleSaveCroppedImage}
                 className="bg-blue-500 text-white p-2 rounded"
               >
