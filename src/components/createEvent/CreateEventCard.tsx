@@ -12,12 +12,12 @@ import exampleCard from '/images/exampleCard.svg';
 
 type CardProps = {
   eventName: string;
-  // date: number;
   // place: string;
   price: string;
   photo: string | null;
   category: string;
   date: string;
+  startTimeOption: string;
 };
 
 const CreateEventCard: React.FC<CardProps> = ({
@@ -26,8 +26,9 @@ const CreateEventCard: React.FC<CardProps> = ({
   photo,
   category,
   date,
+  startTimeOption,
 }) => {
-  const [getPrice, setGetPrice] = useState<boolean>(true);
+  const [getPrice, setGetPrice] = useState(true);
 
   const formattedDate = formatDateToDayMonth(date);
 
@@ -80,7 +81,13 @@ const CreateEventCard: React.FC<CardProps> = ({
           <ul className="flex flex-col gap-[18px] font-normal text-md text-textDark justify-between w-full">
             <li className="flex items-center gap-[18px]">
               <AiOutlineCalendar size="24px" />
-              {date ? <p>{formattedDate}</p> : <p>Дата</p>}
+              {date ? (
+                <p>
+                  {formattedDate}, {startTimeOption}
+                </p>
+              ) : (
+                <p>Дата</p>
+              )}
             </li>
             <li className="flex items-center gap-[18px]">
               <GrLocation size="24px" />

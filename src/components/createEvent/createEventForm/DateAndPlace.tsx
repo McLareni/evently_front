@@ -10,19 +10,23 @@ import { GoogleMapsInput } from './GoogleMapsInput';
 
 interface DateAndPlaceProps {
   handleDateChange: (newDate: string) => void;
+  handleStartTime: (startTime: string) => void;
 }
 
-const DateAndPlace = ({ handleDateChange }: DateAndPlaceProps) => {
-  const [startTimeSelect, setStartTimeSelect] = useState<boolean>(false);
-  const [endTimeSelect, setEndTimeSelect] = useState<boolean>(false);
-  const [startTimeOption, setSelectedStartTimeOption] = useState<string>('');
-  const [selectedEndOption, setSelectedEndTimeOption] = useState<string>('');
+const DateAndPlace = ({
+  handleDateChange,
+  handleStartTime,
+}: DateAndPlaceProps) => {
+  const [startTimeSelect, setStartTimeSelect] = useState(false);
+  const [endTimeSelect, setEndTimeSelect] = useState(false);
+  const [startTimeOption, setSelectedStartTimeOption] = useState('');
+  const [selectedEndOption, setSelectedEndTimeOption] = useState('');
   const [options, setOptions] = useState<{ label: string; value: string }[]>(
     []
   );
   const [isCalendarShown, setIsCalendarShown] = useState(false);
 
-  const [eventType, setEventType] = useState<boolean>(true);
+  const [eventType, setEventType] = useState(true);
 
   const dropdownStartTimeRef = useRef<HTMLDivElement | null>(null);
   const dropdownEndTimeRef = useRef<HTMLDivElement | null>(null);
@@ -89,6 +93,10 @@ const DateAndPlace = ({ handleDateChange }: DateAndPlaceProps) => {
     const generatedOptions = generateTimeOptions();
     setOptions(generatedOptions);
   }, []);
+
+  useEffect(() => {
+    handleStartTime(startTimeOption);
+  }, [handleStartTime, startTimeOption]);
 
   return (
     <div className="w-[760px] rounded-[20px] border-2 border-buttonPurple flex flex-col pt-10 pb-5 px-10 mb-8">

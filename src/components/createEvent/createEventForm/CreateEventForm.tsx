@@ -15,6 +15,7 @@ type CreateEventFormProps = {
   price: string;
   photos: (string | null)[];
   date: string;
+  startTimeOption: string;
   onPhotoChange: (id: number, photo: string | null) => void;
   // onCategorieChange: (categorie: string) => void;
   onEventNameChange: (eventName: string) => void;
@@ -23,6 +24,7 @@ type CreateEventFormProps = {
   onPriceChange: (price: string) => void;
   onCategoryChange: (category: string) => void;
   handleDateChange: (newDate: string) => void;
+  handleStartTime: (startTime: string) => void;
 };
 
 const CreateEventForm: React.FC<CreateEventFormProps> = ({
@@ -30,11 +32,13 @@ const CreateEventForm: React.FC<CreateEventFormProps> = ({
   price,
   photos,
   date,
+  startTimeOption,
   onPhotoChange,
   onEventNameChange,
   onPriceChange,
   onCategoryChange,
   handleDateChange,
+  handleStartTime,
 }) => {
   const { handleSubmit } = useForm({
     mode: 'onChange',
@@ -45,6 +49,7 @@ const CreateEventForm: React.FC<CreateEventFormProps> = ({
       title: eventName,
       dateDetails: {
         day: date,
+        time: startTimeOption,
       },
       ticketPrice: price,
     };
@@ -78,7 +83,10 @@ const CreateEventForm: React.FC<CreateEventFormProps> = ({
         onEventNameChange={onEventNameChange}
         onCategoryChange={onCategoryChange}
       />
-      <DateAndPlace handleDateChange={handleDateChange} />
+      <DateAndPlace
+        handleDateChange={handleDateChange}
+        handleStartTime={handleStartTime}
+      />
       <TicketPrice price={price} onPriceChange={onPriceChange} />
       <div className="text-center">
         <SharedBtn

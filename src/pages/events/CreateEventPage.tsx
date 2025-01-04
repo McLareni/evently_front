@@ -8,10 +8,11 @@ import CreateEventForm from '@/components/createEvent/createEventForm/CreateEven
 
 const CreateEventPage: React.FC = () => {
   // const [categorie, setCategorie] = useState<string>("Категорія")
-  const [eventName, setEventName] = useState<string>('Назва події');
+  const [eventName, setEventName] = useState('Назва події');
   const [date, setDate] = useState<string>('');
   // const [place, setPlace] = useState<string>("Місце")
-  const [price, setPriece] = useState<string>('Ціна');
+  const [price, setPriece] = useState('Ціна');
+  const [startTimeOption, setSelectedStartTimeOption] = useState('');
 
   // const handleCategorieChange = (newCategorie: string) => {
   //     setCategorie(newCategorie);
@@ -24,13 +25,17 @@ const CreateEventPage: React.FC = () => {
     setDate(newDate);
   };
 
+  const handleStartTime = (startTime: string) => {
+    setSelectedStartTimeOption(startTime);
+  };
+
   //   const handlePlaceChange = (newPlace: string) => {
   //     setPlace(newPlace);
   //   };
   const handlePriceChange = (newPrice: string) => {
     setPriece(newPrice);
   };
-  const [selectedCategory, setSelectedCategory] = useState<string>('');
+  const [selectedCategory, setSelectedCategory] = useState('');
   const [photos, setPhotos] = useState<(string | null)[]>([null, null, null]);
 
   const handlePhotoChange = (id: number, photo: string | null) => {
@@ -40,6 +45,7 @@ const CreateEventPage: React.FC = () => {
       return updatedPhotos;
     });
   };
+
   return (
     <>
       <Container className="flex flex-col gap-16 pb-16">
@@ -57,17 +63,20 @@ const CreateEventPage: React.FC = () => {
             photo={photos[0]}
             category={selectedCategory}
             date={date}
+            startTimeOption={startTimeOption}
           />
           <CreateEventForm
             eventName={eventName}
             photos={photos}
             price={price}
             date={date}
+            startTimeOption={startTimeOption}
             onEventNameChange={handleEventNameChange}
             onCategoryChange={setSelectedCategory}
             onPriceChange={handlePriceChange}
             onPhotoChange={handlePhotoChange}
             handleDateChange={handleDateChange}
+            handleStartTime={handleStartTime}
           />
         </div>
       </Container>
