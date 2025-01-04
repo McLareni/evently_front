@@ -4,6 +4,8 @@ import { FaRegMoneyBillAlt } from 'react-icons/fa';
 import { GrLocation } from 'react-icons/gr';
 import { PiHeartFill } from 'react-icons/pi';
 
+import { formatDateToDayMonth } from '@/helpers/filters/formatDateToDayMonth';
+
 import { SharedBtn } from '@/components/ui';
 
 import exampleCard from '/images/exampleCard.svg';
@@ -26,6 +28,9 @@ const CreateEventCard: React.FC<CardProps> = ({
   date,
 }) => {
   const [getPrice, setGetPrice] = useState<boolean>(true);
+
+  const formattedDate = formatDateToDayMonth(date);
+
   useEffect(() => {
     if (price != 'Ціна') {
       setGetPrice(false);
@@ -75,7 +80,7 @@ const CreateEventCard: React.FC<CardProps> = ({
           <ul className="flex flex-col gap-[18px] font-normal text-md text-textDark justify-between w-full">
             <li className="flex items-center gap-[18px]">
               <AiOutlineCalendar size="24px" />
-              {date ? <p>{date}</p> : <p>Дата</p>}
+              {date ? <p>{formattedDate}</p> : <p>Дата</p>}
             </li>
             <li className="flex items-center gap-[18px]">
               <GrLocation size="24px" />

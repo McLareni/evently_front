@@ -63,6 +63,7 @@ const CreateEventPage: React.FC = () => {
             eventName={eventName}
             photos={photos}
             price={price}
+            date={date}
             onEventNameChange={handleEventNameChange}
             onCategoryChange={setSelectedCategory}
             onPriceChange={handlePriceChange}

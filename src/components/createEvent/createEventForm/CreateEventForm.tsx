@@ -16,6 +16,7 @@ type CreateEventFormProps = {
   eventName: string;
   price: string;
   photos: (string | null)[];
+  date: string;
   onPhotoChange: (id: number, photo: string | null) => void;
   // onCategorieChange: (categorie: string) => void;
   onEventNameChange: (eventName: string) => void;
