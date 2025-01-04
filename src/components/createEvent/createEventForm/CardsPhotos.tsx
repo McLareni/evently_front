@@ -1,9 +1,13 @@
-import React, { useState, useRef } from "react";
-import { AiOutlineUpload } from "react-icons/ai";
-import { BiTrash } from "react-icons/bi";
-import { GoPencil } from "react-icons/go"; 
-import Cropper from "react-cropper"; 
-import "cropperjs/dist/cropper.css"; 
+/* eslint-disable @typescript-eslint/no-explicit-any */
+
+/* eslint-disable no-unused-vars */
+import React, { useRef, useState } from 'react';
+import Cropper from 'react-cropper';
+import { AiOutlineUpload } from 'react-icons/ai';
+import { BiTrash } from 'react-icons/bi';
+import { GoPencil } from 'react-icons/go';
+
+import 'cropperjs/dist/cropper.css';
 
 interface PhotoCardProps {
   title: string;
@@ -13,11 +17,18 @@ interface PhotoCardProps {
   onPhotoChange: (id: number, photo: string | null) => void;
 }
 
-const PhotoCard: React.FC<PhotoCardProps> = ({ title, subtitle, id, photo, onPhotoChange }) => {
+const PhotoCard: React.FC<PhotoCardProps> = ({
+  title,
+  subtitle,
+  id,
+  photo,
+  onPhotoChange,
+}) => {
   const [isHovered, setIsHovered] = useState(false);
   const [showCropper, setShowCropper] = useState(false);
   const [imageToCrop, setImageToCrop] = useState<string | null>(null);
   const [croppedImage, setCroppedImage] = useState<string | null>(null);
+
   const cropperRef = useRef<any>(null);
 
   const handlePhotoUpload = (event: React.ChangeEvent<HTMLInputElement>) => {
@@ -30,27 +41,28 @@ const PhotoCard: React.FC<PhotoCardProps> = ({ title, subtitle, id, photo, onPho
     }
   };
 
-  const handleRemovePhoto = () => {
-    onPhotoChange(id, null); 
+  const handleRemovePhoto = (e: any) => {
+    e.stopPropagation();
+    onPhotoChange(id, null);
   };
 
-  const handleEditPhoto = () => {
+  const handleEditPhoto = (e: any) => {
+    e.stopPropagation();
     if (photo) {
-      setImageToCrop(photo); 
-      setShowCropper(true); 
+      setImageToCrop(photo);
+      setShowCropper(true);
     }
   };
 
   const handleSaveCroppedImage = () => {
     if (cropperRef.current) {
-      const croppedDataUrl = cropperRef.current.getCroppedCanvas({
-        width: 400, 
-        height: 400,
-      }).toDataURL();
+      const croppedDataUrl = cropperRef.current.cropper
+        .getCroppedCanvas()
+        .toDataURL();
 
-      setCroppedImage(croppedDataUrl); 
-      onPhotoChange(id, croppedDataUrl); 
-      setShowCropper(false); 
+      setCroppedImage(croppedDataUrl);
+      onPhotoChange(id, croppedDataUrl);
+      setShowCropper(false);
     }
   };
 
@@ -62,7 +74,7 @@ const PhotoCard: React.FC<PhotoCardProps> = ({ title, subtitle, id, photo, onPho
     <div className="py-8">
       <div
         className="relative flex flex-col items-center justify-center w-[189px] h-[229px] bg-gray-100 rounded-[10px] hover:shadow-md cursor-pointer"
-        onClick={() => document.getElementById(`file-input-${id}`)?.click()} 
+        onClick={() => document.getElementById(`file-input-${id}`)?.click()}
         onMouseEnter={() => setIsHovered(true)}
         onMouseLeave={() => setIsHovered(false)}
       >
@@ -70,7 +82,7 @@ const PhotoCard: React.FC<PhotoCardProps> = ({ title, subtitle, id, photo, onPho
           <img
             src={photo}
             alt="Uploaded"
-            className={`absolute inset-0 w-full h-full object-cover rounded-[10px] ${isHovered ? "blur-sm" : ""} transition-all duration-300`}
+            className={`absolute inset-0 w-full h-full object-cover rounded-[10px] ${isHovered ? 'blur-sm' : ''} transition-all duration-300`}
           />
         ) : (
           <div className="absolute inset-0 bg-cover bg-center opacity-20 bg-[url('/images/exampleCard.svg')]"></div>
@@ -89,7 +101,9 @@ const PhotoCard: React.FC<PhotoCardProps> = ({ title, subtitle, id, photo, onPho
               <div className="flex justify-center">
                 <AiOutlineUpload className="h-6 w-6" />
               </div>
-              <div className="text-xs font-medium text-gray-700 mb-2">{title}</div>
+              <div className="text-xs font-medium text-gray-700 mb-2">
+                {title}
+              </div>
             </>
           )}
         </div>
@@ -102,7 +116,9 @@ const PhotoCard: React.FC<PhotoCardProps> = ({ title, subtitle, id, photo, onPho
         className="hidden"
         onChange={handlePhotoUpload}
       />
-      <div className="text-[12px] text-gray-300 max-w-[210px] mt-3.5">{subtitle}</div>
+      <div className="text-[12px] text-gray-300 max-w-[210px] mt-3.5">
+        {subtitle}
+      </div>
 
       {/* Image Cropper Modal */}
       {showCropper && (
@@ -115,18 +131,28 @@ const PhotoCard: React.FC<PhotoCardProps> = ({ title, subtitle, id, photo, onPho
               X
             </button>
             <Cropper
-              src={imageToCrop || ""}
-              style={{ width: "100%", height: "400px" }}
+              src={imageToCrop || ''}
+              style={{ width: '100%' }}
               initialAspectRatio={1}
-              aspectRatio={1} 
+              aspectRatio={1}
               guides={false}
               ref={cropperRef}
+              minCropBoxHeight={100}
+              minCropBoxWidth={100}
             />
             <div className="mt-4 flex justify-between">
-              <button onClick={handleCloseCropper} className="bg-gray-300 p-2 rounded">
+              <button
+                type="button"
+                onClick={handleCloseCropper}
+                className="bg-gray-300 p-2 rounded"
+              >
                 Cancel
               </button>
-              <button onClick={handleSaveCroppedImage} className="bg-blue-500 text-white p-2 rounded">
+              <button
+                type="button"
+                onClick={handleSaveCroppedImage}
+                className="bg-blue-500 text-white p-2 rounded"
+              >
                 Save
               </button>
             </div>
