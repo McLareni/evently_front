@@ -95,6 +95,8 @@ function handleUpdateUserFulfilled(state: any, action: PayloadAction<User>) {
 
   state.isLoading = false;
   state.user.name = action.payload.name;
+  state.user.surname = action.payload.surname;
+  state.user.phoneNumber = action.payload.phoneNumber;
 }
 
 function handleUpdateUserRejected(state: any, action: any) {
@@ -122,6 +124,8 @@ function handleGetFullInfomation(
   state: { user: User },
   action: PayloadAction<User>
 ) {
+  console.log('payload', action.payload);
+
   state.user = action.payload;
 }
 

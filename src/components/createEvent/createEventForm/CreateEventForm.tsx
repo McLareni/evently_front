@@ -44,7 +44,7 @@ const CreateEventForm: React.FC<CreateEventFormProps> = ({
   });
 
   const onSubmit = (data: any) => {
-    console.log(data.address);
+    // console.log(data.address);
   };
 
   

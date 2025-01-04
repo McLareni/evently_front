@@ -9,6 +9,7 @@ axios.defaults.baseURL = `${URL}`;
 const setAuthToken = (token: string) => {
   axios.defaults.headers.common.Authorization = `Bearer ${token}`;
 };
+
 export const clearAuthToken = () => {
   axios.defaults.headers.common.Authorization = '';
 };
@@ -19,7 +20,7 @@ export const register = createAsyncThunk(
     try {
       const response = await axios.post('authorize/registration', user);
       return response.data;
-    } catch (error: unknown) {
+    } catch (error) {
       return thunkAPI.rejectWithValue((error as Error).message);
     }
   }
@@ -30,12 +31,9 @@ export const logIn = createAsyncThunk(
   async (user: LoginUser, thunkAPI) => {
     try {
       const { data } = await axios.post('authorize/login', user);
-      console.log(data);
-
       if (!data.accessToken) {
         return thunkAPI.rejectWithValue(data);
       }
-
       setAuthToken(data.accessToken);
       return data;
     } catch (error) {
@@ -49,16 +47,20 @@ export const updateUserInfo = createAsyncThunk<
   User,
   {
     name: string;
-    phoneNumber: string;
     surname: string;
+    birthdayDate: string;
+    phoneNumber: string;
   },
   { state: RootState }
 >('users', async (user, thunkAPI) => {
   try {
     const state = thunkAPI.getState();
+    const token = state.auth.token;
+    if (!token) {
+      throw new Error('Token not found');
+    }
+    setAuthToken(token);
     const response = await axios.patch(`users/${state.auth.user.id}`, user);
-    console.log(response);
-
     return response.data;
   } catch (error) {
     return thunkAPI.rejectWithValue((error as Error).message);
@@ -70,8 +72,11 @@ export const getUser = createAsyncThunk<User, void, { state: RootState }>(
   async (_, thunkAPI) => {
     try {
       const state = thunkAPI.getState();
-      console.log(state);
-
+      const token = state.auth.token;
+      if (!token) {
+        throw new Error('Token not found');
+      }
+      setAuthToken(token);
       const response = await axios.get(`/users/${state.auth.user.id}`);
       return response.data;
     } catch (error) {

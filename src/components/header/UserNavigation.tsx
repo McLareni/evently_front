@@ -68,11 +68,16 @@ export const UserNavigation: React.FC<UserNavigationProps> = ({
       setIsModalOpen(true);
     }
     return () => setToken(null);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [location]);
 
   return (
     <div className="flex gap-6 pr-12 items-center">
-      <button onClick={toggleInput} className="focus:outline-none">
+      <button
+        onClick={toggleInput}
+        className="focus:outline-none"
+        aria-label="search"
+      >
         <BsSearch className="w-[24px] h-[24px] cursor-pointer hover:[color:#9B8FF3]" />
       </button>
       {isInputVisible && (
@@ -98,6 +103,7 @@ export const UserNavigation: React.FC<UserNavigationProps> = ({
       <IconButton
         Icon={AiOutlineHeart}
         onClick={() => handleLinkClick('favourite')}
+        aria-label="favourite"
       >
         {likedEventsAll && likedEventsAll.length > 0 && IsLoggedIn && (
           <div className="absolute -right-2 -top-2 w-[20px] h-[20px] rounded-full bg-borderColor flex items-center justify-center">
@@ -110,6 +116,7 @@ export const UserNavigation: React.FC<UserNavigationProps> = ({
       <IconButton
         Icon={CgProfile}
         onClick={() => handleLinkClick('user_profile')}
+        aria-label="user profile"
       />
 
       <Modal isOpen={isModalOpen} onClose={() => setIsModalOpen(false)}>

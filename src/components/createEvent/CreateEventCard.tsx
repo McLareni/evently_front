@@ -18,14 +18,17 @@ type CardProps = {
 };
 
 const CreateEventCard: React.FC<CardProps> = ({ eventName, price, photo, category }) => {
-  const [getPrice, setGetPrice] = useState<boolean>(true)
+  const [displayedPrice, setDisplayedPrice] = useState<string>(price);
+
   useEffect(() => {
-    if (price != 'Ціна') {
-      setGetPrice(false);
+    if (price === 'Ціна') {
+      setDisplayedPrice('Ціна');
+    } else if (price === 'Безкоштовно') {
+      setDisplayedPrice('Безкоштовно');
     } else {
-      setGetPrice(true)
+      setDisplayedPrice(price);
     }
-  }, [price])
+  }, [price]);
   
   return (
     <>
@@ -69,7 +72,11 @@ const CreateEventCard: React.FC<CardProps> = ({ eventName, price, photo, categor
             </li>
             <li className="flex items-center gap-[18px]">
               <FaRegMoneyBillAlt size="24px" />
-              {getPrice ? <p>{price}</p> : <p>{price} ₴</p>}
+              {displayedPrice === 'Безкоштовно' ? (
+                <p>{displayedPrice}</p> // Якщо ціна "Безкоштовно", вивести тільки це слово
+              ) : (
+                <p>{displayedPrice}</p> // Інакше вивести ціну з символом валюти
+              )}
             </li>
           </ul>
           <SharedBtn type="button" primary className="w-[230px] h-12 mx-auto">
