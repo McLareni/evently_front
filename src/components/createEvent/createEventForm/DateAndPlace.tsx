@@ -1,15 +1,18 @@
+/* eslint-disable no-unused-vars */
 import { useCallback, useEffect, useRef, useState } from 'react';
 import { Controller, useForm } from 'react-hook-form';
 import { AiOutlineCalendar } from 'react-icons/ai';
 import { BiChevronDown } from 'react-icons/bi';
 import { BiTimeFive } from 'react-icons/bi';
 
-
 import { CreateEventCalendar } from './CreateEventCalendar';
 import { GoogleMapsInput } from './GoogleMapsInput';
 
+interface DateAndPlaceProps {
+  handleDateChange: (newDate: string) => void;
+}
 
-const DateAndPlace = () => {
+const DateAndPlace = ({ handleDateChange }: DateAndPlaceProps) => {
   const [startTimeSelect, setStartTimeSelect] = useState<boolean>(false);
   const [endTimeSelect, setEndTimeSelect] = useState<boolean>(false);
   const [startTimeOption, setSelectedStartTimeOption] = useState<string>('');
@@ -18,16 +21,15 @@ const DateAndPlace = () => {
     []
   );
   const [isCalendarShown, setIsCalendarShown] = useState(false);
-  
 
   const [eventType, setEventType] = useState<boolean>(true);
 
   const dropdownStartTimeRef = useRef<HTMLDivElement | null>(null);
   const dropdownEndTimeRef = useRef<HTMLDivElement | null>(null);
 
-    const {  control, setValue } = useForm({
-      mode: 'onChange',
-    });
+  const { control, setValue } = useForm({
+    mode: 'onChange',
+  });
 
   const handleStartTimeOption = (option: string) => {
     setSelectedStartTimeOption(option);
@@ -41,55 +43,52 @@ const DateAndPlace = () => {
   const toggleIsCalendarShown = () => {
     setIsCalendarShown(!isCalendarShown);
   };
-  
-  
 
   const dropdownStartTime = useRef<HTMLDivElement | null>(null); // Ссылка для первого селектора
   const dropdownEndTime = useRef<HTMLDivElement | null>(null);
-  
 
-    const handleClickOutside = useCallback((event: MouseEvent) => {
-      if (
-        dropdownStartTime.current &&
-        !dropdownStartTime.current.contains(event.target as Node)
-      ) {
-        setStartTimeSelect(false);
-      }
-      if (
-        dropdownEndTime.current &&
-        !dropdownEndTime.current.contains(event.target as Node)
-      ) {
-        setEndTimeSelect(false);
-      }
-    }, []);
-    
-     useEffect(() => {
-        document.addEventListener('mousedown', handleClickOutside);
-        return () => {
-          document.removeEventListener('mousedown', handleClickOutside);
-        };
-      }, [handleClickOutside]);
+  const handleClickOutside = useCallback((event: MouseEvent) => {
+    if (
+      dropdownStartTime.current &&
+      !dropdownStartTime.current.contains(event.target as Node)
+    ) {
+      setStartTimeSelect(false);
+    }
+    if (
+      dropdownEndTime.current &&
+      !dropdownEndTime.current.contains(event.target as Node)
+    ) {
+      setEndTimeSelect(false);
+    }
+  }, []);
 
-      useEffect(() => {
-        const generateTimeOptions = () => {
-          const startTime = 5 * 60; // 05:00 in minutes
-          const endTime = 24 * 60; // 00:00 in minutes (next day)
-          const interval = 15; // Interval in minutes
-    
-          const times = [];
-          for (let minutes = startTime; minutes < endTime; minutes += interval) {
-            const hours = Math.floor(minutes / 60);
-            const mins = minutes % 60;
-            const time = `${hours.toString().padStart(2, '0')}:${mins.toString().padStart(2, '0')}`;
-            times.push({ label: time, value: time });
-          }
-    
-          return times;
-        };
-    
-        const generatedOptions = generateTimeOptions();
-        setOptions(generatedOptions);
-      }, []);
+  useEffect(() => {
+    document.addEventListener('mousedown', handleClickOutside);
+    return () => {
+      document.removeEventListener('mousedown', handleClickOutside);
+    };
+  }, [handleClickOutside]);
+
+  useEffect(() => {
+    const generateTimeOptions = () => {
+      const startTime = 5 * 60; // 05:00 in minutes
+      const endTime = 24 * 60; // 00:00 in minutes (next day)
+      const interval = 15; // Interval in minutes
+
+      const times = [];
+      for (let minutes = startTime; minutes < endTime; minutes += interval) {
+        const hours = Math.floor(minutes / 60);
+        const mins = minutes % 60;
+        const time = `${hours.toString().padStart(2, '0')}:${mins.toString().padStart(2, '0')}`;
+        times.push({ label: time, value: time });
+      }
+
+      return times;
+    };
+
+    const generatedOptions = generateTimeOptions();
+    setOptions(generatedOptions);
+  }, []);
 
   return (
     <div className="w-[760px] rounded-[20px] border-2 border-buttonPurple flex flex-col pt-10 pb-5 px-10 mb-8">
@@ -108,7 +107,11 @@ const DateAndPlace = () => {
               <AiOutlineCalendar size="24px" />
               <BiChevronDown />
             </button>
-            <div className="">{isCalendarShown && <CreateEventCalendar />}</div>
+            <div className="">
+              {isCalendarShown && (
+                <CreateEventCalendar handleDateChange={handleDateChange} />
+              )}
+            </div>
           </div>
         </div>
         <div>
@@ -218,7 +221,7 @@ const DateAndPlace = () => {
               }}
               render={({ field }) => (
                 <GoogleMapsInput
-                  className='w-[696px] border-buttonPurple'
+                  className="w-[696px] border-buttonPurple"
                   onPlaceSelect={place => {
                     if (!place || !place.geometry) return;
                     const formattedPlace = {
@@ -253,5 +256,4 @@ const DateAndPlace = () => {
   );
 };
 
-
-export default DateAndPlace
+export default DateAndPlace;
