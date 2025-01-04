@@ -19,7 +19,6 @@ const CreateEventPage: React.FC = () => {
   const handleEventNameChange = (newName: string) => {
     setEventName(newName);
   };
-  console.log(date);
 
   const handleDateChange = (newDate: string) => {
     setDate(newDate);

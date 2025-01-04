@@ -31,6 +31,7 @@ const CreateEventForm: React.FC<CreateEventFormProps> = ({
   eventName,
   price,
   photos,
+  date,
   onPhotoChange,
   onEventNameChange,
   onPriceChange,
@@ -41,8 +42,15 @@ const CreateEventForm: React.FC<CreateEventFormProps> = ({
     mode: 'onChange',
   });
 
-  const onSubmit = (data: any) => {
-    console.log(data.address);
+  const onSubmit = () => {
+    const event = {
+      title: eventName,
+      dateDetails: {
+        day: date,
+      },
+      ticketPrice: price,
+    };
+    console.log(event);
   };
 
   const subtitles = [

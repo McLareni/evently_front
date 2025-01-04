@@ -101,6 +101,7 @@ const DateAndPlace = ({ handleDateChange }: DateAndPlaceProps) => {
                         w-[245px] mb-[18px]"
           >
             <button
+              type="button"
               onClick={toggleIsCalendarShown}
               className="flex justify-between items-center w-full h-[34px] px-[12px] focus:outline-none"
             >
@@ -122,6 +123,7 @@ const DateAndPlace = ({ handleDateChange }: DateAndPlaceProps) => {
                         w-[210px] max-h-[230px] mb-[18px]"
           >
             <button
+              type="button"
               className="flex justify-between items-center w-full h-[34px] px-[12px] focus:outline-none"
               onClick={() => setStartTimeSelect(prev => !prev)}
             >
@@ -154,6 +156,7 @@ const DateAndPlace = ({ handleDateChange }: DateAndPlaceProps) => {
             className="inline-block border-2 border-buttonPurple rounded-[10px] overflow-hidden w-[210px] max-h-[230px] mb-[18px] "
           >
             <button
+              type="button"
               className="flex justify-between items-center w-full h-[34px] px-[12px] focus:outline-none"
               onClick={() => setEndTimeSelect(prev => !prev)}
             >
