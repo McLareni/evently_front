@@ -14,7 +14,7 @@ export const Layout = () => {
   return (
     <>
       <Header />
-      <main className="pt-[150px] relative">
+      <main className="pt-[140px] relative">
         <LayoutHorizontalLines />
         <Suspense fallback={<div>Loading...</div>}>
           <Outlet />
