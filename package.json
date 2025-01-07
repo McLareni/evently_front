@@ -13,6 +13,7 @@
     "toc": "i18next-resources-for-ts toc -i ./src/i18next/locales/ua -o ./src/@types/resources.ts"
   },
   "dependencies": {
+    "@react-google-maps/api": "^2.20.3",
     "@react-input/mask": "^2.0.4",
     "@react-oauth/google": "^0.12.1",
     "@reduxjs/toolkit": "^2.2.7",
