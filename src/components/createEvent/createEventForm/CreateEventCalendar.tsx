@@ -27,6 +27,7 @@ export const CreateEventCalendar = ({
       locale={uk}
       showDateDisplay={false}
       date={date}
+      className='bg-background'
     />
   );
 };

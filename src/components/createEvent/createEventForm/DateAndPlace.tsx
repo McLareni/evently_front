@@ -9,18 +9,22 @@ import { CreateEventCalendar } from './CreateEventCalendar';
 import { GoogleMapsInput } from './GoogleMapsInput';
 
 interface DateAndPlaceProps {
+  date: string;
   handleDateChange: (newDate: string) => void;
   handleStartTime: (startTime: string) => void;
+  onPlaceChange: (place: string) => void;
 }
 
 const DateAndPlace = ({
+  date,
   handleDateChange,
   handleStartTime,
+  onPlaceChange,
 }: DateAndPlaceProps) => {
   const [startTimeSelect, setStartTimeSelect] = useState(false);
   const [endTimeSelect, setEndTimeSelect] = useState(false);
-  const [startTimeOption, setSelectedStartTimeOption] = useState('');
-  const [selectedEndOption, setSelectedEndTimeOption] = useState('');
+  const [selectedStartTimeOption, setSelectedStartTimeOption] = useState('Оберіть час');
+  const [selectedEndOption, setSelectedEndTimeOption] = useState('Оберіть час');
   const [options, setOptions] = useState<{ label: string; value: string }[]>(
     []
   );
@@ -48,7 +52,7 @@ const DateAndPlace = ({
     setIsCalendarShown(!isCalendarShown);
   };
 
-  const dropdownStartTime = useRef<HTMLDivElement | null>(null); // Ссылка для первого селектора
+  const dropdownStartTime = useRef<HTMLDivElement | null>(null); 
   const dropdownEndTime = useRef<HTMLDivElement | null>(null);
 
   const handleClickOutside = useCallback((event: MouseEvent) => {
@@ -95,11 +99,11 @@ const DateAndPlace = ({
   }, []);
 
   useEffect(() => {
-    handleStartTime(startTimeOption);
-  }, [handleStartTime, startTimeOption]);
+    handleStartTime(selectedStartTimeOption);
+  }, [handleStartTime, selectedStartTimeOption]);
 
   return (
-    <div className="w-[760px] rounded-[20px] border-2 border-buttonPurple flex flex-col pt-10 pb-5 px-10 mb-8">
+    <div className="max-w-[760px] rounded-[20px] border-2 border-buttonPurple flex flex-col pt-10 pb-8 px-8 mb-8">
       <span className="pb-4 text-2xl">Дата та час</span>
       <div className="flex gap-4">
         <div className="w-[245px]">
@@ -111,9 +115,10 @@ const DateAndPlace = ({
             <button
               type="button"
               onClick={toggleIsCalendarShown}
-              className="flex justify-between items-center w-full h-[34px] px-[12px] focus:outline-none"
+              className="flex justify-between items-center w-full h-[52px] px-[12px] focus:outline-none"
             >
               <AiOutlineCalendar size="24px" />
+              {date}
               <BiChevronDown />
             </button>
             <div className="">
@@ -130,15 +135,19 @@ const DateAndPlace = ({
             className="border-2 border-buttonPurple rounded-[10px] overflow-hidden 
                         w-[210px] max-h-[230px] mb-[18px]"
           >
-            <button
-              type="button"
-              className="flex justify-between items-center w-full h-[34px] px-[12px] focus:outline-none"
-              onClick={() => setStartTimeSelect(prev => !prev)}
-            >
-              <BiTimeFive size="24px" />
-              {startTimeOption}
-              <BiChevronDown />
-            </button>
+           <button
+            type="button"
+            className='flex justify-between items-center w-full h-[52px] px-[12px] focus:outline-none'
+            onClick={() => setStartTimeSelect(prev => !prev)}
+          >
+            <BiTimeFive size="24px" />
+            <span className={`${
+              selectedStartTimeOption === 'Оберіть час' ? 'text-uploadBtnBg' : 'text-black'
+            }`}>
+              {selectedStartTimeOption}
+            </span>
+            <BiChevronDown />
+          </button>
             {startTimeSelect && (
               <ul
                 className="w-[210px] border-buttonPurple
@@ -165,11 +174,15 @@ const DateAndPlace = ({
           >
             <button
               type="button"
-              className="flex justify-between items-center w-full h-[34px] px-[12px] focus:outline-none"
+              className='flex justify-between items-center w-full h-[52px] px-[12px] focus:outline-none'
               onClick={() => setEndTimeSelect(prev => !prev)}
             >
-              <BiTimeFive size="24px" />
-              {selectedEndOption}
+              <BiTimeFive size="24px" />              
+              <span className={`${
+              selectedEndOption === 'Оберіть час' ? 'text-uploadBtnBg' : 'text-black'
+              }`}>
+                {selectedEndOption}
+              </span>
               <BiChevronDown />
             </button>
             {endTimeSelect && (
@@ -198,7 +211,7 @@ const DateAndPlace = ({
             eventType
               ? 'bg-buttonPurple text-white'
               : 'bg-lightPurple text-gray-700'
-          }font-normal text-xl rounded-[20px] mr-4 py-[12.5px] px-[18px]`}
+          } focus:outline-none font-normal text-xl rounded-[20px] mr-4 py-[12.5px] px-[18px]`}
           onClick={() => setEventType(true)}
         >
           Оффлайн
@@ -208,7 +221,7 @@ const DateAndPlace = ({
             eventType
               ? 'bg-lightPurple text-gray-700'
               : 'bg-buttonPurple text-white'
-          }font-normal text-xl rounded-[20px] mr-4 py-[12.5px] px-[18px]`}
+          } focus:outline-none font-normal text-xl rounded-[20px] mr-4 py-[12.5px] px-[18px]`}
           onClick={() => setEventType(false)}
         >
           Онлайн
@@ -232,7 +245,7 @@ const DateAndPlace = ({
               }}
               render={({ field }) => (
                 <GoogleMapsInput
-                  className="w-[696px] border-buttonPurple"
+                  className="w-[696px] border-buttonPurple outline-none"
                   onPlaceSelect={place => {
                     if (!place || !place.geometry) return;
                     const formattedPlace = {
@@ -244,6 +257,7 @@ const DateAndPlace = ({
                     };
                     setValue('address', formattedPlace);
                     field.onChange(formattedPlace);
+                    onPlaceChange;
                   }}
                 />
               )}
@@ -259,7 +273,7 @@ const DateAndPlace = ({
             type="text"
             id="link"
             placeholder="https://meet.google.com/..."
-            className="w-[696px] h-[52px] border-2 rounded-[10px] p-4 border-buttonPurple"
+            className="outline-none w-[696px] h-[52px] border-2 rounded-[10px] p-4 border-buttonPurple"
           />
         </div>
       )}

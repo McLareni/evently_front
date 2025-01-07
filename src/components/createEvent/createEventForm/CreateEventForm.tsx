@@ -20,7 +20,7 @@ type CreateEventFormProps = {
   // onCategorieChange: (categorie: string) => void;
   onEventNameChange: (eventName: string) => void;
   // onDateChange: (data: string) => void;
-  // onPlaceChange: (place: string) => void;
+  onPlaceChange: (place: string) => void;
   onPriceChange: (price: string) => void;
   onCategoryChange: (category: string) => void;
   handleDateChange: (newDate: string) => void;
@@ -37,6 +37,7 @@ const CreateEventForm: React.FC<CreateEventFormProps> = ({
   onEventNameChange,
   onPriceChange,
   onCategoryChange,
+  onPlaceChange,
   handleDateChange,
   handleStartTime,
 }) => {
@@ -84,6 +85,8 @@ const CreateEventForm: React.FC<CreateEventFormProps> = ({
         onCategoryChange={onCategoryChange}
       />
       <DateAndPlace
+        date={date}
+        onPlaceChange={onPlaceChange}
         handleDateChange={handleDateChange}
         handleStartTime={handleStartTime}
       />

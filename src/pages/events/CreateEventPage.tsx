@@ -10,7 +10,7 @@ const CreateEventPage: React.FC = () => {
   // const [categorie, setCategorie] = useState<string>("Категорія")
   const [eventName, setEventName] = useState('Назва події');
   const [date, setDate] = useState<string>('');
-  // const [place, setPlace] = useState<string>("Місце")
+  const [place, setPlace] = useState<string>("Місце")
   const [price, setPriece] = useState('Ціна');
   const [startTimeOption, setSelectedStartTimeOption] = useState('');
 
@@ -29,9 +29,9 @@ const CreateEventPage: React.FC = () => {
     setSelectedStartTimeOption(startTime);
   };
 
-  //   const handlePlaceChange = (newPlace: string) => {
-  //     setPlace(newPlace);
-  //   };
+    const handlePlaceChange = (newPlace: string) => {
+      setPlace(newPlace);
+    };
   const handlePriceChange = (newPrice: string) => {
     setPriece(newPrice);
   };
@@ -63,6 +63,7 @@ const CreateEventPage: React.FC = () => {
             photo={photos[0]}
             category={selectedCategory}
             date={date}
+            place={place}
             startTimeOption={startTimeOption}
           />
           <CreateEventForm
@@ -75,6 +76,7 @@ const CreateEventPage: React.FC = () => {
             onCategoryChange={setSelectedCategory}
             onPriceChange={handlePriceChange}
             onPhotoChange={handlePhotoChange}
+            onPlaceChange={handlePlaceChange}
             handleDateChange={handleDateChange}
             handleStartTime={handleStartTime}
           />

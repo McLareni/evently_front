@@ -8,6 +8,7 @@ import { BiTrash } from 'react-icons/bi';
 import { GoPencil } from 'react-icons/go';
 
 import 'cropperjs/dist/cropper.css';
+import { SharedBtn } from '@/components/ui';
 
 interface PhotoCardProps {
   title: string;
@@ -71,7 +72,7 @@ const PhotoCard: React.FC<PhotoCardProps> = ({
   };
 
   return (
-    <div className="py-8">
+    <div className="py-8 relative">
       <div
         className="relative flex flex-col items-center justify-center w-[189px] h-[229px] bg-gray-100 rounded-[10px] hover:shadow-md cursor-pointer"
         onClick={() => document.getElementById(`file-input-${id}`)?.click()}
@@ -89,13 +90,13 @@ const PhotoCard: React.FC<PhotoCardProps> = ({
         )}
 
         {photo && isHovered && (
-          <div className="absolute flex gap-[24px] top-2 right-2 text-gray-700 z-10 top-[50%] left-[50%] translate-x-[-50%] translate-y-[-50%]">
+          <div className="absolute flex gap-[24px] top-2 right-2 text-gray-700 z-20 top-[50%] left-[50%] translate-x-[-50%] translate-y-[-50%]">
             <GoPencil className="h-6 w-6 z-10" onClick={handleEditPhoto} />
-            <BiTrash onClick={handleRemovePhoto} className="h-6 w-6" />
+            <BiTrash className="h-6 w-6 text-error" onClick={handleRemovePhoto}  />
           </div>
         )}
 
-        <div className="z-10 text-center">
+        <div className="z-[5] text-center">
           {!photo && (
             <>
               <div className="flex justify-center">
@@ -122,17 +123,12 @@ const PhotoCard: React.FC<PhotoCardProps> = ({
 
       {/* Image Cropper Modal */}
       {showCropper && (
-        <div className="fixed inset-0 flex items-center justify-center bg-gray-800 bg-opacity-50 z-50">
-          <div className="bg-white p-4 rounded-lg w-[90%] max-w-[500px] relative">
-            <button
-              className="absolute top-2 right-2 text-white bg-red-500 rounded-full p-2"
-              onClick={handleCloseCropper}
-            >
-              X
-            </button>
+        <div className="absolute w-[750px] h-[830px] inset-0 flex bg-gray-800 bg-opacity-50 z-10 -top-[2px] -left-[27px]">
+          <div className="bg-white border-2 border-buttonPurple rounded-[20px]">
+            <div className='px-[73px] pt-16 pb-8'>
             <Cropper
               src={imageToCrop || ''}
-              style={{ width: '100%' }}
+              className='w-[612px] h-[616px]'
               initialAspectRatio={1}
               aspectRatio={1}
               guides={false}
@@ -140,21 +136,25 @@ const PhotoCard: React.FC<PhotoCardProps> = ({
               minCropBoxHeight={100}
               minCropBoxWidth={100}
             />
-            <div className="mt-4 flex justify-between">
-              <button
+            </div>
+            <div className="px-[95px] mt-4 flex gap-[38px]">
+              <SharedBtn
                 type="button"
+                secondary
                 onClick={handleCloseCropper}
-                className="bg-gray-300 p-2 rounded"
+                className="w-[265.25px] h-12 "
+                
               >
-                Cancel
-              </button>
-              <button
+                Відмінити
+              </SharedBtn>
+              <SharedBtn
                 type="button"
+                primary
                 onClick={handleSaveCroppedImage}
-                className="bg-blue-500 text-white p-2 rounded"
+                className="w-[265.25px] h-12"
               >
-                Save
-              </button>
+                Зберегти
+              </SharedBtn>
             </div>
           </div>
         </div>

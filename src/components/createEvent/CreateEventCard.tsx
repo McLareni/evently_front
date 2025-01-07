@@ -1,4 +1,3 @@
-import { useEffect, useState } from 'react';
 import { AiOutlineCalendar } from 'react-icons/ai';
 import { FaRegMoneyBillAlt } from 'react-icons/fa';
 import { GrLocation } from 'react-icons/gr';
@@ -6,13 +5,14 @@ import { PiHeartFill } from 'react-icons/pi';
 
 import { formatDateToDayMonth } from '@/helpers/filters/formatDateToDayMonth';
 
+
 import { SharedBtn } from '@/components/ui';
 
 import exampleCard from '/images/exampleCard.svg';
 
 type CardProps = {
   eventName: string;
-  // place: string;
+  place: string;
   price: string;
   photo: string | null;
   category: string;
@@ -24,23 +24,13 @@ const CreateEventCard: React.FC<CardProps> = ({
   eventName,
   price,
   photo,
+  place,
   category,
   date,
   startTimeOption,
 }) => {
-  const [getPrice, setGetPrice] = useState(true);
 
   const formattedDate = formatDateToDayMonth(date);
-
-  useEffect(() => {
-    if (price === 'Ціна') {
-      setDisplayedPrice('Ціна');
-    } else if (price === 'Безкоштовно') {
-      setDisplayedPrice('Безкоштовно');
-    } else {
-      setGetPrice(true);
-    }
-  }, [price]);
 
   return (
     <>
@@ -66,8 +56,7 @@ const CreateEventCard: React.FC<CardProps> = ({
         <div
           className="absolute flex flex-col items-start gap-2 justify-between w-full py-4 px-5 h-[365px]
           rounded-t-[20px] bg-background transition-all ease-in-out duration-300 -bottom-[70px]
-          group-hover:-bottom-0
-          "
+          group-hover:-bottom-0 "
         >
           <div
             className="flex items-center justify-center h-8 rounded-[20px]
@@ -77,7 +66,7 @@ const CreateEventCard: React.FC<CardProps> = ({
               {category || 'Категорія'}
             </p>
           </div>
-          <h2 className="min-h-[72px] text-2xl text-textDark group-hover:line-clamp-none">
+          <h2 className="min-h-[72px] text-2xl text-textDark group-hover:line-clamp-none truncate max-w-[250px]">
             {eventName}
           </h2>
           <ul className="flex flex-col gap-[18px] font-normal text-md text-textDark justify-between w-full">
@@ -93,15 +82,20 @@ const CreateEventCard: React.FC<CardProps> = ({
             </li>
             <li className="flex items-center gap-[18px]">
               <GrLocation size="24px" />
-              <p>Місце</p>
+              {place ? (
+                <p>
+                  {place}
+                </p>
+              ) : (
+                <p>Місце</p>
+              )}
             </li>
             <li className="flex items-center gap-[18px]">
               <FaRegMoneyBillAlt size="24px" />
-              {displayedPrice === 'Безкоштовно' ? (
-                <p>{displayedPrice}</p> // Якщо ціна "Безкоштовно", вивести тільки це слово
-              ) : (
-                <p>{displayedPrice}</p> // Інакше вивести ціну з символом валюти
-              )}
+
+          
+                <p>{price}</p> 
+
             </li>
           </ul>
           <SharedBtn type="button" primary className="w-[230px] h-12 mx-auto">
