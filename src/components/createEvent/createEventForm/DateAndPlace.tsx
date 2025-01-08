@@ -1,9 +1,10 @@
 /* eslint-disable no-unused-vars */
 import { useCallback, useEffect, useRef, useState } from 'react';
-import { Controller, useForm } from 'react-hook-form';
 import { AiOutlineCalendar } from 'react-icons/ai';
 import { BiChevronDown } from 'react-icons/bi';
 import { BiTimeFive } from 'react-icons/bi';
+
+import { formatDateToDayMonth } from '@/helpers/filters/formatDateToDayMonth';
 
 import { CreateEventCalendar } from './CreateEventCalendar';
 import { GoogleMapsInput } from './GoogleMapsInput';
@@ -13,7 +14,7 @@ interface DateAndPlaceProps {
   handleDateChange: (newDate: string) => void;
   handleStartTime: (startTime: string) => void;
   handleEndTime: (endTime: string) => void;
-  onPlaceChange: (place: string) => void;
+  onPlaceChange: (newPlace: EventPlaceWithGps) => void;
 }
 
 const DateAndPlace = ({
@@ -25,21 +26,18 @@ const DateAndPlace = ({
 }: DateAndPlaceProps) => {
   const [startTimeSelect, setStartTimeSelect] = useState(false);
   const [endTimeSelect, setEndTimeSelect] = useState(false);
-  const [selectedStartTimeOption, setSelectedStartTimeOption] = useState('Оберіть час');
+  const [selectedStartTimeOption, setSelectedStartTimeOption] =
+    useState('Оберіть час');
   const [selectedEndOption, setSelectedEndTimeOption] = useState('Оберіть час');
   const [options, setOptions] = useState<{ label: string; value: string }[]>(
     []
   );
   const [isCalendarShown, setIsCalendarShown] = useState(false);
-
   const [eventType, setEventType] = useState(true);
-
   const dropdownStartTimeRef = useRef<HTMLDivElement | null>(null);
   const dropdownEndTimeRef = useRef<HTMLDivElement | null>(null);
 
-  const { control, setValue } = useForm({
-    mode: 'onChange',
-  });
+  const formattedDate = formatDateToDayMonth(date);
 
   const handleStartTimeOption = (option: string) => {
     setSelectedStartTimeOption(option);
@@ -55,7 +53,7 @@ const DateAndPlace = ({
     setIsCalendarShown(!isCalendarShown);
   };
 
-  const dropdownStartTime = useRef<HTMLDivElement | null>(null); 
+  const dropdownStartTime = useRef<HTMLDivElement | null>(null);
   const dropdownEndTime = useRef<HTMLDivElement | null>(null);
 
   const handleClickOutside = useCallback((event: MouseEvent) => {
@@ -122,7 +120,7 @@ const DateAndPlace = ({
               className="flex justify-between items-center w-full h-[52px] px-[12px] focus:outline-none"
             >
               <AiOutlineCalendar size="24px" />
-              {date}
+              {date && <p>{formattedDate}</p>}
               <BiChevronDown />
             </button>
             <div className="">
@@ -139,19 +137,23 @@ const DateAndPlace = ({
             className="border-2 border-buttonPurple rounded-[10px] overflow-hidden 
                         w-[210px] max-h-[230px] mb-[18px]"
           >
-           <button
-            type="button"
-            className='flex justify-between items-center w-full h-[52px] px-[12px] focus:outline-none'
-            onClick={() => setStartTimeSelect(prev => !prev)}
-          >
-            <BiTimeFive size="24px" />
-            <span className={`${
-              selectedStartTimeOption === 'Оберіть час' ? 'text-uploadBtnBg' : 'text-black'
-            }`}>
-              {selectedStartTimeOption}
-            </span>
-            <BiChevronDown />
-          </button>
+            <button
+              type="button"
+              className="flex justify-between items-center w-full h-[52px] px-[12px] focus:outline-none"
+              onClick={() => setStartTimeSelect(prev => !prev)}
+            >
+              <BiTimeFive size="24px" />
+              <span
+                className={`${
+                  selectedStartTimeOption === 'Оберіть час'
+                    ? 'text-uploadBtnBg'
+                    : 'text-black'
+                }`}
+              >
+                {selectedStartTimeOption}
+              </span>
+              <BiChevronDown />
+            </button>
             {startTimeSelect && (
               <ul
                 className="w-[210px] border-buttonPurple
@@ -178,13 +180,17 @@ const DateAndPlace = ({
           >
             <button
               type="button"
-              className='flex justify-between items-center w-full h-[52px] px-[12px] focus:outline-none'
+              className="flex justify-between items-center w-full h-[52px] px-[12px] focus:outline-none"
               onClick={() => setEndTimeSelect(prev => !prev)}
             >
-              <BiTimeFive size="24px" />              
-              <span className={`${
-              selectedEndOption === 'Оберіть час' ? 'text-uploadBtnBg' : 'text-black'
-              }`}>
+              <BiTimeFive size="24px" />
+              <span
+                className={`${
+                  selectedEndOption === 'Оберіть час'
+                    ? 'text-uploadBtnBg'
+                    : 'text-black'
+                }`}
+              >
                 {selectedEndOption}
               </span>
               <BiChevronDown />
@@ -239,34 +245,20 @@ const DateAndPlace = ({
             <label id="adress" className="pb-3">
               Адреса
             </label>
-            <Controller
-              name="address"
-              control={control}
-              defaultValue={{
-                formatted: '',
-                lat: 0,
-                lng: 0,
-                name: '',
-                city: 'Київ',
+
+            <GoogleMapsInput
+              className="w-[696px] border-buttonPurple outline-none"
+              onPlaceSelect={place => {
+                if (!place || !place.geometry) return;
+                const formattedPlace = {
+                  formatted: place.formatted_address || '',
+                  lat: place.geometry.location?.lat() || 0,
+                  lng: place.geometry.location?.lng() || 0,
+                  name: place.name || '',
+                  city: 'Київ',
+                };
+                onPlaceChange(formattedPlace);
               }}
-              render={({ field }) => (
-                <GoogleMapsInput
-                  className="w-[696px] border-buttonPurple outline-none"
-                  onPlaceSelect={place => {
-                    if (!place || !place.geometry) return;
-                    const formattedPlace = {
-                      formatted: place.formatted_address || '',
-                      lat: place.geometry.location?.lat() || 0,
-                      lng: place.geometry.location?.lng() || 0,
-                      name: place.name || '',
-                      city: 'Київ',
-                    };
-                    setValue('address', formattedPlace);
-                    field.onChange(formattedPlace);
-                    onPlaceChange;
-                  }}
-                />
-              )}
             />
           </div>
         </div>

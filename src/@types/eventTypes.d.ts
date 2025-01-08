@@ -71,3 +71,11 @@ interface eventType {
   schemaSeats: number | 'Не вибрано';
   library?: File[];
 }
+
+interface EventPlaceWithGps {
+  formatted: string;
+  lat: number;
+  lng: number;
+  name: string;
+  city: string;
+}

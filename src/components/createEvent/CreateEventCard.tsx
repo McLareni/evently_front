@@ -5,14 +5,13 @@ import { PiHeartFill } from 'react-icons/pi';
 
 import { formatDateToDayMonth } from '@/helpers/filters/formatDateToDayMonth';
 
-
 import { SharedBtn } from '@/components/ui';
 
 import exampleCard from '/images/exampleCard.svg';
 
 type CardProps = {
   eventName: string;
-  place: string;
+  place: EventPlaceWithGps | null;
   price: string;
   photo: string | null;
   category: string;
@@ -29,7 +28,6 @@ const CreateEventCard: React.FC<CardProps> = ({
   date,
   startTimeOption,
 }) => {
-
   const formattedDate = formatDateToDayMonth(date);
 
   return (
@@ -84,7 +82,7 @@ const CreateEventCard: React.FC<CardProps> = ({
               <GrLocation size="24px" />
               {place ? (
                 <p>
-                  {place}
+                  {place.city}, {place.name}
                 </p>
               ) : (
                 <p>Місце</p>
@@ -93,9 +91,7 @@ const CreateEventCard: React.FC<CardProps> = ({
             <li className="flex items-center gap-[18px]">
               <FaRegMoneyBillAlt size="24px" />
 
-          
-                <p>{price}</p> 
-
+              <p>{price}</p>
             </li>
           </ul>
           <SharedBtn type="button" primary className="w-[230px] h-12 mx-auto">

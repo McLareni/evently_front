@@ -20,13 +20,13 @@ type CreateEventFormProps = {
   place: string;
   startTimeOption: string;
   endTimeOption: string;
-  // numberOfTickets: string;
+  place: EventPlaceWithGps | null;
   onPhotoChange: (id: number, photo: string | null) => void;
   // onCategorieChange: (categorie: string) => void;
   onEventNameChange: (eventName: string) => void;
   onDescriptionChange: (eventName: string) => void;
   // onDateChange: (data: string) => void;
-  onPlaceChange: (place: string) => void;
+  onPlaceChange: (newPlace: EventPlaceWithGps) => void;
   onPriceChange: (price: string) => void;
   onCategoryChange: (category: string) => void;
   handleDateChange: (newDate: string) => void;
@@ -69,9 +69,14 @@ const CreateEventForm: React.FC<CreateEventFormProps> = ({
         startTime: startTimeOption,
         endTime: endTimeOption,
       },
-      ticketPrice: +price,
-      place:place,
-      // numberOfTickets: numberOfTickets,
+      ticketPrice: price,
+      location: {
+        city: place?.city,
+        street: place?.name,
+        venue: '',
+        latitude: place?.lat,
+        longitude: place?.lng,
+      },
     };
     console.log(event);
   };
