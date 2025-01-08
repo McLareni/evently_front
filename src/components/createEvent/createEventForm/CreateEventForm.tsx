@@ -17,7 +17,6 @@ type CreateEventFormProps = {
   category: string;
   price: string;
   date: string;
-  place: string;
   startTimeOption: string;
   endTimeOption: string;
   place: EventPlaceWithGps | null;

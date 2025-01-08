@@ -90,7 +90,6 @@ const CreateEventPage: React.FC = () => {
             category={category}
             price={price}
             date={date}
-            place={place}
             startTimeOption={startTimeOption}
             endTimeOption={endTimeOption}
             onEventNameChange={handleEventNameChange}
