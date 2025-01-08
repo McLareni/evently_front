@@ -4,6 +4,8 @@ import { AiOutlineCalendar } from 'react-icons/ai';
 import { BiChevronDown } from 'react-icons/bi';
 import { BiTimeFive } from 'react-icons/bi';
 
+import { formatDateToDayMonth } from '@/helpers/filters/formatDateToDayMonth';
+
 import { CreateEventCalendar } from './CreateEventCalendar';
 import { GoogleMapsInput } from './GoogleMapsInput';
 
@@ -29,11 +31,11 @@ const DateAndPlace = ({
     []
   );
   const [isCalendarShown, setIsCalendarShown] = useState(false);
-
   const [eventType, setEventType] = useState(true);
-
   const dropdownStartTimeRef = useRef<HTMLDivElement | null>(null);
   const dropdownEndTimeRef = useRef<HTMLDivElement | null>(null);
+
+  const formattedDate = formatDateToDayMonth(date);
 
   const handleStartTimeOption = (option: string) => {
     setSelectedStartTimeOption(option);
@@ -114,7 +116,7 @@ const DateAndPlace = ({
               className="flex justify-between items-center w-full h-[52px] px-[12px] focus:outline-none"
             >
               <AiOutlineCalendar size="24px" />
-              {date}
+              {date && <p>{formattedDate}</p>}
               <BiChevronDown />
             </button>
             <div className="">
