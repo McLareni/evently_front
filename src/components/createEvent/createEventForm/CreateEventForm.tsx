@@ -11,35 +11,49 @@ import DateAndPlace from './DateAndPlace';
 import TicketPrice from './TicketPrice';
 
 type CreateEventFormProps = {
-  eventName: string;
-  price: string;
   photos: (string | null)[];
+  eventName: string;
+  description: string;
+  category: string;
+  price: string;
   date: string;
+  place: string;
   startTimeOption: string;
+  endTimeOption: string;
+  // numberOfTickets: string;
   onPhotoChange: (id: number, photo: string | null) => void;
   // onCategorieChange: (categorie: string) => void;
   onEventNameChange: (eventName: string) => void;
+  onDescriptionChange: (eventName: string) => void;
   // onDateChange: (data: string) => void;
   onPlaceChange: (place: string) => void;
   onPriceChange: (price: string) => void;
   onCategoryChange: (category: string) => void;
   handleDateChange: (newDate: string) => void;
   handleStartTime: (startTime: string) => void;
+  handleEndTime: (endTime: string) => void;
 };
 
 const CreateEventForm: React.FC<CreateEventFormProps> = ({
-  eventName,
-  price,
   photos,
+  eventName,
+  description,
+  category,
+  place,
+  price,
   date,
+  // numberOfTickets,
   startTimeOption,
+  endTimeOption,
   onPhotoChange,
   onEventNameChange,
   onPriceChange,
   onCategoryChange,
   onPlaceChange,
+  onDescriptionChange,
   handleDateChange,
   handleStartTime,
+  handleEndTime,
 }) => {
   const { handleSubmit } = useForm({
     mode: 'onChange',
@@ -48,11 +62,16 @@ const CreateEventForm: React.FC<CreateEventFormProps> = ({
   const onSubmit = () => {
     const event = {
       title: eventName,
+      description: description,
+      category: category,
       dateDetails: {
         day: date,
-        time: startTimeOption,
+        startTime: startTimeOption,
+        endTime: endTimeOption,
       },
-      ticketPrice: price,
+      ticketPrice: +price,
+      place:place,
+      // numberOfTickets: numberOfTickets,
     };
     console.log(event);
   };
@@ -81,14 +100,17 @@ const CreateEventForm: React.FC<CreateEventFormProps> = ({
       </div>
       <AboutEvent
         eventName={eventName}
+        description={description}
         onEventNameChange={onEventNameChange}
         onCategoryChange={onCategoryChange}
+        onDescriptionChange={onDescriptionChange}
       />
       <DateAndPlace
         date={date}
         onPlaceChange={onPlaceChange}
         handleDateChange={handleDateChange}
         handleStartTime={handleStartTime}
+        handleEndTime={handleEndTime}
       />
       <TicketPrice price={price} onPriceChange={onPriceChange} />
       <div className="text-center">

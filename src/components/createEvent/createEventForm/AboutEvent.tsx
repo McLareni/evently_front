@@ -2,7 +2,9 @@ import { useEffect, useState } from 'react';
 
 type AboutEventProps = {
   eventName: string;
+  description: string;
   onEventNameChange: (eventName: string) => void;
+  onDescriptionChange: (eventDescription: string) => void;
   onCategoryChange: (category: string) => void;
 };
 
@@ -17,7 +19,9 @@ const categories: { name: string }[] = [
 
 const AboutEvent: React.FC<AboutEventProps> = ({
   eventName,
+  description,
   onEventNameChange,
+  onDescriptionChange,
   onCategoryChange
 }) => {
   const [selectedCategory, setSelectedCategory] = useState<string | null>(null);
@@ -32,7 +36,12 @@ const AboutEvent: React.FC<AboutEventProps> = ({
       onEventNameChange('Назва події');
     }
   }, [eventName, onEventNameChange]);
-  
+
+  useEffect(() => {
+    if (description === '') {
+      onDescriptionChange('Опис події')
+    }
+  }, [description, onDescriptionChange])
   return (
     <div className="w-[760px] rounded-[20px] border-2 border-buttonPurple flex flex-col py-10 px-10 mb-8">
       <div className="flex flex-col pb-6">
@@ -54,6 +63,7 @@ const AboutEvent: React.FC<AboutEventProps> = ({
           name=""
           id=""
           placeholder="Коротко опиши ідею та концепцію події"
+          onChange={e => onDescriptionChange(e.target.value)}
         ></textarea>
       </div>
       <div>
@@ -66,8 +76,8 @@ const AboutEvent: React.FC<AboutEventProps> = ({
                 onClick={() => handleCategoryClick(category.name)}
                 className={`${
                   selectedCategory === category.name
-                    ? 'bg-gradient-to-r from-[#12C2E9] to-[#C471ED]' // Выбранная категория
-                    : 'bg-gradient-to-r from-[#E9E6FF] to-[#D5FEFF]' // Не выбранная категория
+                    ? 'bg-gradient-to-r from-[#12C2E9] to-[#C471ED]' 
+                    : 'bg-gradient-to-r from-[#E9E6FF] to-[#D5FEFF]' 
                 } hover:from-[#12C2E9] hover:to-[#C471ED] transition ease-in-out duration-700 cursor-pointer flex items-center rounded-[20px] border-[1px] border-borderColor text-xl mr-4 last:pr-0 h-12 px-[18px] min-w-[80px] max-w-[223px]`}
               >
                 {category.name}

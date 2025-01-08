@@ -16,6 +16,7 @@ export const GoogleMapsInput = ({ className, onPlaceSelect }: PlaceAutocompleteP
   const inputRef = useRef<HTMLInputElement>(null);
   const places = useMapsLibrary('places');
 
+
   useEffect(() => {
     if (!places || !inputRef.current) return;
 
@@ -34,7 +35,6 @@ export const GoogleMapsInput = ({ className, onPlaceSelect }: PlaceAutocompleteP
       onPlaceSelect(placeAutocomplete.getPlace());
     });
   }, [onPlaceSelect, placeAutocomplete]);
-
   return (
     <div>
       <input

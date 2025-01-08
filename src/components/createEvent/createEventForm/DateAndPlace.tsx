@@ -12,6 +12,7 @@ interface DateAndPlaceProps {
   date: string;
   handleDateChange: (newDate: string) => void;
   handleStartTime: (startTime: string) => void;
+  handleEndTime: (endTime: string) => void;
   onPlaceChange: (place: string) => void;
 }
 
@@ -19,6 +20,7 @@ const DateAndPlace = ({
   date,
   handleDateChange,
   handleStartTime,
+  handleEndTime,
   onPlaceChange,
 }: DateAndPlaceProps) => {
   const [startTimeSelect, setStartTimeSelect] = useState(false);
@@ -43,6 +45,7 @@ const DateAndPlace = ({
     setSelectedStartTimeOption(option);
     setStartTimeSelect(false);
   };
+
   const handleEndTimeOption = (option: string) => {
     setSelectedEndTimeOption(option);
     setEndTimeSelect(false);
@@ -100,7 +103,8 @@ const DateAndPlace = ({
 
   useEffect(() => {
     handleStartTime(selectedStartTimeOption);
-  }, [handleStartTime, selectedStartTimeOption]);
+    handleEndTime(selectedEndOption);
+  }, [handleStartTime, handleEndTime, selectedStartTimeOption, selectedEndOption]);
 
   return (
     <div className="max-w-[760px] rounded-[20px] border-2 border-buttonPurple flex flex-col pt-10 pb-8 px-8 mb-8">
@@ -207,6 +211,7 @@ const DateAndPlace = ({
       <span className="pb-4 text-2xl">Оберіть формат події</span>
       <div className="pb-6">
         <button
+          type='button'
           className={`${
             eventType
               ? 'bg-buttonPurple text-white'
@@ -217,6 +222,7 @@ const DateAndPlace = ({
           Оффлайн
         </button>
         <button
+        type='button'
           className={`${
             eventType
               ? 'bg-lightPurple text-gray-700'

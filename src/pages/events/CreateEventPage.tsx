@@ -8,11 +8,14 @@ import CreateEventForm from '@/components/createEvent/createEventForm/CreateEven
 
 const CreateEventPage: React.FC = () => {
   // const [categorie, setCategorie] = useState<string>("Категорія")
-  const [eventName, setEventName] = useState('Назва події');
+  const [eventName, setEventName] = useState('');
+  const [description, setDescription] = useState('');
+  const [category, setCategory] = useState('');
   const [date, setDate] = useState<string>('');
   const [place, setPlace] = useState<string>("Місце")
   const [price, setPriece] = useState('Ціна');
   const [startTimeOption, setSelectedStartTimeOption] = useState('');
+  const [endTimeOption, setSelectedEndTimeOption] = useState('');
 
   // const handleCategorieChange = (newCategorie: string) => {
   //     setCategorie(newCategorie);
@@ -20,22 +23,34 @@ const CreateEventPage: React.FC = () => {
   const handleEventNameChange = (newName: string) => {
     setEventName(newName);
   };
-
+  const handleCategoryChange = (category: string) => {
+    setCategory(category);
+  };
+  const handleDescriptionChange = (description: string) => {
+    setDescription(description);
+  };
   const handleDateChange = (newDate: string) => {
     setDate(newDate);
   };
+  // const handleFormatChange = (format: string) => {
+  //   setFormat(format);
+  // };
+ 
 
   const handleStartTime = (startTime: string) => {
     setSelectedStartTimeOption(startTime);
   };
+  const handleEndTime = (endTime: string) => {
+    setSelectedEndTimeOption(endTime);
+  };
 
-    const handlePlaceChange = (newPlace: string) => {
-      setPlace(newPlace);
-    };
+  const handlePlaceChange = (newPlace: string) => {
+    setPlace(newPlace);
+  };
   const handlePriceChange = (newPrice: string) => {
     setPriece(newPrice);
   };
-  const [selectedCategory, setSelectedCategory] = useState('');
+  
   const [photos, setPhotos] = useState<(string | null)[]>([null, null, null]);
 
   const handlePhotoChange = (id: number, photo: string | null) => {
@@ -59,26 +74,32 @@ const CreateEventPage: React.FC = () => {
         <div className="flex gap-6">
           <CreateEventCard
             eventName={eventName}
+            category={category}
             price={price}
             photo={photos[0]}
-            category={selectedCategory}
             date={date}
             place={place}
             startTimeOption={startTimeOption}
           />
           <CreateEventForm
-            eventName={eventName}
+            place={place}
             photos={photos}
+            eventName={eventName}
+            description={description}
+            category={category}
             price={price}
             date={date}
             startTimeOption={startTimeOption}
+            endTimeOption={endTimeOption}
             onEventNameChange={handleEventNameChange}
-            onCategoryChange={setSelectedCategory}
+            onCategoryChange={handleCategoryChange}
             onPriceChange={handlePriceChange}
             onPhotoChange={handlePhotoChange}
             onPlaceChange={handlePlaceChange}
+            onDescriptionChange={handleDescriptionChange}
             handleDateChange={handleDateChange}
             handleStartTime={handleStartTime}
+            handleEndTime={handleEndTime}
           />
         </div>
       </Container>
