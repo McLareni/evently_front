@@ -10,7 +10,7 @@ const CreateEventPage: React.FC = () => {
   // const [categorie, setCategorie] = useState<string>("Категорія")
   const [eventName, setEventName] = useState('Назва події');
   const [date, setDate] = useState<string>('');
-  const [place, setPlace] = useState<string>("Місце")
+  const [place, setPlace] = useState<EventPlaceWithGps | null>(null);
   const [price, setPriece] = useState('Ціна');
   const [startTimeOption, setSelectedStartTimeOption] = useState('');
 
@@ -29,9 +29,10 @@ const CreateEventPage: React.FC = () => {
     setSelectedStartTimeOption(startTime);
   };
 
-    const handlePlaceChange = (newPlace: string) => {
-      setPlace(newPlace);
-    };
+  const handlePlaceChange = (newPlace: EventPlaceWithGps) => {
+    setPlace(newPlace);
+  };
+
   const handlePriceChange = (newPrice: string) => {
     setPriece(newPrice);
   };
@@ -71,6 +72,7 @@ const CreateEventPage: React.FC = () => {
             photos={photos}
             price={price}
             date={date}
+            place={place}
             startTimeOption={startTimeOption}
             onEventNameChange={handleEventNameChange}
             onCategoryChange={setSelectedCategory}

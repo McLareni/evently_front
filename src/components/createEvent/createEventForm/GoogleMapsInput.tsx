@@ -6,11 +6,14 @@ import { useEffect, useRef, useState } from 'react';
 import { useMapsLibrary } from '@vis.gl/react-google-maps';
 
 interface PlaceAutocompleteProps {
-  className?: string
+  className?: string;
   onPlaceSelect: (place: google.maps.places.PlaceResult | null) => void;
 }
 
-export const GoogleMapsInput = ({ className, onPlaceSelect }: PlaceAutocompleteProps) => {
+export const GoogleMapsInput = ({
+  className,
+  onPlaceSelect,
+}: PlaceAutocompleteProps) => {
   const [placeAutocomplete, setPlaceAutocomplete] =
     useState<google.maps.places.Autocomplete | null>(null);
   const inputRef = useRef<HTMLInputElement>(null);
@@ -38,6 +41,7 @@ export const GoogleMapsInput = ({ className, onPlaceSelect }: PlaceAutocompleteP
   return (
     <div>
       <input
+        name="place"
         ref={inputRef}
         className={`w-[245px] h-[52px] p-4 border-2 rounded-[10px] mr-4 ${className}`}
       />
