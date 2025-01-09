@@ -38,7 +38,7 @@ export const PopupShareEvent = ({ closePopup }: PopupShareEventProps) => {
           </div>
           <button type="button" className="focus:outline-none">
             <div className="flex gap-2 justify-between items-center border-lightPurple border-[1px] rounded-[10px] p-[8px]">
-              <div>
+              <div className="text-left">
                 <p>Event URL</p>
                 <p>https://evently-book.vercel.app{pathname}</p>
               </div>
