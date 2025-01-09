@@ -37,6 +37,7 @@ export default {
         // Other color
         success: '#3BE660',
         error: '#FF0F00',
+        googlemapsLink: '#1a73e8',
       },
       boxShadow: {
         primaryBtnActive: 'inset -5px 5px 50px 0 rgba(255, 255, 255, 0.7)',
@@ -44,7 +45,8 @@ export default {
         shadowSecondaryBtn: `inset 0 0 9px 0 rgba(155, 143, 243, 1)`,
         eventCardShadow: `4px 4px 4px rgba(155, 143, 243, 0.2);`,
 
-        shadowActivePrimaryBtn: '-5px 5px 50px 0px rgba(255, 255, 255, 0.70) inset',
+        shadowActivePrimaryBtn:
+          '-5px 5px 50px 0px rgba(255, 255, 255, 0.70) inset',
         shadowActiveSecondaryBtn: '9px 5px 30px 0px #9B8FF3 inset',
       },
       opacity: {

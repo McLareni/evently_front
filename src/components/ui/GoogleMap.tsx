@@ -10,8 +10,9 @@ import {
 interface EventGoogleMapProps {
   lat: number;
   lng: number;
+  about: string;
 }
-export const GoogleMap = ({ lat, lng }: EventGoogleMapProps) => {
+export const GoogleMap = ({ lat, lng, about }: EventGoogleMapProps) => {
   const [infoWindowShown, setInfoWindowShown] = useState(false);
 
   const [markerRef, marker] = useAdvancedMarkerRef();
@@ -40,12 +41,12 @@ export const GoogleMap = ({ lat, lng }: EventGoogleMapProps) => {
       />
       {infoWindowShown && (
         <InfoWindow anchor={marker} onClose={handleClose}>
-          <p>Про подію</p>
+          <p>{about}</p>
           <a
             href={`https://www.google.com/maps?q=${lat},${lng}`}
             target="_blank"
             rel="noreferrer"
-            className="text-buttonPurple"
+            className="text-googlemapsLink hover:underline"
           >
             Переглянути на Картах Google
           </a>
