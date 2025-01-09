@@ -4,13 +4,17 @@ import { selectUser } from '@/redux/auth/selectors';
 import { useAppSelector } from '@/redux/hooks';
 
 import { PopupEventCreated } from '../ui/PopupEventCreated';
+import { PopupShareEvent } from '../ui/PopupShareEvent';
 import { CropUploadImage } from './CropUploadImage';
 import { ProfileForm } from './ProfileForm';
 
 const Information = () => {
   const [image, setImage] = useState<File | null>(null);
   const [showPopup, setPopup] = useState(false);
-
+  const [showPopupShare, setPopupShare] = useState(false);
+  const closePopup = () => {
+    setPopupShare(false);
+  };
   const { name } = useAppSelector(selectUser);
 
   const getImage = (image: File) => {
@@ -43,7 +47,9 @@ const Information = () => {
       </p>
       <ProfileForm image={image} />
       <button onClick={() => setPopup(true)}>Подія створена</button>
+      <button onClick={() => setPopupShare(true)}>Поділитись</button>
       {showPopup && <PopupEventCreated />}
+      {showPopupShare && <PopupShareEvent closePopup={closePopup} />}
     </div>
   );
 };
