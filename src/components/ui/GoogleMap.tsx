@@ -27,7 +27,12 @@ export const GoogleMap = ({ lat, lng, about }: EventGoogleMapProps) => {
   return (
     <Map
       mapId={'1'}
-      style={{ width: '826px', height: '600px' }}
+      style={{
+        width: '826px',
+        height: '600px',
+        borderRadius: '20px',
+        overflow: 'hidden',
+      }}
       defaultCenter={{ lat, lng }}
       defaultZoom={10}
       gestureHandling={'greedy'}
