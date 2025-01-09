@@ -3,11 +3,13 @@ import { useState } from 'react';
 import { selectUser } from '@/redux/auth/selectors';
 import { useAppSelector } from '@/redux/hooks';
 
+import { PopupEventCreated } from '../ui/PopupEventCreated';
 import { CropUploadImage } from './CropUploadImage';
 import { ProfileForm } from './ProfileForm';
 
 const Information = () => {
   const [image, setImage] = useState<File | null>(null);
+  const [showPopup, setPopup] = useState(false);
 
   const { name } = useAppSelector(selectUser);
 
@@ -40,6 +42,8 @@ const Information = () => {
         Контактна інформація
       </p>
       <ProfileForm image={image} />
+      <button onClick={() => setPopup(true)}>Подія створена</button>
+      {showPopup && <PopupEventCreated />}
     </div>
   );
 };
