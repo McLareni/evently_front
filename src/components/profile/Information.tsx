@@ -3,6 +3,7 @@ import { useState } from 'react';
 import { selectUser } from '@/redux/auth/selectors';
 import { useAppSelector } from '@/redux/hooks';
 
+import { GoogleMap } from '../ui/GoogleMap';
 import { PopupEventCreated } from '../ui/PopupEventCreated';
 import { PopupShareEvent } from '../ui/PopupShareEvent';
 import { CropUploadImage } from './CropUploadImage';
@@ -50,6 +51,7 @@ const Information = () => {
       <button onClick={() => setPopupShare(true)}>Поділитись</button>
       {showPopup && <PopupEventCreated />}
       {showPopupShare && <PopupShareEvent closePopup={closePopup} />}
+      <GoogleMap lat={50.432727} lng={30.512317} />
     </div>
   );
 };
