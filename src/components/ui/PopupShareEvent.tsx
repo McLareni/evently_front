@@ -36,13 +36,15 @@ export const PopupShareEvent = ({ closePopup }: PopupShareEventProps) => {
             <FiFacebook size={32} />
             <FaViber size={32} />
           </div>
-          <div className="flex gap-2 justify-between items-center border-lightPurple border-[1px] rounded-[10px] p-[8px]">
-            <div>
-              <p>Event URL</p>
-              <p>https://evently-book.vercel.app{pathname}</p>
+          <button type="button" className="focus:outline-none">
+            <div className="flex gap-2 justify-between items-center border-lightPurple border-[1px] rounded-[10px] p-[8px]">
+              <div>
+                <p>Event URL</p>
+                <p>https://evently-book.vercel.app{pathname}</p>
+              </div>
+              <BiCopy size={24} />
             </div>
-            <BiCopy size={24} />
-          </div>
+          </button>
         </div>
       </div>
     </div>,
