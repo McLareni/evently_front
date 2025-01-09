@@ -1,10 +1,28 @@
-import { AdvancedMarker, Map } from '@vis.gl/react-google-maps';
+import { useCallback, useState } from 'react';
+
+import {
+  AdvancedMarker,
+  InfoWindow,
+  Map,
+  useAdvancedMarkerRef,
+} from '@vis.gl/react-google-maps';
 
 interface EventGoogleMapProps {
   lat: number;
   lng: number;
 }
 export const GoogleMap = ({ lat, lng }: EventGoogleMapProps) => {
+  const [infoWindowShown, setInfoWindowShown] = useState(false);
+
+  const [markerRef, marker] = useAdvancedMarkerRef();
+
+  const handleMarkerClick = useCallback(
+    () => setInfoWindowShown(isShown => !isShown),
+    []
+  );
+
+  const handleClose = useCallback(() => setInfoWindowShown(false), []);
+
   return (
     <Map
       mapId={'1'}
@@ -15,10 +33,24 @@ export const GoogleMap = ({ lat, lng }: EventGoogleMapProps) => {
       disableDefaultUI={false}
     >
       <AdvancedMarker
+        ref={markerRef}
         position={{ lat, lng }}
         clickable={true}
-        onClick={() => alert('Подія')}
+        onClick={handleMarkerClick}
       />
+      {infoWindowShown && (
+        <InfoWindow anchor={marker} onClose={handleClose}>
+          <p>Про подію</p>
+          <a
+            href={`https://www.google.com/maps?q=${lat},${lng}`}
+            target="_blank"
+            rel="noreferrer"
+            className="text-buttonPurple"
+          >
+            Переглянути на Картах Google
+          </a>
+        </InfoWindow>
+      )}
     </Map>
   );
 };
