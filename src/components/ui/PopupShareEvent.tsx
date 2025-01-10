@@ -47,8 +47,8 @@ export const PopupShareEvent = ({ closePopup }: PopupShareEventProps) => {
 
   return createPortal(
     <div className="fixed top-0 left-0 z-20 w-full h-full flex justify-center items-center bg-white bg-opacity-50">
-      <div className="min-w-[448px] relative bg-background flex flex-col items-center rounded-[20px] border-lightPurple border-[1px]">
-        <div className="flex w-full justify-center py-[16px] border-b-lightPurple border-b-[1px]">
+      <div className="min-w-[448px] relative bg-background flex flex-col items-center rounded-[20px] border-buttonPurple border-[1px]">
+        <div className="flex w-full justify-center py-[16px] border-b-buttonPurple border-b-[1px]">
           <p className="text-[20px]">Поділитися подією з друзями</p>
           <button
             className="absolute right-[16px] top-[16px]"
@@ -64,24 +64,36 @@ export const PopupShareEvent = ({ closePopup }: PopupShareEventProps) => {
               target="_blank"
               rel="noopener noreferrer"
             >
-              <LiaTelegram size={32} />
+              <LiaTelegram
+                size={32}
+                className="hover:text-buttonPurple transition-colors duration-300"
+              />
             </a>
             <a
               href={instagramShareUrl}
               target="_blank"
               rel="noopener noreferrer"
             >
-              <FaInstagram size={32} />
+              <FaInstagram
+                size={32}
+                className="hover:text-buttonPurple transition-colors duration-300"
+              />
             </a>
             <a
               href={facebookShareUrl}
               target="_blank"
               rel="noopener noreferrer"
             >
-              <FiFacebook size={32} />
+              <FiFacebook
+                size={32}
+                className="hover:text-buttonPurple transition-colors duration-300"
+              />
             </a>
             <a href={viberShareUrl} target="_blank" rel="noopener noreferrer">
-              <FaViber size={32} />
+              <FaViber
+                size={32}
+                className="hover:text-buttonPurple transition-colors duration-300"
+              />
             </a>
           </div>
           <button
@@ -89,7 +101,7 @@ export const PopupShareEvent = ({ closePopup }: PopupShareEventProps) => {
             type="button"
             className="focus:outline-none"
           >
-            <div className="flex gap-2 justify-between items-center border-lightPurple border-[1px] rounded-[10px] p-[8px]">
+            <div className="flex gap-2 justify-between items-center border-buttonPurple border-[1px] rounded-[10px] p-[8px]">
               <div className="text-left">
                 <p>Event URL</p>
                 <p>{eventUrl}</p>
