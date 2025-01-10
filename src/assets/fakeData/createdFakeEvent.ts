@@ -16,8 +16,8 @@ export const event = {
   images: null,
   location: {
     city: 'Київ',
-    latitude: null,
-    longitude: null,
+    latitude: 50.432727,
+    longitude: 30.512317,
     street: 'вул. Уманська, 35',
     venue: 'Палац Спорту',
   },

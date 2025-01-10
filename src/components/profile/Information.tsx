@@ -53,7 +53,7 @@ const Information = () => {
       <button onClick={() => setPopupShare(true)}>Поділитись</button>
       {showPopup && <PopupEventCreated event={event} />}
       {showPopupShare && <PopupShareEvent closePopup={closePopup} />}
-      <GoogleMap lat={50.432727} lng={30.512317} about="Max Barskih" />
+      <GoogleMap event={event} />
     </div>
   );
 };

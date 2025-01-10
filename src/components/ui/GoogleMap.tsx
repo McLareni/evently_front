@@ -8,12 +8,13 @@ import {
 } from '@vis.gl/react-google-maps';
 
 interface EventGoogleMapProps {
-  lat: number;
-  lng: number;
-  about: string;
+  event: Event;
 }
-export const GoogleMap = ({ lat, lng, about }: EventGoogleMapProps) => {
+export const GoogleMap = ({ event }: EventGoogleMapProps) => {
   const [infoWindowShown, setInfoWindowShown] = useState(false);
+
+  const { title, location } = event;
+  const { city, street, latitude, longitude } = location;
 
   const [markerRef, marker] = useAdvancedMarkerRef();
 
@@ -33,27 +34,33 @@ export const GoogleMap = ({ lat, lng, about }: EventGoogleMapProps) => {
         borderRadius: '20px',
         overflow: 'hidden',
       }}
-      defaultCenter={{ lat, lng }}
-      defaultZoom={10}
+      defaultCenter={{ lat: latitude, lng: longitude }}
+      defaultZoom={11}
       gestureHandling={'greedy'}
       disableDefaultUI={false}
     >
       <AdvancedMarker
         ref={markerRef}
-        position={{ lat, lng }}
+        position={{ lat: latitude, lng: longitude }}
         clickable={true}
         onClick={handleMarkerClick}
       />
       {infoWindowShown && (
-        <InfoWindow anchor={marker} onClose={handleClose}>
-          <p>{about}</p>
+        <InfoWindow
+          anchor={marker}
+          onClose={handleClose}
+          headerContent={<h3>{title}</h3>}
+        >
+          <p>{city}</p>
+          <p>{street}</p>
+          <p>Україна</p>
           <a
-            href={`https://www.google.com/maps?q=${lat},${lng}`}
+            href={`https://www.google.com/maps?q=${latitude},${longitude}`}
             target="_blank"
             rel="noreferrer"
-            className="text-googlemapsLink hover:underline"
+            className="text-googlemapsLink font-normal hover:underline"
           >
-            Переглянути на Картах Google
+            <span>Переглянути на Картах Google</span>
           </a>
         </InfoWindow>
       )}
