@@ -31,6 +31,16 @@ export const PopupShareEvent = ({ closePopup }: PopupShareEventProps) => {
     }
   };
 
+  const telegramShareUrl = `https://t.me/share/url?url=${encodeURIComponent(
+    eventUrl
+  )}`;
+
+  const instagramShareUrl = `https://www.instagram.com/?url=${encodeURIComponent(eventUrl)}`;
+
+  const facebookShareUrl = `https://www.facebook.com/sharer/sharer.php?u=${encodeURIComponent(eventUrl)}`;
+
+  const viberShareUrl = `viber://forward?text=${encodeURIComponent(eventUrl)}`;
+
   useEffect(() => {
     setEventUrl(`https://evently-book.vercel.app${pathname}`);
   }, [pathname]);
@@ -49,10 +59,30 @@ export const PopupShareEvent = ({ closePopup }: PopupShareEventProps) => {
         </div>
         <div className=" flex flex-col gap-[16px] items-center pt-[32px] pb-[16px] px-[86px]">
           <div className="flex gap-[24px]">
-            <LiaTelegram size={32} />
-            <FaInstagram size={32} />
-            <FiFacebook size={32} />
-            <FaViber size={32} />
+            <a
+              href={telegramShareUrl}
+              target="_blank"
+              rel="noopener noreferrer"
+            >
+              <LiaTelegram size={32} />
+            </a>
+            <a
+              href={instagramShareUrl}
+              target="_blank"
+              rel="noopener noreferrer"
+            >
+              <FaInstagram size={32} />
+            </a>
+            <a
+              href={facebookShareUrl}
+              target="_blank"
+              rel="noopener noreferrer"
+            >
+              <FiFacebook size={32} />
+            </a>
+            <a href={viberShareUrl} target="_blank" rel="noopener noreferrer">
+              <FaViber size={32} />
+            </a>
           </div>
           <button
             onClick={handleCopy}
