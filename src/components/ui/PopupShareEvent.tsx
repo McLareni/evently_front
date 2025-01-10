@@ -54,7 +54,10 @@ export const PopupShareEvent = ({ closePopup }: PopupShareEventProps) => {
             className="absolute right-[16px] top-[16px]"
             onClick={closePopup}
           >
-            <IoMdClose size={18} />
+            <IoMdClose
+              size={18}
+              className="hover:scale-125 transition-transform duration-300"
+            />
           </button>
         </div>
         <div className=" flex flex-col gap-[16px] items-center pt-[32px] pb-[16px] px-[86px]">
