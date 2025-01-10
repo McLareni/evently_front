@@ -3,6 +3,8 @@ import { useState } from 'react';
 import { selectUser } from '@/redux/auth/selectors';
 import { useAppSelector } from '@/redux/hooks';
 
+import { event } from '@/assets/fakeData/createdFakeEvent';
+
 import { GoogleMap } from '../ui/GoogleMap';
 import { PopupEventCreated } from '../ui/PopupEventCreated';
 import { PopupShareEvent } from '../ui/PopupShareEvent';
@@ -49,7 +51,7 @@ const Information = () => {
       <ProfileForm image={image} />
       <button onClick={() => setPopup(true)}>Подія створена</button>
       <button onClick={() => setPopupShare(true)}>Поділитись</button>
-      {showPopup && <PopupEventCreated />}
+      {showPopup && <PopupEventCreated event={event} />}
       {showPopupShare && <PopupShareEvent closePopup={closePopup} />}
       <GoogleMap lat={50.432727} lng={30.512317} about="Max Barskih" />
     </div>
