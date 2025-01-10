@@ -1,3 +1,4 @@
+import { useEffect, useState } from 'react';
 import { createPortal } from 'react-dom';
 import { BiCopy } from 'react-icons/bi';
 import { FaInstagram, FaViber } from 'react-icons/fa';
@@ -5,6 +6,7 @@ import { FiFacebook } from 'react-icons/fi';
 import { IoMdClose } from 'react-icons/io';
 import { LiaTelegram } from 'react-icons/lia';
 import { useLocation } from 'react-router';
+import { toast } from 'react-toastify';
 
 import { usePreventScroll } from '@/hooks/usePreventScroll';
 
@@ -13,9 +15,25 @@ interface PopupShareEventProps {
 }
 
 export const PopupShareEvent = ({ closePopup }: PopupShareEventProps) => {
+  const [eventUrl, setEventUrl] = useState('');
+
   usePreventScroll();
 
   const { pathname } = useLocation();
+
+  const handleCopy = async () => {
+    try {
+      await navigator.clipboard.writeText(eventUrl);
+      return toast.success('Текст скопійовано');
+    } catch (err) {
+      console.log(err);
+      return toast.error('Не вдалося скопіювати текст: ');
+    }
+  };
+
+  useEffect(() => {
+    setEventUrl(`https://evently-book.vercel.app${pathname}`);
+  }, [pathname]);
 
   return createPortal(
     <div className="fixed top-0 left-0 z-20 w-full h-full flex justify-center items-center bg-white bg-opacity-50">
@@ -36,11 +54,15 @@ export const PopupShareEvent = ({ closePopup }: PopupShareEventProps) => {
             <FiFacebook size={32} />
             <FaViber size={32} />
           </div>
-          <button type="button" className="focus:outline-none">
+          <button
+            onClick={handleCopy}
+            type="button"
+            className="focus:outline-none"
+          >
             <div className="flex gap-2 justify-between items-center border-lightPurple border-[1px] rounded-[10px] p-[8px]">
               <div className="text-left">
                 <p>Event URL</p>
-                <p>https://evently-book.vercel.app{pathname}</p>
+                <p>{eventUrl}</p>
               </div>
               <BiCopy size={24} />
             </div>
