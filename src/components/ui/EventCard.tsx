@@ -19,6 +19,7 @@ import { formatDateToDayMonth } from '@/helpers/filters/formatDateToDayMonth';
 import { useGetLikedEventsWithSkip } from '@/hooks/query/useGetLikedEventsWithSkip';
 
 import { SharedBtn } from './SharedBtn';
+import { useNavigate } from 'react-router';
 
 interface EventCardProps {
   event: Event;
@@ -59,6 +60,7 @@ export const EventCard: React.FC<EventCardProps> = ({
   const { data: likedEventsAll } = useGetLikedEventsWithSkip();
   const [addLikedEvent] = useAddLikedEventMutation();
   const [deleteLikedEvent] = useDeleteLikedEventMutation();
+  const navigate = useNavigate();
 
   const address = location.city + ', ' + location.street;
   const slicedStreet = () => {
@@ -232,6 +234,7 @@ export const EventCard: React.FC<EventCardProps> = ({
               type="button"
               primary
               className="w-[230px] h-12 mx-auto mt-4"
+              onClick={() => navigate(`/event/${eventId}`)}
             >
               Хочу
             </SharedBtn>

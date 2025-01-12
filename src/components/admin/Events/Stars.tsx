@@ -21,8 +21,6 @@ const Stars: React.FC<IProps> = ({ rating }) => {
         : 'none'
   );
 
-  console.log(starsList);
-
   return (
     <ul className="flex">
       {starsList.map((star, index) => {
