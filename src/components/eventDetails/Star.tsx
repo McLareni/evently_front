@@ -9,14 +9,13 @@ interface IProps {
 }
 
 const Star: React.FC<IProps> = ({ top, left }) => {
-  const Y = `top-[${top}px]`;
-  const X = `left-[${left}px]`;
-
   return (
     <GiSevenPointedStar
-      className={clsx('w-[28px] h-[28px] blur-[2px] absolute ' + Y + ' ' + X)}
+      className={clsx('w-[28px] h-[28px] blur-[2px] absolute')}
       style={{
         fill: 'url(#gradient)',
+        top: `${top}px`,
+        left: `${left}px`,
       }}
     />
   );

@@ -192,7 +192,7 @@ const EventDetails = () => {
                   <span>
                     <FaRegMoneyBillAlt className="w-6 h-6" />
                   </span>
-                  {event?.price + ' ₴' || 'необмежена'}
+                  {event.price > 0 ? event?.price + ' ₴' : 'Безкоштовно'}
                 </p>
               </div>
               <button className="bg-dark-gradient w-[421px] h-12 rounded-[71px_8px] text-background text-2xl mt-[55px]">
