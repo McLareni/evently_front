@@ -16,6 +16,10 @@ export const GoogleMap = ({ event }: EventGoogleMapProps) => {
   const { title, location } = event;
   const { city, street, latitude, longitude } = location;
 
+  // TODO
+  const lat = +latitude === 0 ? 50.432727 : latitude;
+  const lon = +longitude === 0 ? 30.512317 : longitude;
+
   const [markerRef, marker] = useAdvancedMarkerRef();
 
   const handleMarkerClick = useCallback(
@@ -34,14 +38,14 @@ export const GoogleMap = ({ event }: EventGoogleMapProps) => {
         borderRadius: '20px',
         overflow: 'hidden',
       }}
-      defaultCenter={{ lat: latitude, lng: longitude }}
+      defaultCenter={{ lat: +lat, lng: +lon }}
       defaultZoom={11}
       gestureHandling={'greedy'}
       disableDefaultUI={false}
     >
       <AdvancedMarker
         ref={markerRef}
-        position={{ lat: latitude, lng: longitude }}
+        position={{ lat: +lat, lng: +lon }}
         clickable={true}
         onClick={handleMarkerClick}
       />
@@ -55,7 +59,7 @@ export const GoogleMap = ({ event }: EventGoogleMapProps) => {
           <p>{street}</p>
           <p>Україна</p>
           <a
-            href={`https://www.google.com/maps?q=${latitude},${longitude}`}
+            href={`https://www.google.com/maps?q=${lat},${lon}`}
             target="_blank"
             rel="noreferrer"
             className="text-googlemapsLink font-normal hover:underline"

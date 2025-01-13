@@ -3,21 +3,12 @@ import { useState } from 'react';
 import { selectUser } from '@/redux/auth/selectors';
 import { useAppSelector } from '@/redux/hooks';
 
-import { event } from '@/assets/fakeData/createdFakeEvent';
-
-import { GoogleMap } from '../ui/GoogleMap';
-import { PopupEventCreated } from '../ui/PopupEventCreated';
-import { PopupShareEvent } from '../ui/PopupShareEvent';
 import { CropUploadImage } from './CropUploadImage';
 import { ProfileForm } from './ProfileForm';
 
 const Information = () => {
   const [image, setImage] = useState<File | null>(null);
-  const [showPopup, setPopup] = useState(false);
-  const [showPopupShare, setPopupShare] = useState(false);
-  const closePopup = () => {
-    setPopupShare(false);
-  };
+
   const { name } = useAppSelector(selectUser);
 
   const getImage = (image: File) => {
@@ -49,11 +40,6 @@ const Information = () => {
         Контактна інформація
       </p>
       <ProfileForm image={image} />
-      <button onClick={() => setPopup(true)}>Подія створена</button>
-      <button onClick={() => setPopupShare(true)}>Поділитись</button>
-      {showPopup && <PopupEventCreated event={event} />}
-      {showPopupShare && <PopupShareEvent closePopup={closePopup} />}
-      <GoogleMap event={event} />
     </div>
   );
 };
