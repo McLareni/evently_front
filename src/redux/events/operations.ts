@@ -27,6 +27,9 @@ export const EventsApi = createApi({
       transformResponse: (response: { eventsList: Event[] }) =>
         response.eventsList,
     }),
+    getEventById: builder.query<Event, string>({
+      query: id => `events/${id}`,
+    }),
 
     addLikedEvent: builder.mutation<
       Event,
@@ -82,4 +85,5 @@ export const {
   useGetLikedEventsQuery,
   useAddLikedEventMutation,
   useDeleteLikedEventMutation,
+  useGetEventByIdQuery,
 } = EventsApi;
