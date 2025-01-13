@@ -63,7 +63,9 @@ const ModalDecision: React.FC<IProps> = ({ event, openModal }) => {
                     : 'bg-lightPurple'
                 )}
               >
-                <p className="px-4 py-2.5">Офлайн</p>
+                <p className="px-4 py-2.5">
+                  {event?.eventUrl ? 'Онлайн' : 'Офлайн'}
+                </p>
               </div>
             </div>
           </div>

@@ -74,10 +74,14 @@ export default {
         },
       },
       backgroundImage: {
-        'bg-gradient': 'linear-gradient(123.03deg, #E9E6FF 0%, #D5FEFF 100%)',
+        'bg-gradient': 'linear-gradient(123deg, #E9E6FF 0%, #D5FEFF 100%)',
         'badge-gradient': 'linear-gradient(90deg, #12C2E9 0%, #C471ED 90%)',
         'filter-btn-gradient':
           'linear-gradient(123.03deg, #9B8FF3 0%, #38F6F9 100%)',
+        'dark-gradient':
+          'linear-gradient(98deg, #12C2E9 2.11%, #C471ED 75.16%)',
+        eventDetails:
+          'linear-gradient(123deg, rgba(155, 143, 243, 0.80) 0%, rgba(56, 246, 249, 0.80) 100%)',
       },
       gridTemplateColumns: {
         custom: 'minmax(300px, 1fr) 1fr',

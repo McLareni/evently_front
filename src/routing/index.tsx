@@ -12,19 +12,15 @@ import Notifications from '@/pages/admin/Notification';
 import PromoEvents from '@/pages/admin/PromoEvents';
 import AllEventsPage from '@/pages/events/AllEventsPage';
 import CreateEventForm from '@/pages/events/CreateEventPage';
-import { action as editEventAction } from '@/pages/events/EventEdit';
-import EventEdit from '@/pages/events/EventEdit';
+import EventDetails from '@/pages/events/EventDetails';
 import Profile from '@/pages/user/Profile';
 
 import { Layout } from '@/components/layout/Layout';
 
-import { loader as eventLoader } from '../pages/events/Event';
 import AdminRouter from './privateRouters/AdminRouter';
 import LoginRouter from './privateRouters/LoginRouter';
 
 const NotFound = React.lazy(() => import('../pages/NotFoundPage'));
-const Events = React.lazy(() => import('../pages/events/Events'));
-const Event = React.lazy(() => import('../pages/events/Event'));
 
 const router = createBrowserRouter([
   {
@@ -37,30 +33,12 @@ const router = createBrowserRouter([
         loader: getAllEventsLoader,
       },
       {
-        path: 'events',
-        element: <Events />,
-      },
-      {
         path: 'CreateEvent',
         element: <CreateEventForm />,
       },
       {
-        path: 'events/:idEvent',
-        element: <Event />,
-        loader: ({ params }) => eventLoader(params.idEvent),
-      },
-      {
-        path: 'events/new/edit',
-        element: <EventEdit />,
-        loader: () => eventLoader('new'),
-        action: ({ request }) => editEventAction(request, 'new'),
-      },
-      {
-        path: 'events/:idEvent/edit',
-        element: <EventEdit />,
-        loader: ({ params }) => eventLoader(params.idEvent),
-        action: ({ request, params }) =>
-          editEventAction(request, params.idEvent),
+        path: 'event/:idEvent',
+        element: <EventDetails />,
       },
       {
         element: <LoginRouter />,

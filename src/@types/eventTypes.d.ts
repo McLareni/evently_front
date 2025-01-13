@@ -14,10 +14,9 @@ interface Event {
   };
   organizers: User[];
   rating: number;
-  eventUrl: string | null;
   eventStatus: 'PENDING' | 'APPROVED' | 'CANCELLED';
-  APPROVED;
-  CANCELLED;
+  eventUrl: string | null;
+  images: string[];
   date: {
     day: string;
     time: string;
