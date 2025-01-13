@@ -37,6 +37,7 @@ export default {
         // Other color
         success: '#3BE660',
         error: '#FF0F00',
+        googlemapsLink: '#1a73e8',
       },
       boxShadow: {
         primaryBtnActive: 'inset -5px 5px 50px 0 rgba(255, 255, 255, 0.7)',

@@ -22,13 +22,14 @@ import { useAppSelector } from '@/redux/hooks';
 
 import { useGetCountLikeEvents } from '@/hooks/query/useGetCountLikeEvent';
 import { useLazyGetAllEventsQueryWithTrigger } from '@/hooks/query/useLazyGetAllEventsQueryWithTrigger';
-import { Map, Marker } from '@vis.gl/react-google-maps';
 import clsx from 'clsx';
 
 import Stars from '@/components/admin/Events/Stars';
 import BackgroundStars from '@/components/eventDetails/BackgroundStars';
 import { EventCard } from '@/components/ui';
+import { GoogleMap } from '@/components/ui/GoogleMap';
 import { MainLogo } from '@/components/ui/Logo';
+import { PopupShareEvent } from '@/components/ui/PopupShareEvent';
 import { ShowAllButton } from '@/components/ui/ShowAllButton';
 import Spinner from '@/components/ui/Spinner';
 
@@ -46,6 +47,11 @@ const EventDetails = () => {
   const [deleteLikedEvent] = useDeleteLikedEventMutation();
   const user = useAppSelector(selectUser);
   const [isShortAboutUser, setIsShortAboutUser] = useState(true);
+  const [showPopupShare, setPopupShare] = useState(false);
+
+  const closePopup = () => {
+    setPopupShare(false);
+  };
 
   const shortAboutUser = aboutUser?.slice(0, 100);
 
@@ -198,9 +204,13 @@ const EventDetails = () => {
               <button className="bg-dark-gradient w-[421px] h-12 rounded-[71px_8px] text-background text-2xl mt-[55px]">
                 Купити квиток
               </button>
-              <button className="focus:outline-0 absolute top-[56px] right-[26px]">
+              <button
+                onClick={() => setPopupShare(true)}
+                className="focus:outline-0 absolute top-[56px] right-[26px]"
+              >
                 <AiOutlineShareAlt className="w-6 h-6" />
               </button>
+              {showPopupShare && <PopupShareEvent closePopup={closePopup} />}
             </div>
           </div>
         </div>
@@ -255,21 +265,7 @@ const EventDetails = () => {
                 {event.location.city}, {event.location.street}
               </p>
               <div className="rounded-[20px] overflow-hidden w-fit">
-                <Map
-                  defaultCenter={{
-                    lat: +event.location.latitude,
-                    lng: +event.location.longitude,
-                  }}
-                  defaultZoom={13}
-                  className="w-[826px] h-[600px]"
-                >
-                  <Marker
-                    position={{
-                      lat: +event.location.latitude,
-                      lng: +event.location.longitude,
-                    }}
-                  />
-                </Map>
+                <GoogleMap event={event} />
               </div>
             </div>
             <button className="flex gap-2 p-3 mt-8 rounded-[15px] border border-buttonPurple text-xl text-textDark focus:outline-0">
