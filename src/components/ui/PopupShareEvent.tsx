@@ -25,7 +25,7 @@ export const PopupShareEvent = ({ closePopup }: PopupShareEventProps) => {
   const handleCopy = async () => {
     try {
       await navigator.clipboard.writeText(eventUrl);
-      return toast.success('Текст скопійовано');
+      return toast.success('Посилання скопійовано');
     } catch (err) {
       console.log(err);
       return toast.error('Не вдалося скопіювати текст: ');
@@ -112,7 +112,10 @@ export const PopupShareEvent = ({ closePopup }: PopupShareEventProps) => {
                 <p className="mb-[3px]">Event URL</p>
                 <p className="text-[12px]">{cutEventUrls}</p>
               </div>
-              <BiCopy size={24} />
+              <BiCopy
+                size={24}
+                className="hover:text-buttonPurple transition-colors duration-300"
+              />
             </div>
           </button>
         </div>
