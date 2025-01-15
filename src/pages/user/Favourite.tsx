@@ -12,8 +12,8 @@ const Favourite: React.FC = () => {
     <>
       {!likedEventsAll || likedEventsAll.length === 0 ? (
         !isLoading && (
-          <span>
-            Не знайшов подію, яка цікавить? Чому б не створити власну?
+          <span className="text-[64px] font-oswald text-buttonPurple">
+            Ви ще нічого не зберегли:(
           </span>
         )
       ) : (

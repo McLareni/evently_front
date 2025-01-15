@@ -40,7 +40,7 @@ export const GoogleMap = ({ event }: EventGoogleMapProps) => {
       }}
       defaultCenter={{ lat: +lat, lng: +lon }}
       defaultZoom={11}
-      gestureHandling={'greedy'}
+      gestureHandling={'cooperative'}
       disableDefaultUI={false}
     >
       <AdvancedMarker

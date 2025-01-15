@@ -8,6 +8,7 @@ import { LiaTelegram } from 'react-icons/lia';
 import { useLocation } from 'react-router';
 import { toast } from 'react-toastify';
 
+import { cutStringWithDots } from '@/helpers/cutStringWithDots';
 import { usePreventScroll } from '@/hooks/usePreventScroll';
 
 interface PopupShareEventProps {
@@ -24,7 +25,7 @@ export const PopupShareEvent = ({ closePopup }: PopupShareEventProps) => {
   const handleCopy = async () => {
     try {
       await navigator.clipboard.writeText(eventUrl);
-      return toast.success('Текст скопійовано');
+      return toast.success('Посилання скопійовано');
     } catch (err) {
       console.log(err);
       return toast.error('Не вдалося скопіювати текст: ');
@@ -34,6 +35,8 @@ export const PopupShareEvent = ({ closePopup }: PopupShareEventProps) => {
   const telegramShareUrl = `https://t.me/share/url?url=${encodeURIComponent(
     eventUrl
   )}`;
+
+  const cutEventUrls = cutStringWithDots(eventUrl, 44);
 
   const instagramShareUrl = `https://www.instagram.com/?url=${encodeURIComponent(eventUrl)}`;
 
@@ -47,7 +50,7 @@ export const PopupShareEvent = ({ closePopup }: PopupShareEventProps) => {
 
   return createPortal(
     <div className="fixed top-0 left-0 z-20 w-full h-full flex justify-center items-center bg-white bg-opacity-50">
-      <div className="min-w-[448px] relative bg-background flex flex-col items-center rounded-[20px] border-buttonPurple border-[1px]">
+      <div className="leading-[1.2] min-w-[448px] relative bg-background flex flex-col items-center rounded-[20px] border-buttonPurple border-[1px]">
         <div className="flex w-full justify-center py-[16px] border-b-buttonPurple border-b-[1px]">
           <p className="text-[20px]">Поділитися подією з друзями</p>
           <button
@@ -60,7 +63,7 @@ export const PopupShareEvent = ({ closePopup }: PopupShareEventProps) => {
             />
           </button>
         </div>
-        <div className=" flex flex-col gap-[16px] items-center pt-[32px] pb-[16px] px-[86px]">
+        <div className=" flex flex-col gap-[16px] items-center pt-[32px] pb-[16px] px-[72px]">
           <div className="flex gap-[24px]">
             <a
               href={telegramShareUrl}
@@ -106,10 +109,13 @@ export const PopupShareEvent = ({ closePopup }: PopupShareEventProps) => {
           >
             <div className="flex gap-2 justify-between items-center border-buttonPurple border-[1px] rounded-[10px] p-[8px]">
               <div className="text-left">
-                <p>Event URL</p>
-                <p>{eventUrl}</p>
+                <p className="mb-[3px]">Event URL</p>
+                <p className="text-[12px]">{cutEventUrls}</p>
               </div>
-              <BiCopy size={24} />
+              <BiCopy
+                size={24}
+                className="hover:text-buttonPurple transition-colors duration-300"
+              />
             </div>
           </button>
         </div>
