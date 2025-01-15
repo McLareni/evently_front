@@ -2,17 +2,17 @@ import React from 'react';
 import { createBrowserRouter } from 'react-router-dom';
 
 import { getAllEventsLoader } from '@/loaders/getAllEventsLoader';
-import Favourite from '@/pages/Favourite';
 import Home from '@/pages/Home';
-import MyEvent from '@/pages/MyEvent';
-import UserProfile from '@/pages/UserProfile';
 import AdminEvents from '@/pages/admin/AdminEvents';
 import AdminUsers from '@/pages/admin/AdminUsers';
 import Notifications from '@/pages/admin/Notification';
 import PromoEvents from '@/pages/admin/PromoEvents';
+import UserProfile from '@/pages/admin/UserProfile';
 import AllEventsPage from '@/pages/events/AllEventsPage';
 import CreateEventForm from '@/pages/events/CreateEventPage';
 import EventDetails from '@/pages/events/EventDetails';
+import Favourite from '@/pages/user/Favourite';
+import MyEvent from '@/pages/user/MyEvent';
 import Profile from '@/pages/user/Profile';
 
 import { Layout } from '@/components/layout/Layout';
@@ -33,12 +33,17 @@ const router = createBrowserRouter([
         loader: getAllEventsLoader,
       },
       {
-        path: 'CreateEvent',
+        path: 'create_event',
         element: <CreateEventForm />,
       },
       {
         path: 'event/:idEvent',
         element: <EventDetails />,
+      },
+      {
+        path: 'all_events',
+        element: <AllEventsPage />,
+        loader: getAllEventsLoader,
       },
       {
         element: <LoginRouter />,
@@ -65,11 +70,6 @@ const router = createBrowserRouter([
           },
         ],
       },
-      {
-        path: 'all_events',
-        element: <AllEventsPage />,
-        loader: getAllEventsLoader,
-      },
 
       // Later add privat router
 
@@ -78,14 +78,6 @@ const router = createBrowserRouter([
       { path: 'popular', element: '' },
       { path: 'organizers', element: '' },
       { path: 'about', element: '' },
-
-      { path: 'nearby', element: '' },
-      { path: 'concerts', element: '' },
-      { path: 'workshop', element: '' },
-      { path: 'stand_up', element: '' },
-      { path: 'business_networking', element: '' },
-      { path: 'sports_events', element: '' },
-      { path: 'another', element: '' },
 
       { path: 'Kyiv', element: '' },
       { path: 'Odesa', element: '' },

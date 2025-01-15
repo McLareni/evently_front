@@ -37,7 +37,7 @@ const UserCard: React.FC<IProps> = ({ item, index, openModal }) => {
           )}
         </Link>
       </CellItem>
-      <CellItem>{item.phone || 'Не вказано'}</CellItem>
+      <CellItem>{item.phoneNumber || 'Не вказано'}</CellItem>
       <CellItem>{item.email}</CellItem>
       <CellItem>{formatedDate}</CellItem>
       <CellItem classes="text-center">

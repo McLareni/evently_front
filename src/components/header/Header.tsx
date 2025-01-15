@@ -39,7 +39,7 @@ export const Header: React.FC = () => {
               setIsModalOpen={setIsModalOpen}
             />
 
-            <div onClick={() => handleLinkClick('createEvent')}>
+            <div onClick={() => handleLinkClick('create_event')}>
               <SharedBtn
                 type="button"
                 primary

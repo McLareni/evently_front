@@ -44,7 +44,7 @@ const UserProfile = () => {
             <span>
               <PiPhoneCall className="w-5 h-5 mr-2" />
             </span>
-            {userInfo?.phone ? userInfo.phone : 'Не вказано'}
+            {userInfo?.phoneNumber ? userInfo.phoneNumber : 'Не вказано'}
           </p>
         </div>
       </div>
