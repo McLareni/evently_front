@@ -4,9 +4,10 @@ import { HiOutlineTicket } from "react-icons/hi";
 type TicketPriceProps = {
   price: string;
   onPriceChange: (price: string) => void;
+  handleNumberOfTicketsChange: (numberOfYickets: number) => void;
 };
 
-const TicketPrice: React.FC<TicketPriceProps> = ({ price, onPriceChange }) => {
+const TicketPrice: React.FC<TicketPriceProps> = ({ price, onPriceChange, handleNumberOfTicketsChange }) => {
   const [freeTickets, setFreeTickets] = useState<boolean>(false);
   const [inputValue, setInputValue] = useState<string>(''); 
 
@@ -79,6 +80,7 @@ const TicketPrice: React.FC<TicketPriceProps> = ({ price, onPriceChange }) => {
             <HiOutlineTicket className="absolute top-[15.25px] left-[17.25px] w-6 h-6" />
             <input
               type="number"
+              onChange={(e) => handleNumberOfTicketsChange(+e.target.value)}
               className="outline-none border-2 border-buttonPurple pl-[49px] w-[240px] h-[48px] my-[2px] mx-[2px] p-4 rounded-[10px] [appearance:textfield] [&::-webkit-outer-spin-button]:appearance-none 
                 [&::-webkit-inner-spin-button]:appearance-none"
               placeholder="100"

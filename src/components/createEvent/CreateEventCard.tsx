@@ -9,12 +9,14 @@ import { SharedBtn } from '@/components/ui';
 
 import exampleCard from '/images/exampleCard.svg';
 
+import { useEffect, useState } from 'react';
+
 type CardProps = {
   eventName: string;
   place: EventPlaceWithGps | null;
   price: string;
   photo: string | null;
-  category: string;
+  eventType: string;
   date: string;
   startTimeOption: string;
 };
@@ -24,11 +26,21 @@ const CreateEventCard: React.FC<CardProps> = ({
   price,
   photo,
   place,
-  category,
+  eventType,
   date,
   startTimeOption,
 }) => {
+  const [freeTickets, setFreeTickets] = useState<boolean>(false)
+
   const formattedDate = formatDateToDayMonth(date);
+  
+  useEffect(() => {
+      if (price == 'Безкоштовно') {
+        console.log('free')
+        setFreeTickets(true)  
+      } else
+      setFreeTickets(false)
+  }, [price])
 
   return (
     <>
@@ -61,10 +73,10 @@ const CreateEventCard: React.FC<CardProps> = ({
                  border-[2px] border-borderColor bg-bg-gradient"
           >
             <p className="font-normal text-md text-textDark px-4 py-2.5">
-              {category || 'Категорія'}
+              {eventType || 'Категорія'}
             </p>
           </div>
-          <h2 className="min-h-[72px] text-2xl text-textDark group-hover:line-clamp-none truncate max-w-[250px]">
+          <h2 className="min-h-[72px] text-2xl text-textDark break-words whitespace-normal truncate max-w-[250px]">
             {eventName}
           </h2>
           <ul className="flex flex-col gap-[18px] font-normal text-md text-textDark justify-between w-full">
@@ -90,8 +102,7 @@ const CreateEventCard: React.FC<CardProps> = ({
             </li>
             <li className="flex items-center gap-[18px]">
               <FaRegMoneyBillAlt size="24px" />
-
-              <p>{price}</p>
+              <p className={`${freeTickets ? 'text-error' : ''}`}>{price}</p>
             </li>
           </ul>
           <SharedBtn type="button" primary className="w-[230px] h-12 mx-auto">

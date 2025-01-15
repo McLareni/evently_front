@@ -15,6 +15,7 @@ interface DateAndPlaceProps {
   handleStartTime: (startTime: string) => void;
   handleEndTime: (endTime: string) => void;
   onPlaceChange: (newPlace: EventPlaceWithGps) => void;
+  handleEventUrlChange: (eventUrl: string) => void;
 }
 
 const DateAndPlace = ({
@@ -23,6 +24,7 @@ const DateAndPlace = ({
   handleStartTime,
   handleEndTime,
   onPlaceChange,
+  handleEventUrlChange,
 }: DateAndPlaceProps) => {
   const [startTimeSelect, setStartTimeSelect] = useState(false);
   const [endTimeSelect, setEndTimeSelect] = useState(false);
@@ -119,8 +121,11 @@ const DateAndPlace = ({
               onClick={toggleIsCalendarShown}
               className="flex justify-between items-center w-full h-[52px] px-[12px] focus:outline-none"
             >
-              <AiOutlineCalendar size="24px" />
-              {date && <p>{formattedDate}</p>}
+              <div className='flex'>
+                <AiOutlineCalendar size="24px" />
+
+                {date && <p className='pl-2'>{formattedDate}</p>}
+              </div>
               <BiChevronDown />
             </button>
             <div className="">
@@ -142,16 +147,18 @@ const DateAndPlace = ({
               className="flex justify-between items-center w-full h-[52px] px-[12px] focus:outline-none"
               onClick={() => setStartTimeSelect(prev => !prev)}
             >
+              <div className='flex'>
               <BiTimeFive size="24px" />
               <span
                 className={`${
                   selectedStartTimeOption === 'Оберіть час'
                     ? 'text-uploadBtnBg'
                     : 'text-black'
-                }`}
+                } pl-2`}
               >
                 {selectedStartTimeOption}
               </span>
+              </div>
               <BiChevronDown />
             </button>
             {startTimeSelect && (
@@ -183,16 +190,18 @@ const DateAndPlace = ({
               className="flex justify-between items-center w-full h-[52px] px-[12px] focus:outline-none"
               onClick={() => setEndTimeSelect(prev => !prev)}
             >
-              <BiTimeFive size="24px" />
-              <span
-                className={`${
-                  selectedEndOption === 'Оберіть час'
-                    ? 'text-uploadBtnBg'
-                    : 'text-black'
-                }`}
-              >
-                {selectedEndOption}
-              </span>
+              <div className='flex'>
+                <BiTimeFive size="24px" />
+                <span
+                  className={`${
+                    selectedEndOption === 'Оберіть час'
+                      ? 'text-uploadBtnBg'
+                      : 'text-black'
+                  } pl-2`}
+                >
+                  {selectedEndOption}
+                </span>
+              </div>
               <BiChevronDown />
             </button>
             {endTimeSelect && (
@@ -248,6 +257,7 @@ const DateAndPlace = ({
 
             <GoogleMapsInput
               className="w-[696px] border-buttonPurple outline-none"
+              placeholder='Адреса проведення'
               onPlaceSelect={place => {
                 if (!place || !place.geometry) return;
                 const formattedPlace = {
@@ -272,6 +282,7 @@ const DateAndPlace = ({
             id="link"
             placeholder="https://meet.google.com/..."
             className="outline-none w-[696px] h-[52px] border-2 rounded-[10px] p-4 border-buttonPurple"
+            onChange={(e) => {handleEventUrlChange(e.target.value)}}
           />
         </div>
       )}
