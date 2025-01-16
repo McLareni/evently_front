@@ -28,3 +28,8 @@ type UserInfo = Pick<
   | 'changePassword'
   | 'repeatPassword'
 >;
+
+interface Coordinates {
+  latitude: number;
+  longitude: number;
+}

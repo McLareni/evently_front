@@ -1,6 +1,10 @@
 import { useEffect } from 'react';
+import { toast } from 'react-toastify';
 
-import { addSelectedTypes } from '@/redux/filters/filtersSlice';
+import {
+  addSelectedTypes,
+  setUserCoordinates,
+} from '@/redux/filters/filtersSlice';
 import { getSelectedTypes } from '@/redux/filters/selectors';
 import { useAppDispatch, useAppSelector } from '@/redux/hooks';
 
@@ -26,6 +30,30 @@ export function useGetEventTypeFilter() {
       dispatch(addSelectedTypes(['Усі події']));
     }
   };
+
+  useEffect(() => {
+    const getMyPosition = () =>
+      navigator.geolocation.getCurrentPosition(
+        position => {
+          const coordinates = {
+            latitude: position.coords.latitude,
+            longitude: position.coords.longitude,
+          };
+          dispatch(setUserCoordinates(coordinates));
+        },
+        error => {
+          console.log(error);
+          if (error.code === 1) {
+            console.log(window.location);
+            toast.error('Ввімкніть доступ до місцезнаходження!');
+          }
+        }
+      );
+
+    if (selectedTypes.includes('Під домом')) {
+      getMyPosition();
+    }
+  }, [dispatch, selectedTypes]);
 
   useEffect(() => {
     if (selectedTypes.length === 0) {

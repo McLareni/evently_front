@@ -10,6 +10,7 @@ const initialState = {
   endDate: undefined as string | undefined,
   filteredEventsId: [] as string[],
   firstRender: true,
+  userCoordinates: null as null | Coordinates,
 };
 
 const filtersSlice = createSlice({
@@ -57,6 +58,7 @@ const filtersSlice = createSlice({
       state.endDate = undefined;
       state.filteredEventsId = [];
       state.firstRender = true;
+      state.userCoordinates = null;
     },
     setOneFilterType(state, action: { payload: string }) {
       state.selectedTypes = [action.payload];
@@ -70,6 +72,9 @@ const filtersSlice = createSlice({
     },
     setFirstRender(state, action: { payload: boolean }) {
       state.firstRender = action.payload;
+    },
+    setUserCoordinates(state, action: { payload: Coordinates }) {
+      state.userCoordinates = action.payload;
     },
   },
 });
@@ -88,4 +93,5 @@ export const {
   resetAllFilters,
   setOneFilterType,
   setFirstRender,
+  setUserCoordinates,
 } = filtersSlice.actions;
