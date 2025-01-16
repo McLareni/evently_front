@@ -9,17 +9,18 @@ import AboutEvent from './AboutEvent';
 import PhotoCard from './CardsPhotos';
 import DateAndPlace from './DateAndPlace';
 import TicketPrice from './TicketPrice';
-import { useState } from 'react';
-import { getUser } from '@/utils/adminHttp';
+import { useEffect, useState } from 'react';
+// import { getUser } from '@/utils/adminHttp';
 import { useAppSelector } from '@/redux/hooks';
 import { selectUser } from '@/redux/auth/selectors';
-import { userId } from '@/redux/users/selectors';
+import { createEvent } from '@/utils/eventsHttp';
+
 
 type CreateEventFormProps = {
   photos: (string | null)[];
   eventName: string;
   eventType: string;
-  price: string;
+  price: number | 'Безкоштовно' | 'Ціна';
   date: string;
   startTimeOption: string;
   place: EventPlaceWithGps | null;
@@ -28,7 +29,7 @@ type CreateEventFormProps = {
   onEventNameChange: (eventName: string) => void;
   // onDateChange: (data: string) => void;
   onPlaceChange: (newPlace: EventPlaceWithGps) => void;
-  onPriceChange: (price: string) => void;
+  onPriceChange: (price: number | "Безкоштовно" | "Ціна") => void;
   onCategoryChange: (category: string) => void;
   handleDateChange: (newDate: string) => void;
   handleStartTime: (endTime: string) => void;
@@ -89,17 +90,27 @@ const CreateEventForm: React.FC<CreateEventFormProps> = ({
   const [endTimeOption, setSelectedEndTimeOption] = useState('');
   const [description, setDescription] = useState('');
   const [numberOfTickets, setNumberOfTickets] = useState(0);
+  const [eventPrice, setEventPrice] = useState<number>();
   const [eventUrl, setEventUrl] = useState('');
-  // const [organizers, setOrganizers] = useState<number>(0);
+  const [organizers, setOrganizers] = useState<string>('');
   
   const handleEndTime = (endTime: string) => setSelectedEndTimeOption(endTime);
   const handleDescriptionChange = (description: string) => setDescription(description);
   const handleNumberOfTicketsChange = (numberOfTickets: number) => setNumberOfTickets(numberOfTickets);
   const handleEventUrlChange = (eventUrl: string) => setEventUrl(eventUrl);
-  const user = useAppSelector(selectUser)
   
-  console.log(user.id)
-  console.log(userId)  
+  const user = useAppSelector(selectUser)
+  useEffect(() => {
+    setOrganizers(user.id.toString())
+  }, [user])
+  useEffect(() => {
+    if (price !== 'Безкоштовно' && price !== 'Ціна') {
+      setEventPrice(price)
+      
+    }
+  }, [price])
+   
+
   const onSubmit = () => {
     const event = {
       title: eventName,
@@ -109,23 +120,30 @@ const CreateEventForm: React.FC<CreateEventFormProps> = ({
         startTime: startTimeOption,
         endTime: endTimeOption,
       },
-      ticketPrice: price,
+      ticketPrice: eventPrice,
       location: {
         city: place?.city,
         street: place?.name,
         venue: '',
-        latitude: place?.lat,
-        longitude: place?.lng,
+        latitude: place?.lat.toString(),
+        longitude: place?.lng.toString(),
       },
-      photos: photos,
-      eventType: eventType, // Added eventType field
-      numberOfTickets: numberOfTickets, // Added numberOfTickets field
-      eventUrl: eventUrl, // Added eventUrl field
-      // organizers: organizers, // Added organizers field
+      // photos: photos,
+      eventType: eventType,
+      numberOfTickets: numberOfTickets, 
+      eventUrl: eventUrl, 
+      organizers: { 
+        id: organizers,
+      }, 
     };
-    console.log(event);
+    const eventPhotos = {
+      firstImage: photos[0],
+      secondImage: photos[1],
+      thirdImage: photos[2]
+    }
+    console.log(event, eventPhotos)
+    createEvent(event, eventPhotos).then(response => console.log(response))
   };
-
 
 
   return (
@@ -162,7 +180,7 @@ const CreateEventForm: React.FC<CreateEventFormProps> = ({
       />
       <TicketPrice 
         price={price} 
-        onPriceChange={onPriceChange}  
+        onPriceChange={onPriceChange}
         handleNumberOfTicketsChange={handleNumberOfTicketsChange}
       />
       <div className="text-center">

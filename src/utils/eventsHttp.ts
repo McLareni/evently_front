@@ -1,8 +1,8 @@
 import axios from 'axios';
-
+import { store } from '@/redux/store';
 const URL = 'https://66ceec99901aab24842029e0.mockapi.io';
 
-axios.defaults.baseURL = 'https://rendereventapp.onrender.com/api/v1/';
+axios.defaults.baseURL = 'https://rendereventapp.onrender.com/api/v1';
 
 export const deleteEvent = async (id: number) => {
   try {
@@ -32,7 +32,7 @@ export const editEvent = async (formData: eventType, id?: string) => {
   try {
     const response = await axios.put(`${URL}/events/${id}`, {
       ...formData,
-      countSeats: formData.countSeats || 'Необмежено',
+      countSeats: formData.numberOfTickets || 'Необмежено',
     });
     const resData = response.data;
     return resData;
@@ -41,13 +41,17 @@ export const editEvent = async (formData: eventType, id?: string) => {
   }
 };
 
-export const createEvent = async (formData: eventType) => {
+export const createEvent = async (formData: eventType, photos: eventPhotos ) => {
+  const token = store.getState().auth.token;
   try {
-    const response = await axios.post(
-      `https://66ceec99901aab24842029e0.mockapi.io/events/`,
-      {
-        ...formData,
-        countSeats: formData.countSeats || 'Необмежено',
+      const response = await axios.post(`events`, {
+        headers: {
+          'Content-Type': "multipart/form-data",
+          Authorization: `Bearer ${token}`,
+        },
+        event: formData,
+        ...photos,
+        // countSeats: formData.numberOfTickets || 'Необмежено',
       }
     );
     const resData = response.data;

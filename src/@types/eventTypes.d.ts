@@ -12,7 +12,7 @@ interface Event {
     latitude: string;
     longitude: string;
   };
-  organizers: User[];
+  organizers: {id: string};
   rating: number;
   eventUrl: string | null;
   eventStatus: 'PENDING' | 'APPROVED' | 'CANCELLED';
@@ -56,20 +56,48 @@ interface EventDTO {
 }
 
 // TODO
+interface eventPhotos {
+  firstImage: string | null;
+  secondImage: string | null;
+  thirdImage: string | null;
+
+}
 interface eventType {
-  id: number;
-  name: string;
-  logo?: string;
-  desc?: string;
-  time: string;
-  date: string;
-  country: string;
-  city: string;
-  street: string;
-  number: string;
-  countSeats: number | 'Необмежено';
-  schemaSeats: number | 'Не вибрано';
-  library?: File[];
+  // id: number;
+  // name: string;
+  // logo?: string;
+  // desc?: string;
+  // time: string;
+  // date: string;
+  // country: string;
+  // city: string;
+  // street: string;
+  // number: string;
+  // countSeats: number | 'Необмежено';
+  // schemaSeats: number | 'Не вибрано';
+  // library?: File[];
+   title: string;
+    description: string;
+    dateDetails: {
+      day: string;
+      startTime: string;
+      endTime: string;
+    };
+    ticketPrice: number | undefined;
+    location?: {
+      city?: string;
+      street?: string;
+      venue?: string;
+      latitude?: string;
+      longitude?: string;
+    };
+    // photos: photos;
+    eventType?: string;
+    numberOfTickets: number; 
+    eventUrl?: string; 
+    organizers: {
+      id: string
+    }; 
 }
 
 interface EventPlaceWithGps {

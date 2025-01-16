@@ -2,22 +2,22 @@ import { useEffect, useState } from "react";
 import { HiOutlineTicket } from "react-icons/hi";
 
 type TicketPriceProps = {
-  price: string;
-  onPriceChange: (price: string) => void;
-  handleNumberOfTicketsChange: (numberOfYickets: number) => void;
+  price: number | 'Безкоштовно' | 'Ціна';
+  onPriceChange: (price: number | 'Безкоштовно' | 'Ціна') => void;
+  handleNumberOfTicketsChange: (numberOfTickets: number) => void;
 };
 
 const TicketPrice: React.FC<TicketPriceProps> = ({ price, onPriceChange, handleNumberOfTicketsChange }) => {
-  const [freeTickets, setFreeTickets] = useState<boolean>(false);
-  const [inputValue, setInputValue] = useState<string>(''); 
+  const [freeTickets, setFreeTickets] = useState<boolean>(price === 'Безкоштовно');
+  const [inputValue, setInputValue] = useState<string>(price === 'Безкоштовно' ? '' : price.toString()); 
 
-  
+
   const handlePriceChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const value = e.target.value.replace(/[^\d]/g, '');
-    setInputValue(value); 
-    
+    const value = e.target.value.replace(/[^\d]/g, ''); 
+    setInputValue(value);
+
     if (value) {
-      onPriceChange(`${value} ₴`);
+      onPriceChange(+value); 
     } else {
       onPriceChange('Ціна'); 
     }
@@ -25,11 +25,12 @@ const TicketPrice: React.FC<TicketPriceProps> = ({ price, onPriceChange, handleN
 
   useEffect(() => {
     if (freeTickets) {
-      onPriceChange('Безкоштовно');
+      onPriceChange('Безкоштовно'); 
+      setInputValue('');
     } else if (!freeTickets && price === 'Безкоштовно') {
       onPriceChange('Ціна'); 
     } else if (!freeTickets && price !== 'Безкоштовно') {
-      onPriceChange(price);
+      onPriceChange(price); 
     }
   }, [price, freeTickets, onPriceChange]);
 
@@ -42,7 +43,10 @@ const TicketPrice: React.FC<TicketPriceProps> = ({ price, onPriceChange, handleN
           className={`${
             freeTickets ? 'bg-lightPurple text-gray-700' : 'bg-buttonPurple text-white'
           } focus:outline-none font-normal text-xl rounded-[20px] mr-4 py-[12.5px] px-[18px]`}
-          onClick={() => setFreeTickets(false)} 
+          onClick={() => {
+            setFreeTickets(false);
+            onPriceChange('Ціна');
+          }} 
         >
           Платні
         </button>
@@ -51,7 +55,10 @@ const TicketPrice: React.FC<TicketPriceProps> = ({ price, onPriceChange, handleN
           className={`${
             freeTickets ? 'bg-buttonPurple text-white' : 'bg-lightPurple text-gray-700'
           } focus:outline-none font-normal text-xl rounded-[20px] mr-4 py-[12.5px] px-[18px]`}
-          onClick={() => setFreeTickets(true)} 
+          onClick={() => {
+            setFreeTickets(true);
+            onPriceChange('Безкоштовно');
+          }} 
         >
           Безкоштовно
         </button>
@@ -69,7 +76,7 @@ const TicketPrice: React.FC<TicketPriceProps> = ({ price, onPriceChange, handleN
             placeholder="100 ₴"
             onChange={handlePriceChange}
             disabled={freeTickets} 
-            value={freeTickets ? '' : inputValue} 
+            value={inputValue} 
           />
         </div>
         <div className="flex flex-col">

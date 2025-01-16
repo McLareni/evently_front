@@ -14,7 +14,7 @@ import { useEffect, useState } from 'react';
 type CardProps = {
   eventName: string;
   place: EventPlaceWithGps | null;
-  price: string;
+  price: number | 'Безкоштовно' | 'Ціна';
   photo: string | null;
   eventType: string;
   date: string;
@@ -30,15 +30,23 @@ const CreateEventCard: React.FC<CardProps> = ({
   date,
   startTimeOption,
 }) => {
-  const [freeTickets, setFreeTickets] = useState<boolean>(false)
+  const [freeTickets, setFreeTickets] = useState<boolean | string>(false);
 
   const formattedDate = formatDateToDayMonth(date);
+
+
+  const formattedPrice = price === 'Безкоштовно' 
+    ? 'Безкоштовно' 
+    : price === 'Ціна'
+    ? 'Ціна' 
+    : typeof price === 'number'
+    ? `${price} ₴` 
+    : price; 
   
   useEffect(() => {
       if (price == 'Безкоштовно') {
-        console.log('free')
         setFreeTickets(true)  
-      } else
+      }else
       setFreeTickets(false)
   }, [price])
 
@@ -102,7 +110,7 @@ const CreateEventCard: React.FC<CardProps> = ({
             </li>
             <li className="flex items-center gap-[18px]">
               <FaRegMoneyBillAlt size="24px" />
-              <p className={`${freeTickets ? 'text-error' : ''}`}>{price}</p>
+              <p className={`${freeTickets ? 'text-error' : ''}`}>{formattedPrice}</p>
             </li>
           </ul>
           <SharedBtn type="button" primary className="w-[230px] h-12 mx-auto">
