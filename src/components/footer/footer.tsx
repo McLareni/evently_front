@@ -3,17 +3,17 @@ import { FiFacebook } from 'react-icons/fi';
 import { Link } from 'react-router-dom';
 
 import { Container } from '../container/Container';
+import { MainLines } from '../main/MainLines';
 import { MainLogo } from '../ui/Logo';
 import { FooterLines } from './footerLines';
-import { MainLines } from '../main/MainLines';
 
 export const Footer: React.FC = () => {
   const iconsStyles = 'w-6 h-6 mr-6 hover:[color:#9B8FF3] cursor-pointer';
 
   return (
     <Container className="relative flex pl-[130px] pb-10 pt-10 bg-background">
-      <FooterLines/>
-      <MainLines/>
+      <FooterLines />
+      <MainLines />
       <div className="pr-[159px] flex flex-col gap-[64px]">
         <MainLogo />
         <a href="tel:+380995745676">+380(99) 574 56 76</a>
