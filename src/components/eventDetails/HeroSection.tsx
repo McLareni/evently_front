@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import {
   AiOutlineCalendar,
   AiOutlineClockCircle,
@@ -6,7 +6,6 @@ import {
 } from 'react-icons/ai';
 import { FaRegMoneyBillAlt } from 'react-icons/fa';
 import { GrLocation } from 'react-icons/gr';
-import { PiHeartFill, PiHeartLight } from 'react-icons/pi';
 import { toast } from 'react-toastify';
 
 import { selectUser } from '@/redux/auth/selectors';
@@ -17,10 +16,10 @@ import {
 import { useAppSelector } from '@/redux/hooks';
 
 import { formatDateToDayMonth } from '@/helpers/filters/formatDateToDayMonth';
-import { useGetCountLikeEvents } from '@/hooks/query/useGetCountLikeEvent';
 import clsx from 'clsx';
 
 import { PopupShareEvent } from '../ui/PopupShareEvent';
+import ImageSlider from './ImageSlider';
 
 interface IProps {
   idEvent: string;
@@ -28,16 +27,11 @@ interface IProps {
 }
 
 const HeroSection: React.FC<IProps> = ({ idEvent, event }) => {
-  const { count: countLike } = useGetCountLikeEvents(idEvent || '');
+  const [showPopupShare, setPopupShare] = useState(false);
   const [isLiked, setIsLiked] = useState(false);
   const [addLikedEvent] = useAddLikedEventMutation();
   const [deleteLikedEvent] = useDeleteLikedEventMutation();
   const user = useAppSelector(selectUser);
-  const [showPopupShare, setPopupShare] = useState(false);
-
-  const closePopup = () => {
-    setPopupShare(false);
-  };
 
   const toggleIsLiked = () => {
     if (!isLiked) {
@@ -72,47 +66,31 @@ const HeroSection: React.FC<IProps> = ({ idEvent, event }) => {
     }
   };
 
+  useEffect(() => {
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+  }, [idEvent]);
+
+  const closePopup = () => {
+    setPopupShare(false);
+  };
+
+  console.log(event.photoUrl);
+
   return (
     <div className="relative w-auto h-[562px] m-4">
       <div className="absolute inset-0 bg-eventDetails blur-md rounded-[20px]"></div>
       <div className="absolute inset-0 bg-background blur-md rounded-[20px] opacity-50"></div>
       <div className="absolute inset-0 z-10 flex pl-6">
-        <div className="flex-1 relative">
-          <button
-            type="button"
-            onClick={toggleIsLiked}
-            aria-label="like button"
-            className={`focus:outline-none bg-filter-btn-gradient px-4 py-[7px] text-background text-base rounded-[20px] flex gap-[10px] absolute left-[340px] top-[35px] z-20`}
-          >
-            {isLiked ? (
-              <PiHeartFill className={`w-6 h-6 fill-background`} />
-            ) : (
-              <PiHeartLight className="w-6 h-6 fill-background" />
-            )}
-            {countLike}
-          </button>
-          <img
-            src={event?.photoUrl}
-            alt="PhotoUrl"
-            className={clsx(
-              'w-[312px] h-[514px] rounded-[20px] absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 object-cover transition-all',
-              { 'animateFirstPhoto ': event?.images }
-            )}
-          />
-          {event?.images?.map((image, index) => (
-            <img
-              key={image}
-              src={image}
-              className={clsx(
-                'w-[312px] h-[514px] rounded-[20px] absolute top-[calc(50%-50px)] -translate-x-1/2 -translate-y-1/2 object-cover transition-all',
-                {
-                  'left-[calc(45%-200px)] animateSecondPhoto': index === 0,
-                  'left-[calc(45%+200px)] animateThirdPhoto': index === 0,
-                }
-              )}
-            />
-          ))}
-        </div>
+        <ImageSlider
+          toggleIsLiked={toggleIsLiked}
+          idEvent={idEvent}
+          isLiked={isLiked}
+          images={[
+            event.photoUrl,
+            'https://dodgekatowice.pl/wp-content/uploads/2020/10/Challenger-Redeye-Black-panorama.jpg',
+            'https://satysfakcja.stati.pl/allegro_new/FOTO/GoPro/CHDHF-131-EU/kamera-sportowa-gopro-hero-mob.jpg',
+          ]}
+        />
         <div className="flex-1 pl-24 relative">
           <h1 className="text-[64px] text-textDark mb-4">{event?.title}</h1>
           <div className="font-normal text-[20px] text-textDark flex gap-4 mb-10">

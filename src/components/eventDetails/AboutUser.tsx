@@ -28,7 +28,7 @@ const AboutUser: React.FC<IProps> = ({ organizer, rating }) => {
         />
         <div>
           <h2 className="text-textDark font-lato text-2xl my-2">
-            {organizer.name}
+            {organizer?.name}
           </h2>
           <div className="flex">
             <span className="mr-2">

@@ -1,9 +1,11 @@
+import { useEffect } from 'react';
 import { FiFlag } from 'react-icons/fi';
 import { useParams } from 'react-router';
 
-import { useGetEventByIdQuery } from '@/redux/events/operations';
-
-import { useLazyGetAllEventsQueryWithTrigger } from '@/hooks/query/useLazyGetAllEventsQueryWithTrigger';
+import {
+  useGetEventByIdQuery,
+  useLazyGetAllEventsQuery,
+} from '@/redux/events/operations';
 
 import AboutUser from '@/components/eventDetails/AboutUser';
 import BackgroundStars from '@/components/eventDetails/BackgroundStars';
@@ -17,20 +19,43 @@ import Spinner from '@/components/ui/Spinner';
 
 const EventDetails = () => {
   const { idEvent } = useParams();
-  const { data: event, isLoading } = useGetEventByIdQuery(idEvent || '');
-  const { events } = useLazyGetAllEventsQueryWithTrigger();
+  const {
+    data: event,
+    isLoading,
+    refetch,
+  } = useGetEventByIdQuery(idEvent || '');
+  const [fetchEvents, { data: events }] = useLazyGetAllEventsQuery();
 
   const topEvents = events
-    ?.filter(event => event.category === 'TOP_EVENTS')
+    ?.filter((event: Event) => event.category === 'TOP_EVENTS')
     .slice(0, 3);
 
   const similarEvents = events
-    ?.filter(event => event.type === event.type)
+    ?.filter((event: Event) => event.type === event.type)
     .slice(0, 4);
 
   const eventByThisUser = events
-    ?.filter(event => event.organizers[0].name === event.organizers[0].name)
+    ?.filter(
+      (event: Event) => event.organizers[0]?.name === event.organizers[0]?.name
+    )
     .slice(0, 4);
+
+  useEffect(() => {
+    fetchEvents();
+  }, [fetchEvents]);
+
+  useEffect(() => {
+    const timer = setTimeout(async () => {
+      if (!event && isLoading) {
+        await refetch();
+        fetchEvents();
+      }
+    }, 2000);
+
+    return () => {
+      clearTimeout(timer);
+    };
+  }, [event, isLoading, refetch, fetchEvents]);
 
   if (isLoading) {
     return <Spinner />;
@@ -44,7 +69,11 @@ const EventDetails = () => {
     <main className="px-12 pb-10">
       <BackgroundStars />
       <div className="relative z-10">
-        <HeroSection event={event} idEvent={idEvent || ''} />
+        <HeroSection
+          event={event}
+          idEvent={idEvent || ''}
+          key={JSON.stringify(event)}
+        />
         <div className="px-6 py-12 flex justify-between">
           <div className="w-[868px]">
             <div>
