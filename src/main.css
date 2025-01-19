@@ -47,6 +47,14 @@ body {
   min-height: 100vh;
 }
 
+#root {
+  width: 1440px;
+  height: 100vh;
+  position: relative;
+  display: flex;
+  flex-direction: column;
+}
+
 main {
   max-width: 1440px;
   background-color: theme('colors.background');
