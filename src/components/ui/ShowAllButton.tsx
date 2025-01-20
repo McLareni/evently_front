@@ -14,7 +14,7 @@ export const ShowAllButton: React.FC<
     transition-all duration-300 active:scale-95"
     >
       <span>Показати усі</span>
-      <BiRightArrowCircle width={24} height={24} />
+      <BiRightArrowCircle className="w-6 h-6" />
     </Link>
   );
 };

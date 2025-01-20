@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { AiOutlineCalendar, AiOutlineExclamation } from 'react-icons/ai';
 import { FaRegMoneyBillAlt } from 'react-icons/fa';
 import { GrLocation } from 'react-icons/gr';
@@ -6,6 +6,7 @@ import { MdDone } from 'react-icons/md';
 import { PiHeartLight } from 'react-icons/pi';
 import { PiHeartFill } from 'react-icons/pi';
 import { RxCross2 } from 'react-icons/rx';
+import { useNavigate } from 'react-router';
 import { toast } from 'react-toastify';
 
 import { selectUser } from '@/redux/auth/selectors';
@@ -19,7 +20,6 @@ import { formatDateToDayMonth } from '@/helpers/filters/formatDateToDayMonth';
 import { useGetLikedEventsWithSkip } from '@/hooks/query/useGetLikedEventsWithSkip';
 
 import { SharedBtn } from './SharedBtn';
-import { useNavigate } from 'react-router';
 
 interface EventCardProps {
   event: Event;
@@ -108,9 +108,17 @@ export const EventCard: React.FC<EventCardProps> = ({
     }
   }, [event.id, likedEventsAll]);
 
+  const handleOnClick = (e: React.MouseEvent) => {
+    if (isAdmin) {
+      setEvent(event, e.target as HTMLElement, '');
+    } else {
+      navigate(`/event/${eventId}`);
+    }
+  };
+
   return (
     <div
-      onClick={e => setEvent(event, e.target as HTMLElement, '')}
+      onClick={e => handleOnClick(e)}
       id={`${eventId}`}
       className={`group relative flex overflow-hidden items-start rounded-[20px] shadow-eventCardShadow w-[312px] h-[514px] ${
         top ? 'mb-[10px]' : ''

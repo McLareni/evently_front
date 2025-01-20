@@ -4,12 +4,12 @@ import { store } from '@/redux/store';
 
 import axios from 'axios';
 
-export const useGetCountLikeEvents = (idEvent: string) => {
+export const useGetCountLikeEvent = (idEvent: string) => {
   const [count, setCount] = useState(0);
 
   const getLike = async () => {
     const token = store.getState().auth.token;
-    const response = await axios.get(`/liked-events/count/${idEvent}`, {
+    const response = await axios.get(`/liked-events/count/event/${idEvent}`, {
       headers: {
         Authorization: `Bearer ${token}`,
       },
