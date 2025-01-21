@@ -10,8 +10,8 @@ export const getSelectedPrices = (state: RootState) =>
   state.filter.selectedPrices;
 export const getIsCalendarShown = (state: RootState) =>
   state.filter.isCalendarShown;
-export const getStartDay = (state: RootState) => state.filter.startDate;
-export const getEndDay = (state: RootState) => state.filter.endDate;
+export const getStartDay = (state: RootState) => state.filter.range.start;
+export const getEndDay = (state: RootState) => state.filter.range.end;
 export const getFilteredEventsId = (state: RootState) =>
   state.filter.filteredEventsId;
 export const getFirstRender = (state: RootState) => state.filter.firstRender;
