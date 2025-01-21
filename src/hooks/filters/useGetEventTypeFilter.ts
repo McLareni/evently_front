@@ -35,10 +35,14 @@ export function useGetEventTypeFilter() {
     const getMyPosition = () =>
       navigator.geolocation.getCurrentPosition(
         position => {
-          const coordinates = {
-            latitude: position.coords.latitude.toString(),
-            longitude: position.coords.longitude.toString(),
-          };
+          // TODO
+          // const coordinates = {
+          //   latitude: position.coords.latitude.toString(),
+          //   longitude: position.coords.longitude.toString(),
+          // };
+          const coordinates = { latitude: '50.489775', longitude: '30.436815' };
+          console.log('вулиця Зоряна, 8, Київ, Україна, 02000');
+
           dispatch(setUserCoordinates(coordinates));
         },
         error => {
