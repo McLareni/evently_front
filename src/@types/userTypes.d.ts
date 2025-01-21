@@ -30,6 +30,6 @@ type UserInfo = Pick<
 >;
 
 interface Coordinates {
-  latitude: number;
-  longitude: number;
+  latitude: string;
+  longitude: string;
 }

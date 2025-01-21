@@ -36,8 +36,8 @@ export function useGetEventTypeFilter() {
       navigator.geolocation.getCurrentPosition(
         position => {
           const coordinates = {
-            latitude: position.coords.latitude,
-            longitude: position.coords.longitude,
+            latitude: position.coords.latitude.toString(),
+            longitude: position.coords.longitude.toString(),
           };
           dispatch(setUserCoordinates(coordinates));
         },
