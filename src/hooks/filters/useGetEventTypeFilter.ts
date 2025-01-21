@@ -3,6 +3,7 @@ import { toast } from 'react-toastify';
 
 import {
   addSelectedTypes,
+  removeNearby,
   setUserCoordinates,
 } from '@/redux/filters/filtersSlice';
 import { getSelectedTypes } from '@/redux/filters/selectors';
@@ -37,11 +38,11 @@ export function useGetEventTypeFilter() {
         position => {
           // TODO
           // const coordinates = {
-          //   latitude: position.coords.latitude.toString(),
-          //   longitude: position.coords.longitude.toString(),
+          //   latitude: position.coords.latitude,
+          //   longitude: position.coords.longitude,
           // };
-          const coordinates = { latitude: '50.489775', longitude: '30.436815' };
-          console.log('вулиця Зоряна, 8, Київ, Україна, 02000');
+          const coordinates = { latitude: 50.43749, longitude: 30.514977 };
+          console.log('Антоновича 42, Київ');
 
           dispatch(setUserCoordinates(coordinates));
         },
@@ -50,6 +51,7 @@ export function useGetEventTypeFilter() {
           if (error.code === 1) {
             console.log(window.location);
             toast.error('Ввімкніть доступ до місцезнаходження!');
+            dispatch(removeNearby());
           }
         }
       );

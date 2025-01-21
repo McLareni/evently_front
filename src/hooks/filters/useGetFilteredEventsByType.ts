@@ -41,9 +41,11 @@ export function useGetFilteredEventsByType({
     // only nearby
     if (events && nearbyFilterOnly && userAddress) {
       const addressesWithRadius = events.filter(address => {
-        if (address.location.latitude && address.location.longitude) {
-          isPointWithinRadius(address.location, userAddress, radiusInMeters);
-        }
+        const coords = {
+          latitude: address.location.latitude,
+          longitude: address.location.longitude,
+        };
+        return isPointWithinRadius(coords, userAddress, radiusInMeters);
       });
       setFilteredEventsByType(addressesWithRadius);
       return;
@@ -57,15 +59,35 @@ export function useGetFilteredEventsByType({
       return;
     }
     // other categories without top and nearby
-    if (events && !topEventsFilter) {
+    if (events && !topEventsFilter && !nearbyFilter) {
       const filteredArray = events.filter(item =>
         selectedTypes.includes(item.type)
       );
       setFilteredEventsByType(filteredArray);
       return;
     }
+    // other categories with nearby
+    if (events && nearbyFilter && !topEventsFilter) {
+      const filteredArray = events.filter(item => {
+        if (!selectedTypes.includes(item.type)) {
+          return false;
+        }
+        if (userAddress && item.location.latitude && item.location.longitude) {
+          const coords = {
+            latitude: Number(item.location.latitude),
+            longitude: Number(item.location.longitude),
+          };
+          if (!isPointWithinRadius(coords, userAddress, radiusInMeters)) {
+            return false;
+          }
+        }
+        return true;
+      });
+      setFilteredEventsByType(filteredArray);
+      return;
+    }
     // other categories with top
-    if (events && topEventsFilter) {
+    if (events && topEventsFilter && !nearbyFilter) {
       const filteredArray = events.filter(
         item =>
           item.category === 'TOP_EVENTS' && selectedTypes.includes(item.type)
@@ -73,9 +95,58 @@ export function useGetFilteredEventsByType({
       setFilteredEventsByType(filteredArray);
       return;
     }
+    // other categories with nearby and top
+    if (events && nearbyFilter && topEventsFilter && selectedTypes.length > 2) {
+      const filteredArray = events.filter(item => {
+        if (item.category !== 'TOP_EVENTS') {
+          return false;
+        }
+        if (!selectedTypes.includes(item.type)) {
+          return false;
+        }
+        if (userAddress && item.location.latitude && item.location.longitude) {
+          const coords = {
+            latitude: Number(item.location.latitude),
+            longitude: Number(item.location.longitude),
+          };
+          if (!isPointWithinRadius(coords, userAddress, radiusInMeters)) {
+            return false;
+          }
+        }
+        return true;
+      });
+      setFilteredEventsByType(filteredArray);
+      return;
+    }
+    // nearby and top
+    if (
+      events &&
+      nearbyFilter &&
+      topEventsFilter &&
+      selectedTypes.length === 2
+    ) {
+      const filteredArray = events.filter(item => {
+        if (item.category !== 'TOP_EVENTS') {
+          return false;
+        }
+        if (userAddress && item.location.latitude && item.location.longitude) {
+          const coords = {
+            latitude: Number(item.location.latitude),
+            longitude: Number(item.location.longitude),
+          };
+          if (!isPointWithinRadius(coords, userAddress, radiusInMeters)) {
+            return false;
+          }
+        }
+        return true;
+      });
+      setFilteredEventsByType(filteredArray);
+      return;
+    }
   }, [
     allEventsFilter,
     events,
+    nearbyFilter,
     nearbyFilterOnly,
     selectedTypes,
     topEventsFilter,

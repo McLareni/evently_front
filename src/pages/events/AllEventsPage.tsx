@@ -18,6 +18,8 @@ import { FilterEvents } from '@/components/filters/FilterEvents';
 import { Main } from '@/components/main/Main';
 import Spinner from '@/components/ui/Spinner';
 
+import { eventsGPS } from './eventsGPS';
+
 const AllEventsPage: React.FC = () => {
   const [filteredEvents, setFilteredEvents] = useState<Event[]>([]);
   const [eventsLoaded, setEventsLoaded] = useState(false);
@@ -26,8 +28,10 @@ const AllEventsPage: React.FC = () => {
 
   const filteredEventsId = useAppSelector(getFilteredEventsId);
   const firstRender = useAppSelector(getFirstRender);
-
-  const { events, isLoading } = useLazyGetAllEventsQueryWithTrigger();
+  // TODO
+  // const { events, isLoading } = useLazyGetAllEventsQueryWithTrigger();
+  const events = eventsGPS;
+  const isLoading = false;
 
   const {
     addTypeFilter,
@@ -91,7 +95,11 @@ const AllEventsPage: React.FC = () => {
         {filteredEvents.length > 0 ? (
           <AllEvents events={filteredEvents} title={false} />
         ) : (
-          eventsLoaded && <span>Нічого не знайдено</span>
+          eventsLoaded && (
+            <span className="text-[64px] font-oswald text-buttonPurple">
+              Нічого не знайдено
+            </span>
+          )
         )}
       </div>
     </Main>

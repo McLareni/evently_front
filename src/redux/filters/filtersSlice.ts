@@ -76,6 +76,11 @@ const filtersSlice = createSlice({
     setUserCoordinates(state, action: { payload: Coordinates }) {
       state.userCoordinates = action.payload;
     },
+    removeNearby(state) {
+      state.selectedTypes = state.selectedTypes.filter(
+        item => item !== 'Під домом'
+      );
+    },
   },
 });
 
@@ -94,4 +99,5 @@ export const {
   setOneFilterType,
   setFirstRender,
   setUserCoordinates,
+  removeNearby,
 } = filtersSlice.actions;
