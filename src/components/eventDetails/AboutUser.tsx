@@ -9,7 +9,7 @@ const aboutUser =
 
 interface IProps {
   organizer: User;
-  rating: number
+  rating: number;
 }
 
 const AboutUser: React.FC<IProps> = ({ organizer, rating }) => {
@@ -40,12 +40,17 @@ const AboutUser: React.FC<IProps> = ({ organizer, rating }) => {
       </div>
       <p className="text-[18px] leading-[27px] text-textDark mt-8">
         {isShortAboutUser ? `${shortAboutUser}...` : aboutUser}
-        {isShortAboutUser && (
+        {isShortAboutUser ? (
           <button
             onClick={() => setIsShortAboutUser(false)}
             className="flex gap-2 underline text-base focus:outline-none mt-2"
           >
             Читати більше
+            <BiChevronDown className="w-6 h-6" />
+          </button>
+        ) : (
+          <button onClick={() => setIsShortAboutUser(true)} className='flex gap-2 text-base font-semibold focus:outline-none mt-2'>
+            Приховати
             <BiChevronDown className="w-6 h-6" />
           </button>
         )}

@@ -85,14 +85,14 @@ const HeroSection: React.FC<IProps> = ({ idEvent, event }) => {
           toggleIsLiked={toggleIsLiked}
           idEvent={idEvent}
           isLiked={isLiked}
-          images={[
+                    images={[
             event.photoUrl,
             'https://dodgekatowice.pl/wp-content/uploads/2020/10/Challenger-Redeye-Black-panorama.jpg',
             'https://satysfakcja.stati.pl/allegro_new/FOTO/GoPro/CHDHF-131-EU/kamera-sportowa-gopro-hero-mob.jpg',
           ]}
         />
         <div className="flex-1 pl-24 relative">
-          <h1 className="text-[64px] text-textDark mb-4">{event?.title}</h1>
+          <h1 className="text-[64px] text-textDark mb-4 pr-12 line-clamp-2">{event?.title}</h1>
           <div className="font-normal text-[20px] text-textDark flex gap-4 mb-10">
             <div
               className={`flex items-center justify-center h-8 rounded-[20px]

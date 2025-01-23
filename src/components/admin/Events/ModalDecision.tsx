@@ -16,6 +16,7 @@ interface IProps {
 
 const ModalDecision: React.FC<IProps> = ({ event, openModal }) => {
   const [activeImage, setActiveImage] = useState(1);
+  const images: string[] = [event!.photoUrl, ...(event?.images || [])];
 
   const handleChangeActiveImage = (direction: 'up' | 'down') => {
     if (direction === 'up') {
@@ -25,20 +26,21 @@ const ModalDecision: React.FC<IProps> = ({ event, openModal }) => {
     }
   };
 
-  console.log(event);
-
   return (
     <div className="relative p-8 pr-16 flex gap-10 h-[630px] w-[944px]">
       <div className="">
         <img
-          src={event?.photoUrl}
+          src={images[activeImage - 1]}
           alt="Event"
           className="min-w-[266px] w-[266px] h-[392px] min-h-[392px] rounded-[20px]"
         />
-        <ImageNavigation
-          activeImage={activeImage}
-          changeActiveImage={handleChangeActiveImage}
-        />
+        {images.length > 1 && (
+          <ImageNavigation
+            countImage={images}
+            activeImage={activeImage}
+            changeActiveImage={handleChangeActiveImage}
+          />
+        )}
       </div>
 
       <div>
@@ -76,7 +78,7 @@ const ModalDecision: React.FC<IProps> = ({ event, openModal }) => {
               className="h-[72px] w-[72px] rounded-full object-cover"
             />
             <h2 className="text-textDark font-lato text-2xl underline my-2">
-              {event?.organizers[0].name}
+              {event?.organizers[0]?.name}
             </h2>
             <div className="flex">
               <span className="mr-2">
@@ -104,11 +106,11 @@ const ModalDecision: React.FC<IProps> = ({ event, openModal }) => {
             )}
             <p className="font-lato text-base leading-[19px] text-textDart">
               <span className="font-bold">Дата: </span>
-              {event?.date.day}
+              {event?.date?.day}
             </p>
             <p className="font-lato text-base leading-[19px] text-textDart">
               <span className="font-bold">Час: </span>
-              {event?.date.time}
+              {event?.date?.time}
             </p>
             <p className="font-lato text-base leading-[19px] text-textDart">
               <span className="font-bold">Ціна: </span>
