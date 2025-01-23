@@ -16,6 +16,8 @@ import {
 import { useAppSelector } from '@/redux/hooks';
 
 import { formatDateToDayMonth } from '@/helpers/filters/formatDateToDayMonth';
+import { useGetCountLikeEvent } from '@/hooks/query/useGetCountLikeEvent';
+import { useGetLikedEventsWithSkip } from '@/hooks/query/useGetLikedEventsWithSkip';
 import clsx from 'clsx';
 
 import { PopupShareEvent } from '../ui/PopupShareEvent';
@@ -28,12 +30,15 @@ interface IProps {
 
 const HeroSection: React.FC<IProps> = ({ idEvent, event }) => {
   const [showPopupShare, setPopupShare] = useState(false);
+  const { data: likedEventsAll } = useGetLikedEventsWithSkip();
   const [isLiked, setIsLiked] = useState(false);
+
   const [addLikedEvent] = useAddLikedEventMutation();
   const [deleteLikedEvent] = useDeleteLikedEventMutation();
   const user = useAppSelector(selectUser);
+  const { count: countLike, getLike } = useGetCountLikeEvent(idEvent || '');
 
-  const toggleIsLiked = () => {
+  const toggleIsLiked = async () => {
     if (!isLiked) {
       const addLiked = async () => {
         try {
@@ -48,7 +53,7 @@ const HeroSection: React.FC<IProps> = ({ idEvent, event }) => {
           console.log(error);
         }
       };
-      addLiked();
+      await addLiked();
     } else {
       const deleteFromLiked = async () => {
         try {
@@ -62,19 +67,27 @@ const HeroSection: React.FC<IProps> = ({ idEvent, event }) => {
           return error;
         }
       };
-      deleteFromLiked();
+      await deleteFromLiked();
     }
+
+    getLike();
   };
 
   useEffect(() => {
     window.scrollTo({ top: 0, behavior: 'smooth' });
   }, [idEvent]);
 
+  useEffect(() => {
+    setIsLiked(() => {
+      const isLikedEvent = likedEventsAll?.find(event => event.id === idEvent);
+
+      return isLikedEvent ? true : false;
+    });
+  }, [setIsLiked, idEvent, likedEventsAll]);
+
   const closePopup = () => {
     setPopupShare(false);
   };
-
-  console.log(event.photoUrl);
 
   return (
     <div className="relative w-auto h-[562px] m-4">
@@ -83,16 +96,18 @@ const HeroSection: React.FC<IProps> = ({ idEvent, event }) => {
       <div className="absolute inset-0 z-10 flex pl-6">
         <ImageSlider
           toggleIsLiked={toggleIsLiked}
-          idEvent={idEvent}
+          countLike={+countLike}
           isLiked={isLiked}
-                    images={[
+          images={[
             event.photoUrl,
             'https://dodgekatowice.pl/wp-content/uploads/2020/10/Challenger-Redeye-Black-panorama.jpg',
             'https://satysfakcja.stati.pl/allegro_new/FOTO/GoPro/CHDHF-131-EU/kamera-sportowa-gopro-hero-mob.jpg',
           ]}
         />
         <div className="flex-1 pl-24 relative">
-          <h1 className="text-[64px] text-textDark mb-4 pr-12 line-clamp-2">{event?.title}</h1>
+          <h1 className="text-[64px] text-textDark mb-4 pr-12 line-clamp-2">
+            {event?.title}
+          </h1>
           <div className="font-normal text-[20px] text-textDark flex gap-4 mb-10">
             <div
               className={`flex items-center justify-center h-8 rounded-[20px]
@@ -115,7 +130,10 @@ const HeroSection: React.FC<IProps> = ({ idEvent, event }) => {
           </div>
           <div className="flex flex-col gap-4">
             {event?.eventUrl ? (
-              <p className="font-lato text-xl font-normal text-textDart">
+              <p className="font-lato text-xl font-normal text-textDart flex gap-6">
+                <span>
+                  <GrLocation className="w-6 h-6" />
+                </span>
                 Онлайн подія
               </p>
             ) : (

@@ -12,7 +12,7 @@ interface Event {
     latitude: number;
     longitude: number;
   };
-  organizers: User[];
+  organizers: User;
   rating: number;
   eventStatus: 'PENDING' | 'APPROVED' | 'CANCELLED';
   eventUrl: string | null;

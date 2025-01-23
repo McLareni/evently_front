@@ -17,6 +17,9 @@ const AboutUser: React.FC<IProps> = ({ organizer, rating }) => {
 
   const shortAboutUser = aboutUser?.slice(0, 100);
 
+  console.log(organizer);
+  
+
   return (
     <div>
       <h2 className="text-5xl text-textDark mt-12 mb-8">Про організатора</h2>
@@ -49,7 +52,7 @@ const AboutUser: React.FC<IProps> = ({ organizer, rating }) => {
             <BiChevronDown className="w-6 h-6" />
           </button>
         ) : (
-          <button onClick={() => setIsShortAboutUser(true)} className='flex gap-2 text-base font-semibold focus:outline-none mt-2'>
+          <button onClick={() => setIsShortAboutUser(true)} className='flex gap-2 underline text-base focus:outline-none mt-2'>
             Приховати
             <BiChevronDown className="w-6 h-6" />
           </button>

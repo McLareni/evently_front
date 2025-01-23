@@ -1,23 +1,21 @@
 import React, { useEffect, useState } from 'react';
 import { PiHeartFill, PiHeartLight } from 'react-icons/pi';
 
-import { useGetCountLikeEvent } from '@/hooks/query/useGetCountLikeEvent';
 import clsx from 'clsx';
 
 interface IProps {
-  idEvent: string;
+  countLike: number;
   toggleIsLiked: () => void;
   isLiked: boolean;
   images: string[];
 }
 
 const ImageSlider: React.FC<IProps> = ({
-  idEvent,
+  countLike,
   toggleIsLiked,
   isLiked,
   images,
 }) => {
-  const { count: countLike } = useGetCountLikeEvent(idEvent || '');
   const [sliderImage, setSliderImage] = useState(images);
 
   useEffect(() => {
@@ -34,7 +32,7 @@ const ImageSlider: React.FC<IProps> = ({
 
           return updated;
         });
-      }, 10000);
+      }, 5000);
     }
 
     if (sliderImage.length === 2) {
@@ -48,7 +46,7 @@ const ImageSlider: React.FC<IProps> = ({
 
           return updated;
         });
-      }, 10000);
+      }, 5000);
     }
 
     return () => clearInterval(interval);
@@ -74,12 +72,13 @@ const ImageSlider: React.FC<IProps> = ({
           key={`${image}${index}`}
           src={image || ''}
           className={clsx(
-            'rounded-[20px] absolute top-[calc(50%)] -translate-x-1/2 -translate-y-1/2 object-cover animate-opacity opacity-100',
+            'rounded-[20px] absolute top-[calc(50%)] -translate-x-1/2 -translate-y-1/2 object-cover opacity-100',
             {
-              'left-[50%] w-[312px] h-[514px] z-10': index === 0,
-              'left-[calc(50%-200px)] w-[200px] h-[348px]':
+              'left-[50%] w-[312px] h-[514px] z-10 animate-opacity':
+                index === 0,
+              'left-[calc(50%-200px)] w-[200px] h-[348px] animate-opacity-delay':
                 index === 1 && sliderImage.length === 3,
-              'left-[calc(50%+200px)] w-[200px] h-[348px]':
+              'left-[calc(50%+200px)] w-[200px] h-[348px] animate-opacity-delay':
                 index === 2 && sliderImage.length === 3,
 
               'left-[53%] w-[312px] h-[450px]':
