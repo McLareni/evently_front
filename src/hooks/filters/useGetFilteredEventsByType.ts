@@ -40,10 +40,10 @@ export function useGetFilteredEventsByType({
     }
     // only nearby
     if (events && nearbyFilterOnly && userAddress) {
-      const addressesWithRadius = events.filter(address => {
+      const addressesWithRadius = events.filter(event => {
         const coords = {
-          latitude: +address.location.latitude,
-          longitude: +address.location.longitude,
+          latitude: event.location.latitude ? +event.location.latitude : 0,
+          longitude: event.location.longitude ? +event.location.longitude : 0,
         };
         return isPointWithinRadius(coords, userAddress, radiusInMeters);
       });
@@ -68,14 +68,14 @@ export function useGetFilteredEventsByType({
     }
     // other categories with nearby
     if (events && nearbyFilter && !topEventsFilter) {
-      const filteredArray = events.filter(item => {
-        if (!selectedTypes.includes(item.type)) {
+      const filteredArray = events.filter(event => {
+        if (!selectedTypes.includes(event.type)) {
           return false;
         }
         if (userAddress) {
           const coords = {
-            latitude: +item.location.latitude,
-            longitude: +item.location.longitude,
+            latitude: event.location.latitude ? +event.location.latitude : 0,
+            longitude: event.location.longitude ? +event.location.longitude : 0,
           };
           if (!isPointWithinRadius(coords, userAddress, radiusInMeters)) {
             return false;
@@ -97,17 +97,17 @@ export function useGetFilteredEventsByType({
     }
     // other categories with nearby and top
     if (events && nearbyFilter && topEventsFilter && selectedTypes.length > 2) {
-      const filteredArray = events.filter(item => {
-        if (item.category !== 'TOP_EVENTS') {
+      const filteredArray = events.filter(event => {
+        if (event.category !== 'TOP_EVENTS') {
           return false;
         }
-        if (!selectedTypes.includes(item.type)) {
+        if (!selectedTypes.includes(event.type)) {
           return false;
         }
         if (userAddress) {
           const coords = {
-            latitude: +item.location.latitude,
-            longitude: +item.location.longitude,
+            latitude: event.location.latitude ? +event.location.latitude : 0,
+            longitude: event.location.longitude ? +event.location.longitude : 0,
           };
           if (!isPointWithinRadius(coords, userAddress, radiusInMeters)) {
             return false;
@@ -125,14 +125,14 @@ export function useGetFilteredEventsByType({
       topEventsFilter &&
       selectedTypes.length === 2
     ) {
-      const filteredArray = events.filter(item => {
-        if (item.category !== 'TOP_EVENTS') {
+      const filteredArray = events.filter(event => {
+        if (event.category !== 'TOP_EVENTS') {
           return false;
         }
         if (userAddress) {
           const coords = {
-            latitude: +item.location.latitude,
-            longitude: +item.location.longitude,
+            latitude: event.location.latitude ? +event.location.latitude : 0,
+            longitude: event.location.longitude ? +event.location.longitude : 0,
           };
           if (!isPointWithinRadius(coords, userAddress, radiusInMeters)) {
             return false;
