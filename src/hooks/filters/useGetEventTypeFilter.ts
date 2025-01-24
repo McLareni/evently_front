@@ -42,7 +42,7 @@ export function useGetEventTypeFilter() {
           //   longitude: position.coords.longitude,
           // };
           const coordinates = { latitude: 50.43749, longitude: 30.514977 };
-          console.log('Антоновича 42, Київ');
+          console.log('Адреса юзера: Антоновича 42, Київ; радіус 2 км');
 
           dispatch(setUserCoordinates(coordinates));
         },

@@ -18,8 +18,6 @@ import { FilterEvents } from '@/components/filters/FilterEvents';
 import { Main } from '@/components/main/Main';
 import Spinner from '@/components/ui/Spinner';
 
-import { eventsGPS } from './eventsGPS';
-
 const AllEventsPage: React.FC = () => {
   const [filteredEvents, setFilteredEvents] = useState<Event[]>([]);
   const [eventsLoaded, setEventsLoaded] = useState(false);
@@ -28,10 +26,8 @@ const AllEventsPage: React.FC = () => {
 
   const filteredEventsId = useAppSelector(getFilteredEventsId);
   const firstRender = useAppSelector(getFirstRender);
-  // TODO
-  // const { events, isLoading } = useLazyGetAllEventsQueryWithTrigger();
-  const events = eventsGPS;
-  const isLoading = false;
+
+  const { events, isLoading } = useLazyGetAllEventsQueryWithTrigger();
 
   const {
     addTypeFilter,

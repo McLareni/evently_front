@@ -42,8 +42,8 @@ export function useGetFilteredEventsByType({
     if (events && nearbyFilterOnly && userAddress) {
       const addressesWithRadius = events.filter(address => {
         const coords = {
-          latitude: address.location.latitude,
-          longitude: address.location.longitude,
+          latitude: +address.location.latitude,
+          longitude: +address.location.longitude,
         };
         return isPointWithinRadius(coords, userAddress, radiusInMeters);
       });
@@ -72,10 +72,10 @@ export function useGetFilteredEventsByType({
         if (!selectedTypes.includes(item.type)) {
           return false;
         }
-        if (userAddress && item.location.latitude && item.location.longitude) {
+        if (userAddress) {
           const coords = {
-            latitude: Number(item.location.latitude),
-            longitude: Number(item.location.longitude),
+            latitude: +item.location.latitude,
+            longitude: +item.location.longitude,
           };
           if (!isPointWithinRadius(coords, userAddress, radiusInMeters)) {
             return false;
@@ -104,10 +104,10 @@ export function useGetFilteredEventsByType({
         if (!selectedTypes.includes(item.type)) {
           return false;
         }
-        if (userAddress && item.location.latitude && item.location.longitude) {
+        if (userAddress) {
           const coords = {
-            latitude: Number(item.location.latitude),
-            longitude: Number(item.location.longitude),
+            latitude: +item.location.latitude,
+            longitude: +item.location.longitude,
           };
           if (!isPointWithinRadius(coords, userAddress, radiusInMeters)) {
             return false;
@@ -129,10 +129,10 @@ export function useGetFilteredEventsByType({
         if (item.category !== 'TOP_EVENTS') {
           return false;
         }
-        if (userAddress && item.location.latitude && item.location.longitude) {
+        if (userAddress) {
           const coords = {
-            latitude: Number(item.location.latitude),
-            longitude: Number(item.location.longitude),
+            latitude: +item.location.latitude,
+            longitude: +item.location.longitude,
           };
           if (!isPointWithinRadius(coords, userAddress, radiusInMeters)) {
             return false;
