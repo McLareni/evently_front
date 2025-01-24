@@ -6,6 +6,7 @@ import {
 } from '@/redux/filters/selectors';
 import { useAppSelector } from '@/redux/hooks';
 
+import { radiusInMeters } from '@/assets/staticData/statickData';
 import { isPointWithinRadius } from 'geolib';
 
 interface useGetFilteredEventsByTypeProps {
@@ -19,8 +20,6 @@ export function useGetFilteredEventsByType({
 
   const selectedTypes = useAppSelector(getSelectedTypes);
   const userAddress = useAppSelector(getUserCoordinates);
-
-  const radiusInMeters = 2000;
 
   const allEventsFilter = selectedTypes.includes('Усі події');
 

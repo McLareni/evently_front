@@ -17,3 +17,5 @@ export const getFilteredEventsId = (state: RootState) =>
 export const getFirstRender = (state: RootState) => state.filter.firstRender;
 export const getUserCoordinates = (state: RootState) =>
   state.filter.userCoordinates;
+export const getIsNearbyFromHeader = (state: RootState) =>
+  state.filter.isNearbyFromHeader;

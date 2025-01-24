@@ -1,6 +1,6 @@
 import { PayloadAction, createSlice } from '@reduxjs/toolkit';
 
-interface Range {
+export interface Range {
   start: string | undefined;
   end: string | undefined;
 }
@@ -18,6 +18,7 @@ const initialState = {
   filteredEventsId: [] as string[],
   firstRender: true,
   userCoordinates: null as null | Coordinates,
+  isNearbyFromHeader: false,
 };
 
 const filtersSlice = createSlice({
@@ -83,6 +84,9 @@ const filtersSlice = createSlice({
         item => item !== 'Під домом'
       );
     },
+    setIsNearbyFromHeader(state, action: PayloadAction<boolean>) {
+      state.isNearbyFromHeader = action.payload;
+    },
   },
 });
 
@@ -102,4 +106,5 @@ export const {
   setFirstRender,
   setUserCoordinates,
   removeNearby,
+  setIsNearbyFromHeader,
 } = filtersSlice.actions;

@@ -4,15 +4,22 @@ import { toast } from 'react-toastify';
 import {
   addSelectedTypes,
   removeNearby,
+  setIsNearbyFromHeader,
   setUserCoordinates,
 } from '@/redux/filters/filtersSlice';
-import { getSelectedTypes } from '@/redux/filters/selectors';
+import {
+  getIsNearbyFromHeader,
+  getSelectedTypes,
+  getUserCoordinates,
+} from '@/redux/filters/selectors';
 import { useAppDispatch, useAppSelector } from '@/redux/hooks';
 
 export function useGetEventTypeFilter() {
   const dispatch = useAppDispatch();
 
   const selectedTypes = useAppSelector(getSelectedTypes);
+  const isNearbyFromHeader = useAppSelector(getIsNearbyFromHeader);
+  const userAddress = useAppSelector(getUserCoordinates);
 
   const addTypeFilter = (filter: string) => {
     if (!selectedTypes.includes(filter)) {
@@ -56,10 +63,19 @@ export function useGetEventTypeFilter() {
         }
       );
 
-    if (selectedTypes.includes('Під домом')) {
+    if (
+      selectedTypes.includes('Під домом') &&
+      !isNearbyFromHeader &&
+      !userAddress
+    ) {
       getMyPosition();
     }
-  }, [dispatch, selectedTypes]);
+    if (selectedTypes.includes('Під домом') && isNearbyFromHeader) {
+      dispatch(setIsNearbyFromHeader(false));
+      getMyPosition();
+    }
+  }, [dispatch, isNearbyFromHeader, selectedTypes, userAddress]);
+  console.log(isNearbyFromHeader);
 
   useEffect(() => {
     if (selectedTypes.length === 0) {

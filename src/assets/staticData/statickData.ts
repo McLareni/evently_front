@@ -36,3 +36,6 @@ export const laguageOptions = [
   { label: 'UA', value: 'UA' },
   { label: 'EN', value: 'EN' },
 ];
+
+// Під домом
+export const radiusInMeters = 2000;
