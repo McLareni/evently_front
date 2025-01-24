@@ -183,7 +183,7 @@ export const EventCard: React.FC<EventCardProps> = ({
         </div>
 
         <h2
-          className={`min-h-[72px] text-2xl text-textDark group-hover:line-clamp-none`}
+          className={`min-h-[71px] text-2xl text-textDark line-clamp-2`}
         >
           {title}
         </h2>

@@ -1,41 +1,56 @@
 import React, { useEffect, useState } from 'react';
 import { PiHeartFill, PiHeartLight } from 'react-icons/pi';
 
-import { useGetCountLikeEvent } from '@/hooks/query/useGetCountLikeEvent';
 import clsx from 'clsx';
 
 interface IProps {
-  idEvent: string;
+  countLike: number;
   toggleIsLiked: () => void;
   isLiked: boolean;
   images: string[];
 }
 
 const ImageSlider: React.FC<IProps> = ({
-  idEvent,
+  countLike,
   toggleIsLiked,
   isLiked,
   images,
 }) => {
-  const { count: countLike } = useGetCountLikeEvent(idEvent || '');
   const [sliderImage, setSliderImage] = useState(images);
 
   useEffect(() => {
-    const interval = setInterval(() => {
-      setSliderImage(prev => {
-        const curr = [...prev];
-        const updated = [];
+    let interval: number;
+    if (sliderImage.length === 3) {
+      interval = window.setInterval(() => {
+        setSliderImage(prev => {
+          const curr = [...prev];
+          const updated = [];
 
-        updated[0] = curr[1];
-        updated[1] = curr[2];
-        updated[2] = curr[0];
+          updated[0] = curr[1];
+          updated[1] = curr[2];
+          updated[2] = curr[0];
 
-        return updated;
-      });
-    }, 10000);
+          return updated;
+        });
+      }, 5000);
+    }
+
+    if (sliderImage.length === 2) {
+      interval = window.setInterval(() => {
+        setSliderImage(prev => {
+          const curr = [...prev];
+          const updated = [];
+
+          updated[0] = curr[1];
+          updated[1] = curr[0];
+
+          return updated;
+        });
+      }, 5000);
+    }
 
     return () => clearInterval(interval);
-  }, [images]);
+  }, [images, sliderImage.length]);
 
   return (
     <div className="flex-1 relative">
@@ -57,11 +72,17 @@ const ImageSlider: React.FC<IProps> = ({
           key={`${image}${index}`}
           src={image || ''}
           className={clsx(
-            'rounded-[20px] absolute top-[calc(50%)] -translate-x-1/2 -translate-y-1/2 object-cover animate-opacity opacity-100',
+            'rounded-[20px] absolute top-[calc(50%)] -translate-x-1/2 -translate-y-1/2 object-cover opacity-100',
             {
-              'left-[50%] w-[312px] h-[514px] z-10': index === 0,
-              'left-[calc(50%-200px)] w-[200px] h-[348px]': index === 1,
-              'left-[calc(50%+200px)] w-[200px] h-[348px]': index === 2,
+              'left-[50%] w-[312px] h-[514px] z-10 animate-opacity':
+                index === 0,
+              'left-[calc(50%-200px)] w-[200px] h-[348px] animate-opacity-delay':
+                index === 1 && sliderImage.length === 3,
+              'left-[calc(50%+200px)] w-[200px] h-[348px] animate-opacity-delay':
+                index === 2 && sliderImage.length === 3,
+
+              'left-[53%] w-[312px] h-[450px]':
+                index === 1 && sliderImage.length === 2,
             }
           )}
         />
