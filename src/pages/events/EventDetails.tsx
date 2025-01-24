@@ -9,10 +9,10 @@ import {
 
 import AboutUser from '@/components/eventDetails/AboutUser';
 import BackgroundStars from '@/components/eventDetails/BackgroundStars';
+import CreateBtnSection from '@/components/eventDetails/CreateBtnSection';
 import HeroSection from '@/components/eventDetails/HeroSection';
 import { EventCard } from '@/components/ui';
 import { GoogleMap } from '@/components/ui/GoogleMap';
-import { MainLogo } from '@/components/ui/Logo';
 import ShortEventList from '@/components/ui/ShortEventList';
 import { ShowAllButton } from '@/components/ui/ShowAllButton';
 import Spinner from '@/components/ui/Spinner';
@@ -36,7 +36,7 @@ const EventDetails = () => {
 
   const eventByThisUser = events
     ?.filter(
-      (event: Event) => event.organizers[0]?.name === event.organizers[0]?.name
+      (event: Event) => event.organizers?.name === event.organizers?.name
     )
     .slice(0, 4);
 
@@ -82,7 +82,7 @@ const EventDetails = () => {
                 {event.description}
               </p>
             </div>
-            <AboutUser organizer={event.organizers[0]} rating={event.rating} />
+            <AboutUser organizer={event.organizers} rating={event.rating} />
             <div>
               <h2 className="text-5xl text-textDark mt-12 mb-[50px]">
                 Адреса події
@@ -105,19 +105,7 @@ const EventDetails = () => {
           </div>
         </div>
         <div>
-          <div className="relative w-auto h-40 m-4 my-16">
-            <div className="absolute inset-0 bg-eventDetails blur-md rounded-[20px]"></div>
-            <div className="absolute inset-0 bg-background blur-md rounded-[20px] opacity-50"></div>
-            <div className="absolute inset-0 z-10 flex items-center justify-around ">
-              <MainLogo />
-              <h1 className="text-5xl">
-                Не знайшли події своєї мрії? Створи власну!
-              </h1>
-              <button className="bg-dark-gradient w-[230px] h-12 rounded-[71px_8px] text-background text-xl  hover:border-4 hover:border-buttonPurple hover:shadow-shadowPrimaryBtn focus:outline-none active:shadow-primaryBtnActive">
-                Створити подію
-              </button>
-            </div>
-          </div>
+          <CreateBtnSection />
           <ShortEventList
             title="Схожі події"
             events={similarEvents || []}
