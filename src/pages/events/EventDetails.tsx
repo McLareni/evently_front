@@ -91,7 +91,7 @@ const EventDetails = () => {
                 {event.location.city}, {event.location.street}
               </p>
               <div className="rounded-[20px] overflow-hidden w-fit">
-                <GoogleMap event={event} />
+                <GoogleMap events={[event]} />
               </div>
             </div>
             <button className="flex gap-2 p-3 mt-8 rounded-[15px] border border-buttonPurple text-xl text-textDark focus:outline-0">
