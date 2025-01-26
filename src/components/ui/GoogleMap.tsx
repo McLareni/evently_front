@@ -1,7 +1,7 @@
 /* eslint-disable no-undef */
 
 /* eslint-disable no-unused-vars */
-import { useCallback, useState } from 'react';
+import { useCallback, useEffect, useState } from 'react';
 
 import {
   AdvancedMarker,
@@ -21,6 +21,7 @@ export const GoogleMap = ({ events, userLocation }: EventGoogleMapProps) => {
   const [selectedId, setSelectedId] = useState<string | null>(null);
   const [selectedMarker, setSelectedMarker] =
     useState<google.maps.marker.AdvancedMarkerElement | null>(null);
+  const [selectedEvent, setSelectedEvent] = useState<Event | null>(null);
 
   const { location } = events[0];
   const { latitude, longitude } = location;
@@ -50,6 +51,14 @@ export const GoogleMap = ({ events, userLocation }: EventGoogleMapProps) => {
     },
     [selectedId]
   );
+
+  useEffect(() => {
+    if (events && selectedId) {
+      const event = events.find(item => item.id === selectedId) || null;
+      setSelectedEvent(event);
+    }
+  }, [events, selectedId]);
+
   return (
     <Map
       mapId={'1'}
@@ -97,28 +106,28 @@ export const GoogleMap = ({ events, userLocation }: EventGoogleMapProps) => {
                 marker: google.maps.marker.AdvancedMarkerElement
               ) => onMarkerClick(item.id, marker)}
             />
-            {infoWindowShown && (
-              <InfoWindow
-                anchor={selectedMarker}
-                onCloseClick={handleInfowindowCloseClick}
-                headerContent={<h3>{item.title}</h3>}
-              >
-                <p>{item.location.city}</p>
-                <p>{item.location.street}</p>
-                <p>Україна</p>
-                <a
-                  href={`https://www.google.com/maps?q=${item.location.latitude},${item.location.longitude}`}
-                  target="_blank"
-                  rel="noreferrer"
-                  className="text-googlemapsLink font-normal hover:underline"
-                >
-                  <span>Переглянути на Картах Google</span>
-                </a>
-              </InfoWindow>
-            )}
           </div>
         );
       })}
+      {infoWindowShown && selectedEvent && (
+        <InfoWindow
+          anchor={selectedMarker}
+          onCloseClick={handleInfowindowCloseClick}
+          headerContent={<h3>{selectedEvent.title}</h3>}
+        >
+          <p>{selectedEvent.location.city}</p>
+          <p>{selectedEvent.location.street}</p>
+          <p>Україна</p>
+          <a
+            href={`https://www.google.com/maps?q=${selectedEvent.location.latitude},${selectedEvent.location.longitude}`}
+            target="_blank"
+            rel="noreferrer"
+            className="text-googlemapsLink font-normal hover:underline"
+          >
+            <span>Переглянути на Картах Google</span>
+          </a>
+        </InfoWindow>
+      )}
     </Map>
   );
 };
