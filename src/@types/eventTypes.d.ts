@@ -16,7 +16,7 @@ interface Event {
   rating: number;
   eventStatus: 'PENDING' | 'APPROVED' | 'CANCELLED';
   eventUrl: string | null;
-  images: string[];
+  images: { id: string; photoInBytes: string }[];
   date: {
     day: string;
     time: string;

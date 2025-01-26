@@ -16,10 +16,7 @@ const AboutUser: React.FC<IProps> = ({ organizer, rating }) => {
   const [isShortAboutUser, setIsShortAboutUser] = useState(true);
 
   const shortAboutUser = aboutUser?.slice(0, 100);
-
-  console.log(organizer);
   
-
   return (
     <div>
       <h2 className="text-5xl text-textDark mt-12 mb-8">Про організатора</h2>

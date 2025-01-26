@@ -33,6 +33,9 @@ const fetchAdminEvent = async () => {
         Authorization: `Bearer ${token}`,
       },
     });
+
+    console.log(response);
+
     return response.data;
   } catch (error) {
     throw new Error(`Failed to get event. ${error}`);
