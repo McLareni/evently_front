@@ -98,11 +98,15 @@ const HeroSection: React.FC<IProps> = ({ idEvent, event }) => {
           toggleIsLiked={toggleIsLiked}
           countLike={+countLike}
           isLiked={isLiked}
-          images={[
-            event.photoUrl,
-            'https://dodgekatowice.pl/wp-content/uploads/2020/10/Challenger-Redeye-Black-panorama.jpg',
-            'https://satysfakcja.stati.pl/allegro_new/FOTO/GoPro/CHDHF-131-EU/kamera-sportowa-gopro-hero-mob.jpg',
-          ]}
+          images={
+            event.images.length
+              ? [
+                  ...event.images.map(
+                    img => `data:image/jpeg;base64,${img.photoInBytes}`
+                  ),
+                ]
+              : [event.photoUrl]
+          }
         />
         <div className="flex-1 pl-24 relative">
           <h1 className="text-[64px] text-textDark mb-4 pr-12 line-clamp-2">
@@ -110,14 +114,14 @@ const HeroSection: React.FC<IProps> = ({ idEvent, event }) => {
           </h1>
           <div className="font-normal text-[20px] text-textDark flex gap-4 mb-10">
             <div
-              className={`flex items-center justify-center h-8 rounded-[20px]
+              className={`flex items-center justify-center h-10 rounded-[20px]
                        border-[2px] border-borderColor bg-[#E9E6FF]`}
             >
               <p className="px-4 py-2.5">{event?.type}</p>
             </div>
             <div
               className={clsx(
-                `flex items-center justify-center h-8 rounded-[20px]`,
+                `flex items-center justify-center h-10 rounded-[20px]`,
                 event?.eventUrl
                   ? 'bg-buttonPurple text-background'
                   : 'bg-lightPurple border border-buttonPurple'

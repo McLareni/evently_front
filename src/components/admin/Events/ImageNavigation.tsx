@@ -24,7 +24,7 @@ const ImageNavigation: React.FC<IProps> = ({
         <BiChevronDown className="rotate-90 w-12 h-12" />
       </button>
       <ul className="flex gap-2 items-center">
-        {countImage?.map((dot, index) => (
+        {countImage?.map((_, index) => (
           <li key={index}>
             <div
               className={clsx('rounded-full !h-2 !w-2 bg-darkGray', {

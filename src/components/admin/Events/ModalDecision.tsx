@@ -16,7 +16,10 @@ interface IProps {
 
 const ModalDecision: React.FC<IProps> = ({ event, openModal }) => {
   const [activeImage, setActiveImage] = useState(1);
-  const images: string[] = [event!.photoUrl, ...(event?.images || [])];
+
+  const images = event?.images.length
+    ? [...event.images.map(img => `data:image/jpeg;base64,${img.photoInBytes}`)]
+    : [event?.photoUrl || ''];
 
   const handleChangeActiveImage = (direction: 'up' | 'down') => {
     if (direction === 'up') {
@@ -78,7 +81,7 @@ const ModalDecision: React.FC<IProps> = ({ event, openModal }) => {
               className="h-[72px] w-[72px] rounded-full object-cover"
             />
             <h2 className="text-textDark font-lato text-2xl underline my-2">
-              {event?.organizers[0]?.name}
+              {event?.organizers?.name}
             </h2>
             <div className="flex">
               <span className="mr-2">

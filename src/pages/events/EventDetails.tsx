@@ -1,4 +1,4 @@
-import { useEffect } from 'react';
+import { useEffect, useState } from 'react';
 import { FiFlag } from 'react-icons/fi';
 import { useParams } from 'react-router';
 
@@ -26,9 +26,29 @@ const EventDetails = () => {
   } = useGetEventByIdQuery(idEvent || '');
   const [fetchEvents, { data: events }] = useLazyGetAllEventsQuery();
 
-  const topEvents = events
-    ?.filter((event: Event) => event.category === 'TOP_EVENTS')
-    .slice(0, 3);
+  const topEvents = events?.filter(
+    (event: Event) => event.category === 'TOP_EVENTS'
+  );
+
+  const [randomTopEvents, setRandomTopEvents] = useState<Event[]>();
+
+  useEffect(() => {
+    let interval = setInterval(() => {
+      setRandomTopEvents(
+        topEvents?.sort(() => Math.random() - 0.5).slice(0, 3)
+      );
+    }, 10000);
+
+    if ((!randomTopEvents || randomTopEvents.length === 0) && events) {
+      console.log(topEvents);
+
+      setRandomTopEvents(topEvents?.slice(0, 3) || []);
+    }
+
+    return () => {
+      clearInterval(interval);
+    };
+  }, [randomTopEvents, topEvents, events]);
 
   const similarEvents = events
     ?.filter((event: Event) => event.type === event.type)
@@ -99,7 +119,7 @@ const EventDetails = () => {
             </button>
           </div>
           <div className="w-[344px] border-2 rounded-[20px] border-buttonPurple p-4 flex flex-col gap-8">
-            {topEvents?.map(event => (
+            {randomTopEvents?.map(event => (
               <EventCard key={event.id} event={event} />
             ))}
           </div>
