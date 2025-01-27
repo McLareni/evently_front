@@ -55,9 +55,9 @@ export const FilterEvents: React.FC<FilterEventsProps> = ({
         <div className="overflow-y-scroll overscroll-contain">
           <div className="px-[18px]">
             <h2 className="mb-[16px]">Тип події</h2>
-            <ul className={`flex flex-col gap-[16px] pl-[18px]`}>
+            <ul className="flex flex-col gap-[16px] pl-[18px]">
               {eventTypes.map(option => (
-                <li key={nanoid()} className={`flex gap-4`}>
+                <li key={nanoid()} className="flex gap-4">
                   <Checkbox
                     name="type"
                     value={option.label}
@@ -75,7 +75,7 @@ export const FilterEvents: React.FC<FilterEventsProps> = ({
             <div className="pl-[18px]">
               <ul className="flex flex-col gap-[16px] mb-[18px]">
                 {eventDate.map(option => (
-                  <li key={nanoid()} className={`flex gap-4`}>
+                  <li key={nanoid()} className="flex gap-4">
                     <Checkbox
                       name="when"
                       value={option.value}
@@ -104,9 +104,9 @@ export const FilterEvents: React.FC<FilterEventsProps> = ({
 
           <div className="px-[18px]">
             <h2 className="mb-[16px]">Ціна</h2>
-            <ul className={`flex flex-col gap-[16px] pl-[18px]`}>
+            <ul className="flex flex-col gap-[16px] pl-[18px]">
               {eventPrice.map(option => (
-                <li key={nanoid()} className={`flex gap-4`}>
+                <li key={nanoid()} className="flex gap-4">
                   <Checkbox
                     name="price"
                     value={option.value}

@@ -24,7 +24,8 @@ export default [
         RequiredPassword: true,
         RegisterFormInputsPassword: true,
         RegisterFormInputEmail: true,
-        UserInfo: true
+        UserInfo: true,
+        Coordinates: true,
       },
       parser: typescriptEslintParser,
       sourceType: 'module',

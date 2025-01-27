@@ -2,8 +2,8 @@
 
 export const eventTypes = [
   { label: 'Усі події', value: 'all_events' },
+  { label: 'Під домом', value: 'nearby' },
   { label: 'Популярні', value: 'popular' },
-  // { label: 'Під домом', value: 'nearby' },
   { label: 'Концерти', value: 'concerts' },
   { label: 'Майстер класи', value: 'workshops' },
   { label: 'Stand-up', value: 'stand_up' },
@@ -36,3 +36,6 @@ export const laguageOptions = [
   { label: 'UA', value: 'UA' },
   { label: 'EN', value: 'EN' },
 ];
+
+// Під домом
+export const radiusInMeters = 2000;
