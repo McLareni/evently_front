@@ -8,6 +8,7 @@ import {
 import {
   getFilteredEventsId,
   getFirstRender,
+  getSelectedTypes,
   getUserCoordinates,
 } from '@/redux/filters/selectors';
 import { useAppDispatch, useAppSelector } from '@/redux/hooks';
@@ -32,6 +33,7 @@ const AllEventsPage: React.FC = () => {
   const filteredEventsId = useAppSelector(getFilteredEventsId);
   const firstRender = useAppSelector(getFirstRender);
   const userCoordinates = useAppSelector(getUserCoordinates);
+  const selectedTypes = useAppSelector(getSelectedTypes);
 
   const { events, isLoading } = useLazyGetAllEventsQueryWithTrigger();
 
@@ -97,7 +99,12 @@ const AllEventsPage: React.FC = () => {
         {filteredEvents.length > 0 ? (
           <div className="flex flex-col gap-[24px]">
             <AllEvents events={filteredEvents} title={false} />
-            <GoogleMap events={filteredEvents} userLocation={userCoordinates} />
+            {userCoordinates && selectedTypes.includes('Під домом') && (
+              <GoogleMap
+                events={filteredEvents}
+                userLocation={userCoordinates}
+              />
+            )}
           </div>
         ) : (
           eventsLoaded && (

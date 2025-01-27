@@ -30,6 +30,11 @@ export const GoogleMap = ({ events, userLocation }: EventGoogleMapProps) => {
   const lat = !latitude ? 50.432727 : +latitude;
   const lon = !longitude ? 30.512317 : +longitude;
 
+  const defaultZoom = userLocation ? 14 : 11;
+  const defaultCenter = userLocation
+    ? { lat: userLocation.latitude, lng: userLocation.longitude }
+    : { lat: +lat, lng: +lon };
+
   const handleInfowindowCloseClick = useCallback(
     () => setInfoWindowShown(false),
     []
@@ -68,8 +73,8 @@ export const GoogleMap = ({ events, userLocation }: EventGoogleMapProps) => {
         borderRadius: '20px',
         overflow: 'hidden',
       }}
-      defaultCenter={{ lat: +lat, lng: +lon }}
-      defaultZoom={11}
+      defaultCenter={defaultCenter}
+      defaultZoom={defaultZoom}
       gestureHandling={'cooperative'}
       disableDefaultUI={false}
     >
