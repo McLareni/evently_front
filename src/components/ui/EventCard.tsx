@@ -75,7 +75,8 @@ export const EventCard: React.FC<EventCardProps> = ({
     }
   };
 
-  const toggleIsLiked = () => {
+  const toggleIsLiked = (e: React.MouseEvent) => {
+    e.stopPropagation();
     if (isEventCreated) return;
     if (!isLiked) {
       const addLiked = async () => {
@@ -128,9 +129,10 @@ export const EventCard: React.FC<EventCardProps> = ({
   };
 
   useEffect(() => {
-    if (images.length > 0 && images[0].photoInBytes) {
+    if (images && images[0] && images[0].photoInBytes) {
       setImageSrc(`data:image/png;base64,${images[0].photoInBytes}`);
     }
+    return;
   }, [images]);
 
   return (
@@ -152,7 +154,7 @@ export const EventCard: React.FC<EventCardProps> = ({
         {!isAdmin && (
           <button
             type="button"
-            onClick={toggleIsLiked}
+            onClick={e => toggleIsLiked(e)}
             aria-label="like button"
             className={`focus:outline-none ml-auto bg-background w-[32px] h-[32px] flex items-center justify-center rounded-full opacity-60`}
           >

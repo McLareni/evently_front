@@ -157,7 +157,7 @@ const CreateEventForm: React.FC<CreateEventFormProps> = ({
       title: eventName,
       description: description,
       eventType: categoryValue,
-      phoneNumber: '+380123456789',
+      // phoneNumber: '+380123456789',
       location: {
         city: place?.city,
         street: place?.name,
@@ -167,7 +167,7 @@ const CreateEventForm: React.FC<CreateEventFormProps> = ({
       },
       dateDetails: {
         day: date,
-        startTime: startTimeOption,
+        time: startTimeOption,
         endTime: endTimeOption,
       },
       organizers: {
@@ -188,9 +188,9 @@ const CreateEventForm: React.FC<CreateEventFormProps> = ({
     console.log(secondImage);
     const thirdImage = imageFile[2];
     console.log(thirdImage);
+    setIsLoading(true);
     createEvent(event, firstImage, secondImage, thirdImage)
       .then(response => {
-        setIsLoading(true);
         if (response.status === 201) {
           setIsSuccessPopupShown(true);
         }
