@@ -74,6 +74,7 @@ export const EventCard: React.FC<EventCardProps> = ({
   };
 
   const toggleIsLiked = () => {
+    if (isEventCreated) return;
     if (!isLiked) {
       const addLiked = async () => {
         try {
@@ -111,11 +112,17 @@ export const EventCard: React.FC<EventCardProps> = ({
   }, [event.id, likedEventsAll]);
 
   const handleOnClick = (e: React.MouseEvent) => {
+    if (isEventCreated) return;
     if (isAdmin) {
       setEvent(event, e.target as HTMLElement, '');
     } else {
       navigate(`/event/${eventId}`);
     }
+  };
+
+  const navigateToEvent = () => {
+    if (isEventCreated) return;
+    navigate(`/event/${eventId}`);
   };
 
   return (
@@ -247,7 +254,7 @@ export const EventCard: React.FC<EventCardProps> = ({
               type="button"
               primary
               className="w-[230px] h-12 mx-auto mt-4"
-              onClick={() => navigate(`/event/${eventId}`)}
+              onClick={navigateToEvent}
             >
               Хочу
             </SharedBtn>
