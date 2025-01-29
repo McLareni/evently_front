@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { AiOutlineCalendar, AiOutlineExclamation } from 'react-icons/ai';
 import { FaRegMoneyBillAlt } from 'react-icons/fa';
 import { GrLocation } from 'react-icons/gr';
@@ -6,6 +6,7 @@ import { MdDone } from 'react-icons/md';
 import { PiHeartLight } from 'react-icons/pi';
 import { PiHeartFill } from 'react-icons/pi';
 import { RxCross2 } from 'react-icons/rx';
+import { useNavigate } from 'react-router';
 import { toast } from 'react-toastify';
 
 import { selectUser } from '@/redux/auth/selectors';
@@ -59,6 +60,7 @@ export const EventCard: React.FC<EventCardProps> = ({
   const { data: likedEventsAll } = useGetLikedEventsWithSkip();
   const [addLikedEvent] = useAddLikedEventMutation();
   const [deleteLikedEvent] = useDeleteLikedEventMutation();
+  const navigate = useNavigate();
 
   const address = location.city + ', ' + location.street;
   const slicedStreet = () => {
@@ -106,9 +108,17 @@ export const EventCard: React.FC<EventCardProps> = ({
     }
   }, [event.id, likedEventsAll]);
 
+  const handleOnClick = (e: React.MouseEvent) => {
+    if (isAdmin) {
+      setEvent(event, e.target as HTMLElement, '');
+    } else {
+      navigate(`/event/${eventId}`);
+    }
+  };
+
   return (
     <div
-      onClick={e => setEvent(event, e.target as HTMLElement, '')}
+      onClick={e => handleOnClick(e)}
       id={`${eventId}`}
       className={`group relative flex overflow-hidden items-start rounded-[20px] shadow-eventCardShadow w-[312px] h-[514px] ${
         top ? 'mb-[10px]' : ''
@@ -173,7 +183,7 @@ export const EventCard: React.FC<EventCardProps> = ({
         </div>
 
         <h2
-          className={`min-h-[72px] text-2xl text-textDark group-hover:line-clamp-none`}
+          className={`min-h-[71px] text-2xl text-textDark line-clamp-2`}
         >
           {title}
         </h2>
@@ -232,6 +242,7 @@ export const EventCard: React.FC<EventCardProps> = ({
               type="button"
               primary
               className="w-[230px] h-12 mx-auto mt-4"
+              onClick={() => navigate(`/event/${eventId}`)}
             >
               Хочу
             </SharedBtn>

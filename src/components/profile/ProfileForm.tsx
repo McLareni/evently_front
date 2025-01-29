@@ -133,7 +133,7 @@ export const ProfileForm: FC<ProfileFormProps> = ({ image: userImage }) => {
         />
       </div>
 
-      <div className="flex gap-[24px] mb-[32px]">
+      <div className="flex gap-[24px] mb-[8px]">
         <Controller
           name="birthdayDate"
           control={control}
@@ -188,7 +188,7 @@ export const ProfileForm: FC<ProfileFormProps> = ({ image: userImage }) => {
       </div>
 
       {/* Паролі не підключені */}
-      <div className="flex flex-col gap-[8px]">
+      <div className="flex flex-col gap-[8px] mb-[8px]">
         <p className="mb-[32px] font-oswald text-[24px] font-medium">
           Змінити пароль
         </p>

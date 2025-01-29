@@ -21,7 +21,7 @@ const Information = () => {
 
   return (
     <div>
-      <div className="-mx-[15px] -mt-[15px] h-[214px] bg-bg-gradient rounded-[20px] p-[32px] flex gap-[48px]">
+      <div className="-mx-[15px] -mt-[15px] h-[192px] bg-bg-gradient rounded-[20px] px-[32px] py-[21px] flex gap-[48px]">
         <CropUploadImage getImage={getImage} />
         <p
           className="font-oswald text-[64px] inline-block"
@@ -36,7 +36,7 @@ const Information = () => {
           Привіт, {isFakeName()}
         </p>
       </div>
-      <p className="my-[32px] font-oswald text-[24px] font-medium">
+      <p className="my-[24px] font-oswald text-[24px] font-medium">
         Контактна інформація
       </p>
       <ProfileForm image={image} />

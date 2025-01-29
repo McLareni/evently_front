@@ -29,7 +29,7 @@ export const Header: React.FC = () => {
   return (
     <div className="w-[1440px] font-lato bg-background fixed top-0 z-20">
       <Container className="relative">
-        <header className="px-4 py-2 bg-gray-100">
+        <header className="px-4 pt-2 pb-4 bg-gray-100">
           <div className="flex justify-center items-center h-[84px]">
             <MainLogo />
             <Navigation />
@@ -39,7 +39,7 @@ export const Header: React.FC = () => {
               setIsModalOpen={setIsModalOpen}
             />
 
-            <div onClick={() => handleLinkClick('createEvent')}>
+            <div onClick={() => handleLinkClick('create_event')}>
               <SharedBtn
                 type="button"
                 primary

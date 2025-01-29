@@ -47,6 +47,14 @@ body {
   min-height: 100vh;
 }
 
+#root {
+  width: 1440px;
+  height: 100vh;
+  position: relative;
+  display: flex;
+  flex-direction: column;
+}
+
 main {
   max-width: 1440px;
   background-color: theme('colors.background');
@@ -168,4 +176,203 @@ a {
 
 .clip-half {
   clip-path: inset(0 50% 0 0);
+}
+
+:root {
+  --left: calc(45% - 200px);
+  --center: 45%;
+  --right: calc(45% + 200px);
+  --time: 20s;
+}
+
+/* .animateFirstPhoto {
+  animation: firstphoto var(--time) linear infinite backwards;
+}
+
+@keyframes firstphoto {
+  0% {
+    left: var(--center);
+    scale: 1;
+    top: 50%;
+    z-index: 5;
+  }
+  25% {
+    left: var(--center);
+    scale: 1;
+    top: 50%;
+    z-index: 1;
+  }
+  30% {
+    left: var(--left);
+    scale: 0.8;
+    top: calc(50% - 50px);
+    z-index: 0;
+  }
+  55% {
+    left: var(--left);
+    scale: 0.8;
+    top: calc(50% - 50px);
+    z-index: 0;
+  }
+  65% {
+    left: var(--right);
+    scale: 0.8;
+    top: calc(50% - 50px);
+    z-index: 0;
+  }
+  90% {
+    left: var(--right);
+    scale: 0.8;
+    top: calc(50% - 50px);
+    z-index: 0;
+  }
+  100% {
+    left: var(--center);
+    scale: 1;
+    top: 50%;
+    z-index: 5;
+  }
+}
+
+.animateSecondPhoto {
+  animation: secondphoto var(--time) linear infinite backwards;
+}
+
+@keyframes secondphoto {
+  0% {
+    left: var(--left);
+    scale: 0.8;
+    top: calc(50% - 50px);
+    z-index: 0;
+  }
+  25% {
+    left: var(--left);
+    scale: 0.8;
+    top: calc(50% - 50px);
+    z-index: 0;
+  }
+  30% {
+    left: var(--right);
+    scale: 0.8;
+    top: calc(50% - 50px);
+    z-index: 0;
+  }
+  55% {
+    left: var(--right);
+    scale: 0.8;
+    top: calc(50% - 50px);
+    z-index: 0;
+  }
+  65% {
+    left: var(--center);
+    scale: 1;
+    top: 50%;
+    z-index: 5;
+  }
+  90% {
+    left: var(--center);
+    scale: 1;
+    top: 50%;
+    z-index: 5;
+  }
+  100% {
+    left: var(--left);
+    scale: 0.8;
+    top: calc(50% - 50px);
+    z-index: 0;
+  }
+}
+
+.animateThirdPhoto {
+  animation: thirdphoto var(--time) linear infinite backwards;
+}
+
+@keyframes thirdphoto {
+  0% {
+    left: var(--right);
+    scale: 0.8;
+    top: calc(50% - 50px);
+    z-index: 0;
+  }
+  25% {
+    left: var(--right);
+    scale: 0.8;
+    top: calc(50% - 50px);
+    z-index: 0;
+  }
+  30% {
+    left: var(--center);
+    scale: 1;
+    top: 50%;
+    z-index: 5;
+  }
+  55% {
+    left: var(--center);
+    scale: 1;
+    top: 50%;
+    z-index: 5;
+  }
+  65% {
+    left: var(--left);
+    scale: 0.8;
+    top: calc(50% - 50px);
+    z-index: 0;
+  }
+  90% {
+    left: var(--left);
+    scale: 0.8;
+    top: calc(50% - 50px);
+    z-index: 0;
+  }
+  100% {
+    left: var(--right);
+    scale: 0.8;
+    top: calc(50% - 50px);
+    z-index: 0;
+  }
+} */
+
+.animate-opacity {
+  animation:
+    opacity 0.5s ease forwards,
+    bounce 3s linear infinite forwards;
+}
+
+.animate-opacity-delay {
+  animation:
+    opacity 0.5s ease forwards,
+    bounce-delay 3s linear infinite forwards;
+}
+
+@keyframes opacity {
+  from {
+    opacity: 0.8;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+@keyframes bounce {
+  0% {
+    transform: translate(-50%, -49%);
+  }
+  50% {
+    transform: translate(-50%, -52%);
+  }
+  100% {
+    transform: translate(-50%, -49%);
+  }
+}
+
+@keyframes bounce-delay {
+  0% {
+    transform: translate(-50%, -52%);
+  }
+  50% {
+    transform: translate(-50%, -49%);
+  }
+  100% {
+    transform: translate(-50%, -52%);
+  }
 }

@@ -13,7 +13,7 @@ import Spinner from '@/components/ui/Spinner';
 export type FilterStatus = 'PENDING' | 'APPROVED' | 'CANCELLED' | '';
 
 const AdminEvents = () => {
-  const [events, setEvents] = useState<Event[] | null>();
+  const [events, setEvents] = useState<Event[] | null>([]);
   const [page, setPage] = useState<number>(1);
   const [modalIsOpen, setModalIsOpen] = useState<boolean>(false);
   const [currEvent, setCurrEvent] = useState<Event>();
@@ -86,7 +86,7 @@ const AdminEvents = () => {
   };
 
   let sortedEvents = filterStatus
-    ? events?.filter(event => event.eventStatus === filterStatus)
+    ? events?.filter(event => event?.eventStatus === filterStatus)
     : events;
 
   const totalEvents = sortedEvents?.length;
@@ -100,13 +100,17 @@ const AdminEvents = () => {
     APPROVED: 0,
   };
 
-  events?.forEach(event =>
-    event.eventStatus === 'APPROVED'
-      ? countStatusEvents.APPROVED++
-      : event.eventStatus === 'CANCELLED'
-        ? countStatusEvents.CANCELLED++
-        : countStatusEvents.PENDING++
-  );
+  if (events) {
+    console.log(events);
+
+    events?.forEach(event =>
+      event.eventStatus === 'APPROVED'
+        ? countStatusEvents.APPROVED++
+        : event.eventStatus === 'CANCELLED'
+          ? countStatusEvents.CANCELLED++
+          : countStatusEvents.PENDING++
+    );
+  }
 
   const handleOpenModal = (status: 'APPROVED' | 'CANCELLED' | '') => {
     setConfirmationModal(true);
