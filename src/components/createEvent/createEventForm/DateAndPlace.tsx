@@ -130,7 +130,7 @@ const DateAndPlace = ({
             </button>
             <div className="">
               {isCalendarShown && (
-                <CreateEventCalendar handleDateChange={handleDateChange} />
+                <CreateEventCalendar handleDateChange={handleDateChange} toggleIsCalendarShown={toggleIsCalendarShown}/>
               )}
             </div>
           </div>

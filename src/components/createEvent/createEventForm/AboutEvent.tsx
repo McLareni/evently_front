@@ -7,6 +7,7 @@ type AboutEventProps = {
   onEventNameChange: (eventName: string) => void;
   onDescriptionChange: (eventDescription: string) => void;
   onCategoryChange: (category: string) => void;
+  onEventCategoryChange: (category: string) => void;
 };
 
 interface IFormInput {
@@ -15,13 +16,13 @@ interface IFormInput {
 }
 const MAX_DESCRIPTION_LENGTH = 400;
 
-const categories: { name: string }[] = [
-  { name: 'Концерт' },
-  { name: 'Майстер клас' },
-  { name: 'Спортивний захід' },
-  { name: 'Stand-up' },
-  { name: 'Бізнес та нетворкінг' },
-  { name: 'Інше' },
+const categories: { name: string, value: string }[] = [
+  { name: 'Концерт', value: 'CONCERTS' },
+  { name: 'Майстер клас', value: 'MASTER_CLASS' },
+  { name: 'Спортивний захід', value: 'SPORTS_EVENTS' },
+  { name: 'Stand-up', value: 'STAND_UP' },
+  { name: 'Бізнес та нетворкінг', value: 'BUSINESS_NETWORKING' },
+  { name: 'Інше', value: 'OTHER' },
 ];
 
 const AboutEvent: React.FC<AboutEventProps> = ({
@@ -29,7 +30,8 @@ const AboutEvent: React.FC<AboutEventProps> = ({
   description,
   onEventNameChange,
   onDescriptionChange,
-  onCategoryChange
+  onCategoryChange,
+  onEventCategoryChange
 }) => {
   const { control, formState: { errors } } = useForm<IFormInput>({
     defaultValues: {
@@ -41,9 +43,10 @@ const AboutEvent: React.FC<AboutEventProps> = ({
   const [selectedCategory, setSelectedCategory] = useState<string | null>(null);
   const [descriptionLength, setDescriptionLength] = useState(0);
 
-  const handleCategoryClick = (categoryName: string) => {
+  const handleCategoryClick = (categoryName: string, categotyValue:string ) => {
     setSelectedCategory(categoryName);
     onCategoryChange(categoryName);
+    onEventCategoryChange(categotyValue)
   };
   const handleDescriptionChange = (e: React.ChangeEvent<HTMLTextAreaElement>) => {
     setDescriptionLength(e.target.value.length);
@@ -114,7 +117,7 @@ const AboutEvent: React.FC<AboutEventProps> = ({
             {categories.map(category => (
                 <div
                 key={category.name}
-                onClick={() => handleCategoryClick(category.name)}
+                onClick={() => handleCategoryClick(category.name, category.value)}
                 className={`${
                   selectedCategory === category.name
                     ? 'bg-gradient-to-r from-[#12C2E9] to-[#C471ED]' 

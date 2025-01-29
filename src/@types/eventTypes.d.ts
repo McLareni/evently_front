@@ -78,12 +78,12 @@ interface eventType {
   // library?: File[];
    title: string;
     description: string;
-    dateDetails: {
+    dateDetails?: {
       day: string;
       startTime: string;
       endTime: string;
     };
-    ticketPrice: number | undefined;
+    ticketPrice: string | undefined;
     location?: {
       city?: string;
       street?: string;
@@ -97,7 +97,10 @@ interface eventType {
     eventUrl?: string; 
     organizers: {
       id: string
-    }; 
+    };
+    firstImage?: string | null;
+    secondImage?: string | null;
+    thirdImage?: string | null; 
 }
 
 interface EventPlaceWithGps {

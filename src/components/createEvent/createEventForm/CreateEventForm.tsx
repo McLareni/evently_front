@@ -1,5 +1,12 @@
 /* eslint-disable no-unused-vars */
+import { useEffect, useState } from 'react';
 import { FormProvider, useForm } from 'react-hook-form';
+
+import { selectUser } from '@/redux/auth/selectors';
+// import { getUser } from '@/utils/adminHttp';
+import { useAppSelector } from '@/redux/hooks';
+
+import { createEvent } from '@/utils/eventsHttp';
 
 // import { register } from 'module';
 // import { useForm } from 'react-hook-form';
@@ -9,12 +16,6 @@ import AboutEvent from './AboutEvent';
 import PhotoCard from './CardsPhotos';
 import DateAndPlace from './DateAndPlace';
 import TicketPrice from './TicketPrice';
-import { useEffect, useState } from 'react';
-// import { getUser } from '@/utils/adminHttp';
-import { useAppSelector } from '@/redux/hooks';
-import { selectUser } from '@/redux/auth/selectors';
-import { createEvent } from '@/utils/eventsHttp';
-
 
 type CreateEventFormProps = {
   photos: (string | null)[];
@@ -29,7 +30,7 @@ type CreateEventFormProps = {
   onEventNameChange: (eventName: string) => void;
   // onDateChange: (data: string) => void;
   onPlaceChange: (newPlace: EventPlaceWithGps) => void;
-  onPriceChange: (price: number | "Безкоштовно" | "Ціна") => void;
+  onPriceChange: (price: number | 'Безкоштовно' | 'Ціна') => void;
   onCategoryChange: (category: string) => void;
   handleDateChange: (newDate: string) => void;
   handleStartTime: (endTime: string) => void;
@@ -57,11 +58,10 @@ const CreateEventForm: React.FC<CreateEventFormProps> = ({
   handleDateChange,
   handleStartTime,
 }) => {
-
   const methods = useForm({
-    defaultValues:{
+    defaultValues: {
       organizers: {
-        id: ""
+        id: '',
       },
       firstImg: '',
       secondImg: '',
@@ -75,124 +75,144 @@ const CreateEventForm: React.FC<CreateEventFormProps> = ({
       ticketPrice: 0,
       numberOfTickets: 0,
       location: {
-        city: "",
-        street: "",
-        venue: "",
-        latitude: "",
-        longitude: ""
+        city: '',
+        street: '',
+        venue: '',
+        latitude: '',
+        longitude: '',
       },
       eventUrl: '',
-    }
-  })
+    },
+  });
 
-  
   const { handleSubmit } = methods;
   const [endTimeOption, setSelectedEndTimeOption] = useState('');
   const [description, setDescription] = useState('');
   const [numberOfTickets, setNumberOfTickets] = useState(0);
-  const [eventPrice, setEventPrice] = useState<number>();
+  const [ticketPrice, setTickePrice] = useState<number | undefined>();
   const [eventUrl, setEventUrl] = useState('');
   const [organizers, setOrganizers] = useState<string>('');
+  const [categoryValue, setCategoryValue] = useState<string>('');
+
+
+  const [imageFile, setImageFile] = useState<(File | null)[]>([null, null, null]);
+  // const handleImageFileChange = (image: File) => setImageFile(image);
+  const handleImageFileChange = (id: number, photo: (File | null)[]) => {
+    setImageFile((prevPhotos) => {
+      const updatedPhotos = [...prevPhotos]; // Створюємо копію попереднього стану
+  
+      // Оновлюємо конкретний елемент на новий масив файлів (або null)
+      updatedPhotos[id] = photo[0]; 
+  
+      return updatedPhotos; // Повертаємо новий масив
+    });
+  };
   
   const handleEndTime = (endTime: string) => setSelectedEndTimeOption(endTime);
   const handleDescriptionChange = (description: string) => setDescription(description);
   const handleNumberOfTicketsChange = (numberOfTickets: number) => setNumberOfTickets(numberOfTickets);
   const handleEventUrlChange = (eventUrl: string) => setEventUrl(eventUrl);
-  
-  const user = useAppSelector(selectUser)
+  const onEventCategoryChange = (categoryValue: string) => setCategoryValue(categoryValue)
+
+  const user = useAppSelector(selectUser);
   useEffect(() => {
-    setOrganizers(user.id.toString())
-  }, [user])
+    setOrganizers(user.id.toString());
+  }, [user]);
   useEffect(() => {
     if (price !== 'Безкоштовно' && price !== 'Ціна') {
-      setEventPrice(price)
-      
+      setTickePrice(price);
     }
-  }, [price])
-   
+  }, [price]);
 
   const onSubmit = () => {
     const event = {
       title: eventName,
       description: description,
-      dateDetails: {
-        day: date,
-        startTime: startTimeOption,
-        endTime: endTimeOption,
-      },
-      ticketPrice: eventPrice,
+        eventType: categoryValue,
+      phoneNumber: '+380123456789',
       location: {
         city: place?.city,
         street: place?.name,
         venue: '',
-        latitude: place?.lat.toString(),
-        longitude: place?.lng.toString(),
+        latitude: place?.lat,
+        longitude: place?.lng,
       },
-      // photos: photos,
-      eventType: eventType,
-      numberOfTickets: numberOfTickets, 
-      eventUrl: eventUrl, 
-      organizers: { 
+        dateDetails: {
+        day: date,
+        startTime: startTimeOption,
+        endTime: endTimeOption,
+      },
+      organizers: {
         id: organizers,
-      }, 
+      },
+      numberOfTickets: numberOfTickets,
+      ticketPrice: ticketPrice,
+      // firstImage: photos[0]
     };
-    const eventPhotos = {
-      firstImage: photos[0],
-      secondImage: photos[1],
-      thirdImage: photos[2]
-    }
-    console.log(event, eventPhotos)
-    createEvent(event, eventPhotos).then(response => console.log(response))
+    // };
+    // // const eventPhotos = {
+    // //   firstImage: photos[0],
+    // //   secondImage: photos[1],
+    // //   thirdImage: photos[2]
+    // // }
+    const firstImage = imageFile[0];
+    const secondImage = imageFile[1];
+    console.log(secondImage)
+    const thirdImage = imageFile[2];
+    console.log(thirdImage);
+    createEvent(event, firstImage, secondImage, thirdImage ).then(response => console.log(response));
   };
-
 
   return (
     <FormProvider {...methods}>
-    <form onSubmit={handleSubmit(onSubmit)}>
-      <div className="w-[760px] h-[321px] mb-8 rounded-[20px] border-buttonPurple border-2">
-        <div className="flex flex-wrap items-center justify-center gap-16">
-          {[0, 1, 2].map(id => (
-            <PhotoCard
-              key={id}
-              title={'Додати афішу'}
-              subtitle={subtitles[id]}
-              id={id}
-              photo={photos[id]}
-              onPhotoChange={onPhotoChange}
-            />
-          ))}
+      <form onSubmit={handleSubmit(onSubmit)}>
+        <div className="w-[760px] h-[321px] mb-8 rounded-[20px] border-buttonPurple border-2">
+          <div className="flex flex-wrap items-center justify-center gap-16">
+            {[0, 1, 2].map(id => (
+              <PhotoCard
+                key={id}
+                title={'Додати афішу'}
+                subtitle={subtitles[id]}
+                id={id}
+                photo={photos[id]}
+                onPhotoChange={onPhotoChange}
+                handleImageFileChange={handleImageFileChange}
+              />
+            ))}
+          </div>
         </div>
-      </div>
-      <AboutEvent
-        eventName={eventName}
-        description={description}
-        onEventNameChange={onEventNameChange}
-        onCategoryChange={onCategoryChange}
-        onDescriptionChange={handleDescriptionChange}
-      />
-      <DateAndPlace
-        date={date}
-        onPlaceChange={onPlaceChange}
-        handleDateChange={handleDateChange}
-        handleStartTime={handleStartTime}
-        handleEndTime={handleEndTime}
-        handleEventUrlChange={handleEventUrlChange}
-      />
-      <TicketPrice 
-        price={price} 
-        onPriceChange={onPriceChange}
-        handleNumberOfTicketsChange={handleNumberOfTicketsChange}
-      />
-      <div className="text-center">
-        <SharedBtn
-          type="submit"
-          primary
-          className="mt-8 bg-gradient-to-r from-[#9B8FF3] to-[#38F6F9] w-[230px] h-[48px]"
-        >
-          Створити подію
-        </SharedBtn>
-      </div>
-    </form>
+        <AboutEvent
+          eventName={eventName}
+          description={description}
+          onEventNameChange={onEventNameChange}
+          onCategoryChange={onEventCategoryChange}
+          onDescriptionChange={handleDescriptionChange}
+          onEventCategoryChange={onEventCategoryChange} 
+        />
+        <DateAndPlace
+          date={date}
+          onPlaceChange={onPlaceChange}
+          handleDateChange={handleDateChange}
+          handleStartTime={handleStartTime}
+          handleEndTime={handleEndTime}
+          handleEventUrlChange={handleEventUrlChange}
+        />
+        <TicketPrice
+          price={price}
+          onPriceChange={onPriceChange}
+          handleNumberOfTicketsChange={handleNumberOfTicketsChange}
+        />
+        <img src="" alt="" />
+        <div className="text-center">
+          <SharedBtn
+            type="submit"
+            primary
+            className="mt-8 bg-gradient-to-r from-[#9B8FF3] to-[#38F6F9] w-[230px] h-[48px]"
+          >
+            Створити подію
+          </SharedBtn>
+        </div>
+      </form>
     </FormProvider>
   );
 };
