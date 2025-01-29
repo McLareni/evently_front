@@ -210,7 +210,7 @@ const CreateEventForm: React.FC<CreateEventFormProps> = ({
             {[0, 1, 2].map(id => (
               <PhotoCard
                 key={id}
-                title={'Додати афішу'}
+                title={'Додати фото події'}
                 subtitle={subtitles[id]}
                 id={id}
                 photo={photos[id]}
@@ -254,7 +254,7 @@ const CreateEventForm: React.FC<CreateEventFormProps> = ({
         </div>
       </form>
       {isLoading && <Spinner />}
-      {!isSuccessPopupShown && <PopupEventCreated event={popupEvent} />}
+      {isSuccessPopupShown && <PopupEventCreated event={popupEvent} />}
     </FormProvider>
   );
 };
