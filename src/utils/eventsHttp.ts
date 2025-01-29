@@ -1,5 +1,7 @@
-import axios from 'axios';
 import { store } from '@/redux/store';
+
+import axios from 'axios';
+
 const URL = 'https://66ceec99901aab24842029e0.mockapi.io';
 
 axios.defaults.baseURL = 'https://rendereventapp.onrender.com/api/v1';
@@ -41,32 +43,32 @@ export const editEvent = async (formData: eventType, id?: string) => {
   }
 };
 
-export const createEvent = async (event: any , firstImage: File | null, secondImage: File | null, thirdImage: File | null) => {
+export const createEvent = async (
+  event: any,
+  firstImage: File | null,
+  secondImage: File | null,
+  thirdImage: File | null
+) => {
   const token = store.getState().auth.token;
-  
+
   const formData = new FormData();
   formData.append(
-    "event",
-    new Blob([JSON.stringify(event)], { type: "application/json" })
+    'event',
+    new Blob([JSON.stringify(event)], { type: 'application/json' })
   );
-  if (firstImage)  formData.append("firstImage", firstImage);
-  if (secondImage)  formData.append("secondImage", secondImage);
-  if (thirdImage)  formData.append("thirdImage", thirdImage);
-  try { 
-    const response = await axios.post(`events`, 
-    formData, 
-    { 
-      headers: { 
-      "Content-Type": "multipart/form-data",
-      Authorization: `Bearer ${token}`, 
-    }, 
-  }
-    
-  )
+  if (firstImage) formData.append('firstImage', firstImage);
+  if (secondImage) formData.append('secondImage', secondImage);
+  if (thirdImage) formData.append('thirdImage', thirdImage);
+  try {
+    const response = await axios.post(`events`, formData, {
+      headers: {
+        'Content-Type': 'multipart/form-data',
+        Authorization: `Bearer ${token}`,
+      },
+    });
 
-  return response.data;
-} 
-   catch (error) {
+    return response;
+  } catch (error) {
     throw new Error(`Failed to create event ${error}`);
   }
 };

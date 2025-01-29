@@ -25,6 +25,7 @@ interface EventCardProps {
   event: Event;
   top?: boolean;
   isAdmin?: boolean;
+  isEventCreated?: boolean;
 
   setEvent?: (
     // eslint-disable-next-line no-unused-vars
@@ -40,6 +41,7 @@ export const EventCard: React.FC<EventCardProps> = ({
   event,
   top = false,
   isAdmin = false,
+  isEventCreated = false,
   setEvent = () => {},
 }) => {
   const [isLiked, setIsLiked] = useState(false);
@@ -64,8 +66,8 @@ export const EventCard: React.FC<EventCardProps> = ({
 
   const address = location.city + ', ' + location.street;
   const slicedStreet = () => {
-    if (address.length > 29) {
-      return address.slice(0, 28) + '...';
+    if (address.length > 27) {
+      return address.slice(0, 27) + '...';
     } else {
       return address;
     }
@@ -161,6 +163,11 @@ export const EventCard: React.FC<EventCardProps> = ({
               {type}
             </p>
           </div>
+          {isEventCreated && (
+            <div className="w-10 h-10 rounded-full border-2 flex justify-center items-center border-[#F4E544]">
+              <AiOutlineExclamation className="w-6 h-6 fill-[#F4E544]" />
+            </div>
+          )}
           {isAdmin && (
             <div
               className={`w-10 h-10 rounded-full border-2 flex justify-center items-center 
@@ -182,9 +189,7 @@ export const EventCard: React.FC<EventCardProps> = ({
           )}
         </div>
 
-        <h2
-          className={`min-h-[71px] text-2xl text-textDark line-clamp-2`}
-        >
+        <h2 className={`min-h-[71px] text-2xl text-textDark line-clamp-2`}>
           {title}
         </h2>
 

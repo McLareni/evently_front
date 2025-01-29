@@ -15,16 +15,14 @@ const CreateEventPage: React.FC = () => {
   const [place, setPlace] = useState<EventPlaceWithGps | null>(null);
   const [price, setPrice] = useState<number | 'Безкоштовно' | 'Ціна'>('Ціна');
   const [startTimeOption, setSelectedStartTimeOption] = useState('');
-  
-
 
   const handleEventNameChange = (newName: string) => {
     setEventName(newName);
   };
-  const handleCategoryChange = (eventType: string) => {
+  const handleCategoryChangeForUI = (eventType: string) => {
     seteventType(eventType);
   };
-  
+
   const handleDateChange = (newDate: string) => {
     setDate(newDate);
   };
@@ -40,8 +38,6 @@ const CreateEventPage: React.FC = () => {
   const handleStartTime = (startTime: string) => {
     setSelectedStartTimeOption(startTime);
   };
- 
-
 
   const handlePhotoChange = (id: number, photo: string | null) => {
     setPhotos(prevPhotos => {
@@ -73,6 +69,7 @@ const CreateEventPage: React.FC = () => {
           />
           <CreateEventForm
             place={place}
+            photo={photos[0]}
             photos={photos}
             eventName={eventName}
             eventType={eventType}
@@ -80,7 +77,7 @@ const CreateEventPage: React.FC = () => {
             date={date}
             startTimeOption={startTimeOption}
             onEventNameChange={handleEventNameChange}
-            onCategoryChange={handleCategoryChange}
+            handleCategoryChangeForUI={handleCategoryChangeForUI}
             onPriceChange={handlePriceChange}
             onPhotoChange={handlePhotoChange}
             onPlaceChange={handlePlaceChange}

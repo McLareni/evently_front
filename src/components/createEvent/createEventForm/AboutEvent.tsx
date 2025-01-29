@@ -1,6 +1,8 @@
 import { useEffect, useState } from 'react';
 import { Controller, useForm } from 'react-hook-form';
 
+import { categories } from '@/assets/staticData/statickData';
+
 type AboutEventProps = {
   eventName: string;
   description: string;
@@ -8,6 +10,7 @@ type AboutEventProps = {
   onDescriptionChange: (eventDescription: string) => void;
   onCategoryChange: (category: string) => void;
   onEventCategoryChange: (category: string) => void;
+  handleCategoryChangeForUI: (category: string) => void;
 };
 
 interface IFormInput {
@@ -16,39 +19,37 @@ interface IFormInput {
 }
 const MAX_DESCRIPTION_LENGTH = 400;
 
-const categories: { name: string, value: string }[] = [
-  { name: 'Концерт', value: 'CONCERTS' },
-  { name: 'Майстер клас', value: 'MASTER_CLASS' },
-  { name: 'Спортивний захід', value: 'SPORTS_EVENTS' },
-  { name: 'Stand-up', value: 'STAND_UP' },
-  { name: 'Бізнес та нетворкінг', value: 'BUSINESS_NETWORKING' },
-  { name: 'Інше', value: 'OTHER' },
-];
-
 const AboutEvent: React.FC<AboutEventProps> = ({
   eventName,
   description,
   onEventNameChange,
   onDescriptionChange,
   onCategoryChange,
-  onEventCategoryChange
+  onEventCategoryChange,
+  handleCategoryChangeForUI,
 }) => {
-  const { control, formState: { errors } } = useForm<IFormInput>({
+  const {
+    control,
+    formState: { errors },
+  } = useForm<IFormInput>({
     defaultValues: {
       title: '',
-      description: ''
-    }
+      description: '',
+    },
   });
-  
+
   const [selectedCategory, setSelectedCategory] = useState<string | null>(null);
   const [descriptionLength, setDescriptionLength] = useState(0);
 
-  const handleCategoryClick = (categoryName: string, categotyValue:string ) => {
+  const handleCategoryClick = (categoryName: string, categotyValue: string) => {
     setSelectedCategory(categoryName);
     onCategoryChange(categoryName);
-    onEventCategoryChange(categotyValue)
+    onEventCategoryChange(categotyValue);
+    handleCategoryChangeForUI(categoryName);
   };
-  const handleDescriptionChange = (e: React.ChangeEvent<HTMLTextAreaElement>) => {
+  const handleDescriptionChange = (
+    e: React.ChangeEvent<HTMLTextAreaElement>
+  ) => {
     setDescriptionLength(e.target.value.length);
   };
 
@@ -60,27 +61,27 @@ const AboutEvent: React.FC<AboutEventProps> = ({
 
   useEffect(() => {
     if (description === '') {
-      onDescriptionChange('Опис події')
+      onDescriptionChange('Опис події');
     }
-  }, [description, onDescriptionChange])
+  }, [description, onDescriptionChange]);
   return (
     <div className="w-[760px] rounded-[20px] border-2 border-buttonPurple flex flex-col py-10 px-10 mb-8">
       <div className="flex flex-col pb-6">
         <label className="pb-3 text-2xl">Назва події</label>
         {/*  bg-gradient-to-br from-[#9B8FF3] to-[#38F6F9] */}
         <Controller
-        name="title"
-        control={control}
-        rules={{required: "Назва події обов'язкова"}}
-        render={() => (
-          <input
-            // {...field}
-            type="text"
-            className="focus:outline-none w-[679px] h-[52px] p-4 border-2 rounded-[10px] border-buttonPurple "
-            placeholder="Назви подію так, щоб людям було одразу зрозуміло, про що вона"
-            onChange={e => onEventNameChange(e.target.value)}
-          />
-        )}
+          name="title"
+          control={control}
+          rules={{ required: "Назва події обов'язкова" }}
+          render={() => (
+            <input
+              // {...field}
+              type="text"
+              className="focus:outline-none w-[679px] h-[52px] p-4 border-2 rounded-[10px] border-buttonPurple "
+              placeholder="Назви подію так, щоб людям було одразу зрозуміло, про що вона"
+              onChange={e => onEventNameChange(e.target.value)}
+            />
+          )}
         />
       </div>
       <div className="flex flex-col pb-[25px]">
@@ -93,19 +94,21 @@ const AboutEvent: React.FC<AboutEventProps> = ({
           rules={{ required: "Опис обов'язковий" }}
           render={({ field }) => (
             <textarea
-          className="focus:outline-none w-[679px] h-[128px] p-4 border-2 rounded-[10px] border-buttonPurple"
-          maxLength={MAX_DESCRIPTION_LENGTH}
-          id=""
-          placeholder="Коротко опиши ідею та концепцію події"
-          onChange={(e) => {
-            handleDescriptionChange(e)
-            field.onChange(e)
-            onDescriptionChange(e.target.value)} }
+              className="focus:outline-none w-[679px] h-[128px] p-4 border-2 rounded-[10px] border-buttonPurple"
+              maxLength={MAX_DESCRIPTION_LENGTH}
+              id=""
+              placeholder="Коротко опиши ідею та концепцію події"
+              onChange={e => {
+                handleDescriptionChange(e);
+                field.onChange(e);
+                onDescriptionChange(e.target.value);
+              }}
             ></textarea>
-          )
-        }
+          )}
         />
-        {errors.description && <p className="text-red-500 text-sm">{errors.description.message}</p>}
+        {errors.description && (
+          <p className="text-red-500 text-sm">{errors.description.message}</p>
+        )}
         <div className="text-right text-sm text-gray-500 mt-0.5 h-[14px] text-uploadBtnBg">
           {descriptionLength}/{MAX_DESCRIPTION_LENGTH}
         </div>
@@ -115,13 +118,15 @@ const AboutEvent: React.FC<AboutEventProps> = ({
           <span className="pb-4 text-2xl">Категорія</span>
           <div className="flex break-words w-[669px] h-[112px] flex-wrap">
             {categories.map(category => (
-                <div
+              <div
                 key={category.name}
-                onClick={() => handleCategoryClick(category.name, category.value)}
+                onClick={() =>
+                  handleCategoryClick(category.name, category.value)
+                }
                 className={`${
                   selectedCategory === category.name
-                    ? 'bg-gradient-to-r from-[#12C2E9] to-[#C471ED]' 
-                    : 'bg-gradient-to-r from-[#E9E6FF] to-[#D5FEFF]' 
+                    ? 'bg-gradient-to-r from-[#12C2E9] to-[#C471ED]'
+                    : 'bg-gradient-to-r from-[#E9E6FF] to-[#D5FEFF]'
                 } hover:from-[#12C2E9] hover:to-[#C471ED] transition ease-in-out duration-700 cursor-pointer flex items-center rounded-[20px] border-[1px] border-borderColor text-xl mr-4 last:pr-0 h-12 px-[18px] min-w-[80px] max-w-[230px]`}
               >
                 {category.name}

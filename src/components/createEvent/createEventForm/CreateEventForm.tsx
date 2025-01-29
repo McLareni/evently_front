@@ -11,6 +11,8 @@ import { createEvent } from '@/utils/eventsHttp';
 // import { register } from 'module';
 // import { useForm } from 'react-hook-form';
 import { SharedBtn } from '@/components/ui';
+import { PopupEventCreated } from '@/components/ui/PopupEventCreated';
+import Spinner from '@/components/ui/Spinner';
 
 import AboutEvent from './AboutEvent';
 import PhotoCard from './CardsPhotos';
@@ -22,6 +24,7 @@ type CreateEventFormProps = {
   eventName: string;
   eventType: string;
   price: number | 'Безкоштовно' | 'Ціна';
+  photo: string | null;
   date: string;
   startTimeOption: string;
   place: EventPlaceWithGps | null;
@@ -31,7 +34,7 @@ type CreateEventFormProps = {
   // onDateChange: (data: string) => void;
   onPlaceChange: (newPlace: EventPlaceWithGps) => void;
   onPriceChange: (price: number | 'Безкоштовно' | 'Ціна') => void;
-  onCategoryChange: (category: string) => void;
+  handleCategoryChangeForUI: (category: string) => void;
   handleDateChange: (newDate: string) => void;
   handleStartTime: (endTime: string) => void;
 };
@@ -46,6 +49,7 @@ const CreateEventForm: React.FC<CreateEventFormProps> = ({
   photos,
   eventName,
   eventType,
+  photo,
   place,
   price,
   date,
@@ -53,7 +57,7 @@ const CreateEventForm: React.FC<CreateEventFormProps> = ({
   onPhotoChange,
   onEventNameChange,
   onPriceChange,
-  onCategoryChange,
+  handleCategoryChangeForUI,
   onPlaceChange,
   handleDateChange,
   handleStartTime,
@@ -93,26 +97,34 @@ const CreateEventForm: React.FC<CreateEventFormProps> = ({
   const [eventUrl, setEventUrl] = useState('');
   const [organizers, setOrganizers] = useState<string>('');
   const [categoryValue, setCategoryValue] = useState<string>('');
+  const [isSuccessPopupShown, setIsSuccessPopupShown] = useState(false);
+  const [isLoading, setIsLoading] = useState(false);
 
-
-  const [imageFile, setImageFile] = useState<(File | null)[]>([null, null, null]);
+  const [imageFile, setImageFile] = useState<(File | null)[]>([
+    null,
+    null,
+    null,
+  ]);
   // const handleImageFileChange = (image: File) => setImageFile(image);
   const handleImageFileChange = (id: number, photo: (File | null)[]) => {
-    setImageFile((prevPhotos) => {
+    setImageFile(prevPhotos => {
       const updatedPhotos = [...prevPhotos]; // Створюємо копію попереднього стану
-  
+
       // Оновлюємо конкретний елемент на новий масив файлів (або null)
-      updatedPhotos[id] = photo[0]; 
-  
+      updatedPhotos[id] = photo[0];
+
       return updatedPhotos; // Повертаємо новий масив
     });
   };
-  
+
   const handleEndTime = (endTime: string) => setSelectedEndTimeOption(endTime);
-  const handleDescriptionChange = (description: string) => setDescription(description);
-  const handleNumberOfTicketsChange = (numberOfTickets: number) => setNumberOfTickets(numberOfTickets);
+  const handleDescriptionChange = (description: string) =>
+    setDescription(description);
+  const handleNumberOfTicketsChange = (numberOfTickets: number) =>
+    setNumberOfTickets(numberOfTickets);
   const handleEventUrlChange = (eventUrl: string) => setEventUrl(eventUrl);
-  const onEventCategoryChange = (categoryValue: string) => setCategoryValue(categoryValue)
+  const onEventCategoryChange = (categoryValue: string) =>
+    setCategoryValue(categoryValue);
 
   const user = useAppSelector(selectUser);
   useEffect(() => {
@@ -124,11 +136,27 @@ const CreateEventForm: React.FC<CreateEventFormProps> = ({
     }
   }, [price]);
 
+  const popupEvent = {
+    title: eventName,
+    description: description,
+    type: eventType,
+    photoUrl: photo,
+    location: {
+      city: place?.city,
+      street: place?.name,
+    },
+    date: {
+      day: date,
+      time: startTimeOption,
+    },
+    price: ticketPrice,
+  } as unknown as Event;
+
   const onSubmit = () => {
     const event = {
       title: eventName,
       description: description,
-        eventType: categoryValue,
+      eventType: categoryValue,
       phoneNumber: '+380123456789',
       location: {
         city: place?.city,
@@ -137,7 +165,7 @@ const CreateEventForm: React.FC<CreateEventFormProps> = ({
         latitude: place?.lat,
         longitude: place?.lng,
       },
-        dateDetails: {
+      dateDetails: {
         day: date,
         startTime: startTimeOption,
         endTime: endTimeOption,
@@ -157,10 +185,21 @@ const CreateEventForm: React.FC<CreateEventFormProps> = ({
     // // }
     const firstImage = imageFile[0];
     const secondImage = imageFile[1];
-    console.log(secondImage)
+    console.log(secondImage);
     const thirdImage = imageFile[2];
     console.log(thirdImage);
-    createEvent(event, firstImage, secondImage, thirdImage ).then(response => console.log(response));
+    createEvent(event, firstImage, secondImage, thirdImage)
+      .then(response => {
+        setIsLoading(true);
+        if (response.status === 201) {
+          setIsSuccessPopupShown(true);
+        }
+        setIsLoading(false);
+      })
+      .catch(error => {
+        setIsLoading(false);
+        console.error(error);
+      });
   };
 
   return (
@@ -182,12 +221,13 @@ const CreateEventForm: React.FC<CreateEventFormProps> = ({
           </div>
         </div>
         <AboutEvent
+          handleCategoryChangeForUI={handleCategoryChangeForUI}
           eventName={eventName}
           description={description}
           onEventNameChange={onEventNameChange}
           onCategoryChange={onEventCategoryChange}
           onDescriptionChange={handleDescriptionChange}
-          onEventCategoryChange={onEventCategoryChange} 
+          onEventCategoryChange={onEventCategoryChange}
         />
         <DateAndPlace
           date={date}
@@ -213,6 +253,8 @@ const CreateEventForm: React.FC<CreateEventFormProps> = ({
           </SharedBtn>
         </div>
       </form>
+      {isLoading && <Spinner />}
+      {!isSuccessPopupShown && <PopupEventCreated event={popupEvent} />}
     </FormProvider>
   );
 };
