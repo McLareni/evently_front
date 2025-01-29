@@ -9,15 +9,14 @@ interface Event {
     city: string;
     street: string | null;
     venue: string | null;
-    latitude: string;
-    longitude: string;
+    latitude: number;
+    longitude: number;
   };
-  organizers: {id: string};
+  organizers: { id: string };
   rating: number;
-  eventUrl: string | null;
   eventStatus: 'PENDING' | 'APPROVED' | 'CANCELLED';
-  APPROVED;
-  CANCELLED;
+  eventUrl: string | null;
+  images: { id: string; photoInBytes: string }[];
   date: {
     day: string;
     time: string;
@@ -60,7 +59,6 @@ interface eventPhotos {
   firstImage: string | null;
   secondImage: string | null;
   thirdImage: string | null;
-
 }
 interface eventType {
   // id: number;
@@ -97,10 +95,7 @@ interface eventType {
     eventUrl?: string; 
     organizers: {
       id: string
-    };
-    firstImage?: string | null;
-    secondImage?: string | null;
-    thirdImage?: string | null; 
+    }; 
 }
 
 interface EventPlaceWithGps {

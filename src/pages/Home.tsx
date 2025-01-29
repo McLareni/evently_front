@@ -1,4 +1,5 @@
 import { useLazyGetAllEventsQueryWithTrigger } from '@/hooks/query/useLazyGetAllEventsQueryWithTrigger';
+import { useScrollToTop } from '@/hooks/useScrollToTop';
 
 import { AllEvents } from '@/components/allEvents/AllEvents';
 import { Container } from '@/components/container/Container';
@@ -12,6 +13,7 @@ import Spinner from '@/components/ui/Spinner';
 
 const Home: React.FC = () => {
   const { events, isLoading } = useLazyGetAllEventsQueryWithTrigger();
+  useScrollToTop();
 
   const shownEvents = 16;
   const notTopEvents = events

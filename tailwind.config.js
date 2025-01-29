@@ -37,6 +37,7 @@ export default {
         // Other color
         success: '#3BE660',
         error: '#FF0F00',
+        googlemapsLink: '#1a73e8',
       },
       boxShadow: {
         primaryBtnActive: 'inset -5px 5px 50px 0 rgba(255, 255, 255, 0.7)',
@@ -44,7 +45,8 @@ export default {
         shadowSecondaryBtn: `inset 0 0 9px 0 rgba(155, 143, 243, 1)`,
         eventCardShadow: `4px 4px 4px rgba(155, 143, 243, 0.2);`,
 
-        shadowActivePrimaryBtn: '-5px 5px 50px 0px rgba(255, 255, 255, 0.70) inset',
+        shadowActivePrimaryBtn:
+          '-5px 5px 50px 0px rgba(255, 255, 255, 0.70) inset',
         shadowActiveSecondaryBtn: '9px 5px 30px 0px #9B8FF3 inset',
       },
       opacity: {
@@ -72,10 +74,14 @@ export default {
         },
       },
       backgroundImage: {
-        'bg-gradient': 'linear-gradient(123.03deg, #E9E6FF 0%, #D5FEFF 100%)',
+        'bg-gradient': 'linear-gradient(123deg, #E9E6FF 0%, #D5FEFF 100%)',
         'badge-gradient': 'linear-gradient(90deg, #12C2E9 0%, #C471ED 90%)',
         'filter-btn-gradient':
           'linear-gradient(123.03deg, #9B8FF3 0%, #38F6F9 100%)',
+        'dark-gradient':
+          'linear-gradient(98deg, #12C2E9 2.11%, #C471ED 75.16%)',
+        eventDetails:
+          'linear-gradient(123deg, rgba(155, 143, 243, 0.80) 0%, rgba(56, 246, 249, 0.80) 100%)',
       },
       gridTemplateColumns: {
         custom: 'minmax(300px, 1fr) 1fr',

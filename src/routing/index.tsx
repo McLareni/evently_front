@@ -2,29 +2,25 @@ import React from 'react';
 import { createBrowserRouter } from 'react-router-dom';
 
 import { getAllEventsLoader } from '@/loaders/getAllEventsLoader';
-import Favourite from '@/pages/Favourite';
 import Home from '@/pages/Home';
-import MyEvent from '@/pages/MyEvent';
-import UserProfile from '@/pages/UserProfile';
 import AdminEvents from '@/pages/admin/AdminEvents';
 import AdminUsers from '@/pages/admin/AdminUsers';
 import Notifications from '@/pages/admin/Notification';
 import PromoEvents from '@/pages/admin/PromoEvents';
+import UserProfile from '@/pages/admin/UserProfile';
 import AllEventsPage from '@/pages/events/AllEventsPage';
 import CreateEventForm from '@/pages/events/CreateEventPage';
-import { action as editEventAction } from '@/pages/events/EventEdit';
-import EventEdit from '@/pages/events/EventEdit';
+import EventDetails from '@/pages/events/EventDetails';
+import Favourite from '@/pages/user/Favourite';
+import MyEvent from '@/pages/user/MyEvent';
 import Profile from '@/pages/user/Profile';
 
 import { Layout } from '@/components/layout/Layout';
 
-import { loader as eventLoader } from '../pages/events/Event';
 import AdminRouter from './privateRouters/AdminRouter';
 import LoginRouter from './privateRouters/LoginRouter';
 
 const NotFound = React.lazy(() => import('../pages/NotFoundPage'));
-const Events = React.lazy(() => import('../pages/events/Events'));
-const Event = React.lazy(() => import('../pages/events/Event'));
 
 const router = createBrowserRouter([
   {
@@ -37,30 +33,17 @@ const router = createBrowserRouter([
         loader: getAllEventsLoader,
       },
       {
-        path: 'events',
-        element: <Events />,
-      },
-      {
-        path: 'CreateEvent',
+        path: 'create_event',
         element: <CreateEventForm />,
       },
       {
-        path: 'events/:idEvent',
-        element: <Event />,
-        loader: ({ params }) => eventLoader(params.idEvent),
+        path: 'event/:idEvent',
+        element: <EventDetails />,
       },
       {
-        path: 'events/new/edit',
-        element: <EventEdit />,
-        loader: () => eventLoader('new'),
-        action: ({ request }) => editEventAction(request, 'new'),
-      },
-      {
-        path: 'events/:idEvent/edit',
-        element: <EventEdit />,
-        loader: ({ params }) => eventLoader(params.idEvent),
-        action: ({ request, params }) =>
-          editEventAction(request, params.idEvent),
+        path: 'all_events',
+        element: <AllEventsPage />,
+        loader: getAllEventsLoader,
       },
       {
         element: <LoginRouter />,
@@ -87,11 +70,6 @@ const router = createBrowserRouter([
           },
         ],
       },
-      {
-        path: 'all_events',
-        element: <AllEventsPage />,
-        loader: getAllEventsLoader,
-      },
 
       // Later add privat router
 
@@ -100,14 +78,6 @@ const router = createBrowserRouter([
       { path: 'popular', element: '' },
       { path: 'organizers', element: '' },
       { path: 'about', element: '' },
-
-      { path: 'nearby', element: '' },
-      { path: 'concerts', element: '' },
-      { path: 'workshop', element: '' },
-      { path: 'stand_up', element: '' },
-      { path: 'business_networking', element: '' },
-      { path: 'sports_events', element: '' },
-      { path: 'another', element: '' },
 
       { path: 'Kyiv', element: '' },
       { path: 'Odesa', element: '' },
