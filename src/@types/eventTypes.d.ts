@@ -2,7 +2,7 @@ interface Event {
   id: string;
   title: string;
   description: string;
-  photoUrl: string;
+  photoUrl: string | null;
   creationDate: Date;
   phoneNumber: string;
   location: {
@@ -74,28 +74,28 @@ interface eventType {
   // countSeats: number | 'Необмежено';
   // schemaSeats: number | 'Не вибрано';
   // library?: File[];
-   title: string;
-    description: string;
-    dateDetails?: {
-      day: string;
-      startTime: string;
-      endTime: string;
-    };
-    ticketPrice: string | undefined;
-    location?: {
-      city?: string;
-      street?: string;
-      venue?: string;
-      latitude?: string;
-      longitude?: string;
-    };
-    // photos: photos;
-    eventType?: string;
-    numberOfTickets: number; 
-    eventUrl?: string; 
-    organizers: {
-      id: string
-    }; 
+  title: string;
+  description: string;
+  dateDetails?: {
+    day: string;
+    startTime: string;
+    endTime: string;
+  };
+  ticketPrice: string | undefined;
+  location?: {
+    city?: string;
+    street?: string;
+    venue?: string;
+    latitude?: string;
+    longitude?: string;
+  };
+  // photos: photos;
+  eventType?: string;
+  numberOfTickets: number;
+  eventUrl?: string;
+  organizers: {
+    id: string;
+  };
 }
 
 interface EventPlaceWithGps {
