@@ -9,8 +9,8 @@ interface Event {
     city: string;
     street: string | null;
     venue: string | null;
-    latitude: number;
-    longitude: number;
+    latitude: string | null;
+    longitude: string | null;
   };
   organizers: { id: string };
   rating: number;

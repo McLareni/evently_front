@@ -25,6 +25,7 @@ export default [
         RegisterFormInputsPassword: true,
         RegisterFormInputEmail: true,
         UserInfo: true,
+        Coordinates: true,,
         EventPlaceWithGps: true,
       },
       parser: typescriptEslintParser,

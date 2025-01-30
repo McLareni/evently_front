@@ -5,6 +5,7 @@ import { NavLink } from 'react-router-dom';
 import {
   setFilteredEventsId,
   setFirstRender,
+  setIsNearbyFromHeader,
   setOneFilterType,
 } from '@/redux/filters/filtersSlice';
 import { useAppDispatch } from '@/redux/hooks';
@@ -48,6 +49,8 @@ export const AllEventsSelect: React.FC<AllEventsSelectProps> = ({
         );
       } else if (value === 'Усі події') {
         dispatch(setFilteredEventsId(events.map(item => item.id)));
+      } else if (value === 'Під домом') {
+        dispatch(setIsNearbyFromHeader(true));
       } else {
         dispatch(
           setFilteredEventsId(
