@@ -165,7 +165,7 @@ const CreateEventForm: React.FC<CreateEventFormProps> = ({
         latitude: place?.lat,
         longitude: place?.lng,
       },
-      dateDetails: {
+      date: {
         day: date,
         time: startTimeOption,
         endTime: endTimeOption,
