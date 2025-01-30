@@ -43,7 +43,7 @@ const TicketPrice: React.FC<TicketPriceProps> = ({
   }, [price, freeTickets, onPriceChange]);
 
   return (
-    <div className="max-w-[760px] rounded-[20px] border-2 border-buttonPurple flex flex-col py-8 pl-8">
+    <div className="max-w-[760px] rounded-[20px] border-2 border-buttonPurple flex flex-col py-8 pl-8 mb-8">
       <span className="pb-4 text-2xl">
         Вартість квитків<span className="star">*</span>
       </span>

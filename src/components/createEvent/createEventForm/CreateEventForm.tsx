@@ -12,6 +12,7 @@ import { PopupEventCreated } from '@/components/ui/PopupEventCreated';
 import Spinner from '@/components/ui/Spinner';
 
 import AboutEvent from './AboutEvent';
+import AboutOrganizer from './AboutOrganizer';
 import PhotoCard from './CardsPhotos';
 import DateAndPlace from './DateAndPlace';
 import TicketPrice from './TicketPrice';
@@ -228,7 +229,7 @@ const CreateEventForm: React.FC<CreateEventFormProps> = ({
           onPriceChange={onPriceChange}
           handleNumberOfTicketsChange={handleNumberOfTicketsChange}
         />
-        <img src="" alt="" />
+        <AboutOrganizer />
         <div className="text-center">
           <SharedBtn
             type="submit"
