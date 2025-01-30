@@ -1,3 +1,4 @@
+/* eslint-disable no-unused-vars */
 import { useEffect, useState } from 'react';
 import { Controller, useForm } from 'react-hook-form';
 
@@ -67,7 +68,9 @@ const AboutEvent: React.FC<AboutEventProps> = ({
   return (
     <div className="w-[760px] rounded-[20px] border-2 border-buttonPurple flex flex-col py-10 px-10 mb-8">
       <div className="flex flex-col pb-6">
-        <label className="pb-3 text-2xl">Назва події</label>
+        <label className="pb-3 text-2xl">
+          Назва події<span className="star">*</span>
+        </label>
         {/*  bg-gradient-to-br from-[#9B8FF3] to-[#38F6F9] */}
         <Controller
           name="title"
@@ -86,7 +89,7 @@ const AboutEvent: React.FC<AboutEventProps> = ({
       </div>
       <div className="flex flex-col pb-[25px]">
         <label htmlFor="" className="pb-4 text-2xl">
-          Опис
+          Опис<span className="star">*</span>
         </label>
         <Controller
           name="description"

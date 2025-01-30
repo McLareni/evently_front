@@ -3,13 +3,10 @@ import { useEffect, useState } from 'react';
 import { FormProvider, useForm } from 'react-hook-form';
 
 import { selectUser } from '@/redux/auth/selectors';
-// import { getUser } from '@/utils/adminHttp';
 import { useAppSelector } from '@/redux/hooks';
 
 import { createEvent } from '@/utils/eventsHttp';
 
-// import { register } from 'module';
-// import { useForm } from 'react-hook-form';
 import { SharedBtn } from '@/components/ui';
 import { PopupEventCreated } from '@/components/ui/PopupEventCreated';
 import Spinner from '@/components/ui/Spinner';
@@ -29,9 +26,7 @@ type CreateEventFormProps = {
   startTimeOption: string;
   place: EventPlaceWithGps | null;
   onPhotoChange: (id: number, photo: string | null) => void;
-  // onCategorieChange: (categorie: string) => void;
   onEventNameChange: (eventName: string) => void;
-  // onDateChange: (data: string) => void;
   onPlaceChange: (newPlace: EventPlaceWithGps) => void;
   onPriceChange: (price: number | 'Безкоштовно' | 'Ціна') => void;
   handleCategoryChangeForUI: (category: string) => void;
@@ -105,15 +100,14 @@ const CreateEventForm: React.FC<CreateEventFormProps> = ({
     null,
     null,
   ]);
-  // const handleImageFileChange = (image: File) => setImageFile(image);
+
   const handleImageFileChange = (id: number, photo: (File | null)[]) => {
     setImageFile(prevPhotos => {
-      const updatedPhotos = [...prevPhotos]; // Створюємо копію попереднього стану
+      const updatedPhotos = [...prevPhotos];
 
-      // Оновлюємо конкретний елемент на новий масив файлів (або null)
       updatedPhotos[id] = photo[0];
 
-      return updatedPhotos; // Повертаємо новий масив
+      return updatedPhotos;
     });
   };
 
@@ -157,7 +151,6 @@ const CreateEventForm: React.FC<CreateEventFormProps> = ({
       title: eventName,
       description: description,
       eventType: categoryValue,
-      // phoneNumber: '+380123456789',
       location: {
         city: place?.city,
         street: place?.name,
@@ -175,19 +168,12 @@ const CreateEventForm: React.FC<CreateEventFormProps> = ({
       },
       numberOfTickets: numberOfTickets,
       ticketPrice: ticketPrice,
-      // firstImage: photos[0]
     };
-    // };
-    // // const eventPhotos = {
-    // //   firstImage: photos[0],
-    // //   secondImage: photos[1],
-    // //   thirdImage: photos[2]
-    // // }
+
     const firstImage = imageFile[0];
     const secondImage = imageFile[1];
-    console.log(secondImage);
     const thirdImage = imageFile[2];
-    console.log(thirdImage);
+
     setIsLoading(true);
     createEvent(event, firstImage, secondImage, thirdImage)
       .then(response => {
