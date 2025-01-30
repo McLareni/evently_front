@@ -52,6 +52,7 @@ export const EventCard: React.FC<EventCardProps> = ({
     title,
     date,
     category,
+    eventUrl,
     price,
     location,
     type,
@@ -220,7 +221,7 @@ export const EventCard: React.FC<EventCardProps> = ({
           </li>
           <li className="flex items-center gap-[18px]">
             <GrLocation size="24px" />
-            <p>{slicedStreet()}</p>
+            {eventUrl ? <p>Онлайн</p> : <p>{slicedStreet()}</p>}
           </li>
           <li className="flex items-center gap-[18px]">
             <FaRegMoneyBillAlt size="24px" />

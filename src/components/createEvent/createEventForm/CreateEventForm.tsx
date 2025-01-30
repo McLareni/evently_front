@@ -140,6 +140,7 @@ const CreateEventForm: React.FC<CreateEventFormProps> = ({
     description: description,
     type: eventType,
     photoUrl: photo,
+    eventUrl: eventUrl,
     location: {
       city: place?.city,
       street: place?.name,
@@ -158,6 +159,7 @@ const CreateEventForm: React.FC<CreateEventFormProps> = ({
       eventType: categoryValue,
       // TODO
       // aboutOrganizer:aboutOrganizer,
+      eventUrl: eventUrl,
       location: {
         city: place?.city,
         street: place?.name,
