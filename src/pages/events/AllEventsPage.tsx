@@ -5,7 +5,12 @@ import {
   setFilteredEventsId,
   setFirstRender,
 } from '@/redux/filters/filtersSlice';
-import { getFilteredEventsId, getFirstRender } from '@/redux/filters/selectors';
+import {
+  getFilteredEventsId,
+  getFirstRender,
+  getSelectedTypes,
+  getUserCoordinates,
+} from '@/redux/filters/selectors';
 import { useAppDispatch, useAppSelector } from '@/redux/hooks';
 
 import { filterByPrice } from '@/helpers/filters/filterByPrice';
@@ -16,6 +21,7 @@ import { useScrollToTop } from '@/hooks/useScrollToTop';
 import { AllEvents } from '@/components/allEvents/AllEvents';
 import { FilterEvents } from '@/components/filters/FilterEvents';
 import { Main } from '@/components/main/Main';
+import { GoogleMap } from '@/components/ui/GoogleMap';
 import Spinner from '@/components/ui/Spinner';
 
 const AllEventsPage: React.FC = () => {
@@ -26,6 +32,8 @@ const AllEventsPage: React.FC = () => {
 
   const filteredEventsId = useAppSelector(getFilteredEventsId);
   const firstRender = useAppSelector(getFirstRender);
+  const userCoordinates = useAppSelector(getUserCoordinates);
+  const selectedTypes = useAppSelector(getSelectedTypes);
 
   const { events, isLoading } = useLazyGetAllEventsQueryWithTrigger();
 
@@ -89,9 +97,21 @@ const AllEventsPage: React.FC = () => {
           addPriceFilter={addPriceFilter}
         />
         {filteredEvents.length > 0 ? (
-          <AllEvents events={filteredEvents} title={false} />
+          <div className="flex flex-col gap-[24px]">
+            <AllEvents events={filteredEvents} title={false} />
+            {userCoordinates && selectedTypes.includes('Під домом') && (
+              <GoogleMap
+                events={filteredEvents}
+                userLocation={userCoordinates}
+              />
+            )}
+          </div>
         ) : (
-          eventsLoaded && <span>Нічого не знайдено</span>
+          eventsLoaded && (
+            <span className="text-[64px] font-oswald text-buttonPurple">
+              Нічого не знайдено
+            </span>
+          )
         )}
       </div>
     </Main>

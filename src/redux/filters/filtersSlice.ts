@@ -1,4 +1,9 @@
-import { createSlice } from '@reduxjs/toolkit';
+import { PayloadAction, createSlice } from '@reduxjs/toolkit';
+
+export interface Range {
+  start: string | undefined;
+  end: string | undefined;
+}
 
 const initialState = {
   selectedTypes: [] as string[],
@@ -6,45 +11,44 @@ const initialState = {
   rangeDatesArray: [] as string[],
   selectedPrices: [] as number[],
   isCalendarShown: false,
-  startDate: undefined as string | undefined,
-  endDate: undefined as string | undefined,
+  range: {
+    start: undefined,
+    end: undefined,
+  } as unknown as Range,
   filteredEventsId: [] as string[],
   firstRender: true,
+  userCoordinates: null as null | Coordinates,
+  isNearbyFromHeader: false,
 };
 
 const filtersSlice = createSlice({
   name: 'filter',
   initialState,
   reducers: {
-    addSelectedTypes(state, action: { payload: string[] }) {
+    addSelectedTypes(state, action: PayloadAction<string[]>) {
       state.selectedTypes = action.payload;
     },
-    addSelectedDates(state, action: { payload: string[] }) {
+    addSelectedDates(state, action: PayloadAction<string[]>) {
       state.selectedDates = action.payload;
     },
-    addRangeDatesArray(state, action: { payload: string[] }) {
+    addRangeDatesArray(state, action: PayloadAction<string[]>) {
       state.rangeDatesArray = action.payload;
     },
-    addSelectedPrices(state, action: { payload: number[] }) {
+    addSelectedPrices(state, action: PayloadAction<number[]>) {
       state.selectedPrices = action.payload;
     },
-    setIsCalendarShown(state, action: { payload: boolean }) {
+    setIsCalendarShown(state, action: PayloadAction<boolean>) {
       state.isCalendarShown = action.payload;
     },
-    setDateRange(
-      state,
-      action: {
-        payload: { start: string | undefined; end: string | undefined };
-      }
-    ) {
-      state.startDate = action.payload.start;
-      state.endDate = action.payload.end;
+    setDateRange(state, action: PayloadAction<Range>) {
+      state.range.start = action.payload.start;
+      state.range.end = action.payload.end;
     },
     clearDateRange(state) {
-      state.startDate = undefined;
-      state.endDate = undefined;
+      state.range.start = undefined;
+      state.range.end = undefined;
     },
-    setFilteredEventsId(state, action: { payload: string[] }) {
+    setFilteredEventsId(state, action: PayloadAction<string[]>) {
       state.filteredEventsId = action.payload;
     },
     resetAllFilters(state) {
@@ -53,23 +57,35 @@ const filtersSlice = createSlice({
       state.rangeDatesArray = [];
       state.selectedPrices = [];
       state.isCalendarShown = false;
-      state.startDate = undefined;
-      state.endDate = undefined;
+      state.range.start = undefined;
+      state.range.end = undefined;
       state.filteredEventsId = [];
       state.firstRender = true;
+      state.userCoordinates = null;
     },
-    setOneFilterType(state, action: { payload: string }) {
+    setOneFilterType(state, action: PayloadAction<string>) {
       state.selectedTypes = [action.payload];
       state.selectedDates = [];
       state.rangeDatesArray = [];
       state.selectedPrices = [];
       state.isCalendarShown = false;
-      state.startDate = undefined;
-      state.endDate = undefined;
+      state.range.start = undefined;
+      state.range.end = undefined;
       state.filteredEventsId = [];
     },
-    setFirstRender(state, action: { payload: boolean }) {
+    setFirstRender(state, action: PayloadAction<boolean>) {
       state.firstRender = action.payload;
+    },
+    setUserCoordinates(state, action: PayloadAction<Coordinates>) {
+      state.userCoordinates = action.payload;
+    },
+    removeNearby(state) {
+      state.selectedTypes = state.selectedTypes.filter(
+        item => item !== 'Під домом'
+      );
+    },
+    setIsNearbyFromHeader(state, action: PayloadAction<boolean>) {
+      state.isNearbyFromHeader = action.payload;
     },
   },
 });
@@ -88,4 +104,7 @@ export const {
   resetAllFilters,
   setOneFilterType,
   setFirstRender,
+  setUserCoordinates,
+  removeNearby,
+  setIsNearbyFromHeader,
 } = filtersSlice.actions;
