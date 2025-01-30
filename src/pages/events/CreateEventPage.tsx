@@ -4,10 +4,7 @@ import { Container } from '@/components/container/Container';
 import CreateEventCard from '@/components/createEvent/CreateEventCard';
 import CreateEventForm from '@/components/createEvent/createEventForm/CreateEventForm';
 
-// import  hero  from "/images/heroForCreatEventForm.svg"
-
 const CreateEventPage: React.FC = () => {
-  // const [categorie, setCategorie] = useState<string>("Категорія")
   const [photos, setPhotos] = useState<(string | null)[]>([null, null, null]);
   const [eventName, setEventName] = useState('');
   const [eventType, seteventType] = useState('');
@@ -19,6 +16,7 @@ const CreateEventPage: React.FC = () => {
   const handleEventNameChange = (newName: string) => {
     setEventName(newName);
   };
+
   const handleCategoryChangeForUI = (eventType: string) => {
     seteventType(eventType);
   };
@@ -26,15 +24,15 @@ const CreateEventPage: React.FC = () => {
   const handleDateChange = (newDate: string) => {
     setDate(newDate);
   };
+
   const handlePlaceChange = (newPlace: EventPlaceWithGps) => {
     setPlace(newPlace);
   };
+
   const handlePriceChange = (newPrice: number | 'Безкоштовно' | 'Ціна') => {
     setPrice(newPrice);
   };
-  // const handleFormatChange = (format: string) => {
-  //   setFormat(format);
-  // };
+
   const handleStartTime = (startTime: string) => {
     setSelectedStartTimeOption(startTime);
   };

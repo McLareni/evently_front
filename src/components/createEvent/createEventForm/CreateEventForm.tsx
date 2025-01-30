@@ -93,9 +93,9 @@ const CreateEventForm: React.FC<CreateEventFormProps> = ({
   const [eventUrl, setEventUrl] = useState('');
   const [organizers, setOrganizers] = useState<string>('');
   const [categoryValue, setCategoryValue] = useState<string>('');
+  const [aboutOrganizer, setAboutOrganizer] = useState('');
   const [isSuccessPopupShown, setIsSuccessPopupShown] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
-
   const [imageFile, setImageFile] = useState<(File | null)[]>([
     null,
     null,
@@ -115,6 +115,10 @@ const CreateEventForm: React.FC<CreateEventFormProps> = ({
   const handleEndTime = (endTime: string) => setSelectedEndTimeOption(endTime);
   const handleDescriptionChange = (description: string) =>
     setDescription(description);
+
+  const handleAboutOrganizerChange = (aboutOrganizer: string) =>
+    setAboutOrganizer(aboutOrganizer);
+
   const handleNumberOfTicketsChange = (numberOfTickets: number) =>
     setNumberOfTickets(numberOfTickets);
   const handleEventUrlChange = (eventUrl: string) => setEventUrl(eventUrl);
@@ -152,6 +156,8 @@ const CreateEventForm: React.FC<CreateEventFormProps> = ({
       title: eventName,
       description: description,
       eventType: categoryValue,
+      // TODO
+      // aboutOrganizer:aboutOrganizer,
       location: {
         city: place?.city,
         street: place?.name,
@@ -229,7 +235,9 @@ const CreateEventForm: React.FC<CreateEventFormProps> = ({
           onPriceChange={onPriceChange}
           handleNumberOfTicketsChange={handleNumberOfTicketsChange}
         />
-        <AboutOrganizer />
+        <AboutOrganizer
+          handleAboutOrganizerChange={handleAboutOrganizerChange}
+        />
         <div className="text-center">
           <SharedBtn
             type="submit"
