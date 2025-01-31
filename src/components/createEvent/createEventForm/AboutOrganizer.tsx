@@ -53,17 +53,19 @@ const AboutOrganizer: React.FC<AboutOrganizerProps> = ({
           control={control}
           rules={{ required: "Опис обов'язковий" }}
           render={({ field }) => (
-            <textarea
-              className="focus:outline-none w-[679px] h-[128px] p-4 border-2 rounded-[10px] border-buttonPurple"
-              maxLength={MAX_DESCRIPTION_LENGTH}
-              id=""
-              placeholder="Розкажіть про себе"
-              value={aboutOrganizer}
-              onChange={e => {
-                setAboutOrganizer(e.target.value);
-                field.onChange(e);
-              }}
-            ></textarea>
+            <div className="w-full p-[2px] h-[120px] bg-createEventInputBorder rounded-[10px]">
+              <textarea
+                className="focus:outline-none w-full h-full p-4 rounded-[8px] resize-none"
+                maxLength={MAX_DESCRIPTION_LENGTH}
+                id=""
+                placeholder="Розкажіть про себе"
+                value={aboutOrganizer}
+                onChange={e => {
+                  setAboutOrganizer(e.target.value);
+                  field.onChange(e);
+                }}
+              ></textarea>
+            </div>
           )}
         />
         {errors.description && (
