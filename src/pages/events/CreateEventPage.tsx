@@ -4,39 +4,38 @@ import { Container } from '@/components/container/Container';
 import CreateEventCard from '@/components/createEvent/CreateEventCard';
 import CreateEventForm from '@/components/createEvent/createEventForm/CreateEventForm';
 
-// import  hero  from "/images/heroForCreatEventForm.svg"
-
 const CreateEventPage: React.FC = () => {
-  // const [categorie, setCategorie] = useState<string>("Категорія")
-  const [eventName, setEventName] = useState('Назва події');
+  const [photos, setPhotos] = useState<(string | null)[]>([null, null, null]);
+  const [eventName, setEventName] = useState('');
+  const [eventType, seteventType] = useState('');
   const [date, setDate] = useState<string>('');
-  const [place, setPlace] = useState<string>("Місце")
-  const [price, setPriece] = useState('Ціна');
+  const [place, setPlace] = useState<EventPlaceWithGps | null>(null);
+  const [price, setPrice] = useState<number | 'Безкоштовно' | 'Ціна'>('Ціна');
   const [startTimeOption, setSelectedStartTimeOption] = useState('');
 
-  // const handleCategorieChange = (newCategorie: string) => {
-  //     setCategorie(newCategorie);
-  //   };
   const handleEventNameChange = (newName: string) => {
     setEventName(newName);
+  };
+
+  const handleCategoryChangeForUI = (eventType: string) => {
+    seteventType(eventType);
   };
 
   const handleDateChange = (newDate: string) => {
     setDate(newDate);
   };
 
+  const handlePlaceChange = (newPlace: EventPlaceWithGps) => {
+    setPlace(newPlace);
+  };
+
+  const handlePriceChange = (newPrice: number | 'Безкоштовно' | 'Ціна') => {
+    setPrice(newPrice);
+  };
+
   const handleStartTime = (startTime: string) => {
     setSelectedStartTimeOption(startTime);
   };
-
-    const handlePlaceChange = (newPlace: string) => {
-      setPlace(newPlace);
-    };
-  const handlePriceChange = (newPrice: string) => {
-    setPriece(newPrice);
-  };
-  const [selectedCategory, setSelectedCategory] = useState('');
-  const [photos, setPhotos] = useState<(string | null)[]>([null, null, null]);
 
   const handlePhotoChange = (id: number, photo: string | null) => {
     setPhotos(prevPhotos => {
@@ -59,21 +58,24 @@ const CreateEventPage: React.FC = () => {
         <div className="flex gap-6">
           <CreateEventCard
             eventName={eventName}
+            eventType={eventType}
             price={price}
             photo={photos[0]}
-            category={selectedCategory}
             date={date}
             place={place}
             startTimeOption={startTimeOption}
           />
           <CreateEventForm
-            eventName={eventName}
+            place={place}
+            photo={photos[0]}
             photos={photos}
+            eventName={eventName}
+            eventType={eventType}
             price={price}
             date={date}
             startTimeOption={startTimeOption}
             onEventNameChange={handleEventNameChange}
-            onCategoryChange={setSelectedCategory}
+            handleCategoryChangeForUI={handleCategoryChangeForUI}
             onPriceChange={handlePriceChange}
             onPhotoChange={handlePhotoChange}
             onPlaceChange={handlePlaceChange}

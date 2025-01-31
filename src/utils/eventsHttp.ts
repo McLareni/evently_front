@@ -1,8 +1,10 @@
+import { store } from '@/redux/store';
+
 import axios from 'axios';
 
 const URL = 'https://66ceec99901aab24842029e0.mockapi.io';
 
-axios.defaults.baseURL = 'https://rendereventapp.onrender.com/api/v1/';
+axios.defaults.baseURL = 'https://rendereventapp.onrender.com/api/v1';
 
 export const deleteEvent = async (id: number) => {
   try {
@@ -32,7 +34,7 @@ export const editEvent = async (formData: eventType, id?: string) => {
   try {
     const response = await axios.put(`${URL}/events/${id}`, {
       ...formData,
-      countSeats: formData.countSeats || 'Необмежено',
+      countSeats: formData.numberOfTickets || 'Необмежено',
     });
     const resData = response.data;
     return resData;
@@ -41,17 +43,31 @@ export const editEvent = async (formData: eventType, id?: string) => {
   }
 };
 
-export const createEvent = async (formData: eventType) => {
+export const createEvent = async (
+  event: any,
+  firstImage: File | null,
+  secondImage: File | null,
+  thirdImage: File | null
+) => {
+  const token = store.getState().auth.token;
+
+  const formData = new FormData();
+  formData.append(
+    'event',
+    new Blob([JSON.stringify(event)], { type: 'application/json' })
+  );
+  if (firstImage) formData.append('firstImage', firstImage);
+  if (secondImage) formData.append('secondImage', secondImage);
+  if (thirdImage) formData.append('thirdImage', thirdImage);
   try {
-    const response = await axios.post(
-      `https://66ceec99901aab24842029e0.mockapi.io/events/`,
-      {
-        ...formData,
-        countSeats: formData.countSeats || 'Необмежено',
-      }
-    );
-    const resData = response.data;
-    return resData;
+    const response = await axios.post(`events`, formData, {
+      headers: {
+        'Content-Type': 'multipart/form-data',
+        Authorization: `Bearer ${token}`,
+      },
+    });
+
+    return response;
   } catch (error) {
     throw new Error(`Failed to create event ${error}`);
   }

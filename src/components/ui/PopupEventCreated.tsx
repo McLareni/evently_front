@@ -48,7 +48,7 @@ export const PopupEventCreated = ({ event }: PopupEventCreatedProps) => {
         <p className="text-[20px]">
           Після перевірки вона з’явиться на платформі
         </p>
-        <EventCard event={event} isAdmin />
+        <EventCard event={event} isEventCreated />
         <NavLink to={'/my-event'}>
           <Button>Закрити</Button>
         </NavLink>

@@ -7,14 +7,20 @@ import dayjs from 'dayjs';
 
 interface CreateEventCalendarProps {
   handleDateChange: (newDate: string) => void;
+  toggleIsCalendarShown: () => void;
 }
 
 export const CreateEventCalendar = ({
   handleDateChange,
+  toggleIsCalendarShown
 }: CreateEventCalendarProps) => {
   const [date, setDate] = useState<Date | undefined>();
 
   const formattedDate = dayjs(date).format('YYYY-MM-DD');
+
+  useEffect(() => {
+    date && toggleIsCalendarShown();
+  }, [date, toggleIsCalendarShown])
 
   useEffect(() => {
     handleDateChange(formattedDate);

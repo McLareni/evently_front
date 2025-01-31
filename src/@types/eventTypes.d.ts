@@ -2,7 +2,7 @@ interface Event {
   id: string;
   title: string;
   description: string;
-  photoUrl: string;
+  photoUrl: string | null;
   creationDate: Date;
   phoneNumber: string;
   location: {
@@ -12,7 +12,7 @@ interface Event {
     latitude: string | null;
     longitude: string | null;
   };
-  organizers: User;
+  organizers: { id: string };
   rating: number;
   eventStatus: 'PENDING' | 'APPROVED' | 'CANCELLED';
   eventUrl: string | null;
@@ -55,18 +55,53 @@ interface EventDTO {
 }
 
 // TODO
+interface eventPhotos {
+  firstImage: string | null;
+  secondImage: string | null;
+  thirdImage: string | null;
+}
 interface eventType {
-  id: number;
+  // id: number;
+  // name: string;
+  // logo?: string;
+  // desc?: string;
+  // time: string;
+  // date: string;
+  // country: string;
+  // city: string;
+  // street: string;
+  // number: string;
+  // countSeats: number | 'Необмежено';
+  // schemaSeats: number | 'Не вибрано';
+  // library?: File[];
+  title: string;
+  description: string;
+  dateDetails?: {
+    day: string;
+    startTime: string;
+    endTime: string;
+  };
+  ticketPrice: string | undefined;
+  location?: {
+    city?: string;
+    street?: string;
+    venue?: string;
+    latitude?: string;
+    longitude?: string;
+  };
+  // photos: photos;
+  eventType?: string;
+  numberOfTickets: number;
+  eventUrl?: string;
+  organizers: {
+    id: string;
+  };
+}
+
+interface EventPlaceWithGps {
+  formatted: string;
+  lat: number;
+  lng: number;
   name: string;
-  logo?: string;
-  desc?: string;
-  time: string;
-  date: string;
-  country: string;
   city: string;
-  street: string;
-  number: string;
-  countSeats: number | 'Необмежено';
-  schemaSeats: number | 'Не вибрано';
-  library?: File[];
 }

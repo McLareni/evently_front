@@ -25,6 +25,7 @@ interface EventCardProps {
   event: Event;
   top?: boolean;
   isAdmin?: boolean;
+  isEventCreated?: boolean;
 
   setEvent?: (
     // eslint-disable-next-line no-unused-vars
@@ -40,19 +41,23 @@ export const EventCard: React.FC<EventCardProps> = ({
   event,
   top = false,
   isAdmin = false,
+  isEventCreated = false,
   setEvent = () => {},
 }) => {
   const [isLiked, setIsLiked] = useState(false);
+  const [imageSrc, setImageSrc] = useState<string | null>(null);
 
   const {
     id: eventId,
     title,
     date,
     category,
+    eventUrl,
     price,
     location,
     type,
     photoUrl,
+    images,
   } = event;
 
   const { id: userId } = useAppSelector(selectUser);
@@ -64,14 +69,16 @@ export const EventCard: React.FC<EventCardProps> = ({
 
   const address = location.city + ', ' + location.street;
   const slicedStreet = () => {
-    if (address.length > 29) {
-      return address.slice(0, 28) + '...';
+    if (address.length > 27) {
+      return address.slice(0, 27) + '...';
     } else {
       return address;
     }
   };
 
-  const toggleIsLiked = () => {
+  const toggleIsLiked = (e: React.MouseEvent) => {
+    e.stopPropagation();
+    if (isEventCreated) return;
     if (!isLiked) {
       const addLiked = async () => {
         try {
@@ -109,12 +116,25 @@ export const EventCard: React.FC<EventCardProps> = ({
   }, [event.id, likedEventsAll]);
 
   const handleOnClick = (e: React.MouseEvent) => {
+    if (isEventCreated) return;
     if (isAdmin) {
       setEvent(event, e.target as HTMLElement, '');
     } else {
       navigate(`/event/${eventId}`);
     }
   };
+
+  const navigateToEvent = () => {
+    if (isEventCreated) return;
+    navigate(`/event/${eventId}`);
+  };
+
+  useEffect(() => {
+    if (images && images[0] && images[0].photoInBytes) {
+      setImageSrc(`data:image/png;base64,${images[0].photoInBytes}`);
+    }
+    return;
+  }, [images]);
 
   return (
     <div
@@ -124,7 +144,8 @@ export const EventCard: React.FC<EventCardProps> = ({
         top ? 'mb-[10px]' : ''
       }${isAdmin && 'hover:cursor-pointer'}`}
     >
-      <img src={photoUrl} alt={title} width={'100%'} />
+      {imageSrc && <img src={imageSrc} alt={title} width={'100%'} />}
+      {photoUrl && <img src={photoUrl} alt={title} width={'100%'} />}
       <div className={`flex absolute justify-between p-6 w-full`}>
         {category === 'TOP_EVENTS' && event.eventStatus === 'APPROVED' && (
           <div className="flex justify-center items-center w-[58px] h-[35px] bg-badge-gradient rounded-[20px]">
@@ -134,7 +155,7 @@ export const EventCard: React.FC<EventCardProps> = ({
         {!isAdmin && (
           <button
             type="button"
-            onClick={toggleIsLiked}
+            onClick={e => toggleIsLiked(e)}
             aria-label="like button"
             className={`focus:outline-none ml-auto bg-background w-[32px] h-[32px] flex items-center justify-center rounded-full opacity-60`}
           >
@@ -182,9 +203,7 @@ export const EventCard: React.FC<EventCardProps> = ({
           )}
         </div>
 
-        <h2
-          className={`min-h-[71px] text-2xl text-textDark line-clamp-2`}
-        >
+        <h2 className={`min-h-[71px] text-2xl text-textDark line-clamp-2`}>
           {title}
         </h2>
 
@@ -197,7 +216,7 @@ export const EventCard: React.FC<EventCardProps> = ({
           </li>
           <li className="flex items-center gap-[18px]">
             <GrLocation size="24px" />
-            <p>{slicedStreet()}</p>
+            {eventUrl ? <p>Онлайн</p> : <p>{slicedStreet()}</p>}
           </li>
           <li className="flex items-center gap-[18px]">
             <FaRegMoneyBillAlt size="24px" />
@@ -242,7 +261,7 @@ export const EventCard: React.FC<EventCardProps> = ({
               type="button"
               primary
               className="w-[230px] h-12 mx-auto mt-4"
-              onClick={() => navigate(`/event/${eventId}`)}
+              onClick={navigateToEvent}
             >
               Хочу
             </SharedBtn>

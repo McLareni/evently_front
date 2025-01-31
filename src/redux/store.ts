@@ -15,6 +15,7 @@ import { authReducer } from './auth/authSlice';
 import { EventsApi } from './events/operations';
 import { filterReducer } from './filters/filtersSlice';
 import { usersReducer } from './users/usersSlice';
+import eventReducer from './events/eventSlice';
 
 const authPersistConfig = {
   key: 'auth',
@@ -43,6 +44,7 @@ const rootReducer = combineReducers({
   auth: persistReducer(authPersistConfig, authReducer),
   filter: persistReducer(filterPersistConfig, filterReducer),
   users: usersReducer,
+  event: eventReducer,
   [EventsApi.reducerPath]: EventsApi.reducer,
 });
 

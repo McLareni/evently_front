@@ -16,6 +16,7 @@ interface PhotoCardProps {
   id: number;
   photo: string | null;
   onPhotoChange: (id: number, photo: string | null) => void;
+  handleImageFileChange: (id: number, image: File[]) => void;
 }
 
 const PhotoCard: React.FC<PhotoCardProps> = ({
@@ -24,21 +25,31 @@ const PhotoCard: React.FC<PhotoCardProps> = ({
   id,
   photo,
   onPhotoChange,
+  handleImageFileChange,
 }) => {
   const [isHovered, setIsHovered] = useState(false);
   const [showCropper, setShowCropper] = useState(false);
   const [imageToCrop, setImageToCrop] = useState<string | null>(null);
+  
   const [croppedImage, setCroppedImage] = useState<string | null>(null);
 
   const cropperRef = useRef<any>(null);
 
   const handlePhotoUpload = (event: React.ChangeEvent<HTMLInputElement>) => {
-    if (event.target.files && event.target.files[0]) {
+    const files = event.target.files ? Array.from(event.target.files) : [];
+
+    // Перевірка, щоб було від 1 до 3 файлів
+    if (files.length > 0 && files.length <= 3) {
+      handleImageFileChange(id, files); // Передаємо файли в обробник
+    }
+
+    if (files.length > 0) {
+      // Якщо є файли, читаємо їх і передаємо у батьківську компоненту
       const reader = new FileReader();
       reader.onload = () => {
-        onPhotoChange(id, reader.result as string);
+        onPhotoChange(id, reader.result as string); // Передаємо перше зображення
       };
-      reader.readAsDataURL(event.target.files[0]);
+      reader.readAsDataURL(files[0]); // Читаємо перше зображення
     }
   };
 
@@ -115,16 +126,16 @@ const PhotoCard: React.FC<PhotoCardProps> = ({
         type="file"
         accept="image/*"
         className="hidden"
-        onChange={handlePhotoUpload}
+        onChange={handlePhotoUpload }
       />
-      <div className="text-[12px] text-gray-300 max-w-[210px] mt-3.5">
+      <div className="text-[12px] text-uploadBtnBg max-w-[210px] mt-3.5">
         {subtitle}
       </div>
 
       {/* Image Cropper Modal */}
       {showCropper && (
         <div className="absolute w-[750px] h-[830px] inset-0 flex bg-gray-800 bg-opacity-50 z-10 -top-[2px] -left-[27px]">
-          <div className="bg-white border-2 border-buttonPurple rounded-[20px]">
+          <div className="bg-white border-2 border-buttonPurple rounded-[20px] w-[760px]">
             <div className='px-[73px] pt-16 pb-8'>
             <Cropper
               src={imageToCrop || ''}
