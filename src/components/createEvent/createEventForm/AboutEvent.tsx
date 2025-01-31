@@ -77,13 +77,15 @@ const AboutEvent: React.FC<AboutEventProps> = ({
           control={control}
           rules={{ required: "Назва події обов'язкова" }}
           render={() => (
-            <input
-              // {...field}
-              type="text"
-              className="focus:outline-none w-[679px] h-[52px] p-4 border-2 rounded-[10px] border-buttonPurple "
-              placeholder="Назви подію так, щоб людям було одразу зрозуміло, про що вона"
-              onChange={e => onEventNameChange(e.target.value)}
-            />
+            <div className="w-full h-[52px] p-[2px] bg-createEventInputBorder rounded-[10px]">
+              <input
+                // {...field}
+                type="text"
+                className="focus:outline-none w-full h-full p-4 rounded-[8px]"
+                placeholder="Назви подію так, щоб людям було одразу зрозуміло, про що вона"
+                onChange={e => onEventNameChange(e.target.value)}
+              />
+            </div>
           )}
         />
       </div>
