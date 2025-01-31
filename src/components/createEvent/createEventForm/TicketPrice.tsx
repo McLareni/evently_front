@@ -2,16 +2,24 @@
 import { useEffect, useState } from 'react';
 import { HiOutlineTicket } from 'react-icons/hi';
 
+import { Checkbox } from '@/components/ui/CheckBox';
+
 type TicketPriceProps = {
   price: number | 'Безкоштовно' | 'Ціна';
   onPriceChange: (price: number | 'Безкоштовно' | 'Ціна') => void;
-  handleNumberOfTicketsChange: (numberOfTickets: number) => void;
+  handleNumberOfTicketsChange: (numberOfTickets: string) => void;
+  isUnlimited: boolean;
+  toggleIsUnlimited: () => void;
+  numberOfTickets: string;
 };
 
 const TicketPrice: React.FC<TicketPriceProps> = ({
   price,
   onPriceChange,
   handleNumberOfTicketsChange,
+  isUnlimited,
+  toggleIsUnlimited,
+  numberOfTickets,
 }) => {
   const [freeTickets, setFreeTickets] = useState<boolean>(
     price === 'Безкоштовно'
@@ -77,7 +85,7 @@ const TicketPrice: React.FC<TicketPriceProps> = ({
           Безкоштовно
         </button>
       </div>
-      <div className="flex">
+      <div className="flex gap-[16px]">
         <div className="flex flex-col">
           <label htmlFor="price" className="mb-3">
             Ціна
@@ -85,7 +93,7 @@ const TicketPrice: React.FC<TicketPriceProps> = ({
           <input
             id="price"
             type="number"
-            className={`outline-none border-2 w-[240px] h-[48px] my-[2px] mx-[2px] p-4 rounded-[10px] mr-4 [appearance:textfield]  [&::-webkit-outer-spin-button]:appearance-none [&::-webkit-inner-spin-button]:appearance-none
+            className={`outline-none border-2 w-[240px] h-[48px] my-[2px] p-4 rounded-[10px] [appearance:textfield] [&::-webkit-outer-spin-button]:appearance-none [&::-webkit-inner-spin-button]:appearance-none
               ${freeTickets ? 'border-[#D0D5D8]' : 'border-buttonPurple'}`}
             placeholder="100 ₴"
             onChange={handlePriceChange}
@@ -98,15 +106,28 @@ const TicketPrice: React.FC<TicketPriceProps> = ({
             Кількість квитків
           </label>
           <div className="relative">
-            <HiOutlineTicket className="absolute top-[15.25px] left-[17.25px] w-6 h-6" />
+            <HiOutlineTicket
+              color={isUnlimited ? '#D0D5D8' : '#000000'}
+              className={`absolute top-[15.25px] left-[17.25px] w-6 h-6 `}
+            />
             <input
               type="number"
-              onChange={e => handleNumberOfTicketsChange(+e.target.value)}
-              className="outline-none border-2 border-buttonPurple pl-[49px] w-[240px] h-[48px] my-[2px] mx-[2px] p-4 rounded-[10px] [appearance:textfield] [&::-webkit-outer-spin-button]:appearance-none 
-                [&::-webkit-inner-spin-button]:appearance-none"
+              onChange={e => handleNumberOfTicketsChange(e.target.value)}
+              className={`outline-none border-2 pl-[49px] w-[240px] h-[48px] my-[2px] mx-[2px] p-4 rounded-[10px] [appearance:textfield] [&::-webkit-outer-spin-button]:appearance-none 
+                [&::-webkit-inner-spin-button]:appearance-none  ${isUnlimited ? 'border-[#D0D5D8]' : 'border-buttonPurple'}`}
               placeholder="100"
+              disabled={isUnlimited}
+              value={numberOfTickets}
             />
           </div>
+        </div>
+        <div className="self-end mb-[16px]">
+          <Checkbox
+            label="Необмежена кількість "
+            name="type"
+            onChange={toggleIsUnlimited}
+            checked={isUnlimited}
+          />
         </div>
       </div>
     </div>

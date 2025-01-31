@@ -88,7 +88,7 @@ const CreateEventForm: React.FC<CreateEventFormProps> = ({
   const { handleSubmit } = methods;
   const [endTimeOption, setSelectedEndTimeOption] = useState('');
   const [description, setDescription] = useState('');
-  const [numberOfTickets, setNumberOfTickets] = useState(0);
+  const [numberOfTickets, setNumberOfTickets] = useState('');
   const [ticketPrice, setTickePrice] = useState<number | undefined>();
   const [eventUrl, setEventUrl] = useState('');
   const [organizers, setOrganizers] = useState<string>('');
@@ -101,6 +101,7 @@ const CreateEventForm: React.FC<CreateEventFormProps> = ({
     null,
     null,
   ]);
+  const [isUnlimited, setIsUnlimited] = useState(false);
 
   const handleImageFileChange = (id: number, photo: (File | null)[]) => {
     setImageFile(prevPhotos => {
@@ -119,16 +120,28 @@ const CreateEventForm: React.FC<CreateEventFormProps> = ({
   const handleAboutOrganizerChange = (aboutOrganizer: string) =>
     setAboutOrganizer(aboutOrganizer);
 
-  const handleNumberOfTicketsChange = (numberOfTickets: number) =>
+  const handleNumberOfTicketsChange = (numberOfTickets: string) =>
     setNumberOfTickets(numberOfTickets);
+
   const handleEventUrlChange = (eventUrl: string) => setEventUrl(eventUrl);
+
   const onEventCategoryChange = (categoryValue: string) =>
     setCategoryValue(categoryValue);
 
+  const toggleIsUnlimited = () => {
+    setIsUnlimited(!isUnlimited);
+  };
+
+  useEffect(() => {
+    isUnlimited && setNumberOfTickets('');
+  }, [isUnlimited]);
+
   const user = useAppSelector(selectUser);
+
   useEffect(() => {
     setOrganizers(user.id.toString());
   }, [user]);
+
   useEffect(() => {
     if (price !== 'Безкоштовно' && price !== 'Ціна') {
       setTickePrice(price);
@@ -175,7 +188,7 @@ const CreateEventForm: React.FC<CreateEventFormProps> = ({
       organizers: {
         id: organizers,
       },
-      numberOfTickets: numberOfTickets,
+      numberOfTickets: +numberOfTickets,
       ticketPrice: ticketPrice,
     };
 
@@ -236,6 +249,9 @@ const CreateEventForm: React.FC<CreateEventFormProps> = ({
           price={price}
           onPriceChange={onPriceChange}
           handleNumberOfTicketsChange={handleNumberOfTicketsChange}
+          isUnlimited={isUnlimited}
+          toggleIsUnlimited={toggleIsUnlimited}
+          numberOfTickets={numberOfTickets}
         />
         <AboutOrganizer
           handleAboutOrganizerChange={handleAboutOrganizerChange}
