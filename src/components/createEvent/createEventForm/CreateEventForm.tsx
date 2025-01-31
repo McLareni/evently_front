@@ -1,3 +1,5 @@
+/* eslint-disable @typescript-eslint/no-unused-expressions */
+
 /* eslint-disable no-unused-vars */
 import { useEffect, useState } from 'react';
 import { FormProvider, useForm } from 'react-hook-form';
@@ -86,6 +88,7 @@ const CreateEventForm: React.FC<CreateEventFormProps> = ({
   });
 
   const { handleSubmit } = methods;
+
   const [endTimeOption, setSelectedEndTimeOption] = useState('');
   const [description, setDescription] = useState('');
   const [numberOfTickets, setNumberOfTickets] = useState('');
@@ -114,6 +117,7 @@ const CreateEventForm: React.FC<CreateEventFormProps> = ({
   };
 
   const handleEndTime = (endTime: string) => setSelectedEndTimeOption(endTime);
+
   const handleDescriptionChange = (description: string) =>
     setDescription(description);
 
@@ -131,22 +135,6 @@ const CreateEventForm: React.FC<CreateEventFormProps> = ({
   const toggleIsUnlimited = () => {
     setIsUnlimited(!isUnlimited);
   };
-
-  useEffect(() => {
-    isUnlimited && setNumberOfTickets('');
-  }, [isUnlimited]);
-
-  const user = useAppSelector(selectUser);
-
-  useEffect(() => {
-    setOrganizers(user.id.toString());
-  }, [user]);
-
-  useEffect(() => {
-    if (price !== 'Безкоштовно' && price !== 'Ціна') {
-      setTickePrice(price);
-    }
-  }, [price]);
 
   const popupEvent = {
     title: eventName,
@@ -209,6 +197,22 @@ const CreateEventForm: React.FC<CreateEventFormProps> = ({
         console.error(error);
       });
   };
+
+  useEffect(() => {
+    isUnlimited && setNumberOfTickets('');
+  }, [isUnlimited]);
+
+  const user = useAppSelector(selectUser);
+
+  useEffect(() => {
+    setOrganizers(user.id.toString());
+  }, [user]);
+
+  useEffect(() => {
+    if (price !== 'Безкоштовно' && price !== 'Ціна') {
+      setTickePrice(price);
+    }
+  }, [price]);
 
   return (
     <FormProvider {...methods}>
