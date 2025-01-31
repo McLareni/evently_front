@@ -182,11 +182,6 @@ export const EventCard: React.FC<EventCardProps> = ({
               {type}
             </p>
           </div>
-          {isEventCreated && (
-            <div className="w-10 h-10 rounded-full border-2 flex justify-center items-center border-[#F4E544]">
-              <AiOutlineExclamation className="w-6 h-6 fill-[#F4E544]" />
-            </div>
-          )}
           {isAdmin && (
             <div
               className={`w-10 h-10 rounded-full border-2 flex justify-center items-center 

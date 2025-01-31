@@ -118,7 +118,9 @@ const AboutEvent: React.FC<AboutEventProps> = ({
       </div>
       <div>
         <div className="flex flex-col">
-          <span className="pb-4 text-2xl">Категорія</span>
+          <span className="pb-4 text-2xl">
+            Категорія<span className="star">*</span>
+          </span>
           <div className="flex break-words w-[669px] h-[112px] flex-wrap">
             {categories.map(category => (
               <div
