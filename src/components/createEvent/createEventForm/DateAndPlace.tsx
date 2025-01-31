@@ -261,14 +261,13 @@ const DateAndPlace = ({
         </button>
       </div>
       {eventType ? (
-        <div className="flex">
-          <div className="flex flex-col">
-            <label id="adress" className="pb-3">
-              Адреса
-            </label>
-
+        <div className="flex flex-col w-full">
+          <label id="adress" className="pb-3">
+            Адреса
+          </label>
+          <div className="w-full h-[52px] p-[2px] bg-createEventInputBorder rounded-[10px]">
             <GoogleMapsInput
-              className="w-[696px] border-buttonPurple outline-none"
+              className="w-full h-full outline-none"
               placeholder="Адреса проведення"
               onPlaceSelect={place => {
                 if (!place || !place.geometry) return;
@@ -285,19 +284,21 @@ const DateAndPlace = ({
           </div>
         </div>
       ) : (
-        <div className="flex flex-col  pr-4">
+        <div className="flex flex-col">
           <label htmlFor="link" className="pb-3">
             Посилання на Zoom або Google Meet
           </label>
-          <input
-            type="text"
-            id="link"
-            placeholder="https://meet.google.com/..."
-            className="outline-none w-[696px] h-[52px] border-2 rounded-[10px] p-4 border-buttonPurple"
-            onChange={e => {
-              handleEventUrlChange(e.target.value);
-            }}
-          />
+          <div className="w-full h-[52px] p-[2px] bg-createEventInputBorder rounded-[10px]">
+            <input
+              type="text"
+              id="link"
+              placeholder="https://meet.google.com/..."
+              className="outline-none w-full h-full rounded-[8px] p-4 border-buttonPurple"
+              onChange={e => {
+                handleEventUrlChange(e.target.value);
+              }}
+            />
+          </div>
         </div>
       )}
     </div>
