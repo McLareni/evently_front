@@ -71,7 +71,6 @@ const AboutEvent: React.FC<AboutEventProps> = ({
         <label className="pb-3 text-2xl">
           Назва події<span className="star">*</span>
         </label>
-        {/*  bg-gradient-to-br from-[#9B8FF3] to-[#38F6F9] */}
         <Controller
           name="title"
           control={control}
@@ -98,17 +97,19 @@ const AboutEvent: React.FC<AboutEventProps> = ({
           control={control}
           rules={{ required: "Опис обов'язковий" }}
           render={({ field }) => (
-            <textarea
-              className="focus:outline-none w-[679px] h-[128px] p-4 border-2 rounded-[10px] border-buttonPurple"
-              maxLength={MAX_DESCRIPTION_LENGTH}
-              id=""
-              placeholder="Коротко опиши ідею та концепцію події"
-              onChange={e => {
-                handleDescriptionChange(e);
-                field.onChange(e);
-                onDescriptionChange(e.target.value);
-              }}
-            ></textarea>
+            <div className="w-full p-[2px] h-[120px] bg-createEventInputBorder rounded-[10px]">
+              <textarea
+                className="focus:outline-none w-full h-full p-4 rounded-[8px] resize-none"
+                maxLength={MAX_DESCRIPTION_LENGTH}
+                id=""
+                placeholder="Коротко опиши ідею та концепцію події"
+                onChange={e => {
+                  handleDescriptionChange(e);
+                  field.onChange(e);
+                  onDescriptionChange(e.target.value);
+                }}
+              ></textarea>
+            </div>
           )}
         />
         {errors.description && (
