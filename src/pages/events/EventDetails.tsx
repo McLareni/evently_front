@@ -102,7 +102,11 @@ const EventDetails = () => {
                 {event.description}
               </p>
             </div>
-            <AboutUser organizer={event.organizers} rating={event.rating} />
+            <AboutUser
+              organizer={event.organizers}
+              rating={event.rating}
+              aboutUser={event?.aboutOrganizer || ''}
+            />
             <div>
               <h2 className="text-5xl text-textDark mt-12 mb-[50px]">
                 Адреса події

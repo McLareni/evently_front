@@ -12,7 +12,8 @@ interface Event {
     latitude: string | null;
     longitude: string | null;
   };
-  organizers: { id: string };
+  organizers: User;
+  aboutOrganizer?: string;
   rating: number;
   eventStatus: 'PENDING' | 'APPROVED' | 'CANCELLED';
   eventUrl: string | null;

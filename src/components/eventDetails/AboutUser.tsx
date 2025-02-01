@@ -3,16 +3,13 @@ import { BiChevronDown } from 'react-icons/bi';
 
 import Stars from '../admin/Events/Stars';
 
-const aboutUser =
-  'Я – Олена, організатор стендап-шоу, який обожнює створювати унікальні вечори гумору та незабутніх емоцій. ' +
-  'Моє головне завдання – забезпечити комфортну атмосферу, де кожен може насолодитися щирими жартами, живим спілкуванням і зарядом позитиву. Завжди відкриваю нові таланти та допомагаю гумористам знайти свого глядача. Давайте разом створювати моменти, які залишаються в серці!';
-
 interface IProps {
   organizer: User;
   rating: number;
+  aboutUser: string;
 }
 
-const AboutUser: React.FC<IProps> = ({ organizer, rating }) => {
+const AboutUser: React.FC<IProps> = ({ organizer, rating, aboutUser }) => {
   const [isShortAboutUser, setIsShortAboutUser] = useState(true);
 
   const shortAboutUser = aboutUser?.slice(0, 100);
