@@ -28,7 +28,7 @@ const ImageNavigation: React.FC<IProps> = ({
           <li key={index}>
             <div
               className={clsx('rounded-full !h-2 !w-2 bg-darkGray', {
-                '!h-3 !w-3 !bg-black': index === activeImage,
+                '!h-3 !w-3 !bg-black': index === activeImage - 1,
               })}
             ></div>
           </li>

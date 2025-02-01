@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import { HiOutlineTicket } from 'react-icons/hi';
 import { MdDone } from 'react-icons/md';
 import { RxCross2 } from 'react-icons/rx';
+import { useNavigate } from 'react-router';
 
 import clsx from 'clsx';
 
@@ -16,6 +17,7 @@ interface IProps {
 
 const ModalDecision: React.FC<IProps> = ({ event, openModal }) => {
   const [activeImage, setActiveImage] = useState(1);
+  const navigate = useNavigate();
 
   const images = event?.images.length
     ? [...event.images.map(img => `data:image/jpeg;base64,${img.photoInBytes}`)]
@@ -30,7 +32,12 @@ const ModalDecision: React.FC<IProps> = ({ event, openModal }) => {
   };
 
   return (
-    <div className="relative p-8 pr-16 flex gap-10 h-[630px] w-[944px]">
+    <div
+      className={clsx(
+        'relative p-8 pr-16 flex gap-10 w-[944px]',
+        event?.aboutOrganizer ? 'h-[800px]' : 'h-[630px]'
+      )}
+    >
       <div className="">
         <img
           src={images[activeImage - 1]}
@@ -80,7 +87,10 @@ const ModalDecision: React.FC<IProps> = ({ event, openModal }) => {
               alt=""
               className="h-[72px] w-[72px] rounded-full object-cover"
             />
-            <h2 className="text-textDark font-lato text-2xl underline my-2">
+            <h2
+              onClick={() => navigate(`/user/${event?.organizers.id}`)}
+              className="text-textDark font-lato text-2xl underline my-2 hover:cursor-pointer"
+            >
               {event?.organizers?.name}
             </h2>
             <div className="flex">
@@ -134,6 +144,16 @@ const ModalDecision: React.FC<IProps> = ({ event, openModal }) => {
             {event?.description}
           </p>
         </div>
+        {event?.aboutOrganizer && (
+          <div>
+            <h2 className="text-textDark font-medium text-2xl leading-[36px] mb-4 mt-8">
+              Про організатора
+            </h2>
+            <p className="text-wrap overflow-y-scroll text-base leading-[19px] pb-1 max-h-[80px]">
+              {event?.aboutOrganizer}
+            </p>
+          </div>
+        )}
         <div className="flex justify-around gap-8 mt-8">
           {event?.eventStatus !== 'CANCELLED' && (
             <button

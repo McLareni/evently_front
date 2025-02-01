@@ -46,6 +46,10 @@ const router = createBrowserRouter([
         loader: getAllEventsLoader,
       },
       {
+        path: 'user/:idUser',
+        element: <>User profile</>,
+      },
+      {
         element: <LoginRouter />,
         children: [
           { path: 'user_profile', element: <Profile /> },
