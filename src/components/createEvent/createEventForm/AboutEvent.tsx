@@ -61,7 +61,7 @@ const AboutEvent: React.FC<AboutEventProps> = ({
   return (
     <div className="w-[760px] rounded-[20px] border-2 border-buttonPurple flex flex-col py-10 px-10 mb-8">
       <div className="flex flex-col pb-6">
-        <label className="pb-3 text-2xl">
+        <label className="pb-3 text-2xl" htmlFor="title">
           Назва події<span className="star">*</span>
         </label>
         <Controller
@@ -79,6 +79,7 @@ const AboutEvent: React.FC<AboutEventProps> = ({
                 minLength={5}
                 maxLength={100}
                 type="text"
+                id="title"
                 className="focus:outline-none w-full h-full p-4 rounded-[8px]"
                 placeholder="Назви подію так, щоб людям було одразу зрозуміло, про що вона"
                 onChange={e => {
@@ -95,7 +96,7 @@ const AboutEvent: React.FC<AboutEventProps> = ({
       </div>
 
       <div className="flex flex-col pb-[25px]">
-        <label htmlFor="" className="pb-4 text-2xl">
+        <label className="pb-4 text-2xl" htmlFor="description">
           Опис<span className="star">*</span>
         </label>
         <Controller
@@ -112,7 +113,7 @@ const AboutEvent: React.FC<AboutEventProps> = ({
               <textarea
                 className="focus:outline-none w-full h-full p-4 rounded-[8px] resize-none"
                 maxLength={MAX_DESCRIPTION_LENGTH}
-                id=""
+                id="description"
                 placeholder="Коротко опиши ідею та концепцію події"
                 onChange={e => {
                   handleDescriptionChange(e);
