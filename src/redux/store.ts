@@ -16,6 +16,7 @@ import { EventsApi } from './events/operations';
 import { filterReducer } from './filters/filtersSlice';
 import { usersReducer } from './users/usersSlice';
 import eventReducer from './events/eventSlice';
+import { UserApi } from './users/userApi';
 
 const authPersistConfig = {
   key: 'auth',
@@ -46,6 +47,7 @@ const rootReducer = combineReducers({
   users: usersReducer,
   event: eventReducer,
   [EventsApi.reducerPath]: EventsApi.reducer,
+  [UserApi.reducerPath]: UserApi.reducer,
 });
 
 export const store = configureStore({
@@ -55,7 +57,7 @@ export const store = configureStore({
       serializableCheck: {
         ignoredActions: [FLUSH, REHYDRATE, PAUSE, PERSIST, PURGE, REGISTER],
       },
-    }).concat(EventsApi.middleware),
+    }).concat(EventsApi.middleware).concat(UserApi.middleware),
 });
 
 export type AppStore = typeof store;

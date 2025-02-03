@@ -2,9 +2,9 @@ import { store } from '@/redux/store';
 
 import axios from 'axios';
 
-const URL = 'https://66ceec99901aab24842029e0.mockapi.io';
+const URL = import.meta.env.VITE_URL;
 
-axios.defaults.baseURL = 'https://rendereventapp.onrender.com/api/v1';
+axios.defaults.baseURL = URL;
 
 export const deleteEvent = async (id: number) => {
   try {
@@ -44,7 +44,7 @@ export const editEvent = async (formData: eventType, id?: string) => {
 };
 
 export const createEvent = async (
-  event: any,
+  event: Event,
   firstImage: File | null,
   secondImage: File | null,
   thirdImage: File | null
