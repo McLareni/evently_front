@@ -5,7 +5,7 @@ interface User {
   surname: string;
   birthdayDate: string;
   phoneNumber: string;
-  image: string | File;
+  avatarUrl: string;
 
   email: string;
   creationDate: Date;
