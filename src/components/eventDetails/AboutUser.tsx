@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import { BiChevronDown } from 'react-icons/bi';
 
 import Stars from '../admin/Events/Stars';
+import { useNavigate } from 'react-router';
 
 interface IProps {
   organizer: User;
@@ -11,6 +12,7 @@ interface IProps {
 
 const AboutUser: React.FC<IProps> = ({ organizer, rating, aboutUser }) => {
   const [isShortAboutUser, setIsShortAboutUser] = useState(true);
+  const navigate = useNavigate();
 
   const shortAboutUser = aboutUser?.slice(0, 100);
   
@@ -24,7 +26,7 @@ const AboutUser: React.FC<IProps> = ({ organizer, rating, aboutUser }) => {
           className="h-[100px] w-[100px] rounded-full object-cover mr-6"
         />
         <div>
-          <h2 className="text-textDark font-lato text-2xl my-2">
+          <h2 className="text-textDark font-lato text-2xl my-2 underline hover:cursor-pointer" onClick={() => navigate(`/user/${organizer.id}`)}>
             {organizer?.name}
           </h2>
           <div className="flex">
