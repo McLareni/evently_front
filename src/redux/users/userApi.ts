@@ -19,7 +19,7 @@ export const UserApi = createApi({
   }),
   endpoints: builder => ({
     getUserProfile: builder.query<User, string>({
-      query: id => `users/${id}`,
+      query: id => `admin/users/${id}`,
     }),
   }),
 });

@@ -14,8 +14,8 @@ const UserProfile = () => {
 
   return (
     <div className="px-[32px] py-[21px]">
-      <div className="mx-[15px] mt-[15px] h-[192px] bg-bg-gradient rounded-[20px] px-[32px] py-[21px]">
-        <img />
+      <div className="mx-[15px] mt-[15px] h-[192px] bg-bg-gradient rounded-[20px] px-[32px] py-[21px] flex gap-[44px]">
+        <img src={user?.avatarUrl || ''} className='w-[150px] h-[150px] rounded-full'/>
         <p
           className="font-oswald text-[64px] inline-block"
           style={{
@@ -29,15 +29,15 @@ const UserProfile = () => {
           Привіт, {user?.name}
         </p>
       </div>
-      <div className='mx-[15px] mt-[15px]'>
+      <div className="mx-[15px] mt-[15px]">
         <p className="my-[24px] font-oswald text-[24px] font-medium">
           Контактна інформація
         </p>
         <div className="flex flex-col">
-          <div className="flex gap-[24px] mb-[8px]">
+          <div className="flex gap-[24px] mb-[16px]">
             <div className="relative w-1/3">
               <p
-                className="w-full h-[64px] border-[2px] rounded-[10px]
+                className="w-full h-[64px] leading-[64px] border-[2px] rounded-[10px]
     px-[24px] outline-none bg-background text-[24px] border-buttonPurple"
               >
                 {user?.name}
@@ -53,10 +53,10 @@ const UserProfile = () => {
 
             <div className="relative w-1/3">
               <p
-                className="w-full h-[64px] border-[2px] rounded-[10px]
+                className="w-full h-[64px] leading-[64px] border-[2px] rounded-[10px]
     px-[24px] outline-none bg-background text-[24px] border-buttonPurple"
               >
-                {user?.surname}
+                {user?.surname || '-'}
               </p>
               <label
                 className={`absolute left-6 transition-all ease-in-out
@@ -70,10 +70,10 @@ const UserProfile = () => {
           <div className="flex gap-[24px] mb-[8px]">
             <div className="relative w-1/3">
               <p
-                className="w-full h-[64px] border-[2px] rounded-[10px]
+                className="w-full h-[64px] leading-[64px] border-[2px] rounded-[10px]
     px-[24px] outline-none bg-background text-[24px] border-buttonPurple"
               >
-                {user?.birthdayDate}
+                {user?.birthdayDate || '-'}
               </p>
               <label
                 className={`absolute left-6 transition-all ease-in-out
@@ -85,10 +85,10 @@ const UserProfile = () => {
             </div>
             <div className="relative w-1/3">
               <p
-                className="w-full h-[64px] border-[2px] rounded-[10px]
+                className="w-full h-[64px] leading-[64px] border-[2px] rounded-[10px]
     px-[24px] outline-none bg-background text-[24px] border-buttonPurple"
               >
-                {user?.phoneNumber}
+                {user?.phoneNumber || '-'}
               </p>
               <label
                 className={`absolute left-6 transition-all ease-in-out
