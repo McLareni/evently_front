@@ -5,7 +5,6 @@ import { Controller, useForm } from 'react-hook-form';
 import { categories } from '@/assets/staticData/statickData';
 
 type AboutEventProps = {
-  eventName: string;
   description: string;
   onEventNameChange: (eventName: string) => void;
   onDescriptionChange: (eventDescription: string) => void;
@@ -21,7 +20,6 @@ interface IFormInput {
 const MAX_DESCRIPTION_LENGTH = 400;
 
 const AboutEvent: React.FC<AboutEventProps> = ({
-  eventName,
   description,
   onEventNameChange,
   onDescriptionChange,
@@ -33,6 +31,7 @@ const AboutEvent: React.FC<AboutEventProps> = ({
     control,
     formState: { errors },
   } = useForm<IFormInput>({
+    mode: 'onChange',
     defaultValues: {
       title: '',
       description: '',
@@ -55,12 +54,6 @@ const AboutEvent: React.FC<AboutEventProps> = ({
   };
 
   useEffect(() => {
-    if (eventName === '') {
-      onEventNameChange('Назва події');
-    }
-  }, [eventName, onEventNameChange]);
-
-  useEffect(() => {
     if (description === '') {
       onDescriptionChange('Опис події');
     }
@@ -74,20 +67,33 @@ const AboutEvent: React.FC<AboutEventProps> = ({
         <Controller
           name="title"
           control={control}
-          rules={{ required: "Назва події обов'язкова" }}
-          render={() => (
+          rules={{
+            required: "Назва обов'язкова",
+            validate: {
+              minLength: value => value.length >= 5 || 'Мінімум 5 символів',
+            },
+          }}
+          render={({ field }) => (
             <div className="w-full h-[52px] p-[2px] bg-createEventInputBorder rounded-[10px]">
               <input
-                // {...field}
+                minLength={5}
+                maxLength={100}
                 type="text"
                 className="focus:outline-none w-full h-full p-4 rounded-[8px]"
                 placeholder="Назви подію так, щоб людям було одразу зрозуміло, про що вона"
-                onChange={e => onEventNameChange(e.target.value)}
+                onChange={e => {
+                  onEventNameChange(e.target.value);
+                  field.onChange(e);
+                }}
               />
             </div>
           )}
         />
+        {errors.title && (
+          <p className="text-red-500 text-sm">{errors.title.message}</p>
+        )}
       </div>
+
       <div className="flex flex-col pb-[25px]">
         <label htmlFor="" className="pb-4 text-2xl">
           Опис<span className="star">*</span>
@@ -95,7 +101,12 @@ const AboutEvent: React.FC<AboutEventProps> = ({
         <Controller
           name="description"
           control={control}
-          rules={{ required: "Опис обов'язковий" }}
+          rules={{
+            required: "Опис обов'язковий",
+            validate: {
+              minLength: value => value.length >= 20 || 'Мінімум 20 символів',
+            },
+          }}
           render={({ field }) => (
             <div className="w-full p-[2px] h-[120px] bg-createEventInputBorder rounded-[10px]">
               <textarea

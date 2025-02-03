@@ -14,7 +14,7 @@ const CreateEventPage: React.FC = () => {
   const [startTimeOption, setSelectedStartTimeOption] = useState('');
 
   const handleEventNameChange = (newName: string) => {
-    setEventName(newName);
+    setEventName(newName.trim());
   };
 
   const handleCategoryChangeForUI = (eventType: string) => {

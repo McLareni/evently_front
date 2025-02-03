@@ -1,3 +1,4 @@
+import { useEffect, useState } from 'react';
 import { AiOutlineCalendar } from 'react-icons/ai';
 import { FaRegMoneyBillAlt } from 'react-icons/fa';
 import { GrLocation } from 'react-icons/gr';
@@ -8,8 +9,6 @@ import { formatDateToDayMonth } from '@/helpers/filters/formatDateToDayMonth';
 import { SharedBtn } from '@/components/ui';
 
 import exampleCard from '/images/exampleCard.svg';
-
-import { useEffect, useState } from 'react';
 
 type CardProps = {
   eventName: string;
@@ -34,21 +33,23 @@ const CreateEventCard: React.FC<CardProps> = ({
 
   const formattedDate = formatDateToDayMonth(date);
 
+  const formattedTitle =
+    (eventName.length > 45 && eventName.slice(0, 45) + '...') || eventName;
 
-  const formattedPrice = price === 'Безкоштовно' 
-    ? 'Безкоштовно' 
-    : price === 'Ціна'
-    ? 'Ціна' 
-    : typeof price === 'number'
-    ? `${price} ₴` 
-    : price; 
-  
+  const formattedPrice =
+    price === 'Безкоштовно'
+      ? 'Безкоштовно'
+      : price === 'Ціна'
+        ? 'Ціна'
+        : typeof price === 'number'
+          ? `${price} ₴`
+          : price;
+
   useEffect(() => {
-      if (price == 'Безкоштовно') {
-        setFreeTickets(true)  
-      }else
-      setFreeTickets(false)
-  }, [price])
+    if (price == 'Безкоштовно') {
+      setFreeTickets(true);
+    } else setFreeTickets(false);
+  }, [price]);
 
   return (
     <>
@@ -85,7 +86,7 @@ const CreateEventCard: React.FC<CardProps> = ({
             </p>
           </div>
           <h2 className="min-h-[72px] text-2xl text-textDark break-words whitespace-normal truncate max-w-[250px]">
-            {eventName}
+            {eventName.length === 0 ? 'Назва події' : formattedTitle}
           </h2>
           <ul className="flex flex-col gap-[18px] font-normal text-md text-textDark justify-between w-full">
             <li className="flex items-center gap-[18px]">
@@ -110,7 +111,9 @@ const CreateEventCard: React.FC<CardProps> = ({
             </li>
             <li className="flex items-center gap-[18px]">
               <FaRegMoneyBillAlt size="24px" />
-              <p className={`${freeTickets ? 'text-error' : ''}`}>{formattedPrice}</p>
+              <p className={`${freeTickets ? 'text-error' : ''}`}>
+                {formattedPrice}
+              </p>
             </li>
           </ul>
           <SharedBtn type="button" primary className="w-[230px] h-12 mx-auto">

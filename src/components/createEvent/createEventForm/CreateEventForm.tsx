@@ -106,6 +106,13 @@ const CreateEventForm: React.FC<CreateEventFormProps> = ({
   ]);
   const [isUnlimited, setIsUnlimited] = useState(false);
 
+  const validatedTitle = eventName.length >= 5 && eventName.length <= 100;
+  const validatedDescription =
+    description.length >= 20 && description.length <= 400;
+  const validateForm = validatedTitle && validatedDescription;
+
+  console.log(validatedTitle, validateForm, eventName);
+
   const handleImageFileChange = (id: number, photo: (File | null)[]) => {
     setImageFile(prevPhotos => {
       const updatedPhotos = [...prevPhotos];
@@ -158,8 +165,7 @@ const CreateEventForm: React.FC<CreateEventFormProps> = ({
       title: eventName,
       description: description,
       eventType: categoryValue,
-      // TODO
-      // aboutOrganizer:aboutOrganizer,
+      aboutOrganizer: aboutOrganizer,
       eventUrl: eventUrl,
       location: {
         city: place?.city,
@@ -234,7 +240,6 @@ const CreateEventForm: React.FC<CreateEventFormProps> = ({
         </div>
         <AboutEvent
           handleCategoryChangeForUI={handleCategoryChangeForUI}
-          eventName={eventName}
           description={description}
           onEventNameChange={onEventNameChange}
           onCategoryChange={onEventCategoryChange}
@@ -262,6 +267,7 @@ const CreateEventForm: React.FC<CreateEventFormProps> = ({
         />
         <div className="text-center">
           <SharedBtn
+            disabled={!validateForm}
             type="submit"
             primary
             className="mt-8 bg-gradient-to-r from-[#9B8FF3] to-[#38F6F9] w-[230px] h-[48px]"
