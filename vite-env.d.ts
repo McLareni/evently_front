@@ -3,6 +3,7 @@ interface ImportMetaEnv {
   readonly VITE_GOOGLE_CLIENT_ID: string;
   readonly VITE_CLIENT_SECRET: string;
   readonly VITE_GOOGLE_MAPS_API_KEY: string;
+  readonly VITE_URL: string;
 }
 
 interface ImportMeta {

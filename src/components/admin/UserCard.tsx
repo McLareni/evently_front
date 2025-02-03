@@ -28,7 +28,7 @@ const UserCard: React.FC<IProps> = ({ item, index, openModal }) => {
   return (
     <tr key={item.email} className="relative">
       <CellItem>
-        <Link to={`/admin/profile/${item.id}`} className="flex relative">
+        <Link to={`/user/${item.id}`} className="flex relative">
           <span className="w-11/12 text-nowrap text-ellipsis overflow-hidden">
             {index + 1}. <span className="underline">{item.name}</span>
           </span>

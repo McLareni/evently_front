@@ -1,6 +1,6 @@
 import axios from 'axios';
 
-const URL = 'https://rendereventapp.onrender.com/api/v1/';
+const URL = import.meta.env.VITE_URL;
 
 // export const getUsers = async () => {
 //   try {
