@@ -2,12 +2,12 @@ import { createApi, fetchBaseQuery } from '@reduxjs/toolkit/query/react';
 
 import { RootState } from '../store';
 
-const baseURL = 'https://rendereventapp.onrender.com/api/v1/';
+const URL = import.meta.env.VITE_URL;
 
 export const EventsApi = createApi({
   reducerPath: 'events',
   baseQuery: fetchBaseQuery({
-    baseUrl: baseURL,
+    baseUrl: URL,
     credentials: 'include',
     prepareHeaders: (headers, { getState }) => {
       const token = (getState() as RootState).auth.token;

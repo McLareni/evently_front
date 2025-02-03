@@ -6,6 +6,8 @@ import { useResetRTKEventsApi } from './hooks/query/useResetRTKEventsApi';
 import { useLogOutAfterTokenExpires } from './hooks/useLogOutAfterTokenExpires';
 import router from './routing';
 
+
+
 const App: React.FC = () => {
   useLogOutAfterTokenExpires();
   useGetLikedEventsWithSkip();

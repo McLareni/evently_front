@@ -3,11 +3,12 @@ import { createBrowserRouter } from 'react-router-dom';
 
 import { getAllEventsLoader } from '@/loaders/getAllEventsLoader';
 import Home from '@/pages/Home';
+import UserProfile from '@/pages/UserProfile';
 import AdminEvents from '@/pages/admin/AdminEvents';
 import AdminUsers from '@/pages/admin/AdminUsers';
 import Notifications from '@/pages/admin/Notification';
 import PromoEvents from '@/pages/admin/PromoEvents';
-import UserProfile from '@/pages/admin/UserProfile';
+import UserProfileAdmin from '@/pages/admin/UserProfile';
 import AllEventsPage from '@/pages/events/AllEventsPage';
 import CreateEventForm from '@/pages/events/CreateEventPage';
 import EventDetails from '@/pages/events/EventDetails';
@@ -47,7 +48,7 @@ const router = createBrowserRouter([
       },
       {
         path: 'user/:idUser',
-        element: <>User profile</>,
+        element: <UserProfile />,
       },
       {
         element: <LoginRouter />,
@@ -65,7 +66,7 @@ const router = createBrowserRouter([
               },
               {
                 path: 'profile/:userId',
-                element: <UserProfile />,
+                element: <UserProfileAdmin />,
               },
               { path: 'events', element: <AdminEvents /> },
               { path: 'promo-events', element: <PromoEvents /> },

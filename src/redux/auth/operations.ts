@@ -3,7 +3,7 @@ import axios from 'axios';
 
 import { RootState } from '../store';
 
-const URL = 'https://rendereventapp.onrender.com/api/v1/';
+const URL = import.meta.env.VITE_URL;
 axios.defaults.baseURL = `${URL}`;
 
 const setAuthToken = (token: string) => {
