@@ -105,13 +105,24 @@ const CreateEventForm: React.FC<CreateEventFormProps> = ({
     null,
   ]);
   const [isUnlimited, setIsUnlimited] = useState(false);
+  const [isOffline, setIsOffline] = useState(true);
 
-  const validatedTitle = eventName.length >= 5 && eventName.length <= 100;
+  const validatedTitle =
+    eventName.trim().length >= 5 && eventName.trim().length <= 100;
   const validatedDescription =
-    description.length >= 20 && description.length <= 400;
-  const validateForm = validatedTitle && validatedDescription;
+    description.trim().length >= 20 && description.trim().length <= 400;
+  const validateTitleDescr = validatedTitle && validatedDescription;
 
-  console.log(validatedTitle, validateForm, eventName);
+  const validateDate = date.length > 0;
+  const validateStart = startTimeOption.length > 0;
+  const validateEnd = endTimeOption.length > 0;
+
+  const toggleOfflineOnline = (value: boolean) => {
+    setIsOffline(value);
+  };
+
+  const validateForm =
+    validateTitleDescr && validateDate && validateStart && validateEnd;
 
   const handleImageFileChange = (id: number, photo: (File | null)[]) => {
     setImageFile(prevPhotos => {
@@ -245,6 +256,7 @@ const CreateEventForm: React.FC<CreateEventFormProps> = ({
           onCategoryChange={onEventCategoryChange}
           onDescriptionChange={handleDescriptionChange}
           onEventCategoryChange={onEventCategoryChange}
+          validateTitleDescr={validateTitleDescr}
         />
         <DateAndPlace
           date={date}
@@ -253,6 +265,8 @@ const CreateEventForm: React.FC<CreateEventFormProps> = ({
           handleStartTime={handleStartTime}
           handleEndTime={handleEndTime}
           handleEventUrlChange={handleEventUrlChange}
+          toggleOfflineOnline={toggleOfflineOnline}
+          isOffline={isOffline}
         />
         <TicketPrice
           price={price}

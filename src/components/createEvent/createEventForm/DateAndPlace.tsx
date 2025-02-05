@@ -16,6 +16,8 @@ interface DateAndPlaceProps {
   handleEndTime: (endTime: string) => void;
   onPlaceChange: (newPlace: EventPlaceWithGps) => void;
   handleEventUrlChange: (eventUrl: string) => void;
+  toggleOfflineOnline: (value: boolean) => void;
+  isOffline: boolean;
 }
 
 const DateAndPlace = ({
@@ -25,17 +27,17 @@ const DateAndPlace = ({
   handleEndTime,
   onPlaceChange,
   handleEventUrlChange,
+  toggleOfflineOnline,
+  isOffline,
 }: DateAndPlaceProps) => {
   const [startTimeSelect, setStartTimeSelect] = useState(false);
   const [endTimeSelect, setEndTimeSelect] = useState(false);
-  const [selectedStartTimeOption, setSelectedStartTimeOption] =
-    useState('Оберіть час');
-  const [selectedEndOption, setSelectedEndTimeOption] = useState('Оберіть час');
+  const [selectedStartTimeOption, setSelectedStartTimeOption] = useState('');
+  const [selectedEndOption, setSelectedEndTimeOption] = useState('');
   const [options, setOptions] = useState<{ label: string; value: string }[]>(
     []
   );
   const [isCalendarShown, setIsCalendarShown] = useState(false);
-  const [eventType, setEventType] = useState(true);
   const dropdownStartTimeRef = useRef<HTMLDivElement | null>(null);
   const dropdownEndTimeRef = useRef<HTMLDivElement | null>(null);
 
@@ -130,8 +132,11 @@ const DateAndPlace = ({
             >
               <div className="flex">
                 <AiOutlineCalendar size="24px" />
-
-                {date && <p className="pl-2">{formattedDate}</p>}
+                {date ? (
+                  <p className="pl-2">{formattedDate}</p>
+                ) : (
+                  <p className="pl-2 text-uploadBtnBg">Оберіть дату</p>
+                )}
               </div>
               <BiChevronDown />
             </button>
@@ -159,15 +164,11 @@ const DateAndPlace = ({
             >
               <div className="flex">
                 <BiTimeFive size="24px" />
-                <span
-                  className={`${
-                    selectedStartTimeOption === 'Оберіть час'
-                      ? 'text-uploadBtnBg'
-                      : 'text-black'
-                  } pl-2`}
-                >
-                  {selectedStartTimeOption}
-                </span>
+                {selectedStartTimeOption ? (
+                  <p className="pl-2">{selectedStartTimeOption}</p>
+                ) : (
+                  <p className="pl-2 text-uploadBtnBg">Оберіть час</p>
+                )}
               </div>
               <BiChevronDown />
             </button>
@@ -202,15 +203,11 @@ const DateAndPlace = ({
             >
               <div className="flex">
                 <BiTimeFive size="24px" />
-                <span
-                  className={`${
-                    selectedEndOption === 'Оберіть час'
-                      ? 'text-uploadBtnBg'
-                      : 'text-black'
-                  } pl-2`}
-                >
-                  {selectedEndOption}
-                </span>
+                {selectedEndOption ? (
+                  <p className="pl-2">{selectedEndOption}</p>
+                ) : (
+                  <p className="pl-2 text-uploadBtnBg">Оберіть час</p>
+                )}
               </div>
               <BiChevronDown />
             </button>
@@ -240,27 +237,27 @@ const DateAndPlace = ({
         <button
           type="button"
           className={`${
-            eventType
+            isOffline
               ? 'bg-buttonPurple text-white'
               : 'bg-lightPurple text-gray-700'
           } focus:outline-none font-normal text-xl rounded-[20px] mr-4 py-[12.5px] px-[18px]`}
-          onClick={() => setEventType(true)}
+          onClick={() => toggleOfflineOnline(true)}
         >
           Оффлайн
         </button>
         <button
           type="button"
           className={`${
-            eventType
+            isOffline
               ? 'bg-lightPurple text-gray-700'
               : 'bg-buttonPurple text-white'
           } focus:outline-none font-normal text-xl rounded-[20px] mr-4 py-[12.5px] px-[18px]`}
-          onClick={() => setEventType(false)}
+          onClick={() => toggleOfflineOnline(false)}
         >
           Онлайн
         </button>
       </div>
-      {eventType ? (
+      {isOffline ? (
         <div className="flex flex-col w-full">
           <label id="adress" className="pb-3">
             Адреса

@@ -1,6 +1,7 @@
 /* eslint-disable no-unused-vars */
 import { useEffect, useState } from 'react';
 import { Controller, useForm } from 'react-hook-form';
+import { AiFillCheckCircle } from 'react-icons/ai';
 
 import { categories } from '@/assets/staticData/statickData';
 
@@ -11,6 +12,7 @@ type AboutEventProps = {
   onCategoryChange: (category: string) => void;
   onEventCategoryChange: (category: string) => void;
   handleCategoryChangeForUI: (category: string) => void;
+  validateTitleDescr: boolean;
 };
 
 interface IFormInput {
@@ -26,6 +28,7 @@ const AboutEvent: React.FC<AboutEventProps> = ({
   onCategoryChange,
   onEventCategoryChange,
   handleCategoryChangeForUI,
+  validateTitleDescr,
 }) => {
   const {
     control,
@@ -50,7 +53,7 @@ const AboutEvent: React.FC<AboutEventProps> = ({
   const handleDescriptionChange = (
     e: React.ChangeEvent<HTMLTextAreaElement>
   ) => {
-    setDescriptionLength(e.target.value.length);
+    setDescriptionLength(e.target.value.trim().length);
   };
 
   useEffect(() => {
@@ -59,8 +62,15 @@ const AboutEvent: React.FC<AboutEventProps> = ({
     }
   }, [description, onDescriptionChange]);
   return (
-    <div className="w-[760px] rounded-[20px] border-2 border-buttonPurple flex flex-col py-10 px-10 mb-8">
-      <div className="flex flex-col pb-6">
+    <div className="relative w-[760px] rounded-[20px] border-2 border-buttonPurple flex flex-col py-10 px-10 mb-8">
+      {validateTitleDescr && (
+        <AiFillCheckCircle
+          size={40}
+          color="#3BE660"
+          style={{ position: 'absolute', right: '20px', top: '20px' }}
+        />
+      )}
+      <div className="flex flex-col pb-2">
         <label className="pb-3 text-2xl" htmlFor="title">
           Назва події<span className="star">*</span>
         </label>
@@ -70,7 +80,8 @@ const AboutEvent: React.FC<AboutEventProps> = ({
           rules={{
             required: "Назва обов'язкова",
             validate: {
-              minLength: value => value.length >= 5 || 'Мінімум 5 символів',
+              minLength: value =>
+                value.trim().length >= 5 || 'Мінімум 5 символів',
             },
           }}
           render={({ field }) => (
@@ -83,19 +94,21 @@ const AboutEvent: React.FC<AboutEventProps> = ({
                 className="focus:outline-none w-full h-full p-4 rounded-[8px]"
                 placeholder="Назви подію так, щоб людям було одразу зрозуміло, про що вона"
                 onChange={e => {
-                  onEventNameChange(e.target.value);
+                  onEventNameChange(e.target.value.trim());
                   field.onChange(e);
                 }}
               />
             </div>
           )}
         />
-        {errors.title && (
-          <p className="text-red-500 text-sm">{errors.title.message}</p>
-        )}
+        <div className="h-[20px]">
+          {errors.title && (
+            <p className="text-red-500 text-sm">{errors.title.message}</p>
+          )}
+        </div>
       </div>
 
-      <div className="flex flex-col pb-[25px]">
+      <div className="flex flex-col pb-[5px]">
         <label className="pb-4 text-2xl" htmlFor="description">
           Опис<span className="star">*</span>
         </label>
@@ -105,7 +118,8 @@ const AboutEvent: React.FC<AboutEventProps> = ({
           rules={{
             required: "Опис обов'язковий",
             validate: {
-              minLength: value => value.length >= 20 || 'Мінімум 20 символів',
+              minLength: value =>
+                value.trim().length >= 20 || 'Мінімум 20 символів',
             },
           }}
           render={({ field }) => (
@@ -124,9 +138,11 @@ const AboutEvent: React.FC<AboutEventProps> = ({
             </div>
           )}
         />
-        {errors.description && (
-          <p className="text-red-500 text-sm">{errors.description.message}</p>
-        )}
+        <div className="h-[20px]">
+          {errors.description && (
+            <p className="text-red-500 text-sm">{errors.description.message}</p>
+          )}
+        </div>
         <div className="text-right text-sm text-gray-500 mt-0.5 h-[14px] text-uploadBtnBg">
           {descriptionLength}/{MAX_DESCRIPTION_LENGTH}
         </div>
