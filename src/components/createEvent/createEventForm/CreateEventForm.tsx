@@ -116,13 +116,23 @@ const CreateEventForm: React.FC<CreateEventFormProps> = ({
   const validateDate = date.length > 0;
   const validateStart = startTimeOption.length > 0;
   const validateEnd = endTimeOption.length > 0;
+  const validatePlace = () => {
+    if (isOffline && place) return true;
+    if (
+      !isOffline &&
+      (eventUrl.includes('www.') || eventUrl.includes('https://'))
+    )
+      return true;
+  };
+  const validatedPlace = validatePlace();
+  const validateDateTime =
+    validateDate && validateStart && validateEnd && validatedPlace;
+
+  const validateForm = validateTitleDescr && validateDateTime;
 
   const toggleOfflineOnline = (value: boolean) => {
     setIsOffline(value);
   };
-
-  const validateForm =
-    validateTitleDescr && validateDate && validateStart && validateEnd;
 
   const handleImageFileChange = (id: number, photo: (File | null)[]) => {
     setImageFile(prevPhotos => {
@@ -145,7 +155,8 @@ const CreateEventForm: React.FC<CreateEventFormProps> = ({
   const handleNumberOfTicketsChange = (numberOfTickets: string) =>
     setNumberOfTickets(numberOfTickets);
 
-  const handleEventUrlChange = (eventUrl: string) => setEventUrl(eventUrl);
+  const handleEventUrlChange = (eventUrl: string) =>
+    setEventUrl(eventUrl.trim());
 
   const onEventCategoryChange = (categoryValue: string) =>
     setCategoryValue(categoryValue);
@@ -267,6 +278,7 @@ const CreateEventForm: React.FC<CreateEventFormProps> = ({
           handleEventUrlChange={handleEventUrlChange}
           toggleOfflineOnline={toggleOfflineOnline}
           isOffline={isOffline}
+          validateDateTime={validateDateTime}
         />
         <TicketPrice
           price={price}

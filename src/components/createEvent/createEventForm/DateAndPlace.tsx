@@ -1,6 +1,6 @@
 /* eslint-disable no-unused-vars */
 import { useCallback, useEffect, useRef, useState } from 'react';
-import { AiOutlineCalendar } from 'react-icons/ai';
+import { AiFillCheckCircle, AiOutlineCalendar } from 'react-icons/ai';
 import { BiChevronDown } from 'react-icons/bi';
 import { BiTimeFive } from 'react-icons/bi';
 
@@ -18,6 +18,7 @@ interface DateAndPlaceProps {
   handleEventUrlChange: (eventUrl: string) => void;
   toggleOfflineOnline: (value: boolean) => void;
   isOffline: boolean;
+  validateDateTime: boolean;
 }
 
 const DateAndPlace = ({
@@ -29,6 +30,7 @@ const DateAndPlace = ({
   handleEventUrlChange,
   toggleOfflineOnline,
   isOffline,
+  validateDateTime,
 }: DateAndPlaceProps) => {
   const [startTimeSelect, setStartTimeSelect] = useState(false);
   const [endTimeSelect, setEndTimeSelect] = useState(false);
@@ -114,7 +116,14 @@ const DateAndPlace = ({
   ]);
 
   return (
-    <div className="max-w-[760px] rounded-[20px] border-2 border-buttonPurple flex flex-col pt-10 pb-8 px-8 mb-8">
+    <div className="relative max-w-[760px] rounded-[20px] border-2 border-buttonPurple flex flex-col pt-10 pb-8 px-8 mb-8">
+      {validateDateTime && (
+        <AiFillCheckCircle
+          size={40}
+          color="#3BE660"
+          style={{ position: 'absolute', right: '20px', top: '20px' }}
+        />
+      )}
       <span className="pb-4 text-2xl">
         Дата та час<span className="star">*</span>
       </span>
