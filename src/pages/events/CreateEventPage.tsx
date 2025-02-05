@@ -7,7 +7,7 @@ import CreateEventForm from '@/components/createEvent/createEventForm/CreateEven
 const CreateEventPage: React.FC = () => {
   const [photos, setPhotos] = useState<(string | null)[]>([null, null, null]);
   const [eventName, setEventName] = useState('');
-  const [eventType, seteventType] = useState('');
+  const [eventType, seteventType] = useState('Інше');
   const [date, setDate] = useState<string>('');
   const [place, setPlace] = useState<EventPlaceWithGps | null>(null);
   const [price, setPrice] = useState<number | 'Безкоштовно' | 'Ціна'>('Ціна');

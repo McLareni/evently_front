@@ -38,7 +38,7 @@ const AboutEvent: React.FC<AboutEventProps> = ({
     },
   });
 
-  const [selectedCategory, setSelectedCategory] = useState<string | null>(null);
+  const [selectedCategory, setSelectedCategory] = useState('Інше');
   const [descriptionLength, setDescriptionLength] = useState(0);
 
   const handleCategoryClick = (categoryName: string, categotyValue: string) => {
