@@ -1,5 +1,6 @@
 import Confetti from 'react-confetti';
 import { createPortal } from 'react-dom';
+import { AiOutlineInfoCircle } from 'react-icons/ai';
 import { NavLink } from 'react-router-dom';
 
 import { usePreventScroll } from '@/hooks/usePreventScroll';
@@ -45,10 +46,13 @@ export const PopupEventCreated = ({ event }: PopupEventCreatedProps) => {
         >
           Ура! Твоя подія створена!
         </p>
-        <p className="text-[20px]">
-          Після перевірки вона з’явиться на платформі
-        </p>
         <EventCard event={event} isEventCreated />
+        <div className="flex gap-2">
+          <AiOutlineInfoCircle />
+          <p className="text-[14px] text-[#6B7280]">
+            Після перевірки вона з’явиться на платформі
+          </p>
+        </div>
         <NavLink to={'/my-event'}>
           <Button>Закрити</Button>
         </NavLink>

@@ -78,7 +78,6 @@ export const EventCard: React.FC<EventCardProps> = ({
 
   const toggleIsLiked = (e: React.MouseEvent) => {
     e.stopPropagation();
-    if (isEventCreated) return;
     if (!isLiked) {
       const addLiked = async () => {
         try {
@@ -152,7 +151,7 @@ export const EventCard: React.FC<EventCardProps> = ({
             <span className="text-background">ТОП</span>
           </div>
         )}
-        {!isAdmin && (
+        {!isAdmin && !isEventCreated && (
           <button
             type="button"
             onClick={e => toggleIsLiked(e)}
