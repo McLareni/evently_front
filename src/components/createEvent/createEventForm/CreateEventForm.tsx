@@ -121,8 +121,10 @@ const CreateEventForm: React.FC<CreateEventFormProps> = ({
     if (
       !isOffline &&
       (eventUrl.includes('www.') || eventUrl.includes('https://'))
-    )
+    ) {
       return true;
+    }
+    return false;
   };
   const validatedPlace = validatePlace();
   const validateDateTime =
