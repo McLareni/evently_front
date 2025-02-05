@@ -67,7 +67,7 @@ const AboutEvent: React.FC<AboutEventProps> = ({
         <AiFillCheckCircle
           size={40}
           color="#3BE660"
-          style={{ position: 'absolute', right: '20px', top: '20px' }}
+          style={{ position: 'absolute', right: '8px', top: '8px' }}
         />
       )}
       <div className="flex flex-col pb-2">

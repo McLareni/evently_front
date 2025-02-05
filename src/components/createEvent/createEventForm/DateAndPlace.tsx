@@ -121,7 +121,7 @@ const DateAndPlace = ({
         <AiFillCheckCircle
           size={40}
           color="#3BE660"
-          style={{ position: 'absolute', right: '20px', top: '20px' }}
+          style={{ position: 'absolute', right: '8px', top: '8px' }}
         />
       )}
       <span className="pb-4 text-2xl">

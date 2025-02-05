@@ -3,6 +3,7 @@
 /* eslint-disable no-unused-vars */
 import { useEffect, useState } from 'react';
 import { FormProvider, useForm } from 'react-hook-form';
+import { AiFillCheckCircle } from 'react-icons/ai';
 
 import { selectUser } from '@/redux/auth/selectors';
 import { useAppSelector } from '@/redux/hooks';
@@ -130,7 +131,9 @@ const CreateEventForm: React.FC<CreateEventFormProps> = ({
   const validateDateTime =
     validateDate && validateStart && validateEnd && validatedPlace;
 
-  const validateForm = validateTitleDescr && validateDateTime;
+  const validatePhotos = photos[0] !== null;
+
+  const validateForm = validatePhotos && validateTitleDescr && validateDateTime;
 
   const toggleOfflineOnline = (value: boolean) => {
     setIsOffline(value);
@@ -247,7 +250,7 @@ const CreateEventForm: React.FC<CreateEventFormProps> = ({
   return (
     <FormProvider {...methods}>
       <form onSubmit={handleSubmit(onSubmit)}>
-        <div className="w-[760px] h-[321px] mb-8 rounded-[20px] border-buttonPurple border-2">
+        <div className="relative w-[760px] h-[321px] mb-8 rounded-[20px] border-buttonPurple border-2">
           <div className="flex flex-wrap items-center justify-center gap-16">
             {[0, 1, 2].map(id => (
               <PhotoCard
@@ -261,6 +264,13 @@ const CreateEventForm: React.FC<CreateEventFormProps> = ({
               />
             ))}
           </div>
+          {validatePhotos && (
+            <AiFillCheckCircle
+              size={40}
+              color="#3BE660"
+              style={{ position: 'absolute', right: '8px', top: '8px' }}
+            />
+          )}
         </div>
         <AboutEvent
           handleCategoryChangeForUI={handleCategoryChangeForUI}
