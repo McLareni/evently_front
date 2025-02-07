@@ -36,7 +36,7 @@ const AboutOrganizer: React.FC<AboutOrganizerProps> = ({
   return (
     <div className="w-[760px] rounded-[20px] border-2 border-buttonPurple flex flex-col py-10 px-10">
       <div className="flex flex-col pb-[25px] relative">
-        <label htmlFor="" className="pb-4 text-2xl">
+        <label htmlFor="aboutOrganizer" className="pb-4 text-2xl">
           Про організатора
         </label>
         <Controller

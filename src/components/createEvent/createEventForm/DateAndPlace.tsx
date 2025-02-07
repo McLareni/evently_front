@@ -268,11 +268,13 @@ const DateAndPlace = ({
       </div>
       {isOffline ? (
         <div className="flex flex-col w-full">
-          <label id="adress" className="pb-3">
+          <label htmlFor="address" className="pb-3">
             Адреса
           </label>
           <div className="w-full h-[52px] p-[2px] bg-createEventInputBorder rounded-[10px]">
             <GoogleMapsInput
+              id="address"
+              autoComplete="true"
               className="w-full h-full outline-none"
               placeholder="Адреса проведення"
               onPlaceSelect={place => {

@@ -30,10 +30,7 @@ const TicketPrice: React.FC<TicketPriceProps> = ({
   const unlimitedTickets = watch('unlimitedTickets') as boolean;
   const ticketPrice = watch('ticketPrice');
   const numberOfTickets = watch('numberOfTickets');
-
-  const setIsUnlimited = () => {
-    setValue('unlimitedTickets', !unlimitedTickets);
-  };
+  console.log(unlimitedTickets, numberOfTickets);
 
   useEffect(() => {
     if (unlimitedTickets) {
@@ -98,7 +95,6 @@ const TicketPrice: React.FC<TicketPriceProps> = ({
             name="ticketPrice"
             control={control}
             rules={{
-              // required: "Опис обов'язковий",
               validate: {
                 isValid: value =>
                   freeTickets || +value > 0 || 'Невірний формат',
@@ -126,7 +122,7 @@ const TicketPrice: React.FC<TicketPriceProps> = ({
         </div>
 
         <div className="flex flex-col">
-          <label htmlFor="" className="mb-3">
+          <label htmlFor="numberOfTickets" className="mb-3">
             Кількість квитків
           </label>
           <div className="relative">
@@ -145,6 +141,7 @@ const TicketPrice: React.FC<TicketPriceProps> = ({
               }}
               render={({ field }) => (
                 <input
+                  id="numberOfTickets"
                   {...field}
                   type="number"
                   className={`outline-none border-2 pl-[49px] w-[240px] h-[48px] my-[2px] mx-[2px] p-4 rounded-[10px] [appearance:textfield] [&::-webkit-outer-spin-button]:appearance-none 
@@ -171,11 +168,10 @@ const TicketPrice: React.FC<TicketPriceProps> = ({
               <label className="flex items-center cursor-pointer">
                 <input
                   id="unlimitedTickets"
-                  onClick={setIsUnlimited}
                   type="checkbox"
                   className="appearance-none"
-                  {...field}
-                  checked={unlimitedTickets}
+                  checked={field.value}
+                  onChange={e => field.onChange(e.target.checked)}
                 />
                 <div className="h-5 w-5 flex items-center justify-center bg-lightPink rounded-[5px]">
                   {unlimitedTickets && (
