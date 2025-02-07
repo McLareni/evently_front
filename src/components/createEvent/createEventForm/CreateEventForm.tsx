@@ -166,7 +166,7 @@ const CreateEventForm: React.FC<CreateEventFormProps> = ({
       day: date,
       time: startTimeOption,
     },
-    price: ticketPrice,
+    price: +ticketPrice,
   } as unknown as Event;
 
   const onSubmit = ({
