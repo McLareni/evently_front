@@ -21,16 +21,16 @@ const TicketPrice: React.FC<TicketPriceProps> = ({
   clearErrors,
 }) => {
   const freeTickets = watch('freeTickets') as boolean;
-  const isUnlimited = watch('isUnlimited') as boolean;
+  const unlimitedTickets = watch('unlimitedTickets') as boolean;
   const ticketPrice = watch('ticketPrice');
   const numberOfTickets = watch('numberOfTickets');
 
   const setIsUnlimited = () => {
-    setValue('isUnlimited', !isUnlimited);
+    setValue('unlimitedTickets', !unlimitedTickets);
   };
 
   useEffect(() => {
-    if (isUnlimited) {
+    if (unlimitedTickets) {
       setValue('numberOfTickets', '');
       clearErrors('numberOfTickets');
     }
@@ -38,14 +38,14 @@ const TicketPrice: React.FC<TicketPriceProps> = ({
       setValue('ticketPrice', '');
       clearErrors('ticketPrice');
     }
-  }, [clearErrors, freeTickets, isUnlimited, setValue]);
+  }, [clearErrors, freeTickets, unlimitedTickets, setValue]);
 
   return (
     <div className="relative max-w-[760px] rounded-[20px] border-2 border-buttonPurple flex flex-col py-8 pl-8 mb-8">
       {!errors.ticketPrice &&
         !errors.numberOfTickets &&
         (freeTickets || ticketPrice) &&
-        (isUnlimited || numberOfTickets) && (
+        (unlimitedTickets || numberOfTickets) && (
           <AiFillCheckCircle
             size={40}
             color="#3BE660"
@@ -125,7 +125,7 @@ const TicketPrice: React.FC<TicketPriceProps> = ({
           </label>
           <div className="relative">
             <HiOutlineTicket
-              color={isUnlimited ? '#D0D5D8' : '#000000'}
+              color={unlimitedTickets ? '#D0D5D8' : '#000000'}
               className={`absolute top-[15.25px] left-[17.25px] w-6 h-6 `}
             />
             <Controller
@@ -134,7 +134,7 @@ const TicketPrice: React.FC<TicketPriceProps> = ({
               rules={{
                 validate: {
                   isValid: value =>
-                    isUnlimited || +value > 0 || 'Невірний формат',
+                    unlimitedTickets || +value > 0 || 'Невірний формат',
                 },
               }}
               render={({ field }) => (
@@ -142,9 +142,9 @@ const TicketPrice: React.FC<TicketPriceProps> = ({
                   {...field}
                   type="number"
                   className={`outline-none border-2 pl-[49px] w-[240px] h-[48px] my-[2px] mx-[2px] p-4 rounded-[10px] [appearance:textfield] [&::-webkit-outer-spin-button]:appearance-none 
-                [&::-webkit-inner-spin-button]:appearance-none  ${isUnlimited ? 'border-[#D0D5D8]' : 'border-buttonPurple'}`}
+                [&::-webkit-inner-spin-button]:appearance-none  ${unlimitedTickets ? 'border-[#D0D5D8]' : 'border-buttonPurple'}`}
                   placeholder="100"
-                  disabled={isUnlimited}
+                  disabled={unlimitedTickets}
                 />
               )}
             />
@@ -169,10 +169,12 @@ const TicketPrice: React.FC<TicketPriceProps> = ({
                   type="checkbox"
                   className="appearance-none"
                   {...field}
-                  checked={isUnlimited}
+                  checked={unlimitedTickets}
                 />
                 <div className="h-5 w-5 flex items-center justify-center bg-lightPink rounded-[5px]">
-                  {isUnlimited && <MdDone className="text-black w-6 h-6" />}
+                  {unlimitedTickets && (
+                    <MdDone className="text-black w-6 h-6" />
+                  )}
                 </div>
                 <span className="ml-2">Необмежена кількість</span>
               </label>

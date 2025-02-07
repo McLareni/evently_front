@@ -100,7 +100,6 @@ const CreateEventForm: React.FC<CreateEventFormProps> = ({
       },
       eventUrl: '',
       freeTickets: false,
-      isUnlimited: false,
     },
   });
 
@@ -122,8 +121,6 @@ const CreateEventForm: React.FC<CreateEventFormProps> = ({
     validateDate && validateStart && validateEnd && validatedPlace;
 
   const validatePhotos = photos[0] !== null;
-
-  const validateForm = validatePhotos && validateDateTime;
 
   const handleImageFileChange = (id: number, photo: (File | null)[]) => {
     setImageFile(prevPhotos => {
