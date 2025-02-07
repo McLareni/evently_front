@@ -1,6 +1,6 @@
 /* eslint-disable no-unused-vars */
-import { useEffect, useState } from 'react';
-import { Controller, useForm } from 'react-hook-form';
+import { useState } from 'react';
+import { Controller } from 'react-hook-form';
 import { AiFillCheckCircle } from 'react-icons/ai';
 import { BiSmile } from 'react-icons/bi';
 
@@ -8,76 +8,56 @@ import { categories } from '@/assets/staticData/statickData';
 import Picker, { EmojiClickData } from 'emoji-picker-react';
 
 type AboutEventProps = {
-  onEventNameChange: (eventName: string) => void;
-  onDescriptionChange: (eventDescription: string) => void;
-  onCategoryChange: (category: string) => void;
-  onEventCategoryChange: (category: string) => void;
-  handleCategoryChangeForUI: (category: string) => void;
-  validateTitleDescr: boolean;
+  control: any;
+  setValue: (name: string, value: string) => void;
+  watch: (name: string) => string;
+  errors: any;
 };
 
-interface IFormInput {
-  title: string;
-  description: string;
-}
 const MAX_DESCRIPTION_LENGTH = 400;
 
 const AboutEvent: React.FC<AboutEventProps> = ({
-  onEventNameChange,
-  onDescriptionChange,
-  onCategoryChange,
-  onEventCategoryChange,
-  handleCategoryChangeForUI,
-  validateTitleDescr,
+  control,
+  setValue,
+  watch,
+  errors,
 }) => {
-  const {
-    control,
-    formState: { errors },
-  } = useForm<IFormInput>({
-    mode: 'onChange',
-    defaultValues: {
-      title: '',
-      description: '',
-    },
-  });
-
-  const [selectedCategory, setSelectedCategory] = useState('Інше');
   const [showPicker, setShowPicker] = useState(false);
-  const [eventDescription, setEventDescription] = useState('');
 
   const onEmojiClick = (emojiObject: EmojiClickData) => {
-    if (eventDescription.length < MAX_DESCRIPTION_LENGTH - 1) {
-      setEventDescription(prevInput => prevInput + emojiObject.emoji);
+    if (description.length < MAX_DESCRIPTION_LENGTH - 1) {
+      setValue('description', description + emojiObject.emoji);
       setShowPicker(false);
     }
   };
 
   const handleCategoryClick = (categoryName: string, categotyValue: string) => {
-    setSelectedCategory(categoryName);
-    onCategoryChange(categoryName);
-    onEventCategoryChange(categotyValue);
-    handleCategoryChangeForUI(categoryName);
+    setValue('eventType.name', categoryName);
+    setValue('eventType.value', categotyValue);
   };
 
-  useEffect(() => {
-    onDescriptionChange(eventDescription);
-  }, [eventDescription, onDescriptionChange]);
+  const eventTitle = watch('eventTitle');
+  const description = watch('description');
+  const selectedCategory = watch('eventType.name');
 
   return (
     <div className="relative w-[760px] rounded-[20px] border-2 border-buttonPurple flex flex-col py-10 px-10 mb-8">
-      {validateTitleDescr && (
-        <AiFillCheckCircle
-          size={40}
-          color="#3BE660"
-          style={{ position: 'absolute', right: '8px', top: '8px' }}
-        />
-      )}
+      {!errors.eventTitle &&
+        !errors.description &&
+        eventTitle &&
+        description && (
+          <AiFillCheckCircle
+            size={40}
+            color="#3BE660"
+            style={{ position: 'absolute', right: '8px', top: '8px' }}
+          />
+        )}
       <div className="flex flex-col pb-2">
-        <label className="pb-3 text-2xl" htmlFor="title">
+        <label className="pb-3 text-2xl" htmlFor="eventTitle">
           Назва події<span className="star">*</span>
         </label>
         <Controller
-          name="title"
+          name="eventTitle"
           control={control}
           rules={{
             required: "Назва обов'язкова",
@@ -92,20 +72,17 @@ const AboutEvent: React.FC<AboutEventProps> = ({
                 minLength={5}
                 maxLength={100}
                 type="text"
-                id="title"
+                id="eventTitle"
                 className="focus:outline-none w-full h-full p-4 rounded-[8px]"
                 placeholder="Назви подію так, щоб людям було одразу зрозуміло, про що вона"
-                onChange={e => {
-                  onEventNameChange(e.target.value.trim());
-                  field.onChange(e);
-                }}
+                {...field}
               />
             </div>
           )}
         />
         <div className="h-[20px]">
-          {errors.title && (
-            <p className="text-red-500 text-sm">{errors.title.message}</p>
+          {errors.eventTitle && (
+            <p className="text-red-500 text-sm">{errors.eventTitle.message}</p>
           )}
         </div>
       </div>
@@ -130,12 +107,8 @@ const AboutEvent: React.FC<AboutEventProps> = ({
                 className="focus:outline-none w-full h-full p-4 rounded-[8px] resize-none"
                 maxLength={MAX_DESCRIPTION_LENGTH}
                 id="description"
-                value={eventDescription}
                 placeholder="Коротко опиши ідею та концепцію події"
-                onChange={e => {
-                  field.onChange(e);
-                  setEventDescription(e.target.value);
-                }}
+                {...field}
               ></textarea>
             </div>
           )}
@@ -145,7 +118,7 @@ const AboutEvent: React.FC<AboutEventProps> = ({
             <p className="text-red-500 text-sm">{errors.description.message}</p>
           )}
           <div className="ml-auto text-sm text-gray-500 mt-0.5 h-[14px] text-uploadBtnBg">
-            {eventDescription.trim().length}/{MAX_DESCRIPTION_LENGTH}
+            {description?.length || 0}/{MAX_DESCRIPTION_LENGTH}
           </div>
           <button type="button" onClick={() => setShowPicker(val => !val)}>
             <BiSmile
@@ -163,23 +136,29 @@ const AboutEvent: React.FC<AboutEventProps> = ({
           <span className="pb-4 text-2xl">
             Категорія<span className="star">*</span>
           </span>
-          <div className="flex break-words w-[669px] h-[112px] flex-wrap">
-            {categories.map(category => (
-              <div
-                key={category.name}
-                onClick={() =>
-                  handleCategoryClick(category.name, category.value)
-                }
-                className={`${
-                  selectedCategory === category.name
-                    ? 'bg-gradient-to-r from-[#12C2E9] to-[#C471ED]'
-                    : 'bg-gradient-to-r from-[#E9E6FF] to-[#D5FEFF]'
-                } hover:from-[#12C2E9] hover:to-[#C471ED] transition ease-in-out duration-700 cursor-pointer flex items-center rounded-[20px] border-[1px] border-borderColor text-xl mr-4 last:pr-0 h-12 px-[18px] min-w-[80px] max-w-[230px]`}
-              >
-                {category.name}
+          <Controller
+            name="eventType"
+            control={control}
+            render={() => (
+              <div className="flex break-words w-[669px] h-[112px] flex-wrap">
+                {categories.map(category => (
+                  <div
+                    key={category.name}
+                    onClick={() =>
+                      handleCategoryClick(category.name, category.value)
+                    }
+                    className={`${
+                      selectedCategory === category.name
+                        ? 'bg-gradient-to-r from-[#12C2E9] to-[#C471ED]'
+                        : 'bg-gradient-to-r from-[#E9E6FF] to-[#D5FEFF]'
+                    } hover:from-[#12C2E9] hover:to-[#C471ED] transition ease-in-out duration-700 cursor-pointer flex items-center rounded-[20px] border-[1px] border-borderColor text-xl mr-4 last:pr-0 h-12 px-[18px] min-w-[80px] max-w-[230px]`}
+                  >
+                    {category.name}
+                  </div>
+                ))}
               </div>
-            ))}
-          </div>
+            )}
+          />
         </div>
       </div>
     </div>

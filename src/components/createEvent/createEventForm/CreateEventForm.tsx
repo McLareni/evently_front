@@ -65,7 +65,29 @@ const CreateEventForm: React.FC<CreateEventFormProps> = ({
   toggleOfflineOnline,
   isOffline,
 }) => {
-  const methods = useForm({
+  const [endTimeOption, setSelectedEndTimeOption] = useState('');
+  const [description, setDescription] = useState('');
+  const [numberOfTickets, setNumberOfTickets] = useState('');
+  const [ticketPrice, setTickePrice] = useState<number | undefined>();
+  const [eventUrl, setEventUrl] = useState('');
+  const [organizers, setOrganizers] = useState<string>('');
+  const [categoryValue, setCategoryValue] = useState<string>('OTHER');
+  const [isSuccessPopupShown, setIsSuccessPopupShown] = useState(false);
+  const [isLoading, setIsLoading] = useState(false);
+  const [imageFile, setImageFile] = useState<(File | null)[]>([
+    null,
+    null,
+    null,
+  ]);
+  const [isUnlimited, setIsUnlimited] = useState(false);
+  const {
+    control,
+    setValue,
+    watch,
+    handleSubmit,
+    formState: { isValid, errors },
+  } = useForm({
+    mode: 'onChange',
     defaultValues: {
       organizers: {
         id: '',
@@ -73,9 +95,10 @@ const CreateEventForm: React.FC<CreateEventFormProps> = ({
       firstImg: '',
       secondImg: '',
       thirdImg: '',
+      aboutOrganizer: '',
       eventTitle: '',
-      eventDescription: '',
-      eventType: '',
+      description: '',
+      eventType: { name: 'Інше', value: 'OTHER' },
       startDate: '',
       startTime: '',
       endTime: '',
@@ -91,25 +114,9 @@ const CreateEventForm: React.FC<CreateEventFormProps> = ({
       eventUrl: '',
     },
   });
+  console.log(organizers);
 
-  const { handleSubmit } = methods;
-
-  const [endTimeOption, setSelectedEndTimeOption] = useState('');
-  const [description, setDescription] = useState('');
-  const [numberOfTickets, setNumberOfTickets] = useState('');
-  const [ticketPrice, setTickePrice] = useState<number | undefined>();
-  const [eventUrl, setEventUrl] = useState('');
-  const [organizers, setOrganizers] = useState<string>('');
-  const [categoryValue, setCategoryValue] = useState<string>('OTHER');
-  const [aboutOrganizer, setAboutOrganizer] = useState('');
-  const [isSuccessPopupShown, setIsSuccessPopupShown] = useState(false);
-  const [isLoading, setIsLoading] = useState(false);
-  const [imageFile, setImageFile] = useState<(File | null)[]>([
-    null,
-    null,
-    null,
-  ]);
-  const [isUnlimited, setIsUnlimited] = useState(false);
+  // const { handleSubmit } = methods;
 
   const validatedTitle =
     eventName.trim().length >= 5 && eventName.trim().length <= 100;
@@ -150,20 +157,11 @@ const CreateEventForm: React.FC<CreateEventFormProps> = ({
 
   const handleEndTime = (endTime: string) => setSelectedEndTimeOption(endTime);
 
-  const handleDescriptionChange = (description: string) =>
-    setDescription(description);
-
-  const handleAboutOrganizerChange = (aboutOrganizer: string) =>
-    setAboutOrganizer(aboutOrganizer);
-
   const handleNumberOfTicketsChange = (numberOfTickets: string) =>
     setNumberOfTickets(numberOfTickets);
 
   const handleEventUrlChange = (eventUrl: string) =>
     setEventUrl(eventUrl.trim());
-
-  const onEventCategoryChange = (categoryValue: string) =>
-    setCategoryValue(categoryValue);
 
   const toggleIsUnlimited = () => {
     setIsUnlimited(!isUnlimited);
@@ -186,12 +184,12 @@ const CreateEventForm: React.FC<CreateEventFormProps> = ({
     price: ticketPrice,
   } as unknown as Event;
 
-  const onSubmit = () => {
+  const onSubmit = (data: any) => {
     const event = {
       title: eventName,
       description: description,
       eventType: categoryValue,
-      aboutOrganizer: aboutOrganizer,
+      aboutOrganizer: data.aboutOrganizer,
       eventUrl: eventUrl,
       location: {
         city: place?.city,
@@ -216,18 +214,19 @@ const CreateEventForm: React.FC<CreateEventFormProps> = ({
     const secondImage = imageFile[1];
     const thirdImage = imageFile[2];
 
-    setIsLoading(true);
-    createEvent(event, firstImage, secondImage, thirdImage)
-      .then(response => {
-        if (response.status === 201) {
-          setIsSuccessPopupShown(true);
-        }
-        setIsLoading(false);
-      })
-      .catch(error => {
-        setIsLoading(false);
-        console.error(error);
-      });
+    // setIsLoading(true);
+    // createEvent(event, firstImage, secondImage, thirdImage)
+    //   .then(response => {
+    //     if (response.status === 201) {
+    //       setIsSuccessPopupShown(true);
+    //     }
+    //     setIsLoading(false);
+    //   })
+    //   .catch(error => {
+    //     setIsLoading(false);
+    //     console.error(error);
+    //   });
+    console.log(data);
   };
 
   useEffect(() => {
@@ -237,8 +236,8 @@ const CreateEventForm: React.FC<CreateEventFormProps> = ({
   const user = useAppSelector(selectUser);
 
   useEffect(() => {
-    setOrganizers(user.id.toString());
-  }, [user]);
+    setValue('organizers.id', user.id);
+  }, [setValue, user]);
 
   useEffect(() => {
     if (price !== 'Безкоштовно' && price !== 'Ціна') {
@@ -247,74 +246,68 @@ const CreateEventForm: React.FC<CreateEventFormProps> = ({
   }, [price]);
 
   return (
-    <FormProvider {...methods}>
-      <form onSubmit={handleSubmit(onSubmit)}>
-        <div className="relative w-[760px] h-[321px] mb-8 rounded-[20px] border-buttonPurple border-2">
-          <div className="flex flex-wrap items-center justify-center gap-16">
-            {[0, 1, 2].map(id => (
-              <PhotoCard
-                key={id}
-                title={'Додати фото події'}
-                subtitle={subtitles[id]}
-                id={id}
-                photo={photos[id]}
-                onPhotoChange={onPhotoChange}
-                handleImageFileChange={handleImageFileChange}
-              />
-            ))}
-          </div>
-          {validatePhotos && (
-            <AiFillCheckCircle
-              size={40}
-              color="#3BE660"
-              style={{ position: 'absolute', right: '8px', top: '8px' }}
+    <form onSubmit={handleSubmit(onSubmit)}>
+      <div className="relative w-[760px] h-[321px] mb-8 rounded-[20px] border-buttonPurple border-2">
+        <div className="flex flex-wrap items-center justify-center gap-16">
+          {[0, 1, 2].map(id => (
+            <PhotoCard
+              key={id}
+              title={'Додати фото події'}
+              subtitle={subtitles[id]}
+              id={id}
+              photo={photos[id]}
+              onPhotoChange={onPhotoChange}
+              handleImageFileChange={handleImageFileChange}
             />
-          )}
+          ))}
         </div>
-        <AboutEvent
-          handleCategoryChangeForUI={handleCategoryChangeForUI}
-          onEventNameChange={onEventNameChange}
-          onCategoryChange={onEventCategoryChange}
-          onDescriptionChange={handleDescriptionChange}
-          onEventCategoryChange={onEventCategoryChange}
-          validateTitleDescr={validateTitleDescr}
-        />
-        <DateAndPlace
-          date={date}
-          onPlaceChange={onPlaceChange}
-          handleDateChange={handleDateChange}
-          handleStartTime={handleStartTime}
-          handleEndTime={handleEndTime}
-          handleEventUrlChange={handleEventUrlChange}
-          toggleOfflineOnline={toggleOfflineOnline}
-          isOffline={isOffline}
-          validateDateTime={validateDateTime}
-        />
-        <TicketPrice
-          price={price}
-          onPriceChange={onPriceChange}
-          handleNumberOfTicketsChange={handleNumberOfTicketsChange}
-          isUnlimited={isUnlimited}
-          toggleIsUnlimited={toggleIsUnlimited}
-          numberOfTickets={numberOfTickets}
-        />
-        <AboutOrganizer
-          handleAboutOrganizerChange={handleAboutOrganizerChange}
-        />
-        <div className="text-center">
-          <SharedBtn
-            disabled={!validateForm}
-            type="submit"
-            primary
-            className="mt-8 bg-gradient-to-r from-[#9B8FF3] to-[#38F6F9] w-[230px] h-[48px]"
-          >
-            Створити подію
-          </SharedBtn>
-        </div>
-      </form>
+        {validatePhotos && (
+          <AiFillCheckCircle
+            size={40}
+            color="#3BE660"
+            style={{ position: 'absolute', right: '8px', top: '8px' }}
+          />
+        )}
+      </div>
+      <AboutEvent
+        control={control}
+        setValue={setValue}
+        watch={watch}
+        errors={errors}
+      />
+      <DateAndPlace
+        date={date}
+        onPlaceChange={onPlaceChange}
+        handleDateChange={handleDateChange}
+        handleStartTime={handleStartTime}
+        handleEndTime={handleEndTime}
+        handleEventUrlChange={handleEventUrlChange}
+        toggleOfflineOnline={toggleOfflineOnline}
+        isOffline={isOffline}
+        validateDateTime={validateDateTime}
+      />
+      <TicketPrice
+        price={price}
+        onPriceChange={onPriceChange}
+        handleNumberOfTicketsChange={handleNumberOfTicketsChange}
+        isUnlimited={isUnlimited}
+        toggleIsUnlimited={toggleIsUnlimited}
+        numberOfTickets={numberOfTickets}
+      />
+      <AboutOrganizer control={control} setValue={setValue} watch={watch} />
+      <div className="text-center">
+        <SharedBtn
+          disabled={!isValid}
+          type="submit"
+          primary
+          className="mt-8 bg-gradient-to-r from-[#9B8FF3] to-[#38F6F9] w-[230px] h-[48px]"
+        >
+          Створити подію
+        </SharedBtn>
+      </div>
       {isLoading && <Spinner />}
       {isSuccessPopupShown && <PopupEventCreated event={popupEvent} />}
-    </FormProvider>
+    </form>
   );
 };
 
