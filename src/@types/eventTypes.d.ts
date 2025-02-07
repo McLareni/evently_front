@@ -113,7 +113,7 @@ type EventCategoryType = {
   value: string;
 };
 
-type Location = {
+type CreateEventLocation = {
   city: string;
   street: string;
   venue: string;
@@ -138,7 +138,7 @@ type CreateEventFormValues = {
   endTime: string;
   ticketPrice: string;
   numberOfTickets: string;
-  location: Location;
+  location: CreateEventLocation;
   eventUrl: string;
   freeTickets: boolean;
 };

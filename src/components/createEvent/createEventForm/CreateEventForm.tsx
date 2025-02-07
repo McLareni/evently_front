@@ -24,9 +24,9 @@ type CreateEventFormProps = {
   photo: string | null;
   date: string;
   startTimeOption: string;
-  place: EventPlaceWithGps | null;
+  place: CreateEventLocation | null;
   onPhotoChange: (id: number, photo: string | null) => void;
-  onPlaceChange: (newPlace: EventPlaceWithGps) => void;
+  onPlaceChange: (newPlace: CreateEventLocation) => void;
   handleDateChange: (newDate: string) => void;
   handleStartTime: (endTime: string) => void;
   toggleOfflineOnline: (value: boolean) => void;
@@ -157,8 +157,8 @@ const CreateEventForm: React.FC<CreateEventFormProps> = ({
     photoUrl: photo,
     eventUrl: eventUrl,
     location: {
-      city: place?.city || '',
-      street: place?.name,
+      city: place?.city,
+      street: place?.street,
     },
     date: {
       day: date,
@@ -186,10 +186,10 @@ const CreateEventForm: React.FC<CreateEventFormProps> = ({
       eventUrl: eventUrl,
       location: {
         city: place?.city,
-        street: place?.name,
+        street: place?.street,
         venue: '',
-        latitude: place?.lat,
-        longitude: place?.lng,
+        latitude: place?.latitude,
+        longitude: place?.longitude,
       },
       date: {
         day: date,
@@ -201,9 +201,9 @@ const CreateEventForm: React.FC<CreateEventFormProps> = ({
       ticketPrice: +ticketPrice,
     };
 
-    const firstImage = imageFile[0];
-    const secondImage = imageFile[1];
-    const thirdImage = imageFile[2];
+    // const firstImage = imageFile[0];
+    // const secondImage = imageFile[1];
+    // const thirdImage = imageFile[2];
 
     // setIsLoading(true);
     // createEvent(event, firstImage, secondImage, thirdImage)

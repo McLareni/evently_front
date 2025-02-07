@@ -14,7 +14,7 @@ interface DateAndPlaceProps {
   handleDateChange: (newDate: string) => void;
   handleStartTime: (startTime: string) => void;
   handleEndTime: (endTime: string) => void;
-  onPlaceChange: (newPlace: EventPlaceWithGps) => void;
+  onPlaceChange: (newPlace: CreateEventLocation) => void;
   handleEventUrlChange: (eventUrl: string) => void;
   toggleOfflineOnline: (value: boolean) => void;
   isOffline: boolean;
@@ -280,10 +280,10 @@ const DateAndPlace = ({
               onPlaceSelect={place => {
                 if (!place || !place.geometry) return;
                 const formattedPlace = {
-                  formatted: place.formatted_address || '',
-                  lat: place.geometry.location?.lat() || 0,
-                  lng: place.geometry.location?.lng() || 0,
-                  name: place.name || '',
+                  venue: '',
+                  latitude: place.geometry.location?.lat().toString() || '0',
+                  longitude: place.geometry.location?.lng().toString() || '0',
+                  street: place.name || '',
                   city: 'Київ',
                 };
                 onPlaceChange(formattedPlace);

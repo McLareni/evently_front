@@ -1,3 +1,5 @@
+/* eslint-disable @typescript-eslint/no-unused-expressions */
+
 /* eslint-disable no-unused-vars */
 import { useEffect, useState } from 'react';
 import { Calendar } from 'react-date-range';
@@ -12,7 +14,7 @@ interface CreateEventCalendarProps {
 
 export const CreateEventCalendar = ({
   handleDateChange,
-  toggleIsCalendarShown
+  toggleIsCalendarShown,
 }: CreateEventCalendarProps) => {
   const [date, setDate] = useState<Date | undefined>();
 
@@ -20,7 +22,7 @@ export const CreateEventCalendar = ({
 
   useEffect(() => {
     date && toggleIsCalendarShown();
-  }, [date, toggleIsCalendarShown])
+  }, [date, toggleIsCalendarShown]);
 
   useEffect(() => {
     handleDateChange(formattedDate);
@@ -33,7 +35,7 @@ export const CreateEventCalendar = ({
       locale={uk}
       showDateDisplay={false}
       date={date}
-      className='bg-background'
+      className="bg-background"
     />
   );
 };
