@@ -36,28 +36,25 @@ const AboutEvent: React.FC<AboutEventProps> = ({
     setValue('eventType.value', categotyValue);
   };
 
-  const eventTitle = watch('eventTitle');
+  const title = watch('title');
   const description = watch('description');
   const selectedCategory = watch('eventType.name');
 
   return (
     <div className="relative w-[760px] rounded-[20px] border-2 border-buttonPurple flex flex-col py-10 px-10 mb-8">
-      {!errors.eventTitle &&
-        !errors.description &&
-        eventTitle &&
-        description && (
-          <AiFillCheckCircle
-            size={40}
-            color="#3BE660"
-            style={{ position: 'absolute', right: '8px', top: '8px' }}
-          />
-        )}
+      {!errors.title && !errors.description && title && description && (
+        <AiFillCheckCircle
+          size={40}
+          color="#3BE660"
+          style={{ position: 'absolute', right: '8px', top: '8px' }}
+        />
+      )}
       <div className="flex flex-col pb-2">
-        <label className="pb-3 text-2xl" htmlFor="eventTitle">
+        <label className="pb-3 text-2xl" htmlFor="title">
           Назва події<span className="star">*</span>
         </label>
         <Controller
-          name="eventTitle"
+          name="title"
           control={control}
           rules={{
             required: "Назва обов'язкова",
@@ -72,7 +69,7 @@ const AboutEvent: React.FC<AboutEventProps> = ({
                 minLength={5}
                 maxLength={100}
                 type="text"
-                id="eventTitle"
+                id="title"
                 className="focus:outline-none w-full h-full p-4 rounded-[8px]"
                 placeholder="Назви подію так, щоб людям було одразу зрозуміло, про що вона"
                 {...field}
@@ -81,8 +78,8 @@ const AboutEvent: React.FC<AboutEventProps> = ({
           )}
         />
         <div className="h-[20px]">
-          {errors.eventTitle && (
-            <p className="text-red-500 text-sm">{errors.eventTitle.message}</p>
+          {errors.title && (
+            <p className="text-red-500 text-sm">{errors.title.message}</p>
           )}
         </div>
       </div>

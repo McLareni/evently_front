@@ -2,7 +2,7 @@
 
 /* eslint-disable no-unused-vars */
 import { useEffect, useState } from 'react';
-import { FormProvider, useForm } from 'react-hook-form';
+import { useForm } from 'react-hook-form';
 import { AiFillCheckCircle } from 'react-icons/ai';
 
 import { selectUser } from '@/redux/auth/selectors';
@@ -22,18 +22,14 @@ import TicketPrice from './TicketPrice';
 
 type CreateEventFormProps = {
   photos: (string | null)[];
-  eventName: string;
-  eventType: string;
   price: number | 'Безкоштовно' | 'Ціна';
   photo: string | null;
   date: string;
   startTimeOption: string;
   place: EventPlaceWithGps | null;
   onPhotoChange: (id: number, photo: string | null) => void;
-  onEventNameChange: (eventName: string) => void;
   onPlaceChange: (newPlace: EventPlaceWithGps) => void;
   onPriceChange: (price: number | 'Безкоштовно' | 'Ціна') => void;
-  handleCategoryChangeForUI: (category: string) => void;
   handleDateChange: (newDate: string) => void;
   handleStartTime: (endTime: string) => void;
   toggleOfflineOnline: (value: boolean) => void;
@@ -48,17 +44,13 @@ const subtitles = [
 
 const CreateEventForm: React.FC<CreateEventFormProps> = ({
   photos,
-  eventName,
-  eventType,
   photo,
   place,
   price,
   date,
   startTimeOption,
   onPhotoChange,
-  onEventNameChange,
   onPriceChange,
-  handleCategoryChangeForUI,
   onPlaceChange,
   handleDateChange,
   handleStartTime,
@@ -66,11 +58,9 @@ const CreateEventForm: React.FC<CreateEventFormProps> = ({
   isOffline,
 }) => {
   const [endTimeOption, setSelectedEndTimeOption] = useState('');
-  const [description, setDescription] = useState('');
   const [numberOfTickets, setNumberOfTickets] = useState('');
   const [ticketPrice, setTickePrice] = useState<number | undefined>();
   const [eventUrl, setEventUrl] = useState('');
-  const [organizers, setOrganizers] = useState<string>('');
   const [categoryValue, setCategoryValue] = useState<string>('OTHER');
   const [isSuccessPopupShown, setIsSuccessPopupShown] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
@@ -96,7 +86,8 @@ const CreateEventForm: React.FC<CreateEventFormProps> = ({
       secondImg: '',
       thirdImg: '',
       aboutOrganizer: '',
-      eventTitle: '',
+      unlimitedTickets: false,
+      title: '',
       description: '',
       eventType: { name: 'Інше', value: 'OTHER' },
       startDate: '',
@@ -114,15 +105,6 @@ const CreateEventForm: React.FC<CreateEventFormProps> = ({
       eventUrl: '',
     },
   });
-  console.log(organizers);
-
-  // const { handleSubmit } = methods;
-
-  const validatedTitle =
-    eventName.trim().length >= 5 && eventName.trim().length <= 100;
-  const validatedDescription =
-    description.trim().length >= 20 && description.trim().length <= 400;
-  const validateTitleDescr = validatedTitle && validatedDescription;
 
   const validateDate = date.length > 0;
   const validateStart = startTimeOption.length > 0;
@@ -143,7 +125,7 @@ const CreateEventForm: React.FC<CreateEventFormProps> = ({
 
   const validatePhotos = photos[0] !== null;
 
-  const validateForm = validatePhotos && validateTitleDescr && validateDateTime;
+  const validateForm = validatePhotos && validateDateTime;
 
   const handleImageFileChange = (id: number, photo: (File | null)[]) => {
     setImageFile(prevPhotos => {
@@ -167,10 +149,14 @@ const CreateEventForm: React.FC<CreateEventFormProps> = ({
     setIsUnlimited(!isUnlimited);
   };
 
+  const title = watch('title');
+  const description = watch('description');
+  const eventTypeName = watch('eventType.name');
+
   const popupEvent = {
-    title: eventName,
-    description: description,
-    type: eventType,
+    title,
+    description,
+    type: eventTypeName,
     photoUrl: photo,
     eventUrl: eventUrl,
     location: {
@@ -184,12 +170,19 @@ const CreateEventForm: React.FC<CreateEventFormProps> = ({
     price: ticketPrice,
   } as unknown as Event;
 
-  const onSubmit = (data: any) => {
+  const onSubmit = ({
+    title,
+    description,
+    aboutOrganizer,
+    organizers,
+    eventType,
+  }) => {
     const event = {
-      title: eventName,
-      description: description,
-      eventType: categoryValue,
-      aboutOrganizer: data.aboutOrganizer,
+      title,
+      description,
+      eventType: eventType.value,
+      aboutOrganizer,
+      unlimitedTickets: false,
       eventUrl: eventUrl,
       location: {
         city: place?.city,
@@ -203,9 +196,7 @@ const CreateEventForm: React.FC<CreateEventFormProps> = ({
         time: startTimeOption,
         endTime: endTimeOption,
       },
-      organizers: {
-        id: organizers,
-      },
+      organizers,
       numberOfTickets: +numberOfTickets,
       ticketPrice: ticketPrice,
     };
@@ -226,7 +217,7 @@ const CreateEventForm: React.FC<CreateEventFormProps> = ({
     //     setIsLoading(false);
     //     console.error(error);
     //   });
-    console.log(data);
+    console.log(event);
   };
 
   useEffect(() => {
@@ -297,7 +288,7 @@ const CreateEventForm: React.FC<CreateEventFormProps> = ({
       <AboutOrganizer control={control} setValue={setValue} watch={watch} />
       <div className="text-center">
         <SharedBtn
-          disabled={!isValid}
+          disabled={!isValid || !validateForm}
           type="submit"
           primary
           className="mt-8 bg-gradient-to-r from-[#9B8FF3] to-[#38F6F9] w-[230px] h-[48px]"
