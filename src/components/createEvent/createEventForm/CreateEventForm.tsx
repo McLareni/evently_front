@@ -22,14 +22,12 @@ import TicketPrice from './TicketPrice';
 
 type CreateEventFormProps = {
   photos: (string | null)[];
-  price: number | 'Безкоштовно' | 'Ціна';
   photo: string | null;
   date: string;
   startTimeOption: string;
   place: EventPlaceWithGps | null;
   onPhotoChange: (id: number, photo: string | null) => void;
   onPlaceChange: (newPlace: EventPlaceWithGps) => void;
-  onPriceChange: (price: number | 'Безкоштовно' | 'Ціна') => void;
   handleDateChange: (newDate: string) => void;
   handleStartTime: (endTime: string) => void;
   toggleOfflineOnline: (value: boolean) => void;
@@ -46,11 +44,9 @@ const CreateEventForm: React.FC<CreateEventFormProps> = ({
   photos,
   photo,
   place,
-  price,
   date,
   startTimeOption,
   onPhotoChange,
-  onPriceChange,
   onPlaceChange,
   handleDateChange,
   handleStartTime,
@@ -60,7 +56,6 @@ const CreateEventForm: React.FC<CreateEventFormProps> = ({
 }) => {
   const [endTimeOption, setSelectedEndTimeOption] = useState('');
   const [numberOfTickets, setNumberOfTickets] = useState('');
-  const [ticketPrice, setTickePrice] = useState<number | undefined>();
   const [eventUrl, setEventUrl] = useState('');
   const [isSuccessPopupShown, setIsSuccessPopupShown] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
@@ -93,8 +88,8 @@ const CreateEventForm: React.FC<CreateEventFormProps> = ({
       startDate: '',
       startTime: '',
       endTime: '',
-      ticketPrice: 0,
-      numberOfTickets: 0,
+      ticketPrice: '',
+      numberOfTickets: '',
       location: {
         city: '',
         street: '',
@@ -103,6 +98,8 @@ const CreateEventForm: React.FC<CreateEventFormProps> = ({
         longitude: '',
       },
       eventUrl: '',
+      freeTickets: false,
+      isUnlimited: false,
     },
   });
 
@@ -139,23 +136,17 @@ const CreateEventForm: React.FC<CreateEventFormProps> = ({
 
   const handleEndTime = (endTime: string) => setSelectedEndTimeOption(endTime);
 
-  const handleNumberOfTicketsChange = (numberOfTickets: string) =>
-    setNumberOfTickets(numberOfTickets);
-
   const handleEventUrlChange = (eventUrl: string) =>
     setEventUrl(eventUrl.trim());
 
-  const toggleIsUnlimited = () => {
-    setIsUnlimited(!isUnlimited);
-  };
-
   const title = watch('title');
   const eventTypeName = watch('eventType.name');
+  const ticketPrice = watch('ticketPrice');
 
   useEffect(() => {
-    getFormData({ title, eventTypeName });
+    getFormData({ title, eventTypeName, ticketPrice });
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [title, eventTypeName]);
+  }, [title, eventTypeName, ticketPrice]);
 
   const popupEvent = {
     title,
@@ -179,13 +170,16 @@ const CreateEventForm: React.FC<CreateEventFormProps> = ({
     aboutOrganizer,
     organizers,
     eventType,
+    ticketPrice,
+    numberOfTickets,
+    unlimitedTickets,
   }) => {
     const event = {
       title,
       description,
       eventType: eventType.value,
       aboutOrganizer,
-      unlimitedTickets: false,
+      unlimitedTickets,
       eventUrl: eventUrl,
       location: {
         city: place?.city,
@@ -201,7 +195,7 @@ const CreateEventForm: React.FC<CreateEventFormProps> = ({
       },
       organizers,
       numberOfTickets: +numberOfTickets,
-      ticketPrice: ticketPrice,
+      ticketPrice: +ticketPrice,
     };
 
     const firstImage = imageFile[0];
@@ -223,21 +217,11 @@ const CreateEventForm: React.FC<CreateEventFormProps> = ({
     console.log(event);
   };
 
-  useEffect(() => {
-    isUnlimited && setNumberOfTickets('');
-  }, [isUnlimited]);
-
   const user = useAppSelector(selectUser);
 
   useEffect(() => {
     setValue('organizers.id', user.id);
   }, [setValue, user]);
-
-  useEffect(() => {
-    if (price !== 'Безкоштовно' && price !== 'Ціна') {
-      setTickePrice(price);
-    }
-  }, [price]);
 
   return (
     <form onSubmit={handleSubmit(onSubmit)}>
@@ -281,12 +265,11 @@ const CreateEventForm: React.FC<CreateEventFormProps> = ({
         validateDateTime={validateDateTime}
       />
       <TicketPrice
-        price={price}
-        onPriceChange={onPriceChange}
-        handleNumberOfTicketsChange={handleNumberOfTicketsChange}
         isUnlimited={isUnlimited}
-        toggleIsUnlimited={toggleIsUnlimited}
-        numberOfTickets={numberOfTickets}
+        control={control}
+        setValue={setValue}
+        watch={watch}
+        errors={errors}
       />
       <AboutOrganizer control={control} setValue={setValue} watch={watch} />
       <div className="text-center">

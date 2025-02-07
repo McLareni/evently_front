@@ -12,7 +12,6 @@ import exampleCard from '/images/exampleCard.svg';
 
 type CardProps = {
   place: EventPlaceWithGps | null;
-  price: number | 'Безкоштовно' | 'Ціна';
   photo: string | null;
   date: string;
   startTimeOption: string;
@@ -20,7 +19,6 @@ type CardProps = {
 };
 
 const CreateEventCard: React.FC<CardProps> = ({
-  price,
   photo,
   place,
   date,
@@ -38,20 +36,20 @@ const CreateEventCard: React.FC<CardProps> = ({
   const formattedTitle =
     (title && title.length > 45 && title.slice(0, 45) + '...') || title;
 
-  const formattedPrice =
-    price === 'Безкоштовно'
-      ? 'Безкоштовно'
-      : price === 'Ціна'
-        ? 'Ціна'
-        : typeof price === 'number'
-          ? `${price} ₴`
-          : price;
+  // const formattedPrice =
+  //   price === '0'
+  //     ? 'Безкоштовно'
+  //     : price === 'Ціна'
+  //       ? 'Ціна'
+  //       : typeof price === 'number'
+  //         ? `${price} ₴`
+  //         : price;
 
-  useEffect(() => {
-    if (price == 'Безкоштовно') {
-      setFreeTickets(true);
-    } else setFreeTickets(false);
-  }, [price]);
+  // useEffect(() => {
+  //   if (price == 'Безкоштовно') {
+  //     setFreeTickets(true);
+  //   } else setFreeTickets(false);
+  // }, [price]);
 
   return (
     <>

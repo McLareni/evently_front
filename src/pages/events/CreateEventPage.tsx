@@ -1,5 +1,4 @@
-import { useEffect, useState } from 'react';
-import { useForm } from 'react-hook-form';
+import { useState } from 'react';
 
 import { Container } from '@/components/container/Container';
 import CreateEventCard from '@/components/createEvent/CreateEventCard';
@@ -9,17 +8,21 @@ const CreateEventPage: React.FC = () => {
   const [photos, setPhotos] = useState<(string | null)[]>([null, null, null]);
   const [date, setDate] = useState<string>('');
   const [place, setPlace] = useState<EventPlaceWithGps | null>(null);
-  const [price, setPrice] = useState<number | 'Безкоштовно' | 'Ціна'>('Ціна');
   const [startTimeOption, setSelectedStartTimeOption] = useState('');
   const [isOffline, setIsOffline] = useState(true);
 
   const [eventInfoData, setEventInfoData] = useState({
     title: '',
     eventTypeName: '',
+    ticketPrice: '',
   });
 
-  const getFormData = ({ title, eventTypeName }) => {
-    setEventInfoData({ title, eventTypeName });
+  const getFormData = ({
+    title,
+    eventTypeName,
+    ticketPrice,
+  }: typeof eventInfoData) => {
+    setEventInfoData({ title, eventTypeName, ticketPrice });
   };
 
   const toggleOfflineOnline = (value: boolean) => {
@@ -32,10 +35,6 @@ const CreateEventPage: React.FC = () => {
 
   const handlePlaceChange = (newPlace: EventPlaceWithGps) => {
     setPlace(newPlace);
-  };
-
-  const handlePriceChange = (newPrice: number | 'Безкоштовно' | 'Ціна') => {
-    setPrice(newPrice);
   };
 
   const handleStartTime = (startTime: string) => {
@@ -61,25 +60,22 @@ const CreateEventPage: React.FC = () => {
           </h1>
         </div>
         <div className="flex gap-6">
-          <CreateEventCard
-            price={price}
+          {/* <CreateEventCard
             photo={photos[0]}
             date={date}
             place={place}
             isOffline={isOffline}
             startTimeOption={startTimeOption}
             eventInfoData={eventInfoData}
-          />
+          /> */}
           <CreateEventForm
             toggleOfflineOnline={toggleOfflineOnline}
             place={place}
             photo={photos[0]}
             photos={photos}
-            price={price}
             date={date}
             startTimeOption={startTimeOption}
             isOffline={isOffline}
-            onPriceChange={handlePriceChange}
             onPhotoChange={handlePhotoChange}
             onPlaceChange={handlePlaceChange}
             handleDateChange={handleDateChange}
