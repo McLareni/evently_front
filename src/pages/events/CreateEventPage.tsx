@@ -15,14 +15,16 @@ const CreateEventPage: React.FC = () => {
     title: '',
     eventTypeName: '',
     ticketPrice: '',
+    freeTickets: false,
   });
 
   const getFormData = ({
     title,
     eventTypeName,
     ticketPrice,
+    freeTickets,
   }: typeof eventInfoData) => {
-    setEventInfoData({ title, eventTypeName, ticketPrice });
+    setEventInfoData({ title, eventTypeName, ticketPrice, freeTickets });
   };
 
   const toggleOfflineOnline = (value: boolean) => {
@@ -60,14 +62,14 @@ const CreateEventPage: React.FC = () => {
           </h1>
         </div>
         <div className="flex gap-6">
-          {/* <CreateEventCard
+          <CreateEventCard
             photo={photos[0]}
             date={date}
             place={place}
             isOffline={isOffline}
             startTimeOption={startTimeOption}
             eventInfoData={eventInfoData}
-          /> */}
+          />
           <CreateEventForm
             toggleOfflineOnline={toggleOfflineOnline}
             place={place}

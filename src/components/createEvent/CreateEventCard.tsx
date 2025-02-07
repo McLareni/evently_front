@@ -26,30 +26,21 @@ const CreateEventCard: React.FC<CardProps> = ({
   isOffline,
   eventInfoData,
 }) => {
-  const [freeTickets, setFreeTickets] = useState<boolean | string>(false);
-
   const formattedDate = formatDateToDayMonth(date);
 
-  const { title, eventTypeName } = eventInfoData;
+  const { title, eventTypeName, ticketPrice, freeTickets } = eventInfoData;
   console.log(title);
 
   const formattedTitle =
     (title && title.length > 45 && title.slice(0, 45) + '...') || title;
 
-  // const formattedPrice =
-  //   price === '0'
-  //     ? 'Безкоштовно'
-  //     : price === 'Ціна'
-  //       ? 'Ціна'
-  //       : typeof price === 'number'
-  //         ? `${price} ₴`
-  //         : price;
+  const formatPrice = () => {
+    if (freeTickets) return 'Безкоштовно';
+    if (ticketPrice.length === 0 && !freeTickets) return 'Ціна';
+    return `${ticketPrice}  ₴`;
+  };
 
-  // useEffect(() => {
-  //   if (price == 'Безкоштовно') {
-  //     setFreeTickets(true);
-  //   } else setFreeTickets(false);
-  // }, [price]);
+  const formattedPrice = formatPrice();
 
   return (
     <>

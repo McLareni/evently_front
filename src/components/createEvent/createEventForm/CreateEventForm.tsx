@@ -140,11 +140,12 @@ const CreateEventForm: React.FC<CreateEventFormProps> = ({
   const title = watch('title');
   const eventTypeName = watch('eventType.name');
   const ticketPrice = watch('ticketPrice');
+  const freeTickets = watch('freeTickets');
 
   useEffect(() => {
-    getFormData({ title, eventTypeName, ticketPrice });
+    getFormData({ title, eventTypeName, ticketPrice, freeTickets });
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [title, eventTypeName, ticketPrice]);
+  }, [title, eventTypeName, ticketPrice, freeTickets]);
 
   const popupEvent = {
     title,
