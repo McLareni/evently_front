@@ -138,13 +138,13 @@ const AboutEvent: React.FC<AboutEventProps> = ({
             </div>
           )}
         />
-        <div className="h-[20px]">
+        <div className="flex h-[20px]">
           {errors.description && (
             <p className="text-red-500 text-sm">{errors.description.message}</p>
           )}
-        </div>
-        <div className="text-right text-sm text-gray-500 mt-0.5 h-[14px] text-uploadBtnBg">
-          {descriptionLength}/{MAX_DESCRIPTION_LENGTH}
+          <div className="ml-auto text-sm text-gray-500 mt-0.5 h-[14px] text-uploadBtnBg">
+            {descriptionLength}/{MAX_DESCRIPTION_LENGTH}
+          </div>
         </div>
       </div>
       <div>
