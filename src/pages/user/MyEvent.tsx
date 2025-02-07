@@ -1,5 +1,11 @@
+import TableEvent from '@/components/myEvent/TableEvent';
+
 const MyEvent = () => {
-  return <>My event page</>;
+  return (
+    <>
+      <TableEvent />
+    </>
+  );
 };
 
 export default MyEvent;

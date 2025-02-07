@@ -19,7 +19,7 @@ const CreateBtnSection = () => {
 
   const handleClick = () => {
     if (isLoggedIn) {
-      navigate('/CreateEvent');
+      navigate('/create_event');
     } else {
       setIsModalOpen(true);
     }

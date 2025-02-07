@@ -1,0 +1,116 @@
+import React, { ReactElement } from 'react';
+import { AiOutlineExclamation } from 'react-icons/ai';
+import { GoKebabHorizontal } from 'react-icons/go';
+import { MdDone } from 'react-icons/md';
+import { RxCross2 } from 'react-icons/rx';
+import { Link } from 'react-router-dom';
+
+import clsx from 'clsx';
+
+import PopUp from './PopUp';
+
+type EventStatus = 'APPROVED' | 'CANCELLED' | 'PENDING';
+
+const status: Record<
+  EventStatus,
+  { color: string; text: string; svg: ReactElement }
+> = {
+  APPROVED: {
+    color: 'text-success',
+    text: 'Продаж',
+    svg: (
+      <MdDone className="w-6 h-6 fill-success border-2 rounded-full border-success" />
+    ),
+  },
+  CANCELLED: {
+    color: 'text-error',
+    text: 'Скасовано',
+    svg: (
+      <RxCross2 className="w-6 h-6 text-error border-2 rounded-full border-error" />
+    ),
+  },
+  PENDING: {
+    color: 'text-[#F4E544]',
+    text: 'На перевірці',
+    svg: (
+      <AiOutlineExclamation className="w-6 h-6 fill-[#F4E544] border-2 rounded-full border-[#F4E544]" />
+    ),
+  },
+};
+
+interface IProps {
+  event: any;
+  popUpIsShow: boolean;
+  // eslint-disable-next-line no-unused-vars
+  openPopUp: (id: string) => void;
+}
+
+const EventRow: React.FC<IProps> = ({ event, popUpIsShow, openPopUp }) => {
+  const day = event.date.day.split('-')[2];
+  const month = event.date.day.split('-')[1];
+
+  return (
+    <>
+      <td className="h-[148px] w-min flex justify-center p-[5px] items-center">
+        <div className="flex flex-col items-center w-min">
+          <h3 className="font-medium text-2xl font-oswald">{day}</h3>
+          <h2 className="font-medium text-2xl font-oswald text-error">
+            {month}
+          </h2>
+          <p className="font-normal text-base font-lato text-textDark">
+            {event.date.time}
+          </p>
+        </div>
+      </td>
+      <td className="w-[100px] p-[5px]">
+        <img
+          className="w-[100px] h-[100px] rounded-[20px] object-cover"
+          src={`https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRm73sHAvzwO-irFxeMCFe8wBpHu26Xy9mz0g&s`}
+        />
+      </td>
+      <td className="h-[148px] p-[5px] max-w-[300px]">
+        <div className="flex flex-col justify-between h-[100px]">
+          <Link
+            to={`/event/${event.id}`}
+            className="underline text-xl text-textDark leading-6"
+          >
+            {event.title}
+          </Link>
+          <p className="text-[16px] leading-none pb-[1px] max-w-[300px] text-uploadBtnBg whitespace-normal break-words line-clamp-2 text-ellipsis">
+            {event.eventFormat === 'ONLINE'
+              ? event.eventUrl
+              : `м.${event.location.city}, ${event.location.street}`}
+          </p>
+        </div>
+      </td>
+      <td className="p-[5px]">{event.price}₴</td>
+      <td className="p-[5px]">
+        {event.numberOfTickets - event.availableTickets}/{event.numberOfTickets}
+      </td>
+      <td className="p-[5px]">
+        {(event.numberOfTickets - event.availableTickets) * event.price}₴
+      </td>
+      <td className="p-[5px] relative">
+        <div className="flex justify-between">
+          <p
+            className={clsx(
+              'flex gap-[6px]',
+              status[event.eventStatus as EventStatus].color
+            )}
+          >
+            <span>{status[event.eventStatus as EventStatus].svg}</span>
+            {status[event.eventStatus as EventStatus].text}
+          </p>
+          <GoKebabHorizontal
+            data-name="kebab"
+            onClick={() => openPopUp(event.id)}
+            className="w-6 h-6 rotate-90 rounded-full hover:bg-lightBlue hover:cursor-pointer"
+          />
+        </div>
+        {popUpIsShow && <PopUp id={event.id} />}
+      </td>
+    </>
+  );
+};
+
+export default EventRow;
