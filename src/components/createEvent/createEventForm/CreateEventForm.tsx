@@ -70,6 +70,7 @@ const CreateEventForm: React.FC<CreateEventFormProps> = ({
     setValue,
     watch,
     handleSubmit,
+    clearErrors,
     formState: { isValid, errors },
   } = useForm({
     mode: 'onChange',
@@ -265,16 +266,16 @@ const CreateEventForm: React.FC<CreateEventFormProps> = ({
         validateDateTime={validateDateTime}
       />
       <TicketPrice
-        isUnlimited={isUnlimited}
         control={control}
         setValue={setValue}
         watch={watch}
         errors={errors}
+        clearErrors={clearErrors}
       />
       <AboutOrganizer control={control} setValue={setValue} watch={watch} />
       <div className="text-center">
         <SharedBtn
-          disabled={!isValid || !validateForm}
+          disabled={!isValid}
           type="submit"
           primary
           className="mt-8 bg-gradient-to-r from-[#9B8FF3] to-[#38F6F9] w-[230px] h-[48px]"

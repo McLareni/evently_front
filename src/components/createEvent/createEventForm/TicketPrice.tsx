@@ -10,6 +10,7 @@ type TicketPriceProps = {
   setValue: (name: string, value: string | boolean) => void;
   watch: (name: string) => string | boolean;
   errors: any;
+  clearErrors: any;
 };
 
 const TicketPrice: React.FC<TicketPriceProps> = ({
@@ -17,6 +18,7 @@ const TicketPrice: React.FC<TicketPriceProps> = ({
   setValue,
   watch,
   errors,
+  clearErrors,
 }) => {
   const freeTickets = watch('freeTickets') as boolean;
   const isUnlimited = watch('isUnlimited') as boolean;
@@ -30,11 +32,13 @@ const TicketPrice: React.FC<TicketPriceProps> = ({
   useEffect(() => {
     if (isUnlimited) {
       setValue('numberOfTickets', '');
+      clearErrors('numberOfTickets');
     }
     if (freeTickets) {
       setValue('ticketPrice', '');
+      clearErrors('ticketPrice');
     }
-  }, [freeTickets, isUnlimited, setValue]);
+  }, [clearErrors, freeTickets, isUnlimited, setValue]);
 
   return (
     <div className="relative max-w-[760px] rounded-[20px] border-2 border-buttonPurple flex flex-col py-8 pl-8 mb-8">
@@ -88,9 +92,9 @@ const TicketPrice: React.FC<TicketPriceProps> = ({
             name="ticketPrice"
             control={control}
             rules={{
-              required: "Опис обов'язковий",
+              // required: "Опис обов'язковий",
               validate: {
-                minLength: value =>
+                isValid: value =>
                   freeTickets || +value > 0 || 'Невірний формат',
               },
             }}
@@ -128,9 +132,8 @@ const TicketPrice: React.FC<TicketPriceProps> = ({
               name="numberOfTickets"
               control={control}
               rules={{
-                required: "Кількість квитків обов'язкова",
                 validate: {
-                  minLength: value =>
+                  isValid: value =>
                     isUnlimited || +value > 0 || 'Невірний формат',
                 },
               }}
