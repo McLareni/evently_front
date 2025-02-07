@@ -36,6 +36,8 @@ type CreateEventFormProps = {
   handleCategoryChangeForUI: (category: string) => void;
   handleDateChange: (newDate: string) => void;
   handleStartTime: (endTime: string) => void;
+  toggleOfflineOnline: (value: boolean) => void;
+  isOffline: boolean;
 };
 
 const subtitles = [
@@ -60,6 +62,8 @@ const CreateEventForm: React.FC<CreateEventFormProps> = ({
   onPlaceChange,
   handleDateChange,
   handleStartTime,
+  toggleOfflineOnline,
+  isOffline,
 }) => {
   const methods = useForm({
     defaultValues: {
@@ -106,7 +110,6 @@ const CreateEventForm: React.FC<CreateEventFormProps> = ({
     null,
   ]);
   const [isUnlimited, setIsUnlimited] = useState(false);
-  const [isOffline, setIsOffline] = useState(true);
 
   const validatedTitle =
     eventName.trim().length >= 5 && eventName.trim().length <= 100;
@@ -134,10 +137,6 @@ const CreateEventForm: React.FC<CreateEventFormProps> = ({
   const validatePhotos = photos[0] !== null;
 
   const validateForm = validatePhotos && validateTitleDescr && validateDateTime;
-
-  const toggleOfflineOnline = (value: boolean) => {
-    setIsOffline(value);
-  };
 
   const handleImageFileChange = (id: number, photo: (File | null)[]) => {
     setImageFile(prevPhotos => {

@@ -18,6 +18,7 @@ type CardProps = {
   eventType: string;
   date: string;
   startTimeOption: string;
+  isOffline: boolean;
 };
 
 const CreateEventCard: React.FC<CardProps> = ({
@@ -28,6 +29,7 @@ const CreateEventCard: React.FC<CardProps> = ({
   eventType,
   date,
   startTimeOption,
+  isOffline,
 }) => {
   const [freeTickets, setFreeTickets] = useState<boolean | string>(false);
 
@@ -101,13 +103,13 @@ const CreateEventCard: React.FC<CardProps> = ({
             </li>
             <li className="flex items-center gap-[18px]">
               <GrLocation size="24px" />
-              {place ? (
+              {!place && isOffline && <p>Місце</p>}
+              {place && isOffline && (
                 <p>
                   {place.city}, {place.name}
                 </p>
-              ) : (
-                <p>Місце</p>
               )}
+              {!isOffline && <p>Онлайн</p>}
             </li>
             <li className="flex items-center gap-[18px]">
               <FaRegMoneyBillAlt size="24px" />

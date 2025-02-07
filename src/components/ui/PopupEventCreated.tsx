@@ -47,10 +47,10 @@ export const PopupEventCreated = ({ event }: PopupEventCreatedProps) => {
           Ура! Твоя подія створена!
         </p>
         <EventCard event={event} isEventCreated />
-        <div className="flex gap-2">
-          <AiOutlineInfoCircle />
+        <div className="flex gap-[2px] items-center">
+          <AiOutlineInfoCircle size={20} color="#6B7280" />
           <p className="text-[14px] text-[#6B7280]">
-            Після перевірки вона з’явиться на платформі
+            Після перевірки подія з’явиться на платформі
           </p>
         </div>
         <NavLink to={'/my-event'}>

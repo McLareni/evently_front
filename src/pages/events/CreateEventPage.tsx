@@ -12,6 +12,11 @@ const CreateEventPage: React.FC = () => {
   const [place, setPlace] = useState<EventPlaceWithGps | null>(null);
   const [price, setPrice] = useState<number | 'Безкоштовно' | 'Ціна'>('Ціна');
   const [startTimeOption, setSelectedStartTimeOption] = useState('');
+  const [isOffline, setIsOffline] = useState(true);
+
+  const toggleOfflineOnline = (value: boolean) => {
+    setIsOffline(value);
+  };
 
   const handleEventNameChange = (newName: string) => {
     setEventName(newName.trim());
@@ -63,9 +68,11 @@ const CreateEventPage: React.FC = () => {
             photo={photos[0]}
             date={date}
             place={place}
+            isOffline={isOffline}
             startTimeOption={startTimeOption}
           />
           <CreateEventForm
+            toggleOfflineOnline={toggleOfflineOnline}
             place={place}
             photo={photos[0]}
             photos={photos}
@@ -74,6 +81,7 @@ const CreateEventPage: React.FC = () => {
             price={price}
             date={date}
             startTimeOption={startTimeOption}
+            isOffline={isOffline}
             onEventNameChange={handleEventNameChange}
             handleCategoryChangeForUI={handleCategoryChangeForUI}
             onPriceChange={handlePriceChange}
