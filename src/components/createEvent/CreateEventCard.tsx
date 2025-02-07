@@ -11,32 +11,32 @@ import { SharedBtn } from '@/components/ui';
 import exampleCard from '/images/exampleCard.svg';
 
 type CardProps = {
-  eventName: string;
   place: EventPlaceWithGps | null;
   price: number | 'Безкоштовно' | 'Ціна';
   photo: string | null;
-  eventType: string;
   date: string;
   startTimeOption: string;
   isOffline: boolean;
 };
 
 const CreateEventCard: React.FC<CardProps> = ({
-  eventName,
   price,
   photo,
   place,
-  eventType,
   date,
   startTimeOption,
   isOffline,
+  eventInfoData,
 }) => {
   const [freeTickets, setFreeTickets] = useState<boolean | string>(false);
 
   const formattedDate = formatDateToDayMonth(date);
 
+  const { title, eventTypeName } = eventInfoData;
+  console.log(title);
+
   const formattedTitle =
-    (eventName.length > 45 && eventName.slice(0, 45) + '...') || eventName;
+    (title && title.length > 45 && title.slice(0, 45) + '...') || title;
 
   const formattedPrice =
     price === 'Безкоштовно'
@@ -84,11 +84,11 @@ const CreateEventCard: React.FC<CardProps> = ({
                  border-[2px] border-borderColor bg-bg-gradient"
           >
             <p className="font-normal text-md text-textDark px-4 py-2.5">
-              {eventType || 'Категорія'}
+              {eventTypeName || 'Категорія'}
             </p>
           </div>
           <h2 className="min-h-[72px] text-2xl text-textDark break-words whitespace-normal truncate max-w-[250px]">
-            {eventName.length === 0 ? 'Назва події' : formattedTitle}
+            {title.length === 0 ? 'Назва події' : formattedTitle}
           </h2>
           <ul className="flex flex-col gap-[18px] font-normal text-md text-textDark justify-between w-full">
             <li className="flex items-center gap-[18px]">

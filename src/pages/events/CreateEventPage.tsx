@@ -1,4 +1,5 @@
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
+import { useForm } from 'react-hook-form';
 
 import { Container } from '@/components/container/Container';
 import CreateEventCard from '@/components/createEvent/CreateEventCard';
@@ -6,24 +7,23 @@ import CreateEventForm from '@/components/createEvent/createEventForm/CreateEven
 
 const CreateEventPage: React.FC = () => {
   const [photos, setPhotos] = useState<(string | null)[]>([null, null, null]);
-  const [eventName, setEventName] = useState('');
-  const [eventType, seteventType] = useState('Інше');
   const [date, setDate] = useState<string>('');
   const [place, setPlace] = useState<EventPlaceWithGps | null>(null);
   const [price, setPrice] = useState<number | 'Безкоштовно' | 'Ціна'>('Ціна');
   const [startTimeOption, setSelectedStartTimeOption] = useState('');
   const [isOffline, setIsOffline] = useState(true);
 
+  const [eventInfoData, setEventInfoData] = useState({
+    title: '',
+    eventTypeName: '',
+  });
+
+  const getFormData = ({ title, eventTypeName }) => {
+    setEventInfoData({ title, eventTypeName });
+  };
+
   const toggleOfflineOnline = (value: boolean) => {
     setIsOffline(value);
-  };
-
-  const handleEventNameChange = (newName: string) => {
-    setEventName(newName.trim());
-  };
-
-  const handleCategoryChangeForUI = (eventType: string) => {
-    seteventType(eventType);
   };
 
   const handleDateChange = (newDate: string) => {
@@ -62,33 +62,29 @@ const CreateEventPage: React.FC = () => {
         </div>
         <div className="flex gap-6">
           <CreateEventCard
-            eventName={eventName}
-            eventType={eventType}
             price={price}
             photo={photos[0]}
             date={date}
             place={place}
             isOffline={isOffline}
             startTimeOption={startTimeOption}
+            eventInfoData={eventInfoData}
           />
           <CreateEventForm
             toggleOfflineOnline={toggleOfflineOnline}
             place={place}
             photo={photos[0]}
             photos={photos}
-            eventName={eventName}
-            eventType={eventType}
             price={price}
             date={date}
             startTimeOption={startTimeOption}
             isOffline={isOffline}
-            onEventNameChange={handleEventNameChange}
-            handleCategoryChangeForUI={handleCategoryChangeForUI}
             onPriceChange={handlePriceChange}
             onPhotoChange={handlePhotoChange}
             onPlaceChange={handlePlaceChange}
             handleDateChange={handleDateChange}
             handleStartTime={handleStartTime}
+            getFormData={getFormData}
           />
         </div>
       </Container>

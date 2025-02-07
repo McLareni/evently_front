@@ -56,12 +56,12 @@ const CreateEventForm: React.FC<CreateEventFormProps> = ({
   handleStartTime,
   toggleOfflineOnline,
   isOffline,
+  getFormData,
 }) => {
   const [endTimeOption, setSelectedEndTimeOption] = useState('');
   const [numberOfTickets, setNumberOfTickets] = useState('');
   const [ticketPrice, setTickePrice] = useState<number | undefined>();
   const [eventUrl, setEventUrl] = useState('');
-  const [categoryValue, setCategoryValue] = useState<string>('OTHER');
   const [isSuccessPopupShown, setIsSuccessPopupShown] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
   const [imageFile, setImageFile] = useState<(File | null)[]>([
@@ -150,12 +150,15 @@ const CreateEventForm: React.FC<CreateEventFormProps> = ({
   };
 
   const title = watch('title');
-  const description = watch('description');
   const eventTypeName = watch('eventType.name');
+
+  useEffect(() => {
+    getFormData({ title, eventTypeName });
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [title, eventTypeName]);
 
   const popupEvent = {
     title,
-    description,
     type: eventTypeName,
     photoUrl: photo,
     eventUrl: eventUrl,
