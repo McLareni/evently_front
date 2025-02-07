@@ -1,5 +1,3 @@
-/* eslint-disable @typescript-eslint/no-unused-expressions */
-
 /* eslint-disable no-unused-vars */
 import { useEffect, useState } from 'react';
 import { useForm } from 'react-hook-form';
@@ -78,7 +76,7 @@ const CreateEventForm: React.FC<CreateEventFormProps> = ({
     handleSubmit,
     clearErrors,
     formState: { isValid, errors },
-  } = useForm({
+  } = useForm<CreateEventFormValues>({
     mode: 'onChange',
     defaultValues: {
       organizers: {
@@ -159,7 +157,7 @@ const CreateEventForm: React.FC<CreateEventFormProps> = ({
     photoUrl: photo,
     eventUrl: eventUrl,
     location: {
-      city: place?.city,
+      city: place?.city || '',
       street: place?.name,
     },
     date: {
@@ -178,7 +176,7 @@ const CreateEventForm: React.FC<CreateEventFormProps> = ({
     ticketPrice,
     numberOfTickets,
     unlimitedTickets,
-  }) => {
+  }: CreateEventFormValues) => {
     const event = {
       title,
       description,

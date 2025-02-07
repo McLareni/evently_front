@@ -1,16 +1,22 @@
-/* eslint-disable no-unused-vars */
 import { useEffect } from 'react';
-import { Controller } from 'react-hook-form';
+import {
+  Control,
+  Controller,
+  FieldErrors,
+  UseFormClearErrors,
+  UseFormSetValue,
+  UseFormWatch,
+} from 'react-hook-form';
 import { AiFillCheckCircle } from 'react-icons/ai';
 import { HiOutlineTicket } from 'react-icons/hi';
 import { MdDone } from 'react-icons/md';
 
 type TicketPriceProps = {
-  control: any;
-  setValue: (name: string, value: string | boolean) => void;
-  watch: (name: string) => string | boolean;
-  errors: any;
-  clearErrors: any;
+  control: Control<CreateEventFormValues>;
+  setValue: UseFormSetValue<CreateEventFormValues>;
+  watch: UseFormWatch<CreateEventFormValues>;
+  errors: FieldErrors<CreateEventFormValues>;
+  clearErrors: UseFormClearErrors<CreateEventFormValues>;
 };
 
 const TicketPrice: React.FC<TicketPriceProps> = ({

@@ -1,6 +1,11 @@
-/* eslint-disable no-unused-vars */
 import { useState } from 'react';
-import { Controller } from 'react-hook-form';
+import {
+  Control,
+  Controller,
+  FieldErrors,
+  UseFormSetValue,
+  UseFormWatch,
+} from 'react-hook-form';
 import { AiFillCheckCircle } from 'react-icons/ai';
 import { BiSmile } from 'react-icons/bi';
 
@@ -8,10 +13,10 @@ import { categories } from '@/assets/staticData/statickData';
 import Picker, { EmojiClickData } from 'emoji-picker-react';
 
 type AboutEventProps = {
-  control: any;
-  setValue: (name: string, value: string) => void;
-  watch: (name: string) => string;
-  errors: any;
+  control: Control<CreateEventFormValues>;
+  setValue: UseFormSetValue<CreateEventFormValues>;
+  watch: UseFormWatch<CreateEventFormValues>;
+  errors: FieldErrors<CreateEventFormValues>;
 };
 
 const MAX_DESCRIPTION_LENGTH = 400;

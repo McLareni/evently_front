@@ -106,3 +106,39 @@ interface EventPlaceWithGps {
   name: string;
   city: string;
 }
+
+// create event
+type EventCategoryType = {
+  name: string;
+  value: string;
+};
+
+type Location = {
+  city: string;
+  street: string;
+  venue: string;
+  latitude: string;
+  longitude: string;
+};
+
+type CreateEventFormValues = {
+  organizers: {
+    id: string;
+  };
+  firstImg: string;
+  secondImg: string;
+  thirdImg: string;
+  aboutOrganizer: string;
+  unlimitedTickets: boolean;
+  title: string;
+  description: string;
+  eventType: EventCategoryType;
+  startDate: string;
+  startTime: string;
+  endTime: string;
+  ticketPrice: string;
+  numberOfTickets: string;
+  location: Location;
+  eventUrl: string;
+  freeTickets: boolean;
+};

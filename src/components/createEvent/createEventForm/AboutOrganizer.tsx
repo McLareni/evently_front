@@ -1,14 +1,18 @@
-/* eslint-disable no-unused-vars */
 import { useState } from 'react';
-import { Controller } from 'react-hook-form';
+import {
+  Control,
+  Controller,
+  UseFormSetValue,
+  UseFormWatch,
+} from 'react-hook-form';
 import { BiSmile } from 'react-icons/bi';
 
 import Picker, { EmojiClickData } from 'emoji-picker-react';
 
 type AboutOrganizerProps = {
-  control: any;
-  setValue: (name: string, value: string) => void;
-  watch: (name: string) => string;
+  control: Control<CreateEventFormValues>;
+  setValue: UseFormSetValue<CreateEventFormValues>;
+  watch: UseFormWatch<CreateEventFormValues>;
 };
 
 const MAX_DESCRIPTION_LENGTH = 400;

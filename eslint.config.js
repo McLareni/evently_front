@@ -27,6 +27,7 @@ export default [
         UserInfo: true,
         Coordinates: true,
         EventPlaceWithGps: true,
+        CreateEventFormValues: true
       },
       parser: typescriptEslintParser,
       sourceType: 'module',
