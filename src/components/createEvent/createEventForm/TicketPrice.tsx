@@ -157,7 +157,7 @@ const TicketPrice: React.FC<TicketPriceProps> = ({
             </div>
           </div>
         </div>
-        <div className="self-end mb-[16px]">
+        <div className="self-end mb-[20px]">
           <Controller
             name="unlimitedTickets"
             control={control}
