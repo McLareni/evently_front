@@ -8,6 +8,7 @@ import { AiFillCheckCircle } from 'react-icons/ai';
 import { selectUser } from '@/redux/auth/selectors';
 import { useAppSelector } from '@/redux/hooks';
 
+import { FormaDataForCard } from '@/pages/events/CreateEventPage';
 import { createEvent } from '@/utils/eventsHttp';
 
 import { SharedBtn } from '@/components/ui';
@@ -32,6 +33,12 @@ type CreateEventFormProps = {
   handleStartTime: (endTime: string) => void;
   toggleOfflineOnline: (value: boolean) => void;
   isOffline: boolean;
+  getFormData: ({
+    title,
+    eventTypeName,
+    ticketPrice,
+    freeTickets,
+  }: FormaDataForCard) => void;
 };
 
 const subtitles = [
@@ -55,7 +62,6 @@ const CreateEventForm: React.FC<CreateEventFormProps> = ({
   getFormData,
 }) => {
   const [endTimeOption, setSelectedEndTimeOption] = useState('');
-  const [numberOfTickets, setNumberOfTickets] = useState('');
   const [eventUrl, setEventUrl] = useState('');
   const [isSuccessPopupShown, setIsSuccessPopupShown] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
@@ -64,7 +70,7 @@ const CreateEventForm: React.FC<CreateEventFormProps> = ({
     null,
     null,
   ]);
-  const [isUnlimited, setIsUnlimited] = useState(false);
+
   const {
     control,
     setValue,

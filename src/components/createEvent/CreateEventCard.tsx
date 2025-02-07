@@ -1,10 +1,10 @@
-import { useEffect, useState } from 'react';
 import { AiOutlineCalendar } from 'react-icons/ai';
 import { FaRegMoneyBillAlt } from 'react-icons/fa';
 import { GrLocation } from 'react-icons/gr';
 import { PiHeartFill } from 'react-icons/pi';
 
 import { formatDateToDayMonth } from '@/helpers/filters/formatDateToDayMonth';
+import { FormaDataForCard } from '@/pages/events/CreateEventPage';
 
 import { SharedBtn } from '@/components/ui';
 
@@ -16,6 +16,7 @@ type CardProps = {
   date: string;
   startTimeOption: string;
   isOffline: boolean;
+  eventInfoData: FormaDataForCard;
 };
 
 const CreateEventCard: React.FC<CardProps> = ({
@@ -29,7 +30,6 @@ const CreateEventCard: React.FC<CardProps> = ({
   const formattedDate = formatDateToDayMonth(date);
 
   const { title, eventTypeName, ticketPrice, freeTickets } = eventInfoData;
-  console.log(title);
 
   const formattedTitle =
     (title && title.length > 45 && title.slice(0, 45) + '...') || title;

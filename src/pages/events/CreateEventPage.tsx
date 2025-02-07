@@ -4,13 +4,19 @@ import { Container } from '@/components/container/Container';
 import CreateEventCard from '@/components/createEvent/CreateEventCard';
 import CreateEventForm from '@/components/createEvent/createEventForm/CreateEventForm';
 
+export interface FormaDataForCard {
+  title: string;
+  eventTypeName: string;
+  ticketPrice: string;
+  freeTickets: boolean;
+}
+
 const CreateEventPage: React.FC = () => {
   const [photos, setPhotos] = useState<(string | null)[]>([null, null, null]);
   const [date, setDate] = useState<string>('');
   const [place, setPlace] = useState<EventPlaceWithGps | null>(null);
   const [startTimeOption, setSelectedStartTimeOption] = useState('');
   const [isOffline, setIsOffline] = useState(true);
-
   const [eventInfoData, setEventInfoData] = useState({
     title: '',
     eventTypeName: '',
@@ -23,7 +29,7 @@ const CreateEventPage: React.FC = () => {
     eventTypeName,
     ticketPrice,
     freeTickets,
-  }: typeof eventInfoData) => {
+  }: FormaDataForCard) => {
     setEventInfoData({ title, eventTypeName, ticketPrice, freeTickets });
   };
 
