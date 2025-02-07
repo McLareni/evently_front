@@ -10,8 +10,7 @@ type AboutOrganizerProps = {
 };
 
 interface IFormInput {
-  title: string;
-  description: string;
+  about: string;
 }
 const MAX_DESCRIPTION_LENGTH = 400;
 
@@ -26,8 +25,7 @@ const AboutOrganizer: React.FC<AboutOrganizerProps> = ({
     formState: { errors },
   } = useForm<IFormInput>({
     defaultValues: {
-      title: '',
-      description: '',
+      about: '',
     },
   });
 
@@ -49,9 +47,9 @@ const AboutOrganizer: React.FC<AboutOrganizerProps> = ({
           Про організатора
         </label>
         <Controller
-          name="description"
+          name="about"
           control={control}
-          rules={{ required: "Опис обов'язковий" }}
+          // rules={{ required: "Опис обов'язковий" }}
           render={({ field }) => (
             <div className="w-full p-[2px] h-[120px] bg-createEventInputBorder rounded-[10px]">
               <textarea
@@ -68,8 +66,8 @@ const AboutOrganizer: React.FC<AboutOrganizerProps> = ({
             </div>
           )}
         />
-        {errors.description && (
-          <p className="text-red-500 text-sm">{errors.description.message}</p>
+        {errors.about && (
+          <p className="text-red-500 text-sm">{errors.about.message}</p>
         )}
         <div className="text-right text-sm text-gray-500 mt-0.5 h-[14px] text-uploadBtnBg">
           {aboutOrganizer.length}/{MAX_DESCRIPTION_LENGTH}

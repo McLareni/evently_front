@@ -2,11 +2,12 @@
 import { useEffect, useState } from 'react';
 import { Controller, useForm } from 'react-hook-form';
 import { AiFillCheckCircle } from 'react-icons/ai';
+import { BiSmile } from 'react-icons/bi';
 
 import { categories } from '@/assets/staticData/statickData';
+import Picker, { EmojiClickData } from 'emoji-picker-react';
 
 type AboutEventProps = {
-  description: string;
   onEventNameChange: (eventName: string) => void;
   onDescriptionChange: (eventDescription: string) => void;
   onCategoryChange: (category: string) => void;
@@ -22,7 +23,6 @@ interface IFormInput {
 const MAX_DESCRIPTION_LENGTH = 400;
 
 const AboutEvent: React.FC<AboutEventProps> = ({
-  description,
   onEventNameChange,
   onDescriptionChange,
   onCategoryChange,
@@ -42,7 +42,15 @@ const AboutEvent: React.FC<AboutEventProps> = ({
   });
 
   const [selectedCategory, setSelectedCategory] = useState('Інше');
-  const [descriptionLength, setDescriptionLength] = useState(0);
+  const [showPicker, setShowPicker] = useState(false);
+  const [eventDescription, setEventDescription] = useState('');
+
+  const onEmojiClick = (emojiObject: EmojiClickData) => {
+    if (eventDescription.length < MAX_DESCRIPTION_LENGTH - 1) {
+      setEventDescription(prevInput => prevInput + emojiObject.emoji);
+      setShowPicker(false);
+    }
+  };
 
   const handleCategoryClick = (categoryName: string, categotyValue: string) => {
     setSelectedCategory(categoryName);
@@ -50,17 +58,11 @@ const AboutEvent: React.FC<AboutEventProps> = ({
     onEventCategoryChange(categotyValue);
     handleCategoryChangeForUI(categoryName);
   };
-  const handleDescriptionChange = (
-    e: React.ChangeEvent<HTMLTextAreaElement>
-  ) => {
-    setDescriptionLength(e.target.value.trim().length);
-  };
 
   useEffect(() => {
-    if (description === '') {
-      onDescriptionChange('Опис події');
-    }
-  }, [description, onDescriptionChange]);
+    onDescriptionChange(eventDescription);
+  }, [eventDescription, onDescriptionChange]);
+
   return (
     <div className="relative w-[760px] rounded-[20px] border-2 border-buttonPurple flex flex-col py-10 px-10 mb-8">
       {validateTitleDescr && (
@@ -108,7 +110,7 @@ const AboutEvent: React.FC<AboutEventProps> = ({
         </div>
       </div>
 
-      <div className="flex flex-col pb-[5px]">
+      <div className="flex flex-col pb-[5px] relative">
         <label className="pb-4 text-2xl" htmlFor="description">
           Опис<span className="star">*</span>
         </label>
@@ -128,11 +130,11 @@ const AboutEvent: React.FC<AboutEventProps> = ({
                 className="focus:outline-none w-full h-full p-4 rounded-[8px] resize-none"
                 maxLength={MAX_DESCRIPTION_LENGTH}
                 id="description"
+                value={eventDescription}
                 placeholder="Коротко опиши ідею та концепцію події"
                 onChange={e => {
-                  handleDescriptionChange(e);
                   field.onChange(e);
-                  onDescriptionChange(e.target.value);
+                  setEventDescription(e.target.value);
                 }}
               ></textarea>
             </div>
@@ -143,9 +145,18 @@ const AboutEvent: React.FC<AboutEventProps> = ({
             <p className="text-red-500 text-sm">{errors.description.message}</p>
           )}
           <div className="ml-auto text-sm text-gray-500 mt-0.5 h-[14px] text-uploadBtnBg">
-            {descriptionLength}/{MAX_DESCRIPTION_LENGTH}
+            {eventDescription.trim().length}/{MAX_DESCRIPTION_LENGTH}
           </div>
+          <button type="button" onClick={() => setShowPicker(val => !val)}>
+            <BiSmile
+              size={24}
+              className="absolute right-[16px] bottom-[40px]"
+            />
+          </button>
         </div>
+        {showPicker && (
+          <Picker style={{ width: '100%' }} onEmojiClick={onEmojiClick} />
+        )}
       </div>
       <div>
         <div className="flex flex-col">
@@ -174,5 +185,4 @@ const AboutEvent: React.FC<AboutEventProps> = ({
     </div>
   );
 };
-
 export default AboutEvent;

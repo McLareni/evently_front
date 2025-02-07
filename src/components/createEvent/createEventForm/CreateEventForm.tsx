@@ -273,7 +273,6 @@ const CreateEventForm: React.FC<CreateEventFormProps> = ({
         </div>
         <AboutEvent
           handleCategoryChangeForUI={handleCategoryChangeForUI}
-          description={description}
           onEventNameChange={onEventNameChange}
           onCategoryChange={onEventCategoryChange}
           onDescriptionChange={handleDescriptionChange}
