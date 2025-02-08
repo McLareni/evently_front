@@ -15,7 +15,6 @@ type CardProps = {
   photo: string | null;
   date: string;
   startTimeOption: string;
-  isOffline: boolean;
   eventInfoData: FormaDataForCard;
 };
 
@@ -24,12 +23,12 @@ const CreateEventCard: React.FC<CardProps> = ({
   place,
   date,
   startTimeOption,
-  isOffline,
   eventInfoData,
 }) => {
   const formattedDate = formatDateToDayMonth(date);
 
-  const { title, eventTypeName, ticketPrice, freeTickets } = eventInfoData;
+  const { title, eventTypeName, ticketPrice, freeTickets, isOffline } =
+    eventInfoData;
 
   const formattedTitle =
     (title && title.length > 45 && title.slice(0, 45) + '...') || title;

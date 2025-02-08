@@ -9,6 +9,7 @@ export interface FormaDataForCard {
   eventTypeName: string | undefined;
   ticketPrice: string;
   freeTickets: boolean;
+  isOffline?: boolean;
 }
 
 const CreateEventPage: React.FC = () => {
@@ -22,12 +23,12 @@ const CreateEventPage: React.FC = () => {
     longitude: '',
   });
   const [startTimeOption, setSelectedStartTimeOption] = useState('');
-  const [isOffline, setIsOffline] = useState(true);
   const [eventInfoData, setEventInfoData] = useState<FormaDataForCard>({
     title: '',
     eventTypeName: '',
     ticketPrice: '',
     freeTickets: false,
+    isOffline: true,
   });
 
   const getFormData = ({
@@ -35,12 +36,15 @@ const CreateEventPage: React.FC = () => {
     eventTypeName,
     ticketPrice,
     freeTickets,
+    isOffline,
   }: FormaDataForCard) => {
-    setEventInfoData({ title, eventTypeName, ticketPrice, freeTickets });
-  };
-
-  const toggleOfflineOnline = (value: boolean) => {
-    setIsOffline(value);
+    setEventInfoData({
+      title,
+      eventTypeName,
+      ticketPrice,
+      freeTickets,
+      isOffline,
+    });
   };
 
   const handleDateChange = (newDate: string) => {
@@ -78,18 +82,15 @@ const CreateEventPage: React.FC = () => {
             photo={photos[0]}
             date={date}
             place={place}
-            isOffline={isOffline}
             startTimeOption={startTimeOption}
             eventInfoData={eventInfoData}
           />
           <CreateEventForm
-            toggleOfflineOnline={toggleOfflineOnline}
             place={place}
             photo={photos[0]}
             photos={photos}
             date={date}
             startTimeOption={startTimeOption}
-            isOffline={isOffline}
             onPhotoChange={handlePhotoChange}
             onPlaceChange={handlePlaceChange}
             handleDateChange={handleDateChange}

@@ -29,8 +29,6 @@ type CreateEventFormProps = {
   onPlaceChange: (newPlace: CreateEventLocation) => void;
   handleDateChange: (newDate: string) => void;
   handleStartTime: (endTime: string) => void;
-  toggleOfflineOnline: (value: boolean) => void;
-  isOffline: boolean;
   getFormData: ({
     title,
     eventTypeName,
@@ -55,8 +53,6 @@ const CreateEventForm: React.FC<CreateEventFormProps> = ({
   onPlaceChange,
   handleDateChange,
   handleStartTime,
-  toggleOfflineOnline,
-  isOffline,
   getFormData,
 }) => {
   const [endTimeOption, setSelectedEndTimeOption] = useState('');
@@ -105,8 +101,15 @@ const CreateEventForm: React.FC<CreateEventFormProps> = ({
       },
       eventUrl: '',
       freeTickets: false,
+      isOffline: true,
     },
   });
+
+  const title = watch('title');
+  const eventTypeName = watch('eventTypeName');
+  const ticketPrice = watch('ticketPrice');
+  const freeTickets = watch('freeTickets');
+  const isOffline = watch('isOffline');
 
   // валідація не hook form
   const validateDate = date.length > 0;
@@ -142,11 +145,6 @@ const CreateEventForm: React.FC<CreateEventFormProps> = ({
 
   const handleEventUrlChange = (eventUrl: string) =>
     setEventUrl(eventUrl.trim());
-
-  const title = watch('title');
-  const eventTypeName = watch('eventTypeName');
-  const ticketPrice = watch('ticketPrice');
-  const freeTickets = watch('freeTickets');
 
   const popupEvent = {
     title,
@@ -222,9 +220,9 @@ const CreateEventForm: React.FC<CreateEventFormProps> = ({
   const user = useAppSelector(selectUser);
 
   useEffect(() => {
-    getFormData({ title, eventTypeName, ticketPrice, freeTickets });
+    getFormData({ title, eventTypeName, ticketPrice, freeTickets, isOffline });
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [title, eventTypeName, ticketPrice, freeTickets]);
+  }, [title, eventTypeName, ticketPrice, freeTickets, isOffline]);
 
   useEffect(() => {
     setValue('organizers.id', user.id);
@@ -261,14 +259,16 @@ const CreateEventForm: React.FC<CreateEventFormProps> = ({
         errors={errors}
       />
       <DateAndPlace
+        control={control}
+        setValue={setValue}
+        watch={watch}
+        errors={errors}
         date={date}
         onPlaceChange={onPlaceChange}
         handleDateChange={handleDateChange}
         handleStartTime={handleStartTime}
         handleEndTime={handleEndTime}
         handleEventUrlChange={handleEventUrlChange}
-        toggleOfflineOnline={toggleOfflineOnline}
-        isOffline={isOffline}
         validateDateTimePlace={validateDateTimePlace}
       />
       <TicketPrice

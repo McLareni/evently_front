@@ -1,5 +1,12 @@
 /* eslint-disable no-unused-vars */
 import { useCallback, useEffect, useRef, useState } from 'react';
+import {
+  Control,
+  Controller,
+  FieldErrors,
+  UseFormSetValue,
+  UseFormWatch,
+} from 'react-hook-form';
 import { AiFillCheckCircle, AiOutlineCalendar } from 'react-icons/ai';
 import { BiChevronDown } from 'react-icons/bi';
 import { BiTimeFive } from 'react-icons/bi';
@@ -10,26 +17,30 @@ import { CreateEventCalendar } from './CreateEventCalendar';
 import { GoogleMapsInput } from './GoogleMapsInput';
 
 interface DateAndPlaceProps {
+  control: Control<CreateEventFormValues>;
+  setValue: UseFormSetValue<CreateEventFormValues>;
+  watch: UseFormWatch<CreateEventFormValues>;
+  errors: FieldErrors<CreateEventFormValues>;
   date: string;
   handleDateChange: (newDate: string) => void;
   handleStartTime: (startTime: string) => void;
   handleEndTime: (endTime: string) => void;
   onPlaceChange: (newPlace: CreateEventLocation) => void;
   handleEventUrlChange: (eventUrl: string) => void;
-  toggleOfflineOnline: (value: boolean) => void;
-  isOffline: boolean;
   validateDateTimePlace: boolean;
 }
 
 const DateAndPlace = ({
+  control,
+  setValue,
+  watch,
+  errors,
   date,
   handleDateChange,
   handleStartTime,
   handleEndTime,
   onPlaceChange,
   handleEventUrlChange,
-  toggleOfflineOnline,
-  isOffline,
   validateDateTimePlace,
 }: DateAndPlaceProps) => {
   const [startTimeSelect, setStartTimeSelect] = useState(false);
@@ -42,6 +53,8 @@ const DateAndPlace = ({
   const [isCalendarShown, setIsCalendarShown] = useState(false);
   const dropdownStartTimeRef = useRef<HTMLDivElement | null>(null);
   const dropdownEndTimeRef = useRef<HTMLDivElement | null>(null);
+
+  const isOffline = watch('isOffline');
 
   const formattedDate = formatDateToDayMonth(date);
 
@@ -243,40 +256,52 @@ const DateAndPlace = ({
         Оберіть формат події<span className="star">*</span>
       </span>
       <div className="pb-6">
-        <button
-          type="button"
-          className={`${
-            isOffline
-              ? 'bg-buttonPurple text-white'
-              : 'bg-lightPurple text-gray-700'
-          } focus:outline-none font-normal text-xl rounded-[20px] mr-4 py-[12.5px] px-[18px]`}
-          onClick={() => {
-            toggleOfflineOnline(true);
-            handleEventUrlChange('');
-          }}
-        >
-          Оффлайн
-        </button>
-        <button
-          type="button"
-          className={`${
-            isOffline
-              ? 'bg-lightPurple text-gray-700'
-              : 'bg-buttonPurple text-white'
-          } focus:outline-none font-normal text-xl rounded-[20px] mr-4 py-[12.5px] px-[18px]`}
-          onClick={() => {
-            toggleOfflineOnline(false);
-            onPlaceChange({
-              city: '',
-              street: '',
-              venue: '',
-              latitude: '',
-              longitude: '',
-            });
-          }}
-        >
-          Онлайн
-        </button>
+        <Controller
+          name="isOffline"
+          control={control}
+          render={() => (
+            <button
+              type="button"
+              className={`${
+                isOffline
+                  ? 'bg-buttonPurple text-white'
+                  : 'bg-lightPurple text-gray-700'
+              } focus:outline-none font-normal text-xl rounded-[20px] mr-4 py-[12.5px] px-[18px]`}
+              onClick={() => {
+                setValue('isOffline', true);
+                handleEventUrlChange('');
+              }}
+            >
+              Оффлайн
+            </button>
+          )}
+        />
+        <Controller
+          name="isOffline"
+          control={control}
+          render={() => (
+            <button
+              type="button"
+              className={`${
+                isOffline
+                  ? 'bg-lightPurple text-gray-700'
+                  : 'bg-buttonPurple text-white'
+              } focus:outline-none font-normal text-xl rounded-[20px] mr-4 py-[12.5px] px-[18px]`}
+              onClick={() => {
+                setValue('isOffline', false);
+                onPlaceChange({
+                  city: '',
+                  street: '',
+                  venue: '',
+                  latitude: '',
+                  longitude: '',
+                });
+              }}
+            >
+              Онлайн
+            </button>
+          )}
+        />
       </div>
       {isOffline ? (
         <div className="flex flex-col w-full">

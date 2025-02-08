@@ -137,4 +137,5 @@ type CreateEventFormValues = {
   location: CreateEventLocation;
   eventUrl: string;
   freeTickets: boolean;
+  isOffline?: boolean;
 };
