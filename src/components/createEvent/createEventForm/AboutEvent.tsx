@@ -37,13 +37,13 @@ const AboutEvent: React.FC<AboutEventProps> = ({
   };
 
   const handleCategoryClick = (categoryName: string, categotyValue: string) => {
-    setValue('eventType.name', categoryName);
-    setValue('eventType.value', categotyValue);
+    setValue('eventTypeName', categoryName);
+    setValue('eventType', categotyValue);
   };
 
   const title = watch('title');
   const description = watch('description');
-  const selectedCategory = watch('eventType.name');
+  const selectedCategory = watch('eventTypeName');
 
   return (
     <div className="relative w-[760px] rounded-[20px] border-2 border-buttonPurple flex flex-col py-10 px-10 mb-8">

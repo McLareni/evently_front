@@ -11,7 +11,7 @@ import { SharedBtn } from '@/components/ui';
 import exampleCard from '/images/exampleCard.svg';
 
 type CardProps = {
-  place: CreateEventLocation | null;
+  place: CreateEventLocation;
   photo: string | null;
   date: string;
   startTimeOption: string;
@@ -92,8 +92,8 @@ const CreateEventCard: React.FC<CardProps> = ({
             </li>
             <li className="flex items-center gap-[18px]">
               <GrLocation size="24px" />
-              {!place && isOffline && <p>Місце</p>}
-              {place && isOffline && (
+              {place.city.length === 0 && isOffline && <p>Місце</p>}
+              {place.city.length > 0 && isOffline && (
                 <p>
                   {place.city}, {place.street}
                 </p>

@@ -250,7 +250,10 @@ const DateAndPlace = ({
               ? 'bg-buttonPurple text-white'
               : 'bg-lightPurple text-gray-700'
           } focus:outline-none font-normal text-xl rounded-[20px] mr-4 py-[12.5px] px-[18px]`}
-          onClick={() => toggleOfflineOnline(true)}
+          onClick={() => {
+            toggleOfflineOnline(true);
+            handleEventUrlChange('');
+          }}
         >
           Оффлайн
         </button>
@@ -261,7 +264,16 @@ const DateAndPlace = ({
               ? 'bg-lightPurple text-gray-700'
               : 'bg-buttonPurple text-white'
           } focus:outline-none font-normal text-xl rounded-[20px] mr-4 py-[12.5px] px-[18px]`}
-          onClick={() => toggleOfflineOnline(false)}
+          onClick={() => {
+            toggleOfflineOnline(false);
+            onPlaceChange({
+              city: '',
+              street: '',
+              venue: '',
+              latitude: '',
+              longitude: '',
+            });
+          }}
         >
           Онлайн
         </button>

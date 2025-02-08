@@ -14,7 +14,13 @@ export interface FormaDataForCard {
 const CreateEventPage: React.FC = () => {
   const [photos, setPhotos] = useState<(string | null)[]>([null, null, null]);
   const [date, setDate] = useState<string>('');
-  const [place, setPlace] = useState<CreateEventLocation | null>(null);
+  const [place, setPlace] = useState<CreateEventLocation>({
+    city: '',
+    street: '',
+    venue: '',
+    latitude: '',
+    longitude: '',
+  });
   const [startTimeOption, setSelectedStartTimeOption] = useState('');
   const [isOffline, setIsOffline] = useState(true);
   const [eventInfoData, setEventInfoData] = useState<FormaDataForCard>({

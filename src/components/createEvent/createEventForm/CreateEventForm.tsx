@@ -24,7 +24,7 @@ type CreateEventFormProps = {
   photo: string | null;
   date: string;
   startTimeOption: string;
-  place: CreateEventLocation | null;
+  place: CreateEventLocation;
   onPhotoChange: (id: number, photo: string | null) => void;
   onPlaceChange: (newPlace: CreateEventLocation) => void;
   handleDateChange: (newDate: string) => void;
@@ -113,7 +113,7 @@ const CreateEventForm: React.FC<CreateEventFormProps> = ({
   const validateStart = startTimeOption.length > 0;
   const validateEnd = endTimeOption.length > 0;
   const validatePlace = () => {
-    if (isOffline && place) return true;
+    if (isOffline && place.city && place.street) return true;
     if (
       !isOffline &&
       (eventUrl.includes('www.') || eventUrl.includes('https://'))

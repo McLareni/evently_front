@@ -30,7 +30,6 @@ const TicketPrice: React.FC<TicketPriceProps> = ({
   const unlimitedTickets = watch('unlimitedTickets') as boolean;
   const ticketPrice = watch('ticketPrice');
   const numberOfTickets = watch('numberOfTickets');
-  console.log(unlimitedTickets, numberOfTickets);
 
   useEffect(() => {
     if (unlimitedTickets) {
