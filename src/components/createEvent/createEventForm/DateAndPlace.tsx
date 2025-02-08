@@ -18,7 +18,7 @@ interface DateAndPlaceProps {
   handleEventUrlChange: (eventUrl: string) => void;
   toggleOfflineOnline: (value: boolean) => void;
   isOffline: boolean;
-  validateDateTime: boolean;
+  validateDateTimePlace: boolean;
 }
 
 const DateAndPlace = ({
@@ -30,7 +30,7 @@ const DateAndPlace = ({
   handleEventUrlChange,
   toggleOfflineOnline,
   isOffline,
-  validateDateTime,
+  validateDateTimePlace,
 }: DateAndPlaceProps) => {
   const [startTimeSelect, setStartTimeSelect] = useState(false);
   const [endTimeSelect, setEndTimeSelect] = useState(false);
@@ -117,7 +117,7 @@ const DateAndPlace = ({
 
   return (
     <div className="relative max-w-[760px] rounded-[20px] border-2 border-buttonPurple flex flex-col pt-10 pb-8 px-8 mb-8">
-      {validateDateTime && (
+      {validateDateTimePlace && (
         <AiFillCheckCircle
           size={40}
           color="#3BE660"

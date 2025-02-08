@@ -48,3 +48,10 @@ export const categories = [
   { name: 'Бізнес та нетворкінг', value: 'BUSINESS_NETWORKING' },
   { name: 'Інше', value: 'OTHER' },
 ];
+
+export const imageTypes = [
+  'image/jpeg',
+  'image/webp',
+  'image/svg',
+  'image/png',
+];

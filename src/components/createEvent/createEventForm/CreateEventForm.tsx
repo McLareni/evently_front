@@ -108,6 +108,7 @@ const CreateEventForm: React.FC<CreateEventFormProps> = ({
     },
   });
 
+  // валідація не hook form
   const validateDate = date.length > 0;
   const validateStart = startTimeOption.length > 0;
   const validateEnd = endTimeOption.length > 0;
@@ -122,10 +123,10 @@ const CreateEventForm: React.FC<CreateEventFormProps> = ({
     return false;
   };
   const validatedPlace = validatePlace();
-  const validateDateTime =
+  const validateDateTimePlace =
     validateDate && validateStart && validateEnd && validatedPlace;
-
   const validatePhotos = photos[0] !== null;
+  const validateForm = validateDateTimePlace && validatePhotos;
 
   const handleImageFileChange = (id: number, photo: (File | null)[]) => {
     setImageFile(prevPhotos => {
@@ -266,7 +267,7 @@ const CreateEventForm: React.FC<CreateEventFormProps> = ({
         handleEventUrlChange={handleEventUrlChange}
         toggleOfflineOnline={toggleOfflineOnline}
         isOffline={isOffline}
-        validateDateTime={validateDateTime}
+        validateDateTimePlace={validateDateTimePlace}
       />
       <TicketPrice
         control={control}
@@ -278,7 +279,7 @@ const CreateEventForm: React.FC<CreateEventFormProps> = ({
       <AboutOrganizer control={control} setValue={setValue} watch={watch} />
       <div className="text-center">
         <SharedBtn
-          disabled={!isValid}
+          disabled={!isValid || !validateForm}
           type="submit"
           primary
           className="mt-8 bg-gradient-to-r from-[#9B8FF3] to-[#38F6F9] w-[230px] h-[48px]"
