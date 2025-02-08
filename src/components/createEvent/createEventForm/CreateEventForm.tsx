@@ -18,6 +18,7 @@ import AboutOrganizer from './AboutOrganizer';
 import PhotoCard from './CardsPhotos';
 import DateAndPlace from './DateAndPlace';
 import TicketPrice from './TicketPrice';
+import { defaultValues } from './defaultValues';
 
 type CreateEventFormProps = {
   photos: (string | null)[];
@@ -63,37 +64,7 @@ const CreateEventForm: React.FC<CreateEventFormProps> = ({
     formState: { isValid, errors },
   } = useForm<CreateEventFormValues>({
     mode: 'onChange',
-    defaultValues: {
-      organizers: {
-        id: '',
-      },
-      firstImg: '',
-      secondImg: '',
-      thirdImg: '',
-      aboutOrganizer: '',
-      unlimitedTickets: false,
-      title: '',
-      description: '',
-      eventType: 'OTHER',
-      eventTypeName: 'Інше',
-      date: {
-        day: '',
-        time: '',
-        endTime: '',
-      },
-      ticketPrice: '',
-      numberOfTickets: '',
-      location: {
-        city: '',
-        street: '',
-        venue: '',
-        latitude: '',
-        longitude: '',
-      },
-      eventUrl: '',
-      freeTickets: false,
-      isOffline: true,
-    },
+    defaultValues: defaultValues,
   });
 
   const title = watch('title');

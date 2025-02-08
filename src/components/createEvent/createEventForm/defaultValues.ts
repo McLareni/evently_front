@@ -1,0 +1,31 @@
+export const defaultValues = {
+  organizers: {
+    id: '',
+  },
+  firstImg: '',
+  secondImg: '',
+  thirdImg: '',
+  aboutOrganizer: '',
+  unlimitedTickets: false,
+  title: '',
+  description: '',
+  eventType: 'OTHER',
+  eventTypeName: 'Інше',
+  date: {
+    day: '',
+    time: '',
+    endTime: '',
+  },
+  ticketPrice: '',
+  numberOfTickets: '',
+  location: {
+    city: '',
+    street: '',
+    venue: '',
+    latitude: '',
+    longitude: '',
+  },
+  eventUrl: '',
+  freeTickets: false,
+  isOffline: true,
+};
