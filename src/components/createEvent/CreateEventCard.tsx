@@ -12,19 +12,10 @@ import exampleCard from '/images/exampleCard.svg';
 
 type CardProps = {
   photo: string | null;
-  date: string;
-  startTimeOption: string;
   eventInfoData: FormaDataForCard;
 };
 
-const CreateEventCard: React.FC<CardProps> = ({
-  photo,
-  date,
-  startTimeOption,
-  eventInfoData,
-}) => {
-  const formattedDate = formatDateToDayMonth(date);
-
+const CreateEventCard: React.FC<CardProps> = ({ photo, eventInfoData }) => {
   const {
     title,
     eventTypeName,
@@ -32,7 +23,11 @@ const CreateEventCard: React.FC<CardProps> = ({
     freeTickets,
     isOffline,
     location,
+    day,
+    time,
   } = eventInfoData;
+
+  const formattedDate = formatDateToDayMonth(day);
 
   const formattedTitle =
     (title && title.length > 45 && title.slice(0, 45) + '...') || title;
@@ -85,9 +80,9 @@ const CreateEventCard: React.FC<CardProps> = ({
           <ul className="flex flex-col gap-[18px] font-normal text-md text-textDark justify-between w-full">
             <li className="flex items-center gap-[18px]">
               <AiOutlineCalendar size="24px" />
-              {date ? (
+              {day.length > 0 ? (
                 <p>
-                  {formattedDate}, {startTimeOption}
+                  {formattedDate}, {time}
                 </p>
               ) : (
                 <p>Дата</p>

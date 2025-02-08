@@ -25,6 +25,7 @@ export const OnlineOffline = ({
   trigger,
 }: OnlineOfflineProps) => {
   const isOffline = watch('isOffline');
+  console.log(errors);
 
   const setOffline = () => {
     setValue('isOffline', true);

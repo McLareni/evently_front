@@ -129,9 +129,11 @@ type CreateEventFormValues = {
   description: string;
   eventType: string;
   eventTypeName?: string;
-  startDate: string;
-  startTime: string;
-  endTime: string;
+  date: {
+    day: string;
+    time: string;
+    endTime: string;
+  };
   ticketPrice: string;
   numberOfTickets: string;
   location: CreateEventLocation;

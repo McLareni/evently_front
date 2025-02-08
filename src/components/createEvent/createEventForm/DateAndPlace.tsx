@@ -1,8 +1,6 @@
-/* eslint-disable no-unused-vars */
 import { useCallback, useEffect, useRef, useState } from 'react';
 import {
   Control,
-  Controller,
   FieldErrors,
   UseFormSetValue,
   UseFormTrigger,
@@ -23,11 +21,6 @@ interface DateAndPlaceProps {
   watch: UseFormWatch<CreateEventFormValues>;
   errors: FieldErrors<CreateEventFormValues>;
   trigger: UseFormTrigger<CreateEventFormValues>;
-  date: string;
-  handleDateChange: (newDate: string) => void;
-  handleStartTime: (startTime: string) => void;
-  handleEndTime: (endTime: string) => void;
-  validateDateTimePlace: boolean;
 }
 
 const DateAndPlace = ({
@@ -36,36 +29,39 @@ const DateAndPlace = ({
   watch,
   errors,
   trigger,
-  date,
-  handleDateChange,
-  handleStartTime,
-  handleEndTime,
-  validateDateTimePlace,
 }: DateAndPlaceProps) => {
   const [startTimeSelect, setStartTimeSelect] = useState(false);
   const [endTimeSelect, setEndTimeSelect] = useState(false);
-  const [selectedStartTimeOption, setSelectedStartTimeOption] = useState('');
-  const [selectedEndOption, setSelectedEndTimeOption] = useState('');
   const [options, setOptions] = useState<{ label: string; value: string }[]>(
     []
   );
   const [isCalendarShown, setIsCalendarShown] = useState(false);
 
-  const formattedDate = formatDateToDayMonth(date);
+  const date = watch('date');
+  const daySelected = date.day.length > 0;
+  const startSelected = date.time.length > 0;
+  const endSelected = date.endTime.length > 0;
 
-  const handleStartTimeOption = (option: string) => {
-    setSelectedStartTimeOption(option);
-    setStartTimeSelect(false);
-  };
-
-  const handleEndTimeOption = (option: string) => {
-    setSelectedEndTimeOption(option);
-    setEndTimeSelect(false);
-  };
+  const formattedDate = formatDateToDayMonth(date.day);
 
   const toggleIsCalendarShown = () => {
     setIsCalendarShown(!isCalendarShown);
   };
+
+  const handleDateChange = (newDate: string) => {
+    setValue('date.day', newDate);
+  };
+
+  const isOffline = watch('isOffline');
+  const location = watch('location');
+  const eventUrl = watch('eventUrl');
+
+  const validateOnlineOffline = () => {
+    if (isOffline && location.city.length > 0) return true;
+    if (!isOffline && eventUrl.length > 0) return true;
+    return false;
+  };
+  const validatedOnlineOffline = validateOnlineOffline();
 
   const dropdownDate = useRef<HTMLDivElement | null>(null);
   const dropdownStartTime = useRef<HTMLDivElement | null>(null);
@@ -120,25 +116,18 @@ const DateAndPlace = ({
     setOptions(generatedOptions);
   }, []);
 
-  useEffect(() => {
-    handleStartTime(selectedStartTimeOption);
-    handleEndTime(selectedEndOption);
-  }, [
-    handleStartTime,
-    handleEndTime,
-    selectedStartTimeOption,
-    selectedEndOption,
-  ]);
-
   return (
     <div className="relative max-w-[760px] rounded-[20px] border-2 border-buttonPurple flex flex-col pt-10 pb-8 px-8 mb-8">
-      {validateDateTimePlace && (
-        <AiFillCheckCircle
-          size={40}
-          color="#3BE660"
-          style={{ position: 'absolute', right: '8px', top: '8px' }}
-        />
-      )}
+      {daySelected &&
+        startSelected &&
+        endSelected &&
+        validatedOnlineOffline && (
+          <AiFillCheckCircle
+            size={40}
+            color="#3BE660"
+            style={{ position: 'absolute', right: '8px', top: '8px' }}
+          />
+        )}
       <span className="pb-4 text-2xl">
         Дата та час<span className="star">*</span>
       </span>
@@ -157,7 +146,7 @@ const DateAndPlace = ({
             >
               <div className="flex">
                 <AiOutlineCalendar size="24px" />
-                {date ? (
+                {date.day.length > 0 ? (
                   <p className="pl-2">{formattedDate}</p>
                 ) : (
                   <p className="pl-2 text-uploadBtnBg">Оберіть дату</p>
@@ -189,8 +178,8 @@ const DateAndPlace = ({
             >
               <div className="flex">
                 <BiTimeFive size="24px" />
-                {selectedStartTimeOption ? (
-                  <p className="pl-2">{selectedStartTimeOption}</p>
+                {startSelected ? (
+                  <p className="pl-2">{date.time}</p>
                 ) : (
                   <p className="pl-2 text-uploadBtnBg">Оберіть час</p>
                 )}
@@ -204,7 +193,10 @@ const DateAndPlace = ({
               >
                 {options.map(option => (
                   <li
-                    onClick={() => handleStartTimeOption(option.label)}
+                    onClick={() => {
+                      setValue('date.time', option.label);
+                      setStartTimeSelect(false);
+                    }}
                     className="cursor-pointer h-[31px] pt-[4px] pl-[5px] rounded-[10px] hover:bg-lightPurple ease-in-out duration-500"
                     key={option.value}
                   >
@@ -228,8 +220,8 @@ const DateAndPlace = ({
             >
               <div className="flex">
                 <BiTimeFive size="24px" />
-                {selectedEndOption ? (
-                  <p className="pl-2">{selectedEndOption}</p>
+                {endSelected ? (
+                  <p className="pl-2">{date.endTime}</p>
                 ) : (
                   <p className="pl-2 text-uploadBtnBg">Оберіть час</p>
                 )}
@@ -243,7 +235,10 @@ const DateAndPlace = ({
               >
                 {options.map(option => (
                   <li
-                    onClick={() => handleEndTimeOption(option.label)}
+                    onClick={() => {
+                      setValue('date.endTime', option.label);
+                      setEndTimeSelect(false);
+                    }}
                     className="cursor-pointer h-[31px] pt-[4px] pl-[5px] rounded-[10px] hover:bg-lightPurple ease-in-out duration-500"
                     key={option.value}
                   >

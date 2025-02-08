@@ -22,16 +22,14 @@ import TicketPrice from './TicketPrice';
 type CreateEventFormProps = {
   photos: (string | null)[];
   photo: string | null;
-  date: string;
-  startTimeOption: string;
   onPhotoChange: (id: number, photo: string | null) => void;
-  handleDateChange: (newDate: string) => void;
-  handleStartTime: (endTime: string) => void;
   getFormData: ({
     title,
     eventTypeName,
     ticketPrice,
     freeTickets,
+    day,
+    location,
   }: FormaDataForCard) => void;
 };
 
@@ -44,14 +42,9 @@ const subtitles = [
 const CreateEventForm: React.FC<CreateEventFormProps> = ({
   photos,
   photo,
-  date,
-  startTimeOption,
   onPhotoChange,
-  handleDateChange,
-  handleStartTime,
   getFormData,
 }) => {
-  const [endTimeOption, setSelectedEndTimeOption] = useState('');
   const [isSuccessPopupShown, setIsSuccessPopupShown] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
   const [imageFile, setImageFile] = useState<(File | null)[]>([
@@ -83,9 +76,11 @@ const CreateEventForm: React.FC<CreateEventFormProps> = ({
       description: '',
       eventType: 'OTHER',
       eventTypeName: 'Інше',
-      startDate: '',
-      startTime: '',
-      endTime: '',
+      date: {
+        day: '',
+        time: '',
+        endTime: '',
+      },
       ticketPrice: '',
       numberOfTickets: '',
       location: {
@@ -108,15 +103,9 @@ const CreateEventForm: React.FC<CreateEventFormProps> = ({
   const isOffline = watch('isOffline');
   const eventUrl = watch('eventUrl');
   const location = watch('location');
+  const date = watch('date');
 
-  // валідація не hook form
-  const validateDate = date.length > 0;
-  const validateStart = startTimeOption.length > 0;
-  const validateEnd = endTimeOption.length > 0;
-
-  const validateDateTimePlace = validateDate && validateStart && validateEnd;
-  const validatePhotos = photos[0] !== null;
-  const validateForm = validateDateTimePlace && validatePhotos;
+  const validateForm = photos[0] !== null;
 
   const handleImageFileChange = (id: number, photo: (File | null)[]) => {
     setImageFile(prevPhotos => {
@@ -128,8 +117,6 @@ const CreateEventForm: React.FC<CreateEventFormProps> = ({
     });
   };
 
-  const handleEndTime = (endTime: string) => setSelectedEndTimeOption(endTime);
-
   const popupEvent = {
     title,
     type: eventTypeName,
@@ -140,8 +127,8 @@ const CreateEventForm: React.FC<CreateEventFormProps> = ({
       street: location.street,
     },
     date: {
-      day: date,
-      time: startTimeOption,
+      day: date.day,
+      time: date.time,
     },
     price: +ticketPrice,
   } as unknown as Event;
@@ -157,6 +144,7 @@ const CreateEventForm: React.FC<CreateEventFormProps> = ({
     unlimitedTickets,
     eventUrl,
     location,
+    date,
   }: CreateEventFormValues) => {
     const formattedNumberOfTickets =
       numberOfTickets.length === 0 ? '1' : numberOfTickets;
@@ -169,11 +157,7 @@ const CreateEventForm: React.FC<CreateEventFormProps> = ({
       unlimitedTickets,
       eventUrl,
       location,
-      date: {
-        day: date,
-        time: startTimeOption,
-        endTime: endTimeOption,
-      },
+      date,
       organizers,
       numberOfTickets: +formattedNumberOfTickets,
       ticketPrice: +ticketPrice,
@@ -183,19 +167,18 @@ const CreateEventForm: React.FC<CreateEventFormProps> = ({
     const secondImage = imageFile[1];
     const thirdImage = imageFile[2];
 
-    // setIsLoading(true);
-    // createEvent(event, firstImage, secondImage, thirdImage)
-    //   .then(response => {
-    //     if (response.status === 201) {
-    //       setIsSuccessPopupShown(true);
-    //     }
-    //     setIsLoading(false);
-    //   })
-    //   .catch(error => {
-    //     setIsLoading(false);
-    //     console.error(error);
-    //   });
-    console.log(event);
+    setIsLoading(true);
+    createEvent(event, firstImage, secondImage, thirdImage)
+      .then(response => {
+        if (response.status === 201) {
+          setIsSuccessPopupShown(true);
+        }
+        setIsLoading(false);
+      })
+      .catch(error => {
+        setIsLoading(false);
+        console.error(error);
+      });
   };
 
   const user = useAppSelector(selectUser);
@@ -208,14 +191,24 @@ const CreateEventForm: React.FC<CreateEventFormProps> = ({
       freeTickets,
       isOffline,
       location,
+      day: date.day,
+      time: date.time,
     });
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [title, eventTypeName, ticketPrice, freeTickets, isOffline, location]);
+  }, [
+    title,
+    eventTypeName,
+    ticketPrice,
+    freeTickets,
+    isOffline,
+    location,
+    date.day,
+    date.time,
+  ]);
 
   useEffect(() => {
     setValue('organizers.id', user.id);
   }, [setValue, user]);
-  console.log(errors, isValid);
 
   return (
     <form onSubmit={handleSubmit(onSubmit)}>
@@ -233,7 +226,7 @@ const CreateEventForm: React.FC<CreateEventFormProps> = ({
             />
           ))}
         </div>
-        {validatePhotos && (
+        {validateForm && (
           <AiFillCheckCircle
             size={40}
             color="#3BE660"
@@ -253,11 +246,6 @@ const CreateEventForm: React.FC<CreateEventFormProps> = ({
         watch={watch}
         errors={errors}
         trigger={trigger}
-        date={date}
-        handleDateChange={handleDateChange}
-        handleStartTime={handleStartTime}
-        handleEndTime={handleEndTime}
-        validateDateTimePlace={validateDateTimePlace}
       />
       <TicketPrice
         control={control}

@@ -11,12 +11,12 @@ export interface FormaDataForCard {
   freeTickets: boolean;
   isOffline?: boolean;
   location: CreateEventLocation;
+  day: string;
+  time: string;
 }
 
 const CreateEventPage: React.FC = () => {
   const [photos, setPhotos] = useState<(string | null)[]>([null, null, null]);
-  const [date, setDate] = useState<string>('');
-  const [startTimeOption, setSelectedStartTimeOption] = useState('');
   const [eventInfoData, setEventInfoData] = useState<FormaDataForCard>({
     title: '',
     eventTypeName: '',
@@ -30,6 +30,8 @@ const CreateEventPage: React.FC = () => {
       latitude: '',
       longitude: '',
     },
+    day: '',
+    time: '',
   });
 
   const getFormData = ({
@@ -39,6 +41,8 @@ const CreateEventPage: React.FC = () => {
     freeTickets,
     isOffline,
     location,
+    day,
+    time,
   }: FormaDataForCard) => {
     setEventInfoData({
       title,
@@ -47,15 +51,9 @@ const CreateEventPage: React.FC = () => {
       freeTickets,
       isOffline,
       location,
+      day,
+      time,
     });
-  };
-
-  const handleDateChange = (newDate: string) => {
-    setDate(newDate);
-  };
-
-  const handleStartTime = (startTime: string) => {
-    setSelectedStartTimeOption(startTime);
   };
 
   const handlePhotoChange = (id: number, photo: string | null) => {
@@ -77,20 +75,11 @@ const CreateEventPage: React.FC = () => {
           </h1>
         </div>
         <div className="flex gap-6">
-          <CreateEventCard
-            photo={photos[0]}
-            date={date}
-            startTimeOption={startTimeOption}
-            eventInfoData={eventInfoData}
-          />
+          <CreateEventCard photo={photos[0]} eventInfoData={eventInfoData} />
           <CreateEventForm
             photo={photos[0]}
             photos={photos}
-            date={date}
-            startTimeOption={startTimeOption}
             onPhotoChange={handlePhotoChange}
-            handleDateChange={handleDateChange}
-            handleStartTime={handleStartTime}
             getFormData={getFormData}
           />
         </div>

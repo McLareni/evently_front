@@ -1,5 +1,3 @@
-/* eslint-disable @typescript-eslint/no-unused-expressions */
-
 /* eslint-disable no-unused-vars */
 import { useEffect, useState } from 'react';
 import { Calendar } from 'react-date-range';
@@ -18,15 +16,14 @@ export const CreateEventCalendar = ({
 }: CreateEventCalendarProps) => {
   const [date, setDate] = useState<Date | undefined>();
 
-  const formattedDate = dayjs(date).format('YYYY-MM-DD');
+  const formattedDate = date ? dayjs(date).format('YYYY-MM-DD') : '';
 
   useEffect(() => {
-    date && toggleIsCalendarShown();
-  }, [date, toggleIsCalendarShown]);
-
-  useEffect(() => {
-    handleDateChange(formattedDate);
-  }, [formattedDate, handleDateChange]);
+    if (date) {
+      toggleIsCalendarShown();
+      handleDateChange(formattedDate);
+    }
+  }, [date, formattedDate, handleDateChange, toggleIsCalendarShown]);
 
   return (
     <Calendar
