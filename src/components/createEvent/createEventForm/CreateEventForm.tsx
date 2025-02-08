@@ -174,6 +174,9 @@ const CreateEventForm: React.FC<CreateEventFormProps> = ({
     numberOfTickets,
     unlimitedTickets,
   }: CreateEventFormValues) => {
+    const formattedNumberOfTickets =
+      numberOfTickets.length === 0 ? '1' : numberOfTickets;
+
     const event = {
       title,
       description,
@@ -194,7 +197,7 @@ const CreateEventForm: React.FC<CreateEventFormProps> = ({
         endTime: endTimeOption,
       },
       organizers,
-      numberOfTickets: +numberOfTickets,
+      numberOfTickets: +formattedNumberOfTickets,
       ticketPrice: +ticketPrice,
     } as unknown as CreateEventFormValues;
 
@@ -214,7 +217,6 @@ const CreateEventForm: React.FC<CreateEventFormProps> = ({
         setIsLoading(false);
         console.error(error);
       });
-    console.log(event);
   };
 
   const user = useAppSelector(selectUser);

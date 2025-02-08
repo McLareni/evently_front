@@ -159,12 +159,12 @@ const PhotoCard: React.FC<PhotoCardProps> = ({
             <div className="bg-white border-2 p-16 border-buttonPurple rounded-[20px]">
               <Cropper
                 src={imageToCrop || ''}
-                style={{ height: 800, width: 800 }}
+                style={{ height: 600, width: 600 }}
                 initialAspectRatio={1}
                 aspectRatio={1}
                 ref={cropperRef}
-                minCropBoxHeight={100}
-                minCropBoxWidth={100}
+                minCropBoxHeight={300}
+                minCropBoxWidth={300}
                 checkOrientation={true}
                 viewMode={1}
                 guides={true}
