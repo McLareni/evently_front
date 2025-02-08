@@ -155,17 +155,19 @@ const PhotoCard: React.FC<PhotoCardProps> = ({
       {/* Image Cropper Modal */}
       {showCropper &&
         createPortal(
-          <div className="fixed inset-0 flex items-center justify-center bg-gray-800 bg-opacity-50 z-10">
+          <div className="fixed inset-0 flex items-center justify-center bg-gray-800 bg-opacity-50 z-20">
             <div className="bg-white border-2 p-16 border-buttonPurple rounded-[20px]">
               <Cropper
                 src={imageToCrop || ''}
-                style={{ height: 'auto', width: 800 }}
+                style={{ height: 800, width: 800 }}
                 initialAspectRatio={1}
                 aspectRatio={1}
-                guides={false}
                 ref={cropperRef}
                 minCropBoxHeight={100}
                 minCropBoxWidth={100}
+                checkOrientation={true}
+                viewMode={1}
+                guides={true}
                 zoomable={false}
               />
               <div className="justify-center mt-12 flex gap-[38px]">
