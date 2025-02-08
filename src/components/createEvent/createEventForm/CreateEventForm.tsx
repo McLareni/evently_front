@@ -1,7 +1,6 @@
 /* eslint-disable no-unused-vars */
 import { useEffect, useState } from 'react';
 import { useForm } from 'react-hook-form';
-import { AiFillCheckCircle } from 'react-icons/ai';
 
 import { selectUser } from '@/redux/auth/selectors';
 import { useAppSelector } from '@/redux/hooks';
@@ -15,8 +14,8 @@ import Spinner from '@/components/ui/Spinner';
 
 import AboutEvent from './AboutEvent';
 import AboutOrganizer from './AboutOrganizer';
-import PhotoCard from './CardsPhotos';
 import DateAndPlace from './DateAndPlace';
+import { PhotoCardList } from './PhotoCardList';
 import TicketPrice from './TicketPrice';
 import { defaultValues } from './defaultValues';
 
@@ -33,12 +32,6 @@ type CreateEventFormProps = {
     location,
   }: FormaDataForCard) => void;
 };
-
-const subtitles = [
-  'Рекомендований розмір 400х400',
-  'Максимальний розмір файлу: 50 МБ',
-  'Підтримувані файли: .JPEG, .PNG',
-];
 
 const CreateEventForm: React.FC<CreateEventFormProps> = ({
   photos,
@@ -183,28 +176,12 @@ const CreateEventForm: React.FC<CreateEventFormProps> = ({
 
   return (
     <form onSubmit={handleSubmit(onSubmit)}>
-      <div className="relative w-[760px] h-[321px] mb-8 rounded-[20px] border-buttonPurple border-2">
-        <div className="flex flex-wrap items-center justify-center gap-16">
-          {[0, 1, 2].map(id => (
-            <PhotoCard
-              key={id}
-              title={'Додати фото події'}
-              subtitle={subtitles[id]}
-              id={id}
-              photo={photos[id]}
-              onPhotoChange={onPhotoChange}
-              handleImageFileChange={handleImageFileChange}
-            />
-          ))}
-        </div>
-        {validateForm && (
-          <AiFillCheckCircle
-            size={40}
-            color="#3BE660"
-            style={{ position: 'absolute', right: '8px', top: '8px' }}
-          />
-        )}
-      </div>
+      <PhotoCardList
+        onPhotoChange={onPhotoChange}
+        handleImageFileChange={handleImageFileChange}
+        photos={photos}
+        validateForm={validateForm}
+      />
       <AboutEvent
         control={control}
         setValue={setValue}
