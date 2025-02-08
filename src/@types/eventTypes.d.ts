@@ -108,11 +108,6 @@ interface EventPlaceWithGps {
 }
 
 // create event
-type EventCategoryType = {
-  name: string;
-  value: string;
-};
-
 type CreateEventLocation = {
   city: string;
   street: string;
@@ -129,10 +124,11 @@ type CreateEventFormValues = {
   secondImg: string;
   thirdImg: string;
   aboutOrganizer: string;
-  unlimitedTickets: boolean;
+  unlimitedTickets?: boolean;
   title: string;
   description: string;
-  eventType: EventCategoryType;
+  eventType: string;
+  eventTypeName?: string;
   startDate: string;
   startTime: string;
   endTime: string;

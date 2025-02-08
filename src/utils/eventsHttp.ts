@@ -44,7 +44,7 @@ export const editEvent = async (formData: eventType, id?: string) => {
 };
 
 export const createEvent = async (
-  event: Event,
+  event: CreateEventFormValues,
   firstImage: File | null,
   secondImage: File | null,
   thirdImage: File | null

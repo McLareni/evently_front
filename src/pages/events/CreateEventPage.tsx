@@ -6,7 +6,7 @@ import CreateEventForm from '@/components/createEvent/createEventForm/CreateEven
 
 export interface FormaDataForCard {
   title: string;
-  eventTypeName: string;
+  eventTypeName: string | undefined;
   ticketPrice: string;
   freeTickets: boolean;
 }
@@ -17,7 +17,7 @@ const CreateEventPage: React.FC = () => {
   const [place, setPlace] = useState<CreateEventLocation | null>(null);
   const [startTimeOption, setSelectedStartTimeOption] = useState('');
   const [isOffline, setIsOffline] = useState(true);
-  const [eventInfoData, setEventInfoData] = useState({
+  const [eventInfoData, setEventInfoData] = useState<FormaDataForCard>({
     title: '',
     eventTypeName: '',
     ticketPrice: '',

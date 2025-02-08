@@ -89,7 +89,8 @@ const CreateEventForm: React.FC<CreateEventFormProps> = ({
       unlimitedTickets: false,
       title: '',
       description: '',
-      eventType: { name: 'Інше', value: 'OTHER' },
+      eventType: 'OTHER',
+      eventTypeName: 'Інше',
       startDate: '',
       startTime: '',
       endTime: '',
@@ -142,14 +143,9 @@ const CreateEventForm: React.FC<CreateEventFormProps> = ({
     setEventUrl(eventUrl.trim());
 
   const title = watch('title');
-  const eventTypeName = watch('eventType.name');
+  const eventTypeName = watch('eventTypeName');
   const ticketPrice = watch('ticketPrice');
   const freeTickets = watch('freeTickets');
-
-  useEffect(() => {
-    getFormData({ title, eventTypeName, ticketPrice, freeTickets });
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [title, eventTypeName, ticketPrice, freeTickets]);
 
   const popupEvent = {
     title,
@@ -180,7 +176,7 @@ const CreateEventForm: React.FC<CreateEventFormProps> = ({
     const event = {
       title,
       description,
-      eventType: eventType.value,
+      eventType: eventType,
       aboutOrganizer,
       unlimitedTickets,
       eventUrl: eventUrl,
@@ -199,28 +195,33 @@ const CreateEventForm: React.FC<CreateEventFormProps> = ({
       organizers,
       numberOfTickets: +numberOfTickets,
       ticketPrice: +ticketPrice,
-    };
+    } as unknown as CreateEventFormValues;
 
-    // const firstImage = imageFile[0];
-    // const secondImage = imageFile[1];
-    // const thirdImage = imageFile[2];
+    const firstImage = imageFile[0];
+    const secondImage = imageFile[1];
+    const thirdImage = imageFile[2];
 
-    // setIsLoading(true);
-    // createEvent(event, firstImage, secondImage, thirdImage)
-    //   .then(response => {
-    //     if (response.status === 201) {
-    //       setIsSuccessPopupShown(true);
-    //     }
-    //     setIsLoading(false);
-    //   })
-    //   .catch(error => {
-    //     setIsLoading(false);
-    //     console.error(error);
-    //   });
+    setIsLoading(true);
+    createEvent(event, firstImage, secondImage, thirdImage)
+      .then(response => {
+        if (response.status === 201) {
+          setIsSuccessPopupShown(true);
+        }
+        setIsLoading(false);
+      })
+      .catch(error => {
+        setIsLoading(false);
+        console.error(error);
+      });
     console.log(event);
   };
 
   const user = useAppSelector(selectUser);
+
+  useEffect(() => {
+    getFormData({ title, eventTypeName, ticketPrice, freeTickets });
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [title, eventTypeName, ticketPrice, freeTickets]);
 
   useEffect(() => {
     setValue('organizers.id', user.id);
