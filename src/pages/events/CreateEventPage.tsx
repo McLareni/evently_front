@@ -10,18 +10,12 @@ export interface FormaDataForCard {
   ticketPrice: string;
   freeTickets: boolean;
   isOffline?: boolean;
+  location: CreateEventLocation;
 }
 
 const CreateEventPage: React.FC = () => {
   const [photos, setPhotos] = useState<(string | null)[]>([null, null, null]);
   const [date, setDate] = useState<string>('');
-  const [place, setPlace] = useState<CreateEventLocation>({
-    city: '',
-    street: '',
-    venue: '',
-    latitude: '',
-    longitude: '',
-  });
   const [startTimeOption, setSelectedStartTimeOption] = useState('');
   const [eventInfoData, setEventInfoData] = useState<FormaDataForCard>({
     title: '',
@@ -29,6 +23,13 @@ const CreateEventPage: React.FC = () => {
     ticketPrice: '',
     freeTickets: false,
     isOffline: true,
+    location: {
+      city: '',
+      street: '',
+      venue: '',
+      latitude: '',
+      longitude: '',
+    },
   });
 
   const getFormData = ({
@@ -37,6 +38,7 @@ const CreateEventPage: React.FC = () => {
     ticketPrice,
     freeTickets,
     isOffline,
+    location,
   }: FormaDataForCard) => {
     setEventInfoData({
       title,
@@ -44,15 +46,12 @@ const CreateEventPage: React.FC = () => {
       ticketPrice,
       freeTickets,
       isOffline,
+      location,
     });
   };
 
   const handleDateChange = (newDate: string) => {
     setDate(newDate);
-  };
-
-  const handlePlaceChange = (newPlace: CreateEventLocation) => {
-    setPlace(newPlace);
   };
 
   const handleStartTime = (startTime: string) => {
@@ -81,18 +80,15 @@ const CreateEventPage: React.FC = () => {
           <CreateEventCard
             photo={photos[0]}
             date={date}
-            place={place}
             startTimeOption={startTimeOption}
             eventInfoData={eventInfoData}
           />
           <CreateEventForm
-            place={place}
             photo={photos[0]}
             photos={photos}
             date={date}
             startTimeOption={startTimeOption}
             onPhotoChange={handlePhotoChange}
-            onPlaceChange={handlePlaceChange}
             handleDateChange={handleDateChange}
             handleStartTime={handleStartTime}
             getFormData={getFormData}

@@ -11,7 +11,6 @@ import { SharedBtn } from '@/components/ui';
 import exampleCard from '/images/exampleCard.svg';
 
 type CardProps = {
-  place: CreateEventLocation;
   photo: string | null;
   date: string;
   startTimeOption: string;
@@ -20,15 +19,20 @@ type CardProps = {
 
 const CreateEventCard: React.FC<CardProps> = ({
   photo,
-  place,
   date,
   startTimeOption,
   eventInfoData,
 }) => {
   const formattedDate = formatDateToDayMonth(date);
 
-  const { title, eventTypeName, ticketPrice, freeTickets, isOffline } =
-    eventInfoData;
+  const {
+    title,
+    eventTypeName,
+    ticketPrice,
+    freeTickets,
+    isOffline,
+    location,
+  } = eventInfoData;
 
   const formattedTitle =
     (title && title.length > 45 && title.slice(0, 45) + '...') || title;
@@ -91,10 +95,10 @@ const CreateEventCard: React.FC<CardProps> = ({
             </li>
             <li className="flex items-center gap-[18px]">
               <GrLocation size="24px" />
-              {place.city.length === 0 && isOffline && <p>Місце</p>}
-              {place.city.length > 0 && isOffline && (
+              {location.city.length === 0 && isOffline && <p>Місце</p>}
+              {location.city.length > 0 && isOffline && (
                 <p>
-                  {place.city}, {place.street}
+                  {location.city}, {location.street}
                 </p>
               )}
               {!isOffline && <p>Онлайн</p>}

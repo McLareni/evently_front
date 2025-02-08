@@ -5,6 +5,7 @@ import {
   Controller,
   FieldErrors,
   UseFormSetValue,
+  UseFormTrigger,
   UseFormWatch,
 } from 'react-hook-form';
 import { AiFillCheckCircle, AiOutlineCalendar } from 'react-icons/ai';
@@ -14,19 +15,18 @@ import { BiTimeFive } from 'react-icons/bi';
 import { formatDateToDayMonth } from '@/helpers/filters/formatDateToDayMonth';
 
 import { CreateEventCalendar } from './CreateEventCalendar';
-import { GoogleMapsInput } from './GoogleMapsInput';
+import { OnlineOffline } from './OnlineOffline';
 
 interface DateAndPlaceProps {
   control: Control<CreateEventFormValues>;
   setValue: UseFormSetValue<CreateEventFormValues>;
   watch: UseFormWatch<CreateEventFormValues>;
   errors: FieldErrors<CreateEventFormValues>;
+  trigger: UseFormTrigger<CreateEventFormValues>;
   date: string;
   handleDateChange: (newDate: string) => void;
   handleStartTime: (startTime: string) => void;
   handleEndTime: (endTime: string) => void;
-  onPlaceChange: (newPlace: CreateEventLocation) => void;
-  handleEventUrlChange: (eventUrl: string) => void;
   validateDateTimePlace: boolean;
 }
 
@@ -35,12 +35,11 @@ const DateAndPlace = ({
   setValue,
   watch,
   errors,
+  trigger,
   date,
   handleDateChange,
   handleStartTime,
   handleEndTime,
-  onPlaceChange,
-  handleEventUrlChange,
   validateDateTimePlace,
 }: DateAndPlaceProps) => {
   const [startTimeSelect, setStartTimeSelect] = useState(false);
@@ -51,10 +50,6 @@ const DateAndPlace = ({
     []
   );
   const [isCalendarShown, setIsCalendarShown] = useState(false);
-  const dropdownStartTimeRef = useRef<HTMLDivElement | null>(null);
-  const dropdownEndTimeRef = useRef<HTMLDivElement | null>(null);
-
-  const isOffline = watch('isOffline');
 
   const formattedDate = formatDateToDayMonth(date);
 
@@ -72,10 +67,17 @@ const DateAndPlace = ({
     setIsCalendarShown(!isCalendarShown);
   };
 
+  const dropdownDate = useRef<HTMLDivElement | null>(null);
   const dropdownStartTime = useRef<HTMLDivElement | null>(null);
   const dropdownEndTime = useRef<HTMLDivElement | null>(null);
 
   const handleClickOutside = useCallback((event: MouseEvent) => {
+    if (
+      dropdownDate.current &&
+      !dropdownDate.current.contains(event.target as Node)
+    ) {
+      setIsCalendarShown(false);
+    }
     if (
       dropdownStartTime.current &&
       !dropdownStartTime.current.contains(event.target as Node)
@@ -144,6 +146,7 @@ const DateAndPlace = ({
         <div className="w-[245px]">
           <span>Дата</span>
           <div
+            ref={dropdownDate}
             className="border-2 border-buttonPurple rounded-[10px] overflow-hidden 
                         w-[245px] mb-[18px]"
           >
@@ -175,7 +178,7 @@ const DateAndPlace = ({
         <div>
           <span>Початок</span>
           <div
-            ref={dropdownStartTimeRef}
+            ref={dropdownStartTime}
             className="border-2 border-buttonPurple rounded-[10px] overflow-hidden 
                         w-[210px] max-h-[230px] mb-[18px]"
           >
@@ -215,7 +218,7 @@ const DateAndPlace = ({
         <div>
           <span>Кінець</span>
           <div
-            ref={dropdownEndTimeRef}
+            ref={dropdownEndTime}
             className="inline-block border-2 border-buttonPurple rounded-[10px] overflow-hidden w-[210px] max-h-[230px] mb-[18px] "
           >
             <button
@@ -252,100 +255,13 @@ const DateAndPlace = ({
           </div>
         </div>
       </div>
-      <span className="pb-4 text-2xl">
-        Оберіть формат події<span className="star">*</span>
-      </span>
-      <div className="pb-6">
-        <Controller
-          name="isOffline"
-          control={control}
-          render={() => (
-            <button
-              type="button"
-              className={`${
-                isOffline
-                  ? 'bg-buttonPurple text-white'
-                  : 'bg-lightPurple text-gray-700'
-              } focus:outline-none font-normal text-xl rounded-[20px] mr-4 py-[12.5px] px-[18px]`}
-              onClick={() => {
-                setValue('isOffline', true);
-                handleEventUrlChange('');
-              }}
-            >
-              Оффлайн
-            </button>
-          )}
-        />
-        <Controller
-          name="isOffline"
-          control={control}
-          render={() => (
-            <button
-              type="button"
-              className={`${
-                isOffline
-                  ? 'bg-lightPurple text-gray-700'
-                  : 'bg-buttonPurple text-white'
-              } focus:outline-none font-normal text-xl rounded-[20px] mr-4 py-[12.5px] px-[18px]`}
-              onClick={() => {
-                setValue('isOffline', false);
-                onPlaceChange({
-                  city: '',
-                  street: '',
-                  venue: '',
-                  latitude: '',
-                  longitude: '',
-                });
-              }}
-            >
-              Онлайн
-            </button>
-          )}
-        />
-      </div>
-      {isOffline ? (
-        <div className="flex flex-col w-full">
-          <label htmlFor="address" className="pb-3">
-            Адреса
-          </label>
-          <div className="w-full h-[52px] p-[2px] bg-createEventInputBorder rounded-[10px]">
-            <GoogleMapsInput
-              id="address"
-              autoComplete="true"
-              className="w-full h-full outline-none"
-              placeholder="Адреса проведення"
-              onPlaceSelect={place => {
-                if (!place || !place.geometry) return;
-                const formattedPlace = {
-                  venue: '',
-                  latitude: place.geometry.location?.lat().toString() || '0',
-                  longitude: place.geometry.location?.lng().toString() || '0',
-                  street: place.name || '',
-                  city: 'Київ',
-                };
-                onPlaceChange(formattedPlace);
-              }}
-            />
-          </div>
-        </div>
-      ) : (
-        <div className="flex flex-col">
-          <label htmlFor="link" className="pb-3">
-            Посилання на Zoom або Google Meet
-          </label>
-          <div className="w-full h-[52px] p-[2px] bg-createEventInputBorder rounded-[10px]">
-            <input
-              type="text"
-              id="link"
-              placeholder="https://meet.google.com/..."
-              className="outline-none w-full h-full rounded-[8px] p-4 border-buttonPurple"
-              onChange={e => {
-                handleEventUrlChange(e.target.value);
-              }}
-            />
-          </div>
-        </div>
-      )}
+      <OnlineOffline
+        control={control}
+        setValue={setValue}
+        watch={watch}
+        errors={errors}
+        trigger={trigger}
+      />
     </div>
   );
 };
