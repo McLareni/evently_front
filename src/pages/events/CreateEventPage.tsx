@@ -4,37 +4,56 @@ import { Container } from '@/components/container/Container';
 import CreateEventCard from '@/components/createEvent/CreateEventCard';
 import CreateEventForm from '@/components/createEvent/createEventForm/CreateEventForm';
 
+export interface FormaDataForCard {
+  title: string;
+  eventTypeName: string | undefined;
+  ticketPrice: string;
+  freeTickets: boolean;
+  isOffline?: boolean;
+  location: CreateEventLocation;
+  day: string;
+  time: string;
+}
+
 const CreateEventPage: React.FC = () => {
   const [photos, setPhotos] = useState<(string | null)[]>([null, null, null]);
-  const [eventName, setEventName] = useState('');
-  const [eventType, seteventType] = useState('');
-  const [date, setDate] = useState<string>('');
-  const [place, setPlace] = useState<EventPlaceWithGps | null>(null);
-  const [price, setPrice] = useState<number | 'Безкоштовно' | 'Ціна'>('Ціна');
-  const [startTimeOption, setSelectedStartTimeOption] = useState('');
+  const [eventInfoData, setEventInfoData] = useState<FormaDataForCard>({
+    title: '',
+    eventTypeName: '',
+    ticketPrice: '',
+    freeTickets: false,
+    isOffline: true,
+    location: {
+      city: '',
+      street: '',
+      venue: '',
+      latitude: '',
+      longitude: '',
+    },
+    day: '',
+    time: '',
+  });
 
-  const handleEventNameChange = (newName: string) => {
-    setEventName(newName);
-  };
-
-  const handleCategoryChangeForUI = (eventType: string) => {
-    seteventType(eventType);
-  };
-
-  const handleDateChange = (newDate: string) => {
-    setDate(newDate);
-  };
-
-  const handlePlaceChange = (newPlace: EventPlaceWithGps) => {
-    setPlace(newPlace);
-  };
-
-  const handlePriceChange = (newPrice: number | 'Безкоштовно' | 'Ціна') => {
-    setPrice(newPrice);
-  };
-
-  const handleStartTime = (startTime: string) => {
-    setSelectedStartTimeOption(startTime);
+  const getFormData = ({
+    title,
+    eventTypeName,
+    ticketPrice,
+    freeTickets,
+    isOffline,
+    location,
+    day,
+    time,
+  }: FormaDataForCard) => {
+    setEventInfoData({
+      title,
+      eventTypeName,
+      ticketPrice,
+      freeTickets,
+      isOffline,
+      location,
+      day,
+      time,
+    });
   };
 
   const handlePhotoChange = (id: number, photo: string | null) => {
@@ -56,31 +75,12 @@ const CreateEventPage: React.FC = () => {
           </h1>
         </div>
         <div className="flex gap-6">
-          <CreateEventCard
-            eventName={eventName}
-            eventType={eventType}
-            price={price}
-            photo={photos[0]}
-            date={date}
-            place={place}
-            startTimeOption={startTimeOption}
-          />
+          <CreateEventCard photo={photos[0]} eventInfoData={eventInfoData} />
           <CreateEventForm
-            place={place}
             photo={photos[0]}
             photos={photos}
-            eventName={eventName}
-            eventType={eventType}
-            price={price}
-            date={date}
-            startTimeOption={startTimeOption}
-            onEventNameChange={handleEventNameChange}
-            handleCategoryChangeForUI={handleCategoryChangeForUI}
-            onPriceChange={handlePriceChange}
             onPhotoChange={handlePhotoChange}
-            onPlaceChange={handlePlaceChange}
-            handleDateChange={handleDateChange}
-            handleStartTime={handleStartTime}
+            getFormData={getFormData}
           />
         </div>
       </Container>

@@ -4,51 +4,41 @@ import { GrLocation } from 'react-icons/gr';
 import { PiHeartFill } from 'react-icons/pi';
 
 import { formatDateToDayMonth } from '@/helpers/filters/formatDateToDayMonth';
+import { FormaDataForCard } from '@/pages/events/CreateEventPage';
 
 import { SharedBtn } from '@/components/ui';
 
 import exampleCard from '/images/exampleCard.svg';
 
-import { useEffect, useState } from 'react';
-
 type CardProps = {
-  eventName: string;
-  place: EventPlaceWithGps | null;
-  price: number | 'Безкоштовно' | 'Ціна';
   photo: string | null;
-  eventType: string;
-  date: string;
-  startTimeOption: string;
+  eventInfoData: FormaDataForCard;
 };
 
-const CreateEventCard: React.FC<CardProps> = ({
-  eventName,
-  price,
-  photo,
-  place,
-  eventType,
-  date,
-  startTimeOption,
-}) => {
-  const [freeTickets, setFreeTickets] = useState<boolean | string>(false);
+const CreateEventCard: React.FC<CardProps> = ({ photo, eventInfoData }) => {
+  const {
+    title,
+    eventTypeName,
+    ticketPrice,
+    freeTickets,
+    isOffline,
+    location,
+    day,
+    time,
+  } = eventInfoData;
 
-  const formattedDate = formatDateToDayMonth(date);
+  const formattedDate = formatDateToDayMonth(day);
 
+  const formattedTitle =
+    (title && title.length > 45 && title.slice(0, 45) + '...') || title;
 
-  const formattedPrice = price === 'Безкоштовно' 
-    ? 'Безкоштовно' 
-    : price === 'Ціна'
-    ? 'Ціна' 
-    : typeof price === 'number'
-    ? `${price} ₴` 
-    : price; 
-  
-  useEffect(() => {
-      if (price == 'Безкоштовно') {
-        setFreeTickets(true)  
-      }else
-      setFreeTickets(false)
-  }, [price])
+  const formatPrice = () => {
+    if (freeTickets) return 'Безкоштовно';
+    if (ticketPrice.length === 0 && !freeTickets) return 'Ціна';
+    return `${ticketPrice}  ₴`;
+  };
+
+  const formattedPrice = formatPrice();
 
   return (
     <>
@@ -81,18 +71,18 @@ const CreateEventCard: React.FC<CardProps> = ({
                  border-[2px] border-borderColor bg-bg-gradient"
           >
             <p className="font-normal text-md text-textDark px-4 py-2.5">
-              {eventType || 'Категорія'}
+              {eventTypeName || 'Категорія'}
             </p>
           </div>
           <h2 className="min-h-[72px] text-2xl text-textDark break-words whitespace-normal truncate max-w-[250px]">
-            {eventName}
+            {title.length === 0 ? 'Назва події' : formattedTitle}
           </h2>
           <ul className="flex flex-col gap-[18px] font-normal text-md text-textDark justify-between w-full">
             <li className="flex items-center gap-[18px]">
               <AiOutlineCalendar size="24px" />
-              {date ? (
+              {day.length > 0 ? (
                 <p>
-                  {formattedDate}, {startTimeOption}
+                  {formattedDate}, {time}
                 </p>
               ) : (
                 <p>Дата</p>
@@ -100,17 +90,19 @@ const CreateEventCard: React.FC<CardProps> = ({
             </li>
             <li className="flex items-center gap-[18px]">
               <GrLocation size="24px" />
-              {place ? (
+              {location.city.length === 0 && isOffline && <p>Місце</p>}
+              {location.city.length > 0 && isOffline && (
                 <p>
-                  {place.city}, {place.name}
+                  {location.city}, {location.street}
                 </p>
-              ) : (
-                <p>Місце</p>
               )}
+              {!isOffline && <p>Онлайн</p>}
             </li>
             <li className="flex items-center gap-[18px]">
               <FaRegMoneyBillAlt size="24px" />
-              <p className={`${freeTickets ? 'text-error' : ''}`}>{formattedPrice}</p>
+              <p className={`${freeTickets ? 'text-error' : ''}`}>
+                {formattedPrice}
+              </p>
             </li>
           </ul>
           <SharedBtn type="button" primary className="w-[230px] h-12 mx-auto">

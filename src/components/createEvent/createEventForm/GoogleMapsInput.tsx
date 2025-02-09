@@ -1,11 +1,11 @@
 /* eslint-disable no-undef */
 
 /* eslint-disable no-unused-vars */
-import { useEffect, useRef, useState } from 'react';
+import { HTMLProps, useEffect, useRef, useState } from 'react';
 
 import { useMapsLibrary } from '@vis.gl/react-google-maps';
 
-interface PlaceAutocompleteProps {
+interface PlaceAutocompleteProps extends HTMLProps<HTMLInputElement> {
   className?: string;
   placeholder?: string;
   onPlaceSelect: (place: google.maps.places.PlaceResult | null) => void;
@@ -15,6 +15,7 @@ export const GoogleMapsInput = ({
   className,
   placeholder,
   onPlaceSelect,
+  ...props
 }: PlaceAutocompleteProps) => {
   const [placeAutocomplete, setPlaceAutocomplete] =
     useState<google.maps.places.Autocomplete | null>(null);
@@ -41,6 +42,7 @@ export const GoogleMapsInput = ({
   }, [onPlaceSelect, placeAutocomplete]);
   return (
     <input
+      {...props}
       placeholder={placeholder}
       name="place"
       ref={inputRef}

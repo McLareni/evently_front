@@ -12,19 +12,18 @@ interface CreateEventCalendarProps {
 
 export const CreateEventCalendar = ({
   handleDateChange,
-  toggleIsCalendarShown
+  toggleIsCalendarShown,
 }: CreateEventCalendarProps) => {
   const [date, setDate] = useState<Date | undefined>();
 
-  const formattedDate = dayjs(date).format('YYYY-MM-DD');
+  const formattedDate = date ? dayjs(date).format('YYYY-MM-DD') : '';
 
   useEffect(() => {
-    date && toggleIsCalendarShown();
-  }, [date, toggleIsCalendarShown])
-
-  useEffect(() => {
-    handleDateChange(formattedDate);
-  }, [formattedDate, handleDateChange]);
+    if (date) {
+      toggleIsCalendarShown();
+      handleDateChange(formattedDate);
+    }
+  }, [date, formattedDate, handleDateChange, toggleIsCalendarShown]);
 
   return (
     <Calendar
@@ -33,7 +32,7 @@ export const CreateEventCalendar = ({
       locale={uk}
       showDateDisplay={false}
       date={date}
-      className='bg-background'
+      className="bg-background"
     />
   );
 };

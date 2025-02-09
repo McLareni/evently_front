@@ -41,10 +41,17 @@ export const laguageOptions = [
 export const radiusInMeters = 2000;
 
 export const categories = [
-  { name: 'Концерт', value: 'CONCERTS' },
-  { name: 'Майстер клас', value: 'MASTER_CLASS' },
-  { name: 'Спортивний захід', value: 'SPORTS_EVENTS' },
+  { name: 'Концерти', value: 'CONCERTS' },
+  { name: 'Майстер класи', value: 'MASTER_CLASS' },
+  { name: 'Спортивні заходи', value: 'SPORTS_EVENTS' },
   { name: 'Stand-up', value: 'STAND_UP' },
   { name: 'Бізнес та нетворкінг', value: 'BUSINESS_NETWORKING' },
   { name: 'Інше', value: 'OTHER' },
+];
+
+export const imageTypes = [
+  'image/jpeg',
+  'image/webp',
+  'image/svg',
+  'image/png',
 ];
