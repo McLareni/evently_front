@@ -4,6 +4,8 @@ import { useGetUserProfileQuery } from '@/redux/users/userApi';
 
 import Spinner from '@/components/ui/Spinner';
 
+import userPlaceholder from '../../public/images/user-placeholder.png';
+
 const UserProfile = () => {
   const { idUser } = useParams();
   const { data: user, isLoading } = useGetUserProfileQuery(idUser || '');
@@ -15,7 +17,10 @@ const UserProfile = () => {
   return (
     <div className="px-[32px] py-[21px]">
       <div className="mx-[15px] mt-[15px] h-[192px] bg-bg-gradient rounded-[20px] px-[32px] py-[21px] flex gap-[44px]">
-        <img src={user?.avatarUrl || ''} className='w-[150px] h-[150px] rounded-full'/>
+        <img
+          src={user?.avatarUrl || userPlaceholder}
+          className="w-[150px] h-[150px] rounded-full"
+        />
         <p
           className="font-oswald text-[64px] inline-block"
           style={{

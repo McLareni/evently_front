@@ -6,6 +6,7 @@ import { useNavigate } from 'react-router';
 
 import clsx from 'clsx';
 
+import userPlaceholder from '../../../../public/images/user-placeholder.png';
 import ImageNavigation from './ImageNavigation';
 import Stars from './Stars';
 
@@ -83,7 +84,7 @@ const ModalDecision: React.FC<IProps> = ({ event, openModal }) => {
           </div>
           <div>
             <img
-              src="https://t4.ftcdn.net/jpg/02/24/86/95/360_F_224869519_aRaeLneqALfPNBzg0xxMZXghtvBXkfIA.jpg"
+              src={event?.organizers.avatarUrl || userPlaceholder}
               alt=""
               className="h-[72px] w-[72px] rounded-full object-cover"
             />
@@ -114,7 +115,7 @@ const ModalDecision: React.FC<IProps> = ({ event, openModal }) => {
             ) : (
               <p className="font-lato text-base leading-[19px] text-textDart">
                 <span className="font-bold">Місце: </span>
-                {`${event?.location.city} ${event?.location.street}`}
+                {`${event?.location.city}, ${event?.location.street}`}
               </p>
             )}
             <p className="font-lato text-base leading-[19px] text-textDart">
