@@ -4,7 +4,10 @@ interface Event {
   description: string;
   photoUrl: string | null;
   creationDate: Date;
+  unlimitedTickets: boolean;
   phoneNumber: string;
+  numberOfTickets: number;
+  availableTickets: number;
   location: {
     city: string;
     street: string | null;
@@ -15,21 +18,22 @@ interface Event {
   organizers: User;
   aboutOrganizer?: string;
   rating: number;
-  eventStatus: 'PENDING' | 'APPROVED' | 'CANCELLED';
+  eventFormat: string;
   eventUrl: string | null;
-  images: { id: string; photoInBytes: string }[];
+  eventStatus: 'PENDING' | 'APPROVED' | 'CANCELLED';
+  images: Image[];
   date: {
     day: string;
     time: string;
     endTime: string;
   };
+
   tickets: number;
   price: number;
   type: string;
   category: 'TOP_EVENTS' | 'POPULAR' | 'RECOMMENDED';
 
   // ?
-  numberOfTickets: number;
 }
 
 interface EventDTO {

@@ -84,7 +84,11 @@ const ModalDecision: React.FC<IProps> = ({ event, openModal }) => {
           </div>
           <div>
             <img
-              src={event?.organizers.avatarUrl || userPlaceholder}
+              src={
+                event?.organizers?.avatarImage?.photoInBytes
+                  ? `data:image/png;base64,${event?.organizers?.avatarImage.photoInBytes}`
+                  : userPlaceholder
+              }
               alt=""
               className="h-[72px] w-[72px] rounded-full object-cover"
             />

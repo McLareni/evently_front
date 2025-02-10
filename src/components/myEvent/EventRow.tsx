@@ -39,7 +39,7 @@ const status: Record<
 };
 
 interface IProps {
-  event: any;
+  event: Event;
   popUpIsShow: boolean;
   // eslint-disable-next-line no-unused-vars
   openPopUp: (id: string) => void;
@@ -65,7 +65,7 @@ const EventRow: React.FC<IProps> = ({ event, popUpIsShow, openPopUp }) => {
       <td className="w-[100px] p-[5px]">
         <img
           className="w-[100px] h-[100px] rounded-[20px] object-cover"
-          src={`https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRm73sHAvzwO-irFxeMCFe8wBpHu26Xy9mz0g&s`}
+          src={`data:image/png;base64,${event.images[0].photoInBytes}`}
         />
       </td>
       <td className="h-[148px] p-[5px] max-w-[300px]">

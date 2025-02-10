@@ -6,3 +6,5 @@ export const selectIsLoading = (state: RootState) => state.auth.isLoading;
 export const selectError = (state: RootState) => state.auth.error;
 export const selectToken = (state: RootState) => state.auth.token;
 export const selectCurrentDate = (state: RootState) => state.auth.currentDate;
+export const selectUserEvents = (state: RootState) =>
+  state.auth.user.createdEvents;

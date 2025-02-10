@@ -5,7 +5,8 @@ interface User {
   surname: string;
   birthdayDate: string;
   phoneNumber: string;
-  avatarUrl: string;
+  avatarImage: Image;
+  createdEvents: Event[];
 
   email: string;
   creationDate: Date;
@@ -32,4 +33,14 @@ type UserInfo = Pick<
 interface Coordinates {
   latitude: number;
   longitude: number;
+}
+
+interface Image {
+  id: {
+    timestamp: number;
+    date: Date;
+  };
+  photoInBytes: string;
+  creationDate: Date;
+  main: boolean;
 }
