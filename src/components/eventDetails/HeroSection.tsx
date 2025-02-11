@@ -105,7 +105,7 @@ const HeroSection: React.FC<IProps> = ({ idEvent, event }) => {
                     img => `data:image/jpeg;base64,${img.photoInBytes}`
                   ),
                 ]
-              : [event.photoUrl]
+              : [event.photoUrl || '']
           }
         />
         <div className="flex-1 pl-24 relative">

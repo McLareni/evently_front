@@ -7,8 +7,7 @@ import ProfileTab from '../tabProfile/ProfileTab';
 export const ProfileTabLayout = () => {
   const { pathname } = useLocation();
 
-  const borderIsHidden =
-    pathname.includes('user_profile') || pathname.includes('favourite');
+  const borderIsHidden = !pathname.includes('admin');
 
   return (
     <main className="flex gap-[25px] relative p-[0px_55px_55px_55px] ">

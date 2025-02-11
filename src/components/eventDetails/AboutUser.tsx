@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import { BiChevronDown } from 'react-icons/bi';
 import { useNavigate } from 'react-router';
 
+import userPlaceholder from '../../../public/images/user-placeholder.png';
 import Stars from '../admin/Events/Stars';
 
 interface IProps {
@@ -21,7 +22,11 @@ const AboutUser: React.FC<IProps> = ({ organizer, rating, aboutUser }) => {
       <h2 className="text-5xl text-textDark mt-12 mb-8">Про організатора</h2>
       <div className="flex">
         <img
-          src="https://t4.ftcdn.net/jpg/02/24/86/95/360_F_224869519_aRaeLneqALfPNBzg0xxMZXghtvBXkfIA.jpg"
+          src={
+            organizer?.avatarImage?.photoInBytes
+              ? `data:image/png;base64,${organizer.avatarImage.photoInBytes}`
+              : userPlaceholder
+          }
           alt=""
           className="h-[100px] w-[100px] rounded-full object-cover mr-6"
         />
