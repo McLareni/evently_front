@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 
 import { getUser } from '@/redux/auth/operations';
 import { selectUserEvents } from '@/redux/auth/selectors';
@@ -8,81 +8,6 @@ import clsx from 'clsx';
 
 import EventRow from './EventRow';
 import TableHead from './TableHead';
-
-// const events = [
-//   {
-//     creationDate: '2024-10-20T10:00:00',
-//     date: {
-//       day: '2025-11-06',
-//       time: '17:00',
-//       endTime: null,
-//     },
-//     eventFormat: 'OFFLINE',
-//     eventStatus: 'APPROVED',
-//     eventUrl:
-//       'https://rendereventapp3.onrender.com/api/v1/swagger-ui/index.html#/Events%20Controller/getAllApprovedEvents',
-//     id: '671e833c56827a52cc26765f',
-//     images: [
-//       {
-//         creationDate: null,
-//         id: '6793adef4f9e0c1b87cabd68',
-//         main: true,
-//         photoInBytes: 'byteCode',
-//       },
-//     ],
-//     location: {
-//       city: 'Київ',
-//       street: 'вул. Володимирська, 100',
-//       venue: null,
-//       latitude: '50.460291',
-//       longitude: '30.488216',
-//     },
-//     numberOfTickets: 10,
-//     availableTickets: 3,
-//     price: 900,
-//     rating: 4.5,
-//     tickets: 10000,
-//     title: 'Стендап на даху',
-//     type: 'Stand-up',
-//     unlimitedTickets: null,
-//   },
-//   {
-//     creationDate: '2024-10-20T10:00:00',
-//     date: {
-//       day: '2025-11-06',
-//       time: '17:00',
-//       endTime: null,
-//     },
-//     eventFormat: 'ONLINE',
-//     eventStatus: 'CANCELLED',
-//     eventUrl:
-//       'https://rendereventapp3.onrender.com/api/v1/swagger-ui/index.htmltapp3.onrender.com/api/v1/swagger-ui/index.html',
-//     id: '671e833c568765f',
-//     images: [
-//       {
-//         creationDate: null,
-//         id: '6793adef4f9e0c1b87cabd68',
-//         main: true,
-//         photoInBytes: 'byteCode',
-//       },
-//     ],
-//     location: {
-//       city: 'Київ',
-//       street: 'вул. Володимирська, 100',
-//       venue: null,
-//       latitude: '50.460291',
-//       longitude: '30.488216',
-//     },
-//     numberOfTickets: 10,
-//     availableTickets: 3,
-//     price: 900,
-//     rating: 4.5,
-//     tickets: 10000,
-//     title: 'Практикум від хаосу до системного управління',
-//     type: 'Stand-up',
-//     unlimitedTickets: null,
-//   },
-// ];
 
 const TableEvent = () => {
   const [idPopUp, setIdPopUp] = useState<string | undefined>(undefined);
@@ -108,6 +33,10 @@ const TableEvent = () => {
       dispatch(getUser()).then(() => (isRefersh = false));
     }
   };
+
+  useEffect(() => {
+    handleRefreshEvents();
+  }, []);
 
   return (
     <table
