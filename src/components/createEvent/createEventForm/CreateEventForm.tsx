@@ -112,6 +112,7 @@ const CreateEventForm: React.FC<CreateEventFormProps> = ({
   }: CreateEventFormValues) => {
     const formattedNumberOfTickets =
       numberOfTickets.length === 0 ? '1' : numberOfTickets;
+    const formattedPrice = ticketPrice.length === 0 ? 0 : ticketPrice;
 
     const event = {
       title,
@@ -124,7 +125,7 @@ const CreateEventForm: React.FC<CreateEventFormProps> = ({
       date,
       organizers,
       numberOfTickets: +formattedNumberOfTickets,
-      ticketPrice: +ticketPrice,
+      ticketPrice: +formattedPrice,
     } as unknown as CreateEventFormValues;
 
     const firstImage = imageFile[0];
