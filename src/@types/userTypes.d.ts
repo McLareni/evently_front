@@ -25,7 +25,6 @@ type UserInfo = Pick<
   | 'surname'
   | 'birthdayDate'
   | 'phoneNumber'
-  | 'image'
   | 'changePassword'
   | 'repeatPassword'
 >;

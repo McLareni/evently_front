@@ -1,5 +1,5 @@
 /* eslint-disable @typescript-eslint/no-unused-expressions */
-import { FC, useEffect } from 'react';
+import { FC } from 'react';
 import { Controller, SubmitHandler, useForm } from 'react-hook-form';
 import { toast } from 'react-toastify';
 
@@ -22,12 +22,8 @@ import Button from '../ui/Button';
 import Spinner from '../ui/Spinner';
 import { ProfileInput } from './ProfileInput';
 
-interface ProfileFormProps {
-  image: File | null;
-}
-
-export const ProfileForm: FC<ProfileFormProps> = ({ image: userImage }) => {
-  const { name, surname, birthdayDate, phoneNumber, image } =
+export const ProfileForm: FC = () => {
+  const { name, surname, birthdayDate, phoneNumber } =
     useAppSelector(selectUser);
   const isLoading = useAppSelector(selectIsLoading);
 
@@ -38,7 +34,6 @@ export const ProfileForm: FC<ProfileFormProps> = ({ image: userImage }) => {
     surname: surname || '',
     birthdayDate: formatBirthDateToMask(birthdayDate),
     phoneNumber: formatPhoneToMask(phoneNumber),
-    image: image || '',
     changePassword: '',
     repeatPassword: '',
   };
@@ -56,7 +51,6 @@ export const ProfileForm: FC<ProfileFormProps> = ({ image: userImage }) => {
   const {
     register,
     handleSubmit,
-    setValue,
     control,
     getValues,
     formState: { errors, isValid },
@@ -68,9 +62,6 @@ export const ProfileForm: FC<ProfileFormProps> = ({ image: userImage }) => {
       obj1.surname === obj2.surname &&
       obj1.birthdayDate === obj2.birthdayDate &&
       obj1.phoneNumber === obj2.phoneNumber
-      // TODO
-      // obj2.userImage instanceof File &&
-      // obj1.userImage === obj2.userImage?.name
     );
   };
 
@@ -87,12 +78,6 @@ export const ProfileForm: FC<ProfileFormProps> = ({ image: userImage }) => {
     dispatch(updateUserInfo(newObj));
     !isLoading && dispatch(getUser());
   };
-
-  useEffect(() => {
-    if (userImage instanceof File) {
-      setValue('image', userImage);
-    }
-  }, [userImage, setValue]);
 
   return (
     <form className="flex flex-col" onSubmit={handleSubmit(onSubmit)}>

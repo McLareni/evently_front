@@ -84,3 +84,25 @@ export const getUser = createAsyncThunk<User, void, { state: RootState }>(
     }
   }
 );
+
+export const updateUserAvatar = async (
+  userAvatar: File | null,
+  token: string,
+  userId: string
+) => {
+  const formData = new FormData();
+
+  if (userAvatar) formData.append('userAvatar', userAvatar);
+  try {
+    const response = await axios.patch(`users/${userId}/avatar`, formData, {
+      headers: {
+        'Content-Type': 'multipart/form-data',
+        Authorization: `Bearer ${token}`,
+      },
+    });
+
+    return response;
+  } catch (error) {
+    throw new Error(`Failed to update avatar ${error}`);
+  }
+};

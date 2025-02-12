@@ -114,6 +114,7 @@ function handleUserLoggingFulfilled(state: any, action: any) {
   state.user.userSurname = action.payload.userSurname;
   state.isLoggedIn = true;
   state.error = null;
+  state.avatarImage = action.payload.avatarImage;
 }
 
 function handleUserRejected(state: { error: any }, action: any) {
