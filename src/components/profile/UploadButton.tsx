@@ -23,7 +23,6 @@ export const UploadButton: FC<UploadButtonProps> = ({ ...props }) => {
     event.preventDefault();
     // setImage(null);
   };
-  console.log(avatarImage);
 
   useEffect(() => {
     if (avatarImage && avatarImage.photoInBytes) {

@@ -3,25 +3,26 @@ import React, { createRef, useState } from 'react';
 import Cropper, { ReactCropperElement } from 'react-cropper';
 import { toast } from 'react-toastify';
 
-import { updateUserAvatar } from '@/redux/auth/operations';
+import { getUser, updateUserAvatar } from '@/redux/auth/operations';
 import { selectToken, selectUser } from '@/redux/auth/selectors';
-import { useAppSelector } from '@/redux/hooks';
+import { useAppDispatch, useAppSelector } from '@/redux/hooks';
 
 import { imageTypes } from '@/assets/staticData/statickData';
 import 'cropperjs/dist/cropper.css';
 
+import Spinner from '../ui/Spinner';
 import { UploadButton } from './UploadButton';
 
 export const CropUploadImage: React.FC = () => {
   const [image, setImage] = useState('');
-
-  const user = useAppSelector(selectUser);
-  console.log(user);
+  const [isLoading, setIsLoading] = useState(false);
 
   const { id } = useAppSelector(selectUser);
   const token = useAppSelector(selectToken);
 
   const cropperRef = createRef<ReactCropperElement>();
+
+  const dispatch = useAppDispatch();
 
   const onChange = (e: any) => {
     if (e.target.files) {
@@ -38,7 +39,6 @@ export const CropUploadImage: React.FC = () => {
     } else if (e.target) {
       files = e.target.files;
     }
-    console.log('my file', files[0]);
     setImage(files[0]);
 
     const reader = new FileReader();
@@ -69,12 +69,31 @@ export const CropUploadImage: React.FC = () => {
         type: mimeString,
       });
 
-      if (token) updateUserAvatar(file, token, id);
+      if (token) {
+        setIsLoading(true);
+        setImage('');
+        try {
+          const response = await updateUserAvatar(file, token, id);
+
+          if (response.status === 200) {
+            await dispatch(getUser());
+          }
+
+          setIsLoading(false);
+
+          return toast.success('Фото успішно оновлено');
+        } catch (e) {
+          console.error(e);
+          setIsLoading(false);
+          return toast.error('Сталася помилка');
+        }
+      }
     }
   };
 
   return (
     <div className="relative">
+      {isLoading && <Spinner />}
       <div style={{ width: '100%' }}>
         <UploadButton onChange={onChange} />
 
