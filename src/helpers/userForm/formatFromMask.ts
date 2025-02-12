@@ -11,14 +11,20 @@ export const formatBirthDateFromMask = (data: string) => {
 };
 
 export const isValueDate = (value: string) => {
-  const date = new Date(formatBirthDateFromMask(value));
-  try {
-    date.toISOString();
-    if (new Date(date.toISOString()) > new Date()) {
-      return false;
-    }
-    return true;
-  } catch {
+  const [day, month, year] = value.split('.').map(Number);
+  const date = new Date(year, month - 1, day);
+
+  if (
+    date.getFullYear() !== year ||
+    date.getMonth() + 1 !== month ||
+    date.getDate() !== day
+  ) {
     return false;
   }
+
+  if (date > new Date()) {
+    return false;
+  }
+
+  return true;
 };
