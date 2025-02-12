@@ -1,7 +1,9 @@
 import axios from 'axios';
 
+const URL = import.meta.env.VITE_URL;
+
 export const userServices = axios.create({
-  baseURL: 'https://rendereventapp.onrender.com/api/v1/',
+  baseURL: URL,
   headers: {
     'Content-Type': 'application/json',
   },
