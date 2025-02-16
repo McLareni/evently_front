@@ -6,6 +6,7 @@ const URL = import.meta.env.VITE_URL;
 
 export const EventsApi = createApi({
   reducerPath: 'events',
+  tagTypes: ['Events', 'LikedEvents'],
   baseQuery: fetchBaseQuery({
     baseUrl: URL,
     credentials: 'include',
@@ -20,15 +21,27 @@ export const EventsApi = createApi({
   endpoints: builder => ({
     getAllEvents: builder.query<Event[], void>({
       query: () => 'events',
+      providesTags: result =>
+        result
+          ? [
+              ...result.map(({ id }) => ({ type: 'Events' as const, id })),
+              { type: 'Events', id: 'LIST' },
+            ]
+          : [{ type: 'Events', id: 'LIST' }],
     }),
 
     getLikedEvents: builder.query<Event[], string>({
       query: userId => `liked-events/${userId}`,
       transformResponse: (response: { eventsList: Event[] }) =>
         response.eventsList,
+      providesTags: result =>
+        result
+          ? [...result.map(({ id }) => ({ type: 'LikedEvents' as const, id }))]
+          : [{ type: 'LikedEvents', id: 'LIST' }],
     }),
     getEventById: builder.query<Event, string>({
       query: id => `events/${id}`,
+      providesTags: (result, error, id) => [{ type: 'Events', id }],
     }),
 
     addLikedEvent: builder.mutation<
@@ -52,6 +65,7 @@ export const EventsApi = createApi({
           result.undo();
         }
       },
+      invalidatesTags: [{ type: 'LikedEvents', id: 'List' }],
     }),
 
     deleteLikedEvent: builder.mutation<
@@ -76,6 +90,7 @@ export const EventsApi = createApi({
           result.undo();
         }
       },
+      invalidatesTags: [{ type: 'LikedEvents', id: 'List' }],
     }),
   }),
 });
