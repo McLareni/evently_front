@@ -1,6 +1,7 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import React, { createRef, useState } from 'react';
 import Cropper, { ReactCropperElement } from 'react-cropper';
+import { createPortal } from 'react-dom';
 import { toast } from 'react-toastify';
 
 import { getUser, updateUserAvatar } from '@/redux/auth/operations';
@@ -10,6 +11,7 @@ import { useAppDispatch, useAppSelector } from '@/redux/hooks';
 import { imageTypes } from '@/assets/staticData/statickData';
 import 'cropperjs/dist/cropper.css';
 
+import { SharedBtn } from '../ui';
 import Spinner from '../ui/Spinner';
 import { UploadButton } from './UploadButton';
 
@@ -97,29 +99,48 @@ export const CropUploadImage: React.FC = () => {
       <div style={{ width: '100%' }}>
         <UploadButton onChange={onChange} />
 
-        {image && (
-          <div className="absolute z-20 p-[24px] bg-lightGray">
-            <Cropper
-              ref={cropperRef}
-              style={{ height: 'auto', width: 400 }}
-              aspectRatio={1}
-              preview=".img-preview"
-              src={image}
-              viewMode={1}
-              minCropBoxHeight={100}
-              minCropBoxWidth={100}
-              background={false}
-              responsive={true}
-              autoCropArea={1}
-              checkOrientation={false}
-              guides={true}
-              zoomable={false}
-            />
-            <button style={{ float: 'right' }} onClick={getCropData}>
-              Підтвердити
-            </button>
-          </div>
-        )}
+        {image &&
+          createPortal(
+            <div className="fixed inset-0 flex items-center justify-center bg-gray-800 bg-opacity-50 z-20">
+              <div className="bg-white border-2 p-16 border-buttonPurple rounded-[20px]">
+                <Cropper
+                  ref={cropperRef}
+                  style={{ height: 600, width: 600 }}
+                  aspectRatio={1}
+                  preview=".img-preview"
+                  src={image}
+                  viewMode={1}
+                  minCropBoxHeight={100}
+                  minCropBoxWidth={100}
+                  background={false}
+                  responsive={true}
+                  autoCropArea={1}
+                  checkOrientation={false}
+                  guides={true}
+                  zoomable={false}
+                />
+                <div className="justify-center mt-12 flex gap-[38px]">
+                  <SharedBtn
+                    type="button"
+                    secondary
+                    onClick={() => setImage('')}
+                    className="w-[265.25px] h-12 "
+                  >
+                    Відмінити
+                  </SharedBtn>
+                  <SharedBtn
+                    type="button"
+                    primary
+                    onClick={getCropData}
+                    className="w-[265.25px] h-12"
+                  >
+                    Зберегти
+                  </SharedBtn>
+                </div>
+              </div>
+            </div>,
+            document.body
+          )}
       </div>
     </div>
   );
