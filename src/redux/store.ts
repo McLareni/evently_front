@@ -11,12 +11,12 @@ import {
 } from 'redux-persist';
 import storage from 'redux-persist/lib/storage';
 
+import { EventApi } from './admin/eventApi';
+import { UserApi } from './admin/userApi';
 import { authReducer } from './auth/authSlice';
+import eventReducer from './events/eventSlice';
 import { EventsApi } from './events/operations';
 import { filterReducer } from './filters/filtersSlice';
-import { usersReducer } from './users/usersSlice';
-import eventReducer from './events/eventSlice';
-import { UserApi } from './users/userApi';
 
 const authPersistConfig = {
   key: 'auth',
@@ -44,10 +44,10 @@ const filterPersistConfig = {
 const rootReducer = combineReducers({
   auth: persistReducer(authPersistConfig, authReducer),
   filter: persistReducer(filterPersistConfig, filterReducer),
-  users: usersReducer,
   event: eventReducer,
   [EventsApi.reducerPath]: EventsApi.reducer,
   [UserApi.reducerPath]: UserApi.reducer,
+  [EventApi.reducerPath]: EventApi.reducer,
 });
 
 export const store = configureStore({
@@ -57,7 +57,10 @@ export const store = configureStore({
       serializableCheck: {
         ignoredActions: [FLUSH, REHYDRATE, PAUSE, PERSIST, PURGE, REGISTER],
       },
-    }).concat(EventsApi.middleware).concat(UserApi.middleware),
+    })
+      .concat(EventsApi.middleware)
+      .concat(UserApi.middleware)
+      .concat(EventApi.middleware),
 });
 
 export type AppStore = typeof store;

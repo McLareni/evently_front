@@ -1,14 +1,16 @@
 import React, { useState } from 'react';
 import { BsFilter } from 'react-icons/bs';
 
-import { useAppDispatch } from '@/redux/hooks';
-import { fetchUsers } from '@/redux/users/operations';
+import {
+  useChangeStatusUserMutation,
+  useDeleteUserMutation,
+} from '@/redux/admin/userApi';
 
 import sortUser from '@/utils/sortUser';
 import { nanoid } from '@reduxjs/toolkit';
-import axios from 'axios';
 import clsx from 'clsx';
 
+import Spinner from '../ui/Spinner';
 import ModalAdmin from './ModalAdmin';
 import UserCard from './UserCard';
 
@@ -29,31 +31,31 @@ const AdminTable: React.FC<IProps> = ({ cols, data, from, to }) => {
     useState<boolean>(false);
   const [selectedUser, setSelectedUser] = useState<User>();
 
-  const dispatch = useAppDispatch();
+  const [deleteUserFn, { isLoading: deleteUserLoading }] =
+    useDeleteUserMutation();
+  const [changeStatusUserFn, { isLoading: changeUserLoading }] =
+    useChangeStatusUserMutation();
 
-  // add async function deleteUser
   const deleteUser = async () => {
-    const response = await axios.delete('admin/users/' + selectedUser?.id);
-    if (response.status === 200) {
+    const response = await deleteUserFn(selectedUser?.id || '');
+    if (response.data?.status === 200) {
       setOpenPopUp(undefined);
       setConfirmationDelete(false);
-      dispatch(fetchUsers());
     }
   };
 
-  // add async function changeStatusUser
   const changeStatusUser = async () => {
-    let url = selectedUser?.email;
-    console.log(url);
+    let email = selectedUser?.email || '';
 
-    const response = await axios.patch(
-      `admin/users/${selectedUser?.status === 'ACTIVE' ? 'ban/' : 'unban/'}` +
-      url
-    );
-    if (response.status === 200) {
+    const response = await changeStatusUserFn({
+      isBan: selectedUser?.status === 'ACTIVE',
+      email,
+      id: selectedUser?.id || '',
+    });
+
+    if (response.data?.status === 200) {
       setOpenPopUp(undefined);
       setConfirmationChangeStatus(false);
-      dispatch(fetchUsers());
     }
   };
 
@@ -156,6 +158,7 @@ const AdminTable: React.FC<IProps> = ({ cols, data, from, to }) => {
         onClose={() => setConfirmationChangeStatus(false)}
         clickYes={changeStatusUser}
       />
+      {(deleteUserLoading || changeUserLoading) && <Spinner />}
     </>
   );
 };

@@ -85,11 +85,11 @@ const EventRow: React.FC<IProps> = ({ event, popUpIsShow, openPopUp }) => {
           </p>
         </div>
       </td>
-      <td className="p-[5px] text-xl font-normal">{event.price}₴</td>
-      <td className="p-[5px] text-xl font-normal">
+      <td className="p-[5px] pr-[20px] text-xl font-normal">{event.price}₴</td>
+      <td className="p-[5px] pr-[20px] text-xl font-normal">
         {event.numberOfTickets - event.availableTickets}/{event.unlimitedTickets ? '∞' : event.numberOfTickets}
       </td>
-      <td className="p-[5px] text-xl font-normal">
+      <td className="p-[5px] pr-[20px] text-xl font-normal">
         {(event.numberOfTickets - event.availableTickets) * event.price}₴
       </td>
       <td className="p-[5px] relative">

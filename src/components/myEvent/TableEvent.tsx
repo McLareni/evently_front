@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react';
+import { useState, useEffect } from 'react';
 
 import { getUser } from '@/redux/auth/operations';
 import { selectUserEvents } from '@/redux/auth/selectors';

@@ -21,6 +21,7 @@ export const EventsApi = createApi({
   endpoints: builder => ({
     getAllEvents: builder.query<Event[], void>({
       query: () => 'events',
+      keepUnusedDataFor: 1000,
       providesTags: result =>
         result
           ? [
@@ -28,6 +29,24 @@ export const EventsApi = createApi({
               { type: 'Events', id: 'LIST' },
             ]
           : [{ type: 'Events', id: 'LIST' }],
+      async onQueryStarted(_, { dispatch, queryFulfilled }) {
+        try {
+          const { data } = await queryFulfilled;
+          console.log(data);
+
+          data?.forEach(event => {
+            dispatch(
+              EventsApi.util.upsertQueryData('getEventById', event.id, event)
+            );
+          });
+        } catch (error) {
+          console.error('Error updating cache', error);
+        }
+      },
+    }),
+    getEventById: builder.query<Event, string>({
+      query: id => `events/${id}`,
+      providesTags: (result, error, id) => [{ type: 'Events', id }],
     }),
 
     getLikedEvents: builder.query<Event[], string>({
@@ -36,12 +55,11 @@ export const EventsApi = createApi({
         response.eventsList,
       providesTags: result =>
         result
-          ? [...result.map(({ id }) => ({ type: 'LikedEvents' as const, id }))]
+          ? [
+              ...result.map(({ id }) => ({ type: 'LikedEvents' as const, id })),
+              { type: 'LikedEvents', id: 'LIST' },
+            ]
           : [{ type: 'LikedEvents', id: 'LIST' }],
-    }),
-    getEventById: builder.query<Event, string>({
-      query: id => `events/${id}`,
-      providesTags: (result, error, id) => [{ type: 'Events', id }],
     }),
 
     addLikedEvent: builder.mutation<
@@ -65,7 +83,6 @@ export const EventsApi = createApi({
           result.undo();
         }
       },
-      invalidatesTags: [{ type: 'LikedEvents', id: 'List' }],
     }),
 
     deleteLikedEvent: builder.mutation<
@@ -90,7 +107,6 @@ export const EventsApi = createApi({
           result.undo();
         }
       },
-      invalidatesTags: [{ type: 'LikedEvents', id: 'List' }],
     }),
   }),
 });

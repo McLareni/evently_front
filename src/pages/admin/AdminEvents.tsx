@@ -1,6 +1,6 @@
-import { useEffect, useState } from 'react';
+import { useState } from 'react';
 
-import { changeEventStatus, fetchAdminEvent } from '@/utils/adminEvents';
+import { useChangeEventStatusMutation, useGetAdminEventsQuery } from '@/redux/admin/eventApi';
 
 import { AdminEventsList } from '@/components/admin/Events/AdminEventsList';
 import ModalDecision from '@/components/admin/Events/ModalDecision';
@@ -13,24 +13,15 @@ import Spinner from '@/components/ui/Spinner';
 export type FilterStatus = 'PENDING' | 'APPROVED' | 'CANCELLED' | '';
 
 const AdminEvents = () => {
-  const [events, setEvents] = useState<Event[] | null>([]);
   const [page, setPage] = useState<number>(1);
   const [modalIsOpen, setModalIsOpen] = useState<boolean>(false);
   const [currEvent, setCurrEvent] = useState<Event>();
   const [confirmationModal, setConfirmationModal] = useState(false);
   const [filterStatus, setFilterStatus] = useState<FilterStatus>('');
-  const [action, setAction] = useState<'APPROVED' | 'CANCELLED' | ''>('');
-  const [loading, setLoading] = useState<boolean>(false);
+  const [action, setAction] = useState<'APPROVED' | 'CANCELLED'>('APPROVED');
 
-  useEffect(() => {
-    const getEvents = async () => {
-      setLoading(true);
-      setEvents(await fetchAdminEvent());
-      setLoading(false);
-    };
-
-    getEvents();
-  }, []);
+  const { data: events, isFetching: fetchingEvents } = useGetAdminEventsQuery();
+  const [changeStatusEventFn] = useChangeEventStatusMutation();
 
   const handleChangePage = (direction: 'up' | 'down') => {
     setPage(prevPage => {
@@ -60,7 +51,6 @@ const AdminEvents = () => {
         if (target?.tagName !== 'BUTTON') {
           setModalIsOpen(true);
         } else if (target.tagName === 'BUTTON') {
-          console.log(actionStatus);
           if (actionStatus) {
             setAction(actionStatus);
           }
@@ -71,10 +61,9 @@ const AdminEvents = () => {
   };
 
   const changeStatusEvent = async () => {
-    const response = await changeEventStatus(currEvent?.id || '', action);
+    const response = await changeStatusEventFn({id: currEvent?.id || '', action});
 
-    if (response.status === 200) {
-      setEvents(await fetchAdminEvent());
+    if (response.data?.status === 200) {
       setModalIsOpen(false);
       setConfirmationModal(false);
     }
@@ -101,8 +90,6 @@ const AdminEvents = () => {
   };
 
   if (events) {
-    console.log(events);
-
     events?.forEach(event =>
       event.eventStatus === 'APPROVED'
         ? countStatusEvents.APPROVED++
@@ -112,14 +99,17 @@ const AdminEvents = () => {
     );
   }
 
-  const handleOpenModal = (status: 'APPROVED' | 'CANCELLED' | '') => {
+  const handleOpenModal = (status: 'APPROVED' | 'CANCELLED') => {
     setConfirmationModal(true);
     setAction(status);
   };
 
+  if (fetchingEvents) {
+    return <Spinner />;
+  }
+
   return (
     <main className="relative pb-10 h-full">
-      {loading && <Spinner />}
       <Modal isOpen={modalIsOpen} onClose={handleCloseModal}>
         <ModalDecision event={currEvent} openModal={handleOpenModal} />
       </Modal>

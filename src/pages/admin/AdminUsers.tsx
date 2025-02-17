@@ -1,41 +1,31 @@
-import React, { useEffect, useState } from 'react';
+import React, { useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { MdOutlineRefresh } from 'react-icons/md';
 
-import { useAppDispatch, useAppSelector } from '@/redux/hooks';
-import { fetchUsers } from '@/redux/users/operations';
-import { selectUsers } from '@/redux/users/selectors';
+import { useGetAdminUserQuery } from '@/redux/admin/userApi';
 
 import AdminTable from '@/components/admin/AdminTable';
 import Navigation from '@/components/admin/Navigation';
+import Spinner from '@/components/ui/Spinner';
 
 const AdminUsers = () => {
   const { t } = useTranslation('adminUser');
   const cols = t('colTable', { returnObjects: true });
-  const dispatch = useAppDispatch();
-  const adminUsers = useAppSelector(selectUsers);
 
-  const [users, setUsers] = useState<User[]>([]);
+  const { data: users, isFetching, refetch } = useGetAdminUserQuery();
   const [quantityUsers, setQuanitityUsers] = useState<number>(20);
   const [page, setPage] = useState<number>(1);
 
-  const totalUser = adminUsers.length;
+  const totalUser = users?.length || 0;
   const minUserPage = quantityUsers * (page - 1) + 1;
   const maxUserPage =
     page * quantityUsers > totalUser ? totalUser : page * quantityUsers;
 
-  useEffect(() => {
-    setUsers(adminUsers);
-  }, [adminUsers]);
-
   const handleGetUsers = async () => {
-    await dispatch(fetchUsers());
+    if (!isFetching) {
+      refetch();
+    }
   };
-
-  useEffect(() => {
-    handleGetUsers();
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
 
   const handleChangePage = (direction: 'up' | 'down') => {
     setPage(currPage => {
@@ -55,6 +45,10 @@ const AdminUsers = () => {
     setPage(1);
   };
 
+  if (isFetching) {
+    return <Spinner />;
+  }
+
   return (
     <main>
       <button
@@ -67,7 +61,7 @@ const AdminUsers = () => {
       <div>
         <AdminTable
           cols={cols}
-          data={users}
+          data={users || []}
           from={minUserPage - 1}
           to={maxUserPage}
         ></AdminTable>
