@@ -4,8 +4,9 @@ import { RootState } from '../store';
 
 const URL = import.meta.env.VITE_URL;
 
-export const UserApi = createApi({
-  reducerPath: 'user',
+export const EventApi = createApi({
+  reducerPath: 'authApi',
+  tagTypes: [],
   baseQuery: fetchBaseQuery({
     baseUrl: URL,
     credentials: 'include',
@@ -18,10 +19,8 @@ export const UserApi = createApi({
     },
   }),
   endpoints: builder => ({
-    getUserProfile: builder.query<User, string>({
-      query: id => `admin/users/${id}`,
+    getUser: builder.query<User, string>({
+      query: id => `/users/${id}`,
     }),
   }),
 });
-
-export const { useGetUserProfileQuery} = UserApi;

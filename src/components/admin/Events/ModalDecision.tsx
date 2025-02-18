@@ -13,7 +13,7 @@ import Stars from './Stars';
 interface IProps {
   event?: Event;
   // eslint-disable-next-line no-unused-vars
-  openModal: (status: 'APPROVED' | 'CANCELLED' | '') => void;
+  openModal: (status: 'APPROVED' | 'CANCELLED') => void;
 }
 
 const ModalDecision: React.FC<IProps> = ({ event, openModal }) => {

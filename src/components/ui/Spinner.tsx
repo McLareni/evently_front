@@ -12,7 +12,7 @@ const Spinner: React.FC<IProps> = ({ rounded = false }) => {
   return (
     <div
       className={clsx(
-        'fixed z-50 flex items-center justify-center inset-0 bg-slate-500 bg-opacity-50',
+        'fixed z-[99] flex items-center justify-center inset-0 bg-slate-500 bg-opacity-50',
         { 'rounded-[19px]': rounded }
       )}
     >

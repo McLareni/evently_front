@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react';
+import { useState, useEffect } from 'react';
 
 import { getUser } from '@/redux/auth/operations';
 import { selectUserEvents } from '@/redux/auth/selectors';
@@ -38,6 +38,8 @@ const TableEvent = () => {
     handleRefreshEvents();
   }, []);
 
+  console.log(events);
+
   return (
     <table
       onClick={e => handleClickTable(e.target as HTMLElement)}
@@ -45,7 +47,7 @@ const TableEvent = () => {
     >
       <TableHead refresh={handleRefreshEvents} />
       <tbody className="">
-        {events.map((event, index) => (
+        {events?.map((event, index) => (
           <tr
             key={event.id}
             className={clsx(

@@ -1,7 +1,7 @@
 import React from 'react';
 import { createBrowserRouter } from 'react-router-dom';
 
-import { getAllEventsLoader } from '@/loaders/getAllEventsLoader';
+// import { getAllEventsLoader } from '@/loaders/getAllEventsLoader';
 import Home from '@/pages/Home';
 import UserProfile from '@/pages/UserProfile';
 import AdminEvents from '@/pages/admin/AdminEvents';
@@ -31,7 +31,7 @@ const router = createBrowserRouter([
       {
         index: true,
         element: <Home />,
-        loader: getAllEventsLoader,
+        // loader: getAllEventsLoader,
       },
       {
         path: 'create_event',
@@ -44,7 +44,7 @@ const router = createBrowserRouter([
       {
         path: 'all_events',
         element: <AllEventsPage />,
-        loader: getAllEventsLoader,
+        // loader: getAllEventsLoader,
       },
       {
         path: 'user/:idUser',

@@ -1,6 +1,6 @@
 import { useParams } from 'react-router';
 
-import { useGetUserProfileQuery } from '@/redux/users/userApi';
+import { useGetUserProfileQuery } from '@/redux/admin/userApi';
 
 import Spinner from '@/components/ui/Spinner';
 

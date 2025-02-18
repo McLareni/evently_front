@@ -5,6 +5,7 @@ import { MdDone } from 'react-icons/md';
 import { RxCross2 } from 'react-icons/rx';
 import { Link } from 'react-router-dom';
 
+import { formatDateToDayMonth } from '@/helpers/filters/formatDateToDayMonth';
 import clsx from 'clsx';
 
 import PopUp from './PopUp';
@@ -46,18 +47,19 @@ interface IProps {
 }
 
 const EventRow: React.FC<IProps> = ({ event, popUpIsShow, openPopUp }) => {
-  const day = event.date.day.split('-')[2];
-  const month = event.date.day.split('-')[1];
+  const dateString = formatDateToDayMonth(event.date.day);
+  const day = dateString.split(' ')[0];
+  const month = dateString.split(' ')[1].slice(0, 3).toUpperCase();
 
   return (
     <>
       <td className="h-[148px] w-min flex justify-center p-[5px] items-center">
         <div className="flex flex-col items-center w-min">
-          <h3 className="font-medium text-2xl font-oswald">{day}</h3>
-          <h2 className="font-medium text-2xl font-oswald text-error">
+          <h3 className="font-medium text-2xl font-oswald leading-[36px]">{day}</h3>
+          <h2 className="font-medium text-2xl font-oswald leading-[36px] text-error">
             {month}
           </h2>
-          <p className="font-normal text-base font-lato text-textDark">
+          <p className="font-normal text-base font-lato leading-[19px] text-textDark">
             {event.date.time}
           </p>
         </div>
@@ -69,7 +71,7 @@ const EventRow: React.FC<IProps> = ({ event, popUpIsShow, openPopUp }) => {
         />
       </td>
       <td className="h-[148px] p-[5px] max-w-[300px]">
-        <div className="flex flex-col justify-between h-[100px]">
+        <div className="flex flex-col justify-between h-[100px] pl-3">
           <Link
             to={`/event/${event.id}`}
             className="underline text-xl text-textDark leading-6"
@@ -83,11 +85,11 @@ const EventRow: React.FC<IProps> = ({ event, popUpIsShow, openPopUp }) => {
           </p>
         </div>
       </td>
-      <td className="p-[5px]">{event.price}₴</td>
-      <td className="p-[5px]">
-        {event.numberOfTickets - event.availableTickets}/{event.numberOfTickets}
+      <td className="p-[5px] pr-[20px] text-xl font-normal">{event.price}₴</td>
+      <td className="p-[5px] pr-[20px] text-xl font-normal">
+        {event.numberOfTickets - event.availableTickets}/{event.unlimitedTickets ? '∞' : event.numberOfTickets}
       </td>
-      <td className="p-[5px]">
+      <td className="p-[5px] pr-[20px] text-xl font-normal">
         {(event.numberOfTickets - event.availableTickets) * event.price}₴
       </td>
       <td className="p-[5px] relative">
