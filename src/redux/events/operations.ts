@@ -47,6 +47,7 @@ export const EventsApi = createApi({
     getEventById: builder.query<Event, string>({
       query: id => `events/${id}`,
       providesTags: (result, error, id) => [{ type: 'Events', id }],
+      keepUnusedDataFor: 1000,
     }),
 
     getLikedEvents: builder.query<Event[], string>({

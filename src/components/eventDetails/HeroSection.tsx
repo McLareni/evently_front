@@ -109,7 +109,7 @@ const HeroSection: React.FC<IProps> = ({ idEvent, event }) => {
           }
         />
         <div className="flex-1 pl-24 relative">
-          <h1 className="text-[64px] text-textDark mb-4 pr-12 line-clamp-2">
+          <h1 className="text-[36px] text-textDark mb-4 pr-12 line-clamp-2">
             {event?.title}
           </h1>
           <div className="font-normal text-[20px] text-textDark flex gap-4 mb-10">
