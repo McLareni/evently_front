@@ -10,7 +10,7 @@ const TableHead: React.FC<IProps> = ({ refresh }) => {
     <thead className="after:absolute after:top-0 after:z-[-1] after:w-full after:h-[65px] after:bg-lightBlue after:rounded-[20px] bg-transparent h-[65px] z-10 relative">
       <tr className="text-2xl font-oswald">
         <th className="w-min"></th>
-        <th className="font-medium text-start">Подія</th>
+        <th className="font-medium text-center">Подія</th>
         <th></th>
         <th className="font-medium text-start">Ціна</th>
         <th className="font-medium text-start">Придбано</th>

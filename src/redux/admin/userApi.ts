@@ -50,6 +50,7 @@ export const UserApi = createApi({
         return { ...existingData, ...incomingData };
       },
       providesTags: (result, error, id) => [{ type: 'AdminUser', id }],
+      keepUnusedDataFor: 600
     }),
 
     deleteUser: builder.mutation<{ status: number }, string>({
