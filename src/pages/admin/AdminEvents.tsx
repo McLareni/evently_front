@@ -3,6 +3,7 @@ import { useState } from 'react';
 import {
   useChangeEventStatusMutation,
   useGetAdminEventsQuery,
+  useGetCountStatusEventsQuery,
 } from '@/redux/admin/eventApi';
 
 import { AdminEventsList } from '@/components/admin/Events/AdminEventsList';
@@ -23,7 +24,12 @@ const AdminEvents = () => {
   const [filterStatus, setFilterStatus] = useState<FilterStatus>('');
   const [action, setAction] = useState<'APPROVED' | 'CANCELLED'>('APPROVED');
 
-  const { data, isFetching: fetchingEvents } = useGetAdminEventsQuery(page);
+  const { data, isFetching: fetchingEvents } = useGetAdminEventsQuery({
+    page,
+    status: filterStatus,
+  });
+  const { data: countStatusEvents, isFetching: fetchingCount } =
+    useGetCountStatusEventsQuery();
   const [changeStatusEventFn] = useChangeEventStatusMutation();
 
   const { content: events, page: pageInfo } = data || { content: [], page: {} };
@@ -86,28 +92,12 @@ const AdminEvents = () => {
   const startCountPage = totalEvents === 0 ? 0 : 9 * (page - 1) + 1;
   const endCountPage = page * 9 > (totalEvents || 0) ? totalEvents : page * 9;
 
-  const countStatusEvents = {
-    CANCELLED: 0,
-    PENDING: 0,
-    APPROVED: 0,
-  };
-
-  if (events) {
-    events?.forEach(event =>
-      event.eventStatus === 'APPROVED'
-        ? countStatusEvents.APPROVED++
-        : event.eventStatus === 'CANCELLED'
-          ? countStatusEvents.CANCELLED++
-          : countStatusEvents.PENDING++
-    );
-  }
-
   const handleOpenModal = (status: 'APPROVED' | 'CANCELLED') => {
     setConfirmationModal(true);
     setAction(status);
   };
 
-  if (fetchingEvents) {
+  if (fetchingEvents || fetchingCount) {
     return <Spinner />;
   }
 
@@ -119,7 +109,13 @@ const AdminEvents = () => {
       <StatusBar
         activeStatus={filterStatus}
         changeStatus={handleChangeFilterStatus}
-        countStatusEvent={countStatusEvents}
+        countStatusEvent={
+          countStatusEvents as {
+            CANCELLED: number;
+            PENDING: number;
+            APPROVED: number;
+          }
+        }
       />
       <AdminEventsList events={events} setEvent={openModal} />
       <div className="absolute bottom-0 right-6 flex items-center">

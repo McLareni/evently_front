@@ -22,9 +22,10 @@ export const UserApi = createApi({
     getAdminUser: builder.query<
       // eslint-disable-next-line no-undef
       { content: User[]; page: PageType },
-      { page: number; size: number }
+      { page: number; size: number; col: string; direction: string }
     >({
-      query: ({ page, size }) => `admin/users?page=${page}&size=${size}`,
+      query: ({ page, size, col, direction }) =>
+        `admin/users?page=${page - 1}&size=${size}&sort=${col},${direction}`,
       keepUnusedDataFor: 600,
       providesTags: result =>
         result?.content
@@ -67,12 +68,17 @@ export const UserApi = createApi({
           const { data } = await queryFulfilled;
 
           const currentArg = getState().adminUser.queries['getAdminUser']
-            ?.originalArgs as { page: number; size: number };
+            ?.originalArgs as {
+            page: number;
+            size: number;
+            col: string;
+            direction: string;
+          };
           if (data.status === 200) {
             dispatch(
               UserApi.util.updateQueryData(
                 'getAdminUser',
-                { page: currentArg.page, size: currentArg.size },
+                { ...currentArg },
                 draft => {
                   const updatedContent = draft.content.filter(
                     user => user.id !== id
@@ -103,12 +109,17 @@ export const UserApi = createApi({
           const { data } = await queryFulfilled;
 
           const currentArg = getState().adminUser.queries['getAdminUser']
-            ?.originalArgs as { page: number; size: number };
+            ?.originalArgs as {
+            page: number;
+            size: number;
+            col: string;
+            direction: string;
+          };
           if (data.status === 200) {
             dispatch(
               UserApi.util.updateQueryData(
                 'getAdminUser',
-                { page: currentArg.page, size: currentArg.size },
+                { ...currentArg },
                 draft => {
                   const user = draft.content.find(user => user.id === id);
                   if (user) {

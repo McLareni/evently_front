@@ -24,7 +24,7 @@ const AboutUser: React.FC<IProps> = ({ organizer, rating, aboutUser }) => {
         <img
           src={
             organizer?.avatarImage?.photoInBytes
-              ? `data:image/png;base64,${organizer.avatarImage.photoInBytes}`
+              ? organizer.avatarImage.url
               : userPlaceholder
           }
           alt=""

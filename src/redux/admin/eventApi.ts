@@ -1,3 +1,4 @@
+import { FilterStatus } from '@/pages/admin/AdminEvents';
 import { createApi, fetchBaseQuery } from '@reduxjs/toolkit/query/react';
 
 import { EventsApi } from '../events/operations';
@@ -20,44 +21,42 @@ export const EventApi = createApi({
     },
   }),
   endpoints: builder => ({
-    // eslint-disable-next-line no-undef
-    getAdminEvents: builder.query<{ content: Event[]; page: PageType }, number>(
-      {
-        query: page => `admin/events?page=${page}&size=9`,
-        keepUnusedDataFor: 1000,
-        providesTags: result =>
-          result
-            ? [
-                ...result.content.map(({ id, eventStatus }) => ({
-                  type:
-                    eventStatus === 'APPROVED'
-                      ? ('Events' as const)
-                      : ('AdminEvent' as const),
-                  id,
-                })),
-                { type: 'AdminEvent', id: 'LIST' },
-              ]
-            : [{ type: 'AdminEvent', id: 'LIST' }],
-        async onQueryStarted(_, { dispatch, queryFulfilled }) {
-          try {
-            const { data } = await queryFulfilled;
-            data?.content?.forEach(event => {
-              if (event.eventStatus === 'APPROVED') {
-                dispatch(
-                  EventsApi.util.upsertQueryData(
-                    'getEventById',
-                    event.id,
-                    event
-                  )
-                );
-              }
-            });
-          } catch (error) {
-            console.error('Error updating cache', error);
-          }
-        },
-      }
-    ),
+    getAdminEvents: builder.query<
+      // eslint-disable-next-line no-undef
+      { content: Event[]; page: PageType },
+      { page: number; status: FilterStatus }
+    >({
+      query: ({ page, status }) =>
+        `admin/events${status ? `/status/${status}` : ''}?page=${page - 1}&size=9`,
+      keepUnusedDataFor: 1000,
+      providesTags: result =>
+        result
+          ? [
+              ...result.content.map(({ id, eventStatus }) => ({
+                type:
+                  eventStatus === 'APPROVED'
+                    ? ('Events' as const)
+                    : ('AdminEvent' as const),
+                id,
+              })),
+              { type: 'AdminEvent', id: 'LIST' },
+            ]
+          : [{ type: 'AdminEvent', id: 'LIST' }],
+      async onQueryStarted(_, { dispatch, queryFulfilled }) {
+        try {
+          const { data } = await queryFulfilled;
+          data?.content?.forEach(event => {
+            if (event.eventStatus === 'APPROVED') {
+              dispatch(
+                EventsApi.util.upsertQueryData('getEventById', event.id, event)
+              );
+            }
+          });
+        } catch (error) {
+          console.error('Error updating cache', error);
+        }
+      },
+    }),
     changeEventStatus: builder.mutation<
       { status: number },
       { id: string; action: 'APPROVED' | 'CANCELLED' }
@@ -73,17 +72,17 @@ export const EventApi = createApi({
         try {
           const { data } = await queryFulfilled;
 
-          const currentPage =
-            (
-              getState().adminEvent.queries['getAdminEvents']?.originalArgs as {
-                page: number;
-              }
-            ).page || 0;
+          const currentArg = getState().adminEvent.queries['getAdminEvents']
+            ?.originalArgs as {
+            page: number;
+            status: FilterStatus;
+          };
+
           if (data.status === 200) {
             dispatch(
               EventApi.util.updateQueryData(
                 'getAdminEvents',
-                currentPage,
+                { page: currentArg.page, status: currentArg.status },
                 draft => {
                   const event = draft.content.find(event => event.id === id);
                   if (event) {
@@ -98,8 +97,21 @@ export const EventApi = createApi({
         }
       },
     }),
+    getCountStatusEvents: builder.query<
+      {
+        CANCELLED: number;
+        PENDING: number;
+        APPROVED: number;
+      },
+      void
+    >({
+      query: () => '/admin/events/count/status',
+    }),
   }),
 });
 
-export const { useGetAdminEventsQuery, useChangeEventStatusMutation } =
-  EventApi;
+export const {
+  useGetAdminEventsQuery,
+  useChangeEventStatusMutation,
+  useGetCountStatusEventsQuery,
+} = EventApi;

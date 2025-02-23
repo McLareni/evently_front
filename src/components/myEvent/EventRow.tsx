@@ -55,7 +55,9 @@ const EventRow: React.FC<IProps> = ({ event, popUpIsShow, openPopUp }) => {
     <>
       <td className="h-[148px] w-min flex justify-center p-[5px] items-center">
         <div className="flex flex-col items-center w-min">
-          <h3 className="font-medium text-2xl font-oswald leading-[36px]">{day}</h3>
+          <h3 className="font-medium text-2xl font-oswald leading-[36px]">
+            {day}
+          </h3>
           <h2 className="font-medium text-2xl font-oswald leading-[36px] text-error">
             {month}
           </h2>
@@ -67,7 +69,7 @@ const EventRow: React.FC<IProps> = ({ event, popUpIsShow, openPopUp }) => {
       <td className="w-[100px] p-[5px]">
         <img
           className="w-[100px] h-[100px] rounded-[20px] object-cover"
-          src={`data:image/png;base64,${event.images[0].photoInBytes}`}
+          src={event.images[0].url}
         />
       </td>
       <td className="h-[148px] p-[5px] max-w-[300px]">
@@ -87,7 +89,8 @@ const EventRow: React.FC<IProps> = ({ event, popUpIsShow, openPopUp }) => {
       </td>
       <td className="p-[5px] pr-[20px] text-xl font-normal">{event.price}₴</td>
       <td className="p-[5px] pr-[20px] text-xl font-normal">
-        {event.numberOfTickets - event.availableTickets}/{event.unlimitedTickets ? '∞' : event.numberOfTickets}
+        {event.numberOfTickets - event.availableTickets}/
+        {event.unlimitedTickets ? '∞' : event.numberOfTickets}
       </td>
       <td className="p-[5px] pr-[20px] text-xl font-normal">
         {(event.numberOfTickets - event.availableTickets) * event.price}₴

@@ -4,19 +4,32 @@ import { MdOutlineRefresh } from 'react-icons/md';
 
 import { useGetAdminUserQuery } from '@/redux/admin/userApi';
 
-import AdminTable from '@/components/admin/AdminTable';
+import AdminTable, { SORT_USER } from '@/components/admin/AdminTable';
 import Navigation from '@/components/admin/Navigation';
 import Spinner from '@/components/ui/Spinner';
 
+export type SORT_USER_TYPE =
+  | 'name'
+  | 'phoneNumber'
+  | 'email'
+  | 'creationDate'
+  | 'status'
+  | 'role';
+
 const AdminUsers = () => {
   const { t } = useTranslation('adminUser');
-  const cols = t('colTable', { returnObjects: true });
+  const cols = t('colTable', { returnObjects: true }) as SORT_USER_TYPE[];
   const [page, setPage] = useState<number>(1);
   const [quantityUsers, setQuanitityUsers] = useState<number>(20);
+  const [sort, setSort] = useState<{ col: SORT_USER_TYPE; direction: boolean }>(
+    { col: SORT_USER[3], direction: false }
+  );
 
   const { data, isFetching, refetch } = useGetAdminUserQuery({
     page,
     size: quantityUsers,
+    col: sort.col,
+    direction: sort.direction ? 'asc' : 'desc',
   });
 
   const { content: users, page: pageInfo } = data || { content: [], page: {} };
@@ -30,6 +43,12 @@ const AdminUsers = () => {
     if (!isFetching) {
       refetch();
     }
+  };
+
+  const handleChangeSort = (col: SORT_USER_TYPE, direction: boolean) => {
+    console.log(col, direction);
+
+    setSort({ col, direction });
   };
 
   const handleChangePage = (direction: 'up' | 'down') => {
@@ -66,7 +85,9 @@ const AdminUsers = () => {
       <div>
         <AdminTable
           cols={cols}
+          changeSort={handleChangeSort}
           data={users || []}
+          activeSort={sort}
           from={minUserPage - 1}
         ></AdminTable>
       </div>
