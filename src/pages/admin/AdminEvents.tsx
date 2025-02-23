@@ -72,15 +72,13 @@ const AdminEvents = () => {
   };
 
   const changeStatusEvent = async () => {
-    const response = await changeStatusEventFn({
+    await changeStatusEventFn({
       id: currEvent?.id || '',
       action,
     });
 
-    if (response.data?.status === 200) {
-      setModalIsOpen(false);
-      setConfirmationModal(false);
-    }
+    setModalIsOpen(false);
+    setConfirmationModal(false);
   };
 
   const handleChangeFilterStatus = (status: FilterStatus) => {

@@ -8,7 +8,7 @@ const URL = import.meta.env.VITE_URL;
 
 export const EventApi = createApi({
   reducerPath: 'adminEvent',
-  tagTypes: ['AdminEvent', 'Events'],
+  tagTypes: ['AdminEvent', 'Count'],
   baseQuery: fetchBaseQuery({
     baseUrl: URL,
     credentials: 'include',
@@ -32,11 +32,8 @@ export const EventApi = createApi({
       providesTags: result =>
         result
           ? [
-              ...result.content.map(({ id, eventStatus }) => ({
-                type:
-                  eventStatus === 'APPROVED'
-                    ? ('Events' as const)
-                    : ('AdminEvent' as const),
+              ...result.content.map(({ id }) => ({
+                type: 'AdminEvent' as const,
                 id,
               })),
               { type: 'AdminEvent', id: 'LIST' },
@@ -65,33 +62,14 @@ export const EventApi = createApi({
         url: `/admin/events/${id}/status?status=${action}`,
         method: 'PATCH',
       }),
-      async onQueryStarted(
-        { id, action },
-        { dispatch, queryFulfilled, getState }
-      ) {
+      invalidatesTags: ['Count'],
+      async onQueryStarted(_, { dispatch, queryFulfilled }) {
         try {
-          const { data } = await queryFulfilled;
+          await queryFulfilled;
 
-          const currentArg = getState().adminEvent.queries['getAdminEvents']
-            ?.originalArgs as {
-            page: number;
-            status: FilterStatus;
-          };
-
-          if (data.status === 200) {
-            dispatch(
-              EventApi.util.updateQueryData(
-                'getAdminEvents',
-                { page: currentArg.page, status: currentArg.status },
-                draft => {
-                  const event = draft.content.find(event => event.id === id);
-                  if (event) {
-                    event.eventStatus = action;
-                  }
-                }
-              )
-            );
-          }
+          dispatch(
+            EventApi.util.invalidateTags([{ type: 'AdminEvent', id: 'LIST' }])
+          );
         } catch {
           ///
         }
@@ -106,6 +84,7 @@ export const EventApi = createApi({
       void
     >({
       query: () => '/admin/events/count/status',
+      providesTags: ['Count'],
     }),
   }),
 });
