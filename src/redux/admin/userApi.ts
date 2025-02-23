@@ -87,6 +87,9 @@ export const UserApi = createApi({
                 }
               )
             );
+            dispatch(
+              UserApi.util.invalidateTags([{ type: 'AdminUser', id: 'LIST' }])
+            );
           }
         } catch {
           ///
@@ -128,6 +131,7 @@ export const UserApi = createApi({
                 }
               )
             );
+            dispatch(UserApi.util.invalidateTags([{ type: 'AdminUser', id }]));
           }
         } catch {
           ///
