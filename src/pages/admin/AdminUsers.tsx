@@ -11,12 +11,17 @@ import Spinner from '@/components/ui/Spinner';
 const AdminUsers = () => {
   const { t } = useTranslation('adminUser');
   const cols = t('colTable', { returnObjects: true });
-
-  const { data: users, isFetching, refetch } = useGetAdminUserQuery();
-  const [quantityUsers, setQuanitityUsers] = useState<number>(20);
   const [page, setPage] = useState<number>(1);
+  const [quantityUsers, setQuanitityUsers] = useState<number>(20);
 
-  const totalUser = users?.length || 0;
+  const { data, isFetching, refetch } = useGetAdminUserQuery({
+    page,
+    size: quantityUsers,
+  });
+
+  const { content: users, page: pageInfo } = data || { content: [], page: {} };
+
+  const totalUser = pageInfo?.totalElements || 0;
   const minUserPage = quantityUsers * (page - 1) + 1;
   const maxUserPage =
     page * quantityUsers > totalUser ? totalUser : page * quantityUsers;
@@ -63,7 +68,6 @@ const AdminUsers = () => {
           cols={cols}
           data={users || []}
           from={minUserPage - 1}
-          to={maxUserPage}
         ></AdminTable>
       </div>
       <div className="flex items-center justify-end mt-[13px] text-xs font-lato text-textDark">
@@ -75,7 +79,7 @@ const AdminUsers = () => {
         <select
           className="h-fit w-fit rounded-[10px] border border-buttonPurple bg-background px-1 py-[3px] mr-2"
           onChange={handleChangeQuantitty}
-          defaultValue={20}
+          defaultValue={quantityUsers}
         >
           <option value={10}>10</option>
           <option value={20}>20</option>

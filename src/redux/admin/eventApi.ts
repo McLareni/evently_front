@@ -20,39 +20,44 @@ export const EventApi = createApi({
     },
   }),
   endpoints: builder => ({
-    getAdminEvents: builder.query<Event[], void>({
-      query: () => 'admin/events',
-      keepUnusedDataFor: 1000,
-      providesTags: result =>
-        result
-          ? [
-              ...result.map(({ id, eventStatus }) => ({
-                type:
-                  eventStatus === 'APPROVED'
-                    ? ('Events' as const)
-                    : ('AdminEvent' as const),
-                id,
-              })),
-              { type: 'AdminEvent', id: 'LIST' },
-            ]
-          : [{ type: 'AdminEvent', id: 'LIST' }],
-      async onQueryStarted(_, { dispatch, queryFulfilled }) {
-        try {
-          const { data } = await queryFulfilled;
-          console.log(data);
-
-          data?.forEach(event => {
-            if (event.eventStatus === 'APPROVED') {
-              dispatch(
-                EventsApi.util.upsertQueryData('getEventById', event.id, event)
-              );
-            }
-          });
-        } catch (error) {
-          console.error('Error updating cache', error);
-        }
-      },
-    }),
+    // eslint-disable-next-line no-undef
+    getAdminEvents: builder.query<{ content: Event[]; page: PageType }, number>(
+      {
+        query: page => `admin/events?page=${page}&size=9`,
+        keepUnusedDataFor: 1000,
+        providesTags: result =>
+          result
+            ? [
+                ...result.content.map(({ id, eventStatus }) => ({
+                  type:
+                    eventStatus === 'APPROVED'
+                      ? ('Events' as const)
+                      : ('AdminEvent' as const),
+                  id,
+                })),
+                { type: 'AdminEvent', id: 'LIST' },
+              ]
+            : [{ type: 'AdminEvent', id: 'LIST' }],
+        async onQueryStarted(_, { dispatch, queryFulfilled }) {
+          try {
+            const { data } = await queryFulfilled;
+            data?.content?.forEach(event => {
+              if (event.eventStatus === 'APPROVED') {
+                dispatch(
+                  EventsApi.util.upsertQueryData(
+                    'getEventById',
+                    event.id,
+                    event
+                  )
+                );
+              }
+            });
+          } catch (error) {
+            console.error('Error updating cache', error);
+          }
+        },
+      }
+    ),
     changeEventStatus: builder.mutation<
       { status: number },
       { id: string; action: 'APPROVED' | 'CANCELLED' }
@@ -61,17 +66,26 @@ export const EventApi = createApi({
         url: `/admin/events/${id}/status?status=${action}`,
         method: 'PATCH',
       }),
-      async onQueryStarted({ id, action }, { dispatch, queryFulfilled }) {
+      async onQueryStarted(
+        { id, action },
+        { dispatch, queryFulfilled, getState }
+      ) {
         try {
           const { data } = await queryFulfilled;
 
+          const currentPage =
+            (
+              getState().adminEvent.queries['getAdminEvents']?.originalArgs as {
+                page: number;
+              }
+            ).page || 0;
           if (data.status === 200) {
             dispatch(
               EventApi.util.updateQueryData(
                 'getAdminEvents',
-                undefined,
+                currentPage,
                 draft => {
-                  const event = draft.find(event => event.id === id);
+                  const event = draft.content.find(event => event.id === id);
                   if (event) {
                     event.eventStatus = action;
                   }

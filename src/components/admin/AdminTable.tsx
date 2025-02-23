@@ -18,10 +18,9 @@ interface IProps {
   cols: string[];
   data: User[] | [];
   from: number;
-  to: number;
 }
 
-const AdminTable: React.FC<IProps> = ({ cols, data, from, to }) => {
+const AdminTable: React.FC<IProps> = ({ cols, data, from }) => {
   const [sort, setSort] = useState<
     { col: string; direction: boolean } | undefined
   >({ col: cols[3], direction: false });
@@ -134,7 +133,7 @@ const AdminTable: React.FC<IProps> = ({ cols, data, from, to }) => {
           </tr>
         </thead>
         <tbody>
-          {sortedData.slice(from, to).map((item, index) => (
+          {sortedData.map((item, index) => (
             <UserCard
               key={nanoid()}
               item={item}
