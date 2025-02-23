@@ -63,30 +63,11 @@ export const UserApi = createApi({
 
     deleteUser: builder.mutation<{ status: number }, string>({
       query: id => ({ url: `admin/users/${id}`, method: 'DELETE' }),
-      async onQueryStarted(id, { dispatch, queryFulfilled, getState }) {
+      async onQueryStarted(id, { dispatch, queryFulfilled }) {
         try {
           const { data } = await queryFulfilled;
 
-          const currentArg = getState().adminUser.queries['getAdminUser']
-            ?.originalArgs as {
-            page: number;
-            size: number;
-            col: string;
-            direction: string;
-          };
           if (data.status === 200) {
-            dispatch(
-              UserApi.util.updateQueryData(
-                'getAdminUser',
-                { ...currentArg },
-                draft => {
-                  const updatedContent = draft.content.filter(
-                    user => user.id !== id
-                  );
-                  return { ...draft, content: updatedContent };
-                }
-              )
-            );
             dispatch(
               UserApi.util.invalidateTags([{ type: 'AdminUser', id: 'LIST' }])
             );
