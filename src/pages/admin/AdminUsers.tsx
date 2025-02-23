@@ -4,19 +4,37 @@ import { MdOutlineRefresh } from 'react-icons/md';
 
 import { useGetAdminUserQuery } from '@/redux/admin/userApi';
 
-import AdminTable from '@/components/admin/AdminTable';
+import AdminTable, { SORT_USER } from '@/components/admin/AdminTable';
 import Navigation from '@/components/admin/Navigation';
 import Spinner from '@/components/ui/Spinner';
 
+export type SORT_USER_TYPE =
+  | 'name'
+  | 'phoneNumber'
+  | 'email'
+  | 'creationDate'
+  | 'status'
+  | 'role';
+
 const AdminUsers = () => {
   const { t } = useTranslation('adminUser');
-  const cols = t('colTable', { returnObjects: true });
-
-  const { data: users, isFetching, refetch } = useGetAdminUserQuery();
-  const [quantityUsers, setQuanitityUsers] = useState<number>(20);
+  const cols = t('colTable', { returnObjects: true }) as SORT_USER_TYPE[];
   const [page, setPage] = useState<number>(1);
+  const [quantityUsers, setQuanitityUsers] = useState<number>(20);
+  const [sort, setSort] = useState<{ col: SORT_USER_TYPE; direction: boolean }>(
+    { col: SORT_USER[3], direction: false }
+  );
 
-  const totalUser = users?.length || 0;
+  const { data, isFetching, refetch } = useGetAdminUserQuery({
+    page,
+    size: quantityUsers,
+    col: sort.col,
+    direction: sort.direction ? 'asc' : 'desc',
+  });
+
+  const { content: users, page: pageInfo } = data || { content: [], page: {} };
+
+  const totalUser = pageInfo?.totalElements || 0;
   const minUserPage = quantityUsers * (page - 1) + 1;
   const maxUserPage =
     page * quantityUsers > totalUser ? totalUser : page * quantityUsers;
@@ -25,6 +43,12 @@ const AdminUsers = () => {
     if (!isFetching) {
       refetch();
     }
+  };
+
+  const handleChangeSort = (col: SORT_USER_TYPE, direction: boolean) => {
+    console.log(col, direction);
+
+    setSort({ col, direction });
   };
 
   const handleChangePage = (direction: 'up' | 'down') => {
@@ -61,9 +85,10 @@ const AdminUsers = () => {
       <div>
         <AdminTable
           cols={cols}
+          changeSort={handleChangeSort}
           data={users || []}
+          activeSort={sort}
           from={minUserPage - 1}
-          to={maxUserPage}
         ></AdminTable>
       </div>
       <div className="flex items-center justify-end mt-[13px] text-xs font-lato text-textDark">
@@ -75,7 +100,7 @@ const AdminUsers = () => {
         <select
           className="h-fit w-fit rounded-[10px] border border-buttonPurple bg-background px-1 py-[3px] mr-2"
           onChange={handleChangeQuantitty}
-          defaultValue={20}
+          defaultValue={quantityUsers}
         >
           <option value={10}>10</option>
           <option value={20}>20</option>

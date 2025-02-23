@@ -1,3 +1,4 @@
+import { FilterStatus } from '@/pages/admin/AdminEvents';
 import { createApi, fetchBaseQuery } from '@reduxjs/toolkit/query/react';
 
 import { EventsApi } from '../events/operations';
@@ -7,7 +8,7 @@ const URL = import.meta.env.VITE_URL;
 
 export const EventApi = createApi({
   reducerPath: 'adminEvent',
-  tagTypes: ['AdminEvent', 'Events'],
+  tagTypes: ['AdminEvent', 'Count'],
   baseQuery: fetchBaseQuery({
     baseUrl: URL,
     credentials: 'include',
@@ -20,17 +21,19 @@ export const EventApi = createApi({
     },
   }),
   endpoints: builder => ({
-    getAdminEvents: builder.query<Event[], void>({
-      query: () => 'admin/events',
+    getAdminEvents: builder.query<
+      // eslint-disable-next-line no-undef
+      { content: Event[]; page: PageType },
+      { page: number; status: FilterStatus }
+    >({
+      query: ({ page, status }) =>
+        `admin/events${status ? `/status/${status}` : ''}?page=${page - 1}&size=9`,
       keepUnusedDataFor: 1000,
       providesTags: result =>
         result
           ? [
-              ...result.map(({ id, eventStatus }) => ({
-                type:
-                  eventStatus === 'APPROVED'
-                    ? ('Events' as const)
-                    : ('AdminEvent' as const),
+              ...result.content.map(({ id }) => ({
+                type: 'AdminEvent' as const,
                 id,
               })),
               { type: 'AdminEvent', id: 'LIST' },
@@ -39,9 +42,7 @@ export const EventApi = createApi({
       async onQueryStarted(_, { dispatch, queryFulfilled }) {
         try {
           const { data } = await queryFulfilled;
-          console.log(data);
-
-          data?.forEach(event => {
+          data?.content?.forEach(event => {
             if (event.eventStatus === 'APPROVED') {
               dispatch(
                 EventsApi.util.upsertQueryData('getEventById', event.id, event)
@@ -61,31 +62,35 @@ export const EventApi = createApi({
         url: `/admin/events/${id}/status?status=${action}`,
         method: 'PATCH',
       }),
-      async onQueryStarted({ id, action }, { dispatch, queryFulfilled }) {
+      invalidatesTags: ['Count'],
+      async onQueryStarted(_, { dispatch, queryFulfilled }) {
         try {
-          const { data } = await queryFulfilled;
+          await queryFulfilled;
 
-          if (data.status === 200) {
-            dispatch(
-              EventApi.util.updateQueryData(
-                'getAdminEvents',
-                undefined,
-                draft => {
-                  const event = draft.find(event => event.id === id);
-                  if (event) {
-                    event.eventStatus = action;
-                  }
-                }
-              )
-            );
-          }
+          dispatch(
+            EventApi.util.invalidateTags([{ type: 'AdminEvent', id: 'LIST' }])
+          );
         } catch {
           ///
         }
       },
     }),
+    getCountStatusEvents: builder.query<
+      {
+        CANCELLED: number;
+        PENDING: number;
+        APPROVED: number;
+      },
+      void
+    >({
+      query: () => '/admin/events/count/status',
+      providesTags: ['Count'],
+    }),
   }),
 });
 
-export const { useGetAdminEventsQuery, useChangeEventStatusMutation } =
-  EventApi;
+export const {
+  useGetAdminEventsQuery,
+  useChangeEventStatusMutation,
+  useGetCountStatusEventsQuery,
+} = EventApi;

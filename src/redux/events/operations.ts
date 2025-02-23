@@ -6,7 +6,7 @@ const URL = import.meta.env.VITE_URL;
 
 export const EventsApi = createApi({
   reducerPath: 'events',
-  tagTypes: ['Events', 'LikedEvents'],
+  tagTypes: ['Events', 'LikedEvents', 'MyEvents'],
   baseQuery: fetchBaseQuery({
     baseUrl: URL,
     credentials: 'include',
@@ -22,19 +22,23 @@ export const EventsApi = createApi({
     getAllEvents: builder.query<Event[], void>({
       query: () => 'events',
       keepUnusedDataFor: 1000,
+      transformResponse: (result: { content: Event[] }) =>
+        result?.content ?? [],
       providesTags: result =>
         result
           ? [
-              ...result.map(({ id }) => ({ type: 'Events' as const, id })),
+              ...result.map(({ id }) => ({
+                type: 'Events' as const,
+                id,
+              })),
               { type: 'Events', id: 'LIST' },
             ]
           : [{ type: 'Events', id: 'LIST' }],
       async onQueryStarted(_, { dispatch, queryFulfilled }) {
         try {
           const { data } = await queryFulfilled;
-          console.log(data);
 
-          data?.forEach(event => {
+          data.forEach(event => {
             dispatch(
               EventsApi.util.upsertQueryData('getEventById', event.id, event)
             );
@@ -48,6 +52,35 @@ export const EventsApi = createApi({
       query: id => `events/${id}`,
       providesTags: (result, error, id) => [{ type: 'Events', id }],
       keepUnusedDataFor: 1000,
+    }),
+
+    getAllMyEvents: builder.query<Event[], string>({
+      query: id => `events/user/${id}`,
+      transformResponse: (result: { content: Event[] }) =>
+        result?.content ?? [],
+      providesTags: result =>
+        result
+          ? [
+              ...result.map(({ id }) => ({
+                type: 'MyEvents' as const,
+                id,
+              })),
+              { type: 'MyEvents', id: 'LIST' },
+            ]
+          : [{ type: 'MyEvents', id: 'LIST' }],
+      async onQueryStarted(_, { dispatch, queryFulfilled }) {
+        try {
+          const { data } = await queryFulfilled;
+
+          data?.forEach(event => {
+            dispatch(
+              EventsApi.util.upsertQueryData('getEventById', event.id, event)
+            );
+          });
+        } catch (error) {
+          console.error('Error updating cache', error);
+        }
+      },
     }),
 
     getLikedEvents: builder.query<Event[], string>({
@@ -114,8 +147,10 @@ export const EventsApi = createApi({
 
 export const {
   useLazyGetAllEventsQuery,
+  useGetAllEventsQuery,
   useGetLikedEventsQuery,
   useAddLikedEventMutation,
   useDeleteLikedEventMutation,
   useGetEventByIdQuery,
+  useGetAllMyEventsQuery,
 } = EventsApi;
