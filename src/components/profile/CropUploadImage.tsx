@@ -15,6 +15,8 @@ import { SharedBtn } from '../ui';
 import Spinner from '../ui/Spinner';
 import { UploadButton } from './UploadButton';
 
+const MAX_FILE_SIZE = 1 * 1000 * 1000;
+
 export const CropUploadImage: React.FC = () => {
   const [image, setImage] = useState('');
   const [isLoading, setIsLoading] = useState(false);
@@ -28,9 +30,12 @@ export const CropUploadImage: React.FC = () => {
 
   const onChange = (e: any) => {
     if (e.target.files) {
-      const file = e.target.files[0];
+      const file = e.target.files[0] as File;
       if (!imageTypes.some(type => type === file.type)) {
         return toast.error('Невірний тип зображення');
+      }
+      if (file.size > MAX_FILE_SIZE) {
+        return toast.error('Додайте зображення розміром до 1 МБ');
       }
     }
 

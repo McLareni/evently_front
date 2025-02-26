@@ -1,38 +1,53 @@
-import { FC, HTMLProps, useEffect, useState } from 'react';
+import { FC, HTMLProps, useState } from 'react';
 import { BiPencil, BiTrash } from 'react-icons/bi';
+import { toast } from 'react-toastify';
 
-import { selectUser } from '@/redux/auth/selectors';
-import { useAppSelector } from '@/redux/hooks';
+import { deleteUserAvatar, getUser } from '@/redux/auth/operations';
+import { selectToken, selectUser } from '@/redux/auth/selectors';
+import { useAppDispatch, useAppSelector } from '@/redux/hooks';
 
 import { imageTypes } from '@/assets/staticData/statickData';
+
+import Spinner from '../ui/Spinner';
+
+const labelStyles = `w-[150px] h-[150px] bg-uploadBtnBg rounded-full
+flex justify-center items-center cursor-pointer overflow-hidden`;
+
+const imageWrapper = `w-[24px] h-[24px] rounded-full flex justify-center
+items-center absolute bottom-[10px] right-[10px] bg-background`;
 
 type UploadButtonProps = HTMLProps<HTMLInputElement>;
 
 export const UploadButton: FC<UploadButtonProps> = ({ ...props }) => {
-  const [imageSrc, setImageSrc] = useState<string | null>(null);
+  const [isLoading, setIsLoading] = useState(false);
 
-  const labelStyles = `w-[150px] h-[150px] bg-uploadBtnBg rounded-full
-  flex justify-center items-center cursor-pointer overflow-hidden`;
+  const { avatarImage, id } = useAppSelector(selectUser);
+  const token = useAppSelector(selectToken);
 
-  const imageWrapper = `w-[24px] h-[24px] rounded-full flex justify-center
-  items-center absolute bottom-[10px] right-[10px] bg-background`;
+  const dispatch = useAppDispatch();
 
-  const { avatarImage } = useAppSelector(selectUser);
-
-  const deleteImage = (event: React.MouseEvent<HTMLButtonElement>) => {
+  const deleteImage = async (event: React.MouseEvent<HTMLButtonElement>) => {
     event.preventDefault();
-    // setImage(null);
-  };
-
-  useEffect(() => {
-    if (avatarImage && avatarImage.photoInBytes) {
-      setImageSrc(`data:image/png;base64,${avatarImage.photoInBytes}`);
+    setIsLoading(true);
+    try {
+      if (token) {
+        const response = await deleteUserAvatar(token, id);
+        if (response.status === 200) {
+          await dispatch(getUser());
+        }
+        setIsLoading(false);
+        return toast.success('Фото успішно видалено');
+      }
+    } catch (error) {
+      console.error(error);
+      setIsLoading(false);
+      return toast.error('Сталася помилка');
     }
-    return;
-  }, [avatarImage]);
+  };
 
   return (
     <div className="relative">
+      {isLoading && <Spinner />}
       <input
         id="avatar"
         type="file"
@@ -41,10 +56,10 @@ export const UploadButton: FC<UploadButtonProps> = ({ ...props }) => {
         {...props}
       />
       <label htmlFor="avatar" className={labelStyles}>
-        {imageSrc ? (
+        {avatarImage ? (
           <img
             className="object-cover h-[100%]"
-            src={imageSrc}
+            src={avatarImage.url}
             alt="user logo"
           />
         ) : (
