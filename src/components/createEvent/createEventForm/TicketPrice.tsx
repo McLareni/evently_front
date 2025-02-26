@@ -100,15 +100,19 @@ const TicketPrice: React.FC<TicketPriceProps> = ({
               },
             }}
             render={({ field }) => (
-              <input
-                {...field}
-                id="ticketPrice"
-                type="number"
-                className={`outline-none border-2 w-[240px] h-[48px] my-[2px] p-4 rounded-[10px] [appearance:textfield] [&::-webkit-outer-spin-button]:appearance-none [&::-webkit-inner-spin-button]:appearance-none
-              ${freeTickets ? 'border-[#D0D5D8]' : 'border-buttonPurple'}`}
-                placeholder="100 ₴"
-                disabled={freeTickets}
-              />
+              <div
+                className={`w-[240px] h-[48px] p-[2px] ${freeTickets ? 'bg-[#D0D5D8]' : 'bg-createEventInputBorder'}  rounded-[10px]`}
+              >
+                <input
+                  {...field}
+                  id="ticketPrice"
+                  type="number"
+                  className={`outline-none w-full h-full p-4 rounded-[8px] [appearance:textfield]
+                    [&::-webkit-outer-spin-button]:appearance-none [&::-webkit-inner-spin-button]:appearance-none`}
+                  placeholder="100 ₴"
+                  disabled={freeTickets}
+                />
+              </div>
             )}
           />
           <div className="h-[20px]">
@@ -127,7 +131,7 @@ const TicketPrice: React.FC<TicketPriceProps> = ({
           <div className="relative">
             <HiOutlineTicket
               color={unlimitedTickets ? '#D0D5D8' : '#000000'}
-              className={`absolute top-[15.25px] left-[17.25px] w-6 h-6 `}
+              className={`absolute top-[13.25px] left-[17.25px] w-6 h-6 `}
             />
             <Controller
               name="numberOfTickets"
@@ -139,15 +143,19 @@ const TicketPrice: React.FC<TicketPriceProps> = ({
                 },
               }}
               render={({ field }) => (
-                <input
-                  id="numberOfTickets"
-                  {...field}
-                  type="number"
-                  className={`outline-none border-2 pl-[49px] w-[240px] h-[48px] my-[2px] mx-[2px] p-4 rounded-[10px] [appearance:textfield] [&::-webkit-outer-spin-button]:appearance-none 
-                [&::-webkit-inner-spin-button]:appearance-none  ${unlimitedTickets ? 'border-[#D0D5D8]' : 'border-buttonPurple'}`}
-                  placeholder="100"
-                  disabled={unlimitedTickets}
-                />
+                <div
+                  className={`w-[240px] h-[48px] p-[2px] ${unlimitedTickets ? 'bg-[#D0D5D8]' : 'bg-createEventInputBorder'}  rounded-[10px]`}
+                >
+                  <input
+                    id="numberOfTickets"
+                    {...field}
+                    type="number"
+                    className={`outline-none pl-[49px] w-full h-full p-4 rounded-[8px] [appearance:textfield] [&::-webkit-outer-spin-button]:appearance-none 
+                [&::-webkit-inner-spin-button]:appearance-none`}
+                    placeholder="100"
+                    disabled={unlimitedTickets}
+                  />
+                </div>
               )}
             />
             <div className="h-[20px]">
