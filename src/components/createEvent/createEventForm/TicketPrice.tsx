@@ -8,6 +8,7 @@ import {
   UseFormWatch,
 } from 'react-hook-form';
 import { AiFillCheckCircle } from 'react-icons/ai';
+import { FaRegMoneyBillAlt } from 'react-icons/fa';
 import { HiOutlineTicket } from 'react-icons/hi';
 import { MdDone } from 'react-icons/md';
 
@@ -90,37 +91,43 @@ const TicketPrice: React.FC<TicketPriceProps> = ({
           <label htmlFor="ticketPrice" className="mb-3">
             Ціна
           </label>
-          <Controller
-            name="ticketPrice"
-            control={control}
-            rules={{
-              validate: {
-                isValid: value =>
-                  freeTickets || +value > 0 || 'Невірний формат',
-              },
-            }}
-            render={({ field }) => (
-              <div
-                className={`w-[240px] h-[48px] p-[2px] ${freeTickets ? 'bg-[#D0D5D8]' : 'bg-createEventInputBorder'}  rounded-[10px]`}
-              >
-                <input
-                  {...field}
-                  id="ticketPrice"
-                  type="number"
-                  className={`outline-none w-full h-full p-4 rounded-[8px] [appearance:textfield]
+          <div className="relative">
+            <FaRegMoneyBillAlt
+              color={freeTickets ? '#D0D5D8' : '#000000'}
+              className={`absolute top-[13.25px] left-[17.25px] w-6 h-6 `}
+            />
+            <Controller
+              name="ticketPrice"
+              control={control}
+              rules={{
+                validate: {
+                  isValid: value =>
+                    freeTickets || +value > 0 || 'Невірний формат',
+                },
+              }}
+              render={({ field }) => (
+                <div
+                  className={`w-[240px] h-[48px] p-[2px] ${freeTickets ? 'bg-[#D0D5D8]' : 'bg-createEventInputBorder'}  rounded-[10px]`}
+                >
+                  <input
+                    {...field}
+                    id="ticketPrice"
+                    type="number"
+                    className={`outline-none pl-[49px] w-full h-full p-4 rounded-[8px] [appearance:textfield]
                     [&::-webkit-outer-spin-button]:appearance-none [&::-webkit-inner-spin-button]:appearance-none`}
-                  placeholder="100 ₴"
-                  disabled={freeTickets}
-                />
-              </div>
-            )}
-          />
-          <div className="h-[20px]">
-            {errors.ticketPrice && (
-              <p className="text-red-500 text-sm">
-                {errors.ticketPrice.message}
-              </p>
-            )}
+                    placeholder="100 ₴"
+                    disabled={freeTickets}
+                  />
+                </div>
+              )}
+            />
+            <div className="h-[20px]">
+              {errors.ticketPrice && (
+                <p className="text-red-500 text-sm">
+                  {errors.ticketPrice.message}
+                </p>
+              )}
+            </div>
           </div>
         </div>
 
