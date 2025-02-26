@@ -145,3 +145,10 @@ type CreateEventFormValues = {
   freeTickets: boolean;
   isOffline?: boolean;
 };
+
+interface PageType {
+  number: number;
+  size: number;
+  totalElements: number;
+  totalPages: number;
+}

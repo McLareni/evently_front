@@ -19,13 +19,21 @@ export const UserApi = createApi({
     },
   }),
   endpoints: builder => ({
-    getAdminUser: builder.query<User[], void>({
-      query: () => 'admin/users',
+    getAdminUser: builder.query<
+      // eslint-disable-next-line no-undef
+      { content: User[]; page: PageType },
+      { page: number; size: number; col: string; direction: string }
+    >({
+      query: ({ page, size, col, direction }) =>
+        `admin/users?page=${page - 1}&size=${size}&sort=${col},${direction}`,
       keepUnusedDataFor: 600,
       providesTags: result =>
-        result
+        result?.content
           ? [
-              ...result.map(({ id }) => ({ type: 'AdminUser' as const, id })),
+              ...result.content.map(({ id }) => ({
+                type: 'AdminUser' as const,
+                id,
+              })),
               { type: 'AdminUser', id: 'LIST' },
             ]
           : [{ type: 'AdminUser', id: 'LIST' }],
@@ -34,7 +42,7 @@ export const UserApi = createApi({
           const { data } = await queryFulfilled;
           console.log(data);
 
-          data?.forEach(user => {
+          data.content?.forEach(user => {
             dispatch(
               UserApi.util.upsertQueryData('getUserProfile', user.id, user)
             );
@@ -50,7 +58,7 @@ export const UserApi = createApi({
         return { ...existingData, ...incomingData };
       },
       providesTags: (result, error, id) => [{ type: 'AdminUser', id }],
-      keepUnusedDataFor: 600
+      keepUnusedDataFor: 600,
     }),
 
     deleteUser: builder.mutation<{ status: number }, string>({
@@ -61,9 +69,7 @@ export const UserApi = createApi({
 
           if (data.status === 200) {
             dispatch(
-              UserApi.util.updateQueryData('getAdminUser', undefined, draft => {
-                return draft.filter(user => user.id !== id);
-              })
+              UserApi.util.invalidateTags([{ type: 'AdminUser', id: 'LIST' }])
             );
           }
         } catch {
@@ -79,19 +85,34 @@ export const UserApi = createApi({
         url: `admin/users/${isBan ? 'ban' : 'unban'}/${email}`,
         method: 'PATCH',
       }),
-      async onQueryStarted({ isBan, id }, { dispatch, queryFulfilled }) {
+      async onQueryStarted(
+        { isBan, id },
+        { dispatch, queryFulfilled, getState }
+      ) {
         try {
           const { data } = await queryFulfilled;
 
+          const currentArg = getState().adminUser.queries['getAdminUser']
+            ?.originalArgs as {
+            page: number;
+            size: number;
+            col: string;
+            direction: string;
+          };
           if (data.status === 200) {
             dispatch(
-              UserApi.util.updateQueryData('getAdminUser', undefined, draft => {
-                const user = draft.find(user => user.id === id);
-                if (user) {
-                  user.status = isBan ? 'BANNED' : 'ACTIVE';
+              UserApi.util.updateQueryData(
+                'getAdminUser',
+                { ...currentArg },
+                draft => {
+                  const user = draft.content.find(user => user.id === id);
+                  if (user) {
+                    user.status = isBan ? 'BANNED' : 'ACTIVE';
+                  }
                 }
-              })
+              )
             );
+            dispatch(UserApi.util.invalidateTags([{ type: 'AdminUser', id }]));
           }
         } catch {
           ///

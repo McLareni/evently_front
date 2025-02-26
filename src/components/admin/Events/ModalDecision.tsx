@@ -21,14 +21,16 @@ const ModalDecision: React.FC<IProps> = ({ event, openModal }) => {
   const navigate = useNavigate();
 
   const images = event?.images.length
-    ? [...event.images.map(img => `data:image/jpeg;base64,${img.photoInBytes}`)]
+    ? [...event.images.map(img => img.url)]
     : [event?.photoUrl || ''];
 
   const handleChangeActiveImage = (direction: 'up' | 'down') => {
     if (direction === 'up') {
-      setActiveImage(prev => (prev === 3 ? 1 : prev + 1));
+      setActiveImage(prev => (prev === event?.images.length ? 1 : prev + 1));
     } else {
-      setActiveImage(prev => (prev === 1 ? 3 : prev - 1));
+      setActiveImage(prev =>
+        prev === 1 ? event?.images.length || 0 : prev - 1
+      );
     }
   };
 
@@ -86,7 +88,7 @@ const ModalDecision: React.FC<IProps> = ({ event, openModal }) => {
             <img
               src={
                 event?.organizers?.avatarImage?.photoInBytes
-                  ? `data:image/png;base64,${event?.organizers?.avatarImage.photoInBytes}`
+                  ? event?.organizers?.avatarImage.url
                   : userPlaceholder
               }
               alt=""

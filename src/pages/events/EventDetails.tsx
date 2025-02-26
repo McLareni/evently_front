@@ -3,8 +3,8 @@ import { FiFlag } from 'react-icons/fi';
 import { useParams } from 'react-router';
 
 import {
+  useGetAllEventsQuery,
   useGetEventByIdQuery,
-  useLazyGetAllEventsQuery,
 } from '@/redux/events/operations';
 
 import AboutUser from '@/components/eventDetails/AboutUser';
@@ -19,12 +19,8 @@ import Spinner from '@/components/ui/Spinner';
 
 const EventDetails = () => {
   const { idEvent } = useParams();
-  const {
-    data: event,
-    isLoading,
-    refetch,
-  } = useGetEventByIdQuery(idEvent || '');
-  const [fetchEvents, { data: events }] = useLazyGetAllEventsQuery();
+  const { data: event, isLoading } = useGetEventByIdQuery(idEvent || '');
+  const { data: events } = useGetAllEventsQuery();
 
   const topEvents = events?.filter(
     (event: Event) => event.category === 'TOP_EVENTS'
@@ -32,18 +28,14 @@ const EventDetails = () => {
 
   const [randomTopEvents, setRandomTopEvents] = useState<Event[]>();
 
+  console.log(event);
+
   useEffect(() => {
     let interval = setInterval(() => {
       setRandomTopEvents(
         topEvents?.sort(() => Math.random() - 0.5).slice(0, 3)
       );
     }, 10000);
-
-    if ((!randomTopEvents || randomTopEvents.length === 0) && events) {
-      console.log(topEvents);
-
-      setRandomTopEvents(topEvents?.slice(0, 3) || []);
-    }
 
     return () => {
       clearInterval(interval);
@@ -55,27 +47,10 @@ const EventDetails = () => {
     .slice(0, 4);
 
   const eventByThisUser = events
-    ?.filter(
-      (event: Event) => event.organizers?.name === event.organizers?.name
-    )
+    ?.filter((e: Event) => e.organizers?.name === event?.organizers?.name)
     .slice(0, 4);
 
-  useEffect(() => {
-    fetchEvents();
-  }, [fetchEvents]);
-
-  useEffect(() => {
-    const timer = setTimeout(async () => {
-      if (!event && isLoading) {
-        await refetch();
-        fetchEvents();
-      }
-    }, 2000);
-
-    return () => {
-      clearTimeout(timer);
-    };
-  }, [event, isLoading, refetch, fetchEvents]);
+  console.log(event?.organizers?.name);
 
   if (isLoading) {
     return <Spinner />;
@@ -135,10 +110,12 @@ const EventDetails = () => {
             events={similarEvents || []}
             seeMoreButton={<ShowAllButton style={{ margin: 0 }} />}
           />
-          <ShortEventList
-            title="Більше подій від цього організатора"
-            events={eventByThisUser || []}
-          />
+          {!!eventByThisUser?.length && (
+            <ShortEventList
+              title="Більше подій від цього організатора"
+              events={eventByThisUser || []}
+            />
+          )}
         </div>
       </div>
     </main>

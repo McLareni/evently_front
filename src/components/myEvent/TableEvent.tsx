@@ -1,9 +1,9 @@
-import { useEffect, useState } from 'react';
+import { useState } from 'react';
 import { Link } from 'react-router-dom';
 
-import { getUser } from '@/redux/auth/operations';
-import { selectUserEvents } from '@/redux/auth/selectors';
-import { useAppDispatch, useAppSelector } from '@/redux/hooks';
+import { selectUser } from '@/redux/auth/selectors';
+import { useGetAllMyEventsQuery } from '@/redux/events/operations';
+import { useAppSelector } from '@/redux/hooks';
 
 import clsx from 'clsx';
 
@@ -13,10 +13,8 @@ import TableHead from './TableHead';
 
 const TableEvent = () => {
   const [idPopUp, setIdPopUp] = useState<string | undefined>(undefined);
-  const [isLoading, setIsLoading] = useState(true);
-  const events = useAppSelector(selectUserEvents);
-  const dispatch = useAppDispatch();
-  let isRefersh = false;
+  const { id } = useAppSelector(selectUser);
+  const { data: events, isFetching, refetch } = useGetAllMyEventsQuery(id);
 
   const handleOpenPopUp = (id?: string) => {
     setIdPopUp(id);
@@ -31,19 +29,10 @@ const TableEvent = () => {
   };
 
   const handleRefreshEvents = async () => {
-    setIsLoading(true);
-    if (!isRefersh) {
-      isRefersh = true;
-      dispatch(getUser()).then(() => (isRefersh = false));
-    }
-    setIsLoading(false);
+    refetch();
   };
 
-  useEffect(() => {
-    handleRefreshEvents();
-  }, []);
-
-  if (isLoading) {
+  if (isFetching) {
     return <Spinner />;
   }
 
@@ -55,7 +44,9 @@ const TableEvent = () => {
         </h2>
         <p className="text-[36px] font-oswald text-buttonPurple">
           Зробіть перший крок до успіху — створіть подію!
-          <Link to="/create_event" className='hover:text-borderColor italic'>[Створити подію]</Link>
+          <Link to="/create_event" className="hover:text-borderColor italic">
+            [Створити подію]
+          </Link>
         </p>
       </>
     );
@@ -68,7 +59,7 @@ const TableEvent = () => {
     >
       <TableHead refresh={handleRefreshEvents} />
       <tbody className="">
-        {events?.map((event, index) => (
+        {events.map((event, index) => (
           <tr
             key={event.id}
             className={clsx(

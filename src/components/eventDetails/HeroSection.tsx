@@ -100,11 +100,7 @@ const HeroSection: React.FC<IProps> = ({ idEvent, event }) => {
           isLiked={isLiked}
           images={
             event.images.length
-              ? [
-                  ...event.images.map(
-                    img => `data:image/jpeg;base64,${img.photoInBytes}`
-                  ),
-                ]
+              ? [...event.images.map(img => img.url)]
               : [event.photoUrl || '']
           }
         />
