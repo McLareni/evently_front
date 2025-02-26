@@ -106,3 +106,18 @@ export const updateUserAvatar = async (
     throw new Error(`Failed to update avatar ${error}`);
   }
 };
+
+export const deleteUserAvatar = async (token: string, userId: string) => {
+  try {
+    const response = await axios.delete(`users/${userId}/avatar`, {
+      headers: {
+        'Content-Type': 'multipart/form-data',
+        Authorization: `Bearer ${token}`,
+      },
+    });
+
+    return response;
+  } catch (error) {
+    throw new Error(`Failed to delete avatar ${error}`);
+  }
+};

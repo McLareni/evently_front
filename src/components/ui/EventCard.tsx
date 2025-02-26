@@ -45,7 +45,6 @@ export const EventCard: React.FC<EventCardProps> = ({
   setEvent = () => {},
 }) => {
   const [isLiked, setIsLiked] = useState(false);
-  const [imageSrc, setImageSrc] = useState<string | null>(null);
 
   const {
     id: eventId,
@@ -56,7 +55,6 @@ export const EventCard: React.FC<EventCardProps> = ({
     price,
     location,
     type,
-    photoUrl,
     images,
   } = event;
 
@@ -108,12 +106,6 @@ export const EventCard: React.FC<EventCardProps> = ({
 
   const formattedDate = formatDateToDayMonth(date?.day);
 
-  useEffect(() => {
-    if (likedEventsAll) {
-      setIsLiked(likedEventsAll.some(item => item.id === event.id));
-    }
-  }, [event.id, likedEventsAll]);
-
   const handleOnClick = (e: React.MouseEvent) => {
     if (isEventCreated) return;
     if (isAdmin) {
@@ -129,11 +121,10 @@ export const EventCard: React.FC<EventCardProps> = ({
   };
 
   useEffect(() => {
-    if (images && images[0] && images[0].photoInBytes) {
-      setImageSrc(`data:image/png;base64,${images[0].photoInBytes}`);
+    if (likedEventsAll) {
+      setIsLiked(likedEventsAll.some(item => item.id === event.id));
     }
-    return;
-  }, [images]);
+  }, [event.id, likedEventsAll]);
 
   return (
     <div
@@ -143,8 +134,9 @@ export const EventCard: React.FC<EventCardProps> = ({
         top ? 'mb-[10px]' : ''
       }${isAdmin && 'hover:cursor-pointer'}`}
     >
-      {imageSrc && <img src={imageSrc} alt={title} width={'100%'} />}
-      {photoUrl && <img src={photoUrl} alt={title} width={'100%'} />}
+      {images[0] && images[0].url && (
+        <img src={images[0].url} alt={title} width={'100%'} />
+      )}
       <div className={`flex absolute justify-between p-6 w-full`}>
         {category === 'TOP_EVENTS' && event.eventStatus === 'APPROVED' && (
           <div className="flex justify-center items-center w-[58px] h-[35px] bg-badge-gradient rounded-[20px]">
