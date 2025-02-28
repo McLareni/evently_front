@@ -1,4 +1,3 @@
-/* eslint-disable no-unused-vars */
 import { BiChevronDown } from 'react-icons/bi';
 
 import { setIsCalendarShown } from '@/redux/filters/filtersSlice';
@@ -20,11 +19,26 @@ import { nanoid } from '@reduxjs/toolkit';
 import { Checkbox } from '../ui/CheckBox';
 import { DateRange } from './DateRange';
 
+const EventTypes: Record<string, string> = {
+  'Усі події': 'ALL_EVENTS',
+  Інше: 'OTHER',
+  'Спортивні заходи': 'SPORTS_EVENTS',
+  'Бізнес та нетворкінг': 'BUSINESS_NETWORKING',
+  'Майстер-класи': 'MASTER_CLASS',
+  Концерти: 'CONCERTS',
+  'Під домом': 'UNDER_HOUSE',
+  'Stand-up': 'STAND_UP',
+  Популярні: 'POPULAR',
+};
+
 interface FilterEventsProps {
+  // eslint-disable-next-line no-unused-vars
   addTypeFilter: (filter: string) => void;
   filterEvents: () => void;
   resetFilters: () => void;
+  // eslint-disable-next-line no-unused-vars
   addDateFilter: (filter: string) => void;
+  // eslint-disable-next-line no-unused-vars
   addPriceFilter: (filter: number) => void;
 }
 
@@ -61,8 +75,8 @@ export const FilterEvents: React.FC<FilterEventsProps> = ({
                   <Checkbox
                     name="type"
                     value={option.label}
-                    onChange={() => addTypeFilter(option.label)}
-                    checked={selectedTypes.includes(option.label)}
+                    onChange={() => addTypeFilter(EventTypes[option.label])}
+                    checked={selectedTypes.includes(EventTypes[option.label])}
                     label={option.label}
                   />
                 </li>
