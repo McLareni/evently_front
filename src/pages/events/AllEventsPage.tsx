@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react';
+import { useCallback, useEffect, useState } from 'react';
 import { useInView } from 'react-intersection-observer';
 
 import { useLazyGetAllEventsFilteredQuery } from '@/redux/events/operations';
@@ -46,7 +46,7 @@ const AllEventsPage: React.FC = () => {
     events,
   });
 
-  const filterEvents = async () => {
+  const filterEvents = useCallback(async () => {
     const response = await filterEvent({
       page: 0,
       size: size,
@@ -76,9 +76,17 @@ const AllEventsPage: React.FC = () => {
         },
       },
     });
+    console.log(response);
+
     setPage(1);
     setEvents(response.data || []);
-  };
+  }, [filter, filterEvent]);
+
+  console.log('evets', events);
+
+  useEffect(() => {
+    filterEvents();
+  }, [filterEvents]);
 
   useEffect(() => {
     const fetchEvents = async () => {
