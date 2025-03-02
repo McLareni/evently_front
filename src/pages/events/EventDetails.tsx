@@ -1,4 +1,3 @@
-/* eslint-disable @typescript-eslint/no-unused-expressions */
 import { useEffect, useState } from 'react';
 import { FiFlag } from 'react-icons/fi';
 import { useParams } from 'react-router';
@@ -29,11 +28,11 @@ const EventDetails = () => {
 
   const userId = event && event.organizers && event.organizers.id;
 
-  const slicedUserEvents =
+  const filteredUserEvents =
     userEvents &&
-    userEvents
-      .filter(({ eventStatus }) => eventStatus === 'APPROVED')
-      .slice(0, 4);
+    userEvents.filter(
+      ({ eventStatus, id }) => eventStatus === 'APPROVED' && id !== idEvent
+    );
 
   const topEvents = events?.filter(
     (event: Event) => event.category === 'TOP_EVENTS'
@@ -127,10 +126,10 @@ const EventDetails = () => {
             events={similarEvents || []}
             seeMoreButton={<ShowAllButton style={{ margin: 0 }} />}
           />
-          {slicedUserEvents && slicedUserEvents.length > 0 && (
+          {filteredUserEvents && filteredUserEvents.length > 0 && (
             <ShortEventList
               title="Більше подій від цього організатора"
-              events={slicedUserEvents}
+              events={filteredUserEvents}
               seeMoreButton={<ShowAllButton style={{ margin: 0 }} />}
             />
           )}

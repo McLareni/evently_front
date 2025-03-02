@@ -74,12 +74,16 @@ const EventRow: React.FC<IProps> = ({ event, popUpIsShow, openPopUp }) => {
       </td>
       <td className="h-[148px] p-[5px] max-w-[300px]">
         <div className="flex flex-col justify-between h-[100px] pl-3">
-          <Link
-            to={`/event/${event.id}`}
-            className="underline text-xl text-textDark leading-6"
-          >
-            {event.title}
-          </Link>
+          {event.eventStatus === 'APPROVED' ? (
+            <Link
+              to={`/event/${event.id}`}
+              className="underline text-xl text-textDark leading-6"
+            >
+              {event.title}
+            </Link>
+          ) : (
+            <p className="text-xl text-textDark leading-6">{event.title}</p>
+          )}
           <p className="text-[16px] leading-none pb-[1px] max-w-[300px] text-uploadBtnBg whitespace-normal break-words line-clamp-2 text-ellipsis">
             {event.eventFormat === 'ONLINE'
               ? event.eventUrl
