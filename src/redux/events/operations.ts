@@ -19,8 +19,8 @@ export const EventsApi = createApi({
     },
   }),
   endpoints: builder => ({
-    getAllEvents: builder.query<Event[], void>({
-      query: () => 'events',
+    getAllEvents: builder.query<Event[], {page: number, size: number}>({
+      query: ({page, size}) => `events?page=${page}&size=${size}`,
       keepUnusedDataFor: 1000,
       transformResponse: (result: { content: Event[] }) =>
         result?.content ?? [],

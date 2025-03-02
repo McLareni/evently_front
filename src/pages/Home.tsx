@@ -12,7 +12,7 @@ import { ShowAllButton } from '@/components/ui/ShowAllButton';
 import Spinner from '@/components/ui/Spinner';
 
 const Home: React.FC = () => {
-  const { events, isLoading } = useLazyGetAllEventsQueryWithTrigger();
+  const { events, isLoading } = useLazyGetAllEventsQueryWithTrigger({});
   useScrollToTop();
 
   const shownEvents = 16;
