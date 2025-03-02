@@ -19,9 +19,7 @@ const UserProfile = () => {
       <div className="mx-[15px] mt-[15px] h-[192px] bg-bg-gradient rounded-[20px] px-[32px] py-[21px] flex gap-[44px]">
         <img
           src={
-            user?.avatarImage?.photoInBytes
-              ? `data:image/png;base64,${user.avatarImage.photoInBytes}`
-              : userPlaceholder
+            user?.avatarImage?.url ? user?.avatarImage?.url : userPlaceholder
           }
           className="w-[150px] h-[150px] rounded-full"
         />

@@ -4,7 +4,8 @@ import { useParams } from 'react-router';
 
 import {
   useGetAllEventsQuery,
-  useGetEventByIdQuery,
+  useLazyGetEventByIdQuery,
+  useLazyGetUserEventsQuery,
 } from '@/redux/events/operations';
 
 import AboutUser from '@/components/eventDetails/AboutUser';
@@ -19,38 +20,53 @@ import Spinner from '@/components/ui/Spinner';
 
 const EventDetails = () => {
   const { idEvent } = useParams();
-  const { data: event, isLoading } = useGetEventByIdQuery(idEvent || '');
+  const [trigger, { data: event, isLoading }] = useLazyGetEventByIdQuery();
   const { data: events } = useGetAllEventsQuery();
+  const [userEventstrigger, { data: userEvents }] = useLazyGetUserEventsQuery();
+
+  const [randomTopEvents, setRandomTopEvents] = useState<Event[] | null>(null);
+
+  const userId = event && event.organizers && event.organizers.id;
+
+  const filteredUserEvents =
+    userEvents &&
+    userEvents.filter(
+      ({ eventStatus, id }) => eventStatus === 'APPROVED' && id !== idEvent
+    );
 
   const topEvents = events?.filter(
     (event: Event) => event.category === 'TOP_EVENTS'
   );
 
-  const [randomTopEvents, setRandomTopEvents] = useState<Event[]>();
-
-  console.log(event);
+  useEffect(() => {
+    if (idEvent) trigger(idEvent);
+  }, [idEvent, trigger]);
 
   useEffect(() => {
-    let interval = setInterval(() => {
-      setRandomTopEvents(
-        topEvents?.sort(() => Math.random() - 0.5).slice(0, 3)
-      );
-    }, 10000);
+    if (userId) {
+      userEventstrigger(userId);
+    }
+  }, [userId, userEventstrigger]);
 
-    return () => {
-      clearInterval(interval);
-    };
+  useEffect(() => {
+    const randomEvents = topEvents?.sort(() => Math.random() - 0.5).slice(0, 3);
+    if (!randomTopEvents && randomEvents) {
+      setRandomTopEvents(randomEvents);
+    }
+    if (randomEvents) {
+      let interval = setInterval(() => {
+        setRandomTopEvents(randomEvents);
+      }, 10000);
+
+      return () => {
+        clearInterval(interval);
+      };
+    }
   }, [randomTopEvents, topEvents, events]);
 
   const similarEvents = events
     ?.filter((event: Event) => event.type === event.type)
     .slice(0, 4);
-
-  const eventByThisUser = events
-    ?.filter((e: Event) => e.organizers?.name === event?.organizers?.name)
-    .slice(0, 4);
-
-  console.log(event?.organizers?.name);
 
   if (isLoading) {
     return <Spinner />;
@@ -82,17 +98,19 @@ const EventDetails = () => {
               rating={event.rating}
               aboutUser={event?.aboutOrganizer || ''}
             />
-            <div>
-              <h2 className="text-5xl text-textDark mt-12 mb-[50px]">
-                Адреса події
-              </h2>
-              <p className="mb-8 text-[20px] text-textDark">
-                {event.location.city}, {event.location.street}
-              </p>
-              <div className="rounded-[20px] overflow-hidden w-fit">
-                <GoogleMap events={[event]} />
+            {event.eventFormat === 'OFFLINE' && (
+              <div>
+                <h2 className="text-5xl text-textDark mt-12 mb-[50px]">
+                  Адреса події
+                </h2>
+                <p className="mb-8 text-[20px] text-textDark">
+                  {event.location.city}, {event.location.street}
+                </p>
+                <div className="rounded-[20px] overflow-hidden w-fit">
+                  <GoogleMap events={[event]} />
+                </div>
               </div>
-            </div>
+            )}
             <button className="flex gap-2 p-3 mt-8 rounded-[15px] border border-buttonPurple text-xl text-textDark focus:outline-0">
               Поскаржитись на подію <FiFlag className="w-6 h-6 stroke-error" />
             </button>
@@ -110,10 +128,11 @@ const EventDetails = () => {
             events={similarEvents || []}
             seeMoreButton={<ShowAllButton style={{ margin: 0 }} />}
           />
-          {!!eventByThisUser?.length && (
+          {filteredUserEvents && filteredUserEvents.length > 0 && (
             <ShortEventList
               title="Більше подій від цього організатора"
-              events={eventByThisUser || []}
+              events={filteredUserEvents}
+              seeMoreButton={<ShowAllButton style={{ margin: 0 }} />}
             />
           )}
         </div>

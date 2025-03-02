@@ -23,7 +23,7 @@ const AboutUser: React.FC<IProps> = ({ organizer, rating, aboutUser }) => {
       <div className="flex">
         <img
           src={
-            organizer?.avatarImage?.photoInBytes
+            organizer?.avatarImage?.url
               ? organizer.avatarImage.url
               : userPlaceholder
           }
