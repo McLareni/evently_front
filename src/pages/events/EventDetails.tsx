@@ -98,17 +98,19 @@ const EventDetails = () => {
               rating={event.rating}
               aboutUser={event?.aboutOrganizer || ''}
             />
-            <div>
-              <h2 className="text-5xl text-textDark mt-12 mb-[50px]">
-                Адреса події
-              </h2>
-              <p className="mb-8 text-[20px] text-textDark">
-                {event.location.city}, {event.location.street}
-              </p>
-              <div className="rounded-[20px] overflow-hidden w-fit">
-                <GoogleMap events={[event]} />
+            {event.eventFormat === 'OFFLINE' && (
+              <div>
+                <h2 className="text-5xl text-textDark mt-12 mb-[50px]">
+                  Адреса події
+                </h2>
+                <p className="mb-8 text-[20px] text-textDark">
+                  {event.location.city}, {event.location.street}
+                </p>
+                <div className="rounded-[20px] overflow-hidden w-fit">
+                  <GoogleMap events={[event]} />
+                </div>
               </div>
-            </div>
+            )}
             <button className="flex gap-2 p-3 mt-8 rounded-[15px] border border-buttonPurple text-xl text-textDark focus:outline-0">
               Поскаржитись на подію <FiFlag className="w-6 h-6 stroke-error" />
             </button>
