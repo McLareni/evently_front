@@ -24,7 +24,7 @@ interface IFilter {
 
 export const EventsApi = createApi({
   reducerPath: 'events',
-  tagTypes: ['Events', 'LikedEvents', 'MyEvents'],
+  tagTypes: ['Events', 'LikedEvents', 'MyEvents', 'UserEventsList'],
   baseQuery: fetchBaseQuery({
     baseUrl: URL,
     credentials: 'include',
@@ -76,6 +76,7 @@ export const EventsApi = createApi({
         }
       },
     }),
+
     getAllEventsFiltered: builder.query<
       Event[],
       { page?: number; size?: number; filter?: IFilter } | void
@@ -116,6 +117,7 @@ export const EventsApi = createApi({
         }
       },
     }),
+
     getEventById: builder.query<Event, string>({
       query: id => `events/${id}`,
       providesTags: (result, error, id) => [{ type: 'Events', id }],
@@ -162,6 +164,26 @@ export const EventsApi = createApi({
               { type: 'LikedEvents', id: 'LIST' },
             ]
           : [{ type: 'LikedEvents', id: 'LIST' }],
+    }),
+
+    getUserEvents: builder.query<Event[], string>({
+      query: userId => `events/user/${userId}`,
+
+      transformResponse: (response: { content: Event[] }) => {
+        console.log(response);
+
+        return response.content;
+      },
+      providesTags: result =>
+        result
+          ? [
+              ...result.map(({ id }) => ({
+                type: 'UserEventsList' as const,
+                id,
+              })),
+              { type: 'UserEventsList', id: 'LIST' },
+            ]
+          : [{ type: 'UserEventsList', id: 'LIST' }],
     }),
 
     addLikedEvent: builder.mutation<
@@ -222,4 +244,7 @@ export const {
   useGetEventByIdQuery,
   useGetAllMyEventsQuery,
   useLazyGetAllEventsFilteredQuery,
+  useLazyGetEventByIdQuery,
+  useGetUserEventsQuery,
+  useLazyGetUserEventsQuery,
 } = EventsApi;

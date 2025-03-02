@@ -1,10 +1,12 @@
+/* eslint-disable @typescript-eslint/no-unused-expressions */
 import { useEffect, useState } from 'react';
 import { FiFlag } from 'react-icons/fi';
 import { useParams } from 'react-router';
 
 import {
   useGetAllEventsQuery,
-  useGetEventByIdQuery,
+  useLazyGetEventByIdQuery,
+  useLazyGetUserEventsQuery,
 } from '@/redux/events/operations';
 
 import AboutUser from '@/components/eventDetails/AboutUser';
@@ -19,38 +21,53 @@ import Spinner from '@/components/ui/Spinner';
 
 const EventDetails = () => {
   const { idEvent } = useParams();
-  const { data: event, isLoading } = useGetEventByIdQuery(idEvent || '');
+  const [trigger, { data: event, isLoading }] = useLazyGetEventByIdQuery();
   const { data: events } = useGetAllEventsQuery();
+  const [userEventstrigger, { data: userEvents }] = useLazyGetUserEventsQuery();
+
+  const [randomTopEvents, setRandomTopEvents] = useState<Event[] | null>(null);
+
+  const userId = event && event.organizers && event.organizers.id;
+
+  const slicedUserEvents =
+    userEvents &&
+    userEvents
+      .filter(({ eventStatus }) => eventStatus === 'APPROVED')
+      .slice(0, 4);
 
   const topEvents = events?.filter(
     (event: Event) => event.category === 'TOP_EVENTS'
   );
 
-  const [randomTopEvents, setRandomTopEvents] = useState<Event[]>();
-
-  console.log(event);
+  useEffect(() => {
+    if (idEvent) trigger(idEvent);
+  }, [idEvent, trigger]);
 
   useEffect(() => {
-    let interval = setInterval(() => {
-      setRandomTopEvents(
-        topEvents?.sort(() => Math.random() - 0.5).slice(0, 3)
-      );
-    }, 10000);
+    if (userId) {
+      userEventstrigger(userId);
+    }
+  }, [userId, userEventstrigger]);
 
-    return () => {
-      clearInterval(interval);
-    };
+  useEffect(() => {
+    const randomEvents = topEvents?.sort(() => Math.random() - 0.5).slice(0, 3);
+    if (!randomTopEvents && randomEvents) {
+      setRandomTopEvents(randomEvents);
+    }
+    if (randomEvents) {
+      let interval = setInterval(() => {
+        setRandomTopEvents(randomEvents);
+      }, 10000);
+
+      return () => {
+        clearInterval(interval);
+      };
+    }
   }, [randomTopEvents, topEvents, events]);
 
   const similarEvents = events
     ?.filter((event: Event) => event.type === event.type)
     .slice(0, 4);
-
-  const eventByThisUser = events
-    ?.filter((e: Event) => e.organizers?.name === event?.organizers?.name)
-    .slice(0, 4);
-
-  console.log(event?.organizers?.name);
 
   if (isLoading) {
     return <Spinner />;
@@ -110,10 +127,11 @@ const EventDetails = () => {
             events={similarEvents || []}
             seeMoreButton={<ShowAllButton style={{ margin: 0 }} />}
           />
-          {!!eventByThisUser?.length && (
+          {slicedUserEvents && slicedUserEvents.length > 0 && (
             <ShortEventList
               title="Більше подій від цього організатора"
-              events={eventByThisUser || []}
+              events={slicedUserEvents}
+              seeMoreButton={<ShowAllButton style={{ margin: 0 }} />}
             />
           )}
         </div>
