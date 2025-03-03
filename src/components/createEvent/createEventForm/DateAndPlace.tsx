@@ -11,6 +11,7 @@ import { BiChevronDown } from 'react-icons/bi';
 import { BiTimeFive } from 'react-icons/bi';
 
 import { formatDateToDayMonth } from '@/helpers/filters/formatDateToDayMonth';
+import dayjs from 'dayjs';
 
 import { CreateEventCalendar } from './CreateEventCalendar';
 import { OnlineOffline } from './OnlineOffline';
@@ -32,17 +33,53 @@ const DateAndPlace = ({
 }: DateAndPlaceProps) => {
   const [startTimeSelect, setStartTimeSelect] = useState(false);
   const [endTimeSelect, setEndTimeSelect] = useState(false);
-  const [options, setOptions] = useState<{ label: string; value: string }[]>(
-    []
-  );
+  const [options, setOptions] = useState<string[]>([]);
   const [isCalendarShown, setIsCalendarShown] = useState(false);
 
   const date = watch('date');
-  const daySelected = date.day.length > 0;
-  const startSelected = date.time.length > 0;
-  const endSelected = date.endTime.length > 0;
+  const { day, time, endTime } = date;
+
+  const daySelected = day.length > 0;
+  const startSelected = time.length > 0;
+  const endSelected = endTime.length > 0;
 
   const formattedDate = formatDateToDayMonth(date.day);
+
+  const getDateDifference = () => {
+    return dayjs(day).diff(dayjs(new Date()).format('YYYY-MM-DD'), 'day');
+  };
+
+  const dateDifference = getDateDifference();
+
+  const startTimeToNumber = +time.replace(':', '');
+  const endTimeToNumber = +endTime.replace(':', '');
+  const currentTimeToNumber = +dayjs(new Date())
+    .format('HH:mm')
+    .replace(':', '');
+
+  const filterStartTimeOptions = () => {
+    if (dateDifference === 0) {
+      const filteredArray = options.filter(
+        item => +item.replace(':', '') > currentTimeToNumber
+      );
+
+      return filteredArray;
+    } else {
+      return options;
+    }
+  };
+
+  const filteredStartTimeOptions = filterStartTimeOptions();
+
+  const filterEndTimeOptions = () => {
+    const filteredArray = options.filter(
+      item => +item.replace(':', '') > startTimeToNumber
+    );
+
+    return filteredArray;
+  };
+
+  const filteredEndTimeOptions = filterEndTimeOptions();
 
   const toggleIsCalendarShown = () => {
     setIsCalendarShown(!isCalendarShown);
@@ -106,7 +143,7 @@ const DateAndPlace = ({
         const hours = Math.floor(minutes / 60);
         const mins = minutes % 60;
         const time = `${hours.toString().padStart(2, '0')}:${mins.toString().padStart(2, '0')}`;
-        times.push({ label: time, value: time });
+        times.push(time);
       }
 
       return times;
@@ -115,6 +152,24 @@ const DateAndPlace = ({
     const generatedOptions = generateTimeOptions();
     setOptions(generatedOptions);
   }, []);
+
+  useEffect(() => {
+    if (endTimeToNumber <= startTimeToNumber) {
+      setValue('date.endTime', '');
+    }
+  }, [endTimeToNumber, setValue, startTimeToNumber]);
+
+  useEffect(() => {
+    if (dateDifference < 0) {
+      setValue('date.day', '');
+    }
+  }, [dateDifference, setValue]);
+
+  useEffect(() => {
+    if (dateDifference === 0 && startTimeToNumber < currentTimeToNumber) {
+      setValue('date.time', '');
+    }
+  }, [currentTimeToNumber, dateDifference, setValue, startTimeToNumber]);
 
   return (
     <div className="relative max-w-[760px] rounded-[20px] border-2 border-buttonPurple flex flex-col pt-10 pb-8 px-8 mb-8">
@@ -191,16 +246,16 @@ const DateAndPlace = ({
                 className="w-[210px] border-buttonPurple
                 pl-[10px] pt-[12px] pr-[20px] h-[215px] overflow-auto border-t-2 bg-background"
               >
-                {options.map(option => (
+                {filteredStartTimeOptions.map(option => (
                   <li
                     onClick={() => {
-                      setValue('date.time', option.label);
+                      setValue('date.time', option);
                       setStartTimeSelect(false);
                     }}
                     className="cursor-pointer h-[31px] pt-[4px] pl-[5px] rounded-[10px] hover:bg-lightPurple ease-in-out duration-500"
-                    key={option.value}
+                    key={option}
                   >
-                    {option.label}
+                    {option}
                   </li>
                 ))}
               </ul>
@@ -233,16 +288,16 @@ const DateAndPlace = ({
                 className=" w-[210px] border-buttonPurple pl-[10px] pt-[10px] pr-[20px] h-[215px] 
                 border-buttonPurple border-0 overflow-auto border-t-2 bg-background"
               >
-                {options.map(option => (
+                {filteredEndTimeOptions.map(option => (
                   <li
                     onClick={() => {
-                      setValue('date.endTime', option.label);
+                      setValue('date.endTime', option);
                       setEndTimeSelect(false);
                     }}
                     className="cursor-pointer h-[31px] pt-[4px] pl-[5px] rounded-[10px] hover:bg-lightPurple ease-in-out duration-500"
-                    key={option.value}
+                    key={option}
                   >
-                    {option.label}
+                    {option}
                   </li>
                 ))}
               </ul>
