@@ -26,16 +26,16 @@ export function useGetEventTypeFilter() {
       dispatch(addSelectedTypes([...selectedTypes, filter]));
     }
     if (selectedTypes.includes(filter)) {
-      if (selectedTypes.length === 1 && filter === 'Усі події') return;
+      if (selectedTypes.length === 1 && filter === 'ALL_EVENTS') return;
 
       const newArray = selectedTypes.filter(item => item !== filter);
       dispatch(addSelectedTypes(newArray));
     }
-    if (selectedTypes[0] === 'Усі події' && filter !== 'Усі події') {
+    if (selectedTypes[0] === 'ALL_EVENTS' && filter !== 'ALL_EVENTS') {
       dispatch(addSelectedTypes([filter]));
     }
-    if (filter === 'Усі події') {
-      dispatch(addSelectedTypes(['Усі події']));
+    if (filter === 'ALL_EVENTS') {
+      dispatch(addSelectedTypes(['ALL_EVENTS']));
     }
   };
 
@@ -64,13 +64,13 @@ export function useGetEventTypeFilter() {
       );
 
     if (
-      selectedTypes.includes('Під домом') &&
+      selectedTypes.includes('UNDER_HOUSE') &&
       !isNearbyFromHeader &&
       !userAddress
     ) {
       getMyPosition();
     }
-    if (selectedTypes.includes('Під домом') && isNearbyFromHeader) {
+    if (selectedTypes.includes('UNDER_HOUSE') && isNearbyFromHeader) {
       dispatch(setIsNearbyFromHeader(false));
       getMyPosition();
     }
@@ -79,12 +79,12 @@ export function useGetEventTypeFilter() {
 
   useEffect(() => {
     if (selectedTypes.length === 0) {
-      dispatch(addSelectedTypes(['Усі події']));
+      dispatch(addSelectedTypes(['ALL_EVENTS']));
     }
   }, [selectedTypes, dispatch]);
 
   useEffect(() => {
-    if (selectedTypes.length > 0 && !selectedTypes.includes('Усі події')) {
+    if (selectedTypes.length > 0 && !selectedTypes.includes('ALL_EVENTS')) {
       dispatch(addSelectedTypes(selectedTypes));
     }
   }, [selectedTypes, dispatch]);

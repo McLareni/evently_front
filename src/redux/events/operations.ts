@@ -4,9 +4,27 @@ import { RootState } from '../store';
 
 const URL = import.meta.env.VITE_URL;
 
+interface IFilter {
+  eventTypes?: string[];
+  isPopular?: boolean;
+  isNearby?: boolean;
+  latitude?: number;
+  longitude?: number;
+  isThisWeek?: boolean;
+  dayRange?: { startDay?: string; endDay?: string };
+  isToday?: boolean;
+  isOnTheWeekend?: boolean;
+  isFree?: boolean;
+  isUnder500?: boolean;
+  priceRange?: {
+    priceFrom?: number;
+    priceTo?: number;
+  };
+}
+
 export const EventsApi = createApi({
   reducerPath: 'events',
-  tagTypes: ['Events', 'LikedEvents', 'MyEvents'],
+  tagTypes: ['Events', 'LikedEvents', 'MyEvents', 'UserEventsList'],
   baseQuery: fetchBaseQuery({
     baseUrl: URL,
     credentials: 'include',
@@ -15,14 +33,20 @@ export const EventsApi = createApi({
       if (token) {
         headers.set('authorization', `Bearer ${token}`);
       }
+      headers.set('Content-Type', 'application/json');
       return headers;
     },
   }),
-  endpoints: builder => ({
-    getAllEvents: builder.query<Event[], {page: number, size: number}>({
-      query: ({page, size}) => `events?page=${page}&size=${size}`,
+  endpoints: builder => (
+    getAllEvents: builder.query<
+      Event[],
+      { page?: number; size?: number } | void
+    >({
+      query: arg => ({
+        url: `events?page=${arg?.page ?? 0}&size=${arg?.size ?? 20}`,
+      }),
       keepUnusedDataFor: 1000,
-      transformResponse: (result: { content: Event[] }) =>
+      transformResponse: (result?: { content?: Event[] }) =>
         result?.content ?? [],
       providesTags: result =>
         result
@@ -38,16 +62,62 @@ export const EventsApi = createApi({
         try {
           const { data } = await queryFulfilled;
 
-          data.forEach(event => {
-            dispatch(
-              EventsApi.util.upsertQueryData('getEventById', event.id, event)
-            );
-          });
+          console.log(data);
+
+          if (data) {
+            data.forEach(event => {
+              dispatch(
+                EventsApi.util.upsertQueryData('getEventById', event.id, event)
+              );
+            });
+          }
         } catch (error) {
           console.error('Error updating cache', error);
         }
       },
     }),
+
+    getAllEventsFiltered: builder.query<
+      Event[],
+      { page?: number; size?: number; filter?: IFilter } | void
+    >({
+      query: arg => ({
+        url: `events/filtered?page=${arg?.page ?? 0}&size=${arg?.size ?? 20}`,
+        method: 'POST',
+        body: arg?.filter,
+      }),
+      keepUnusedDataFor: 1000,
+      transformResponse: (result?: { content?: Event[] }) =>
+        result?.content ?? [],
+      providesTags: result =>
+        result
+          ? [
+              ...result.map(({ id }) => ({
+                type: 'Events' as const,
+                id,
+              })),
+              { type: 'Events', id: 'LIST' },
+            ]
+          : [{ type: 'Events', id: 'LIST' }],
+      async onQueryStarted(_, { dispatch, queryFulfilled }) {
+        try {
+          const { data } = await queryFulfilled;
+
+          console.log(data);
+
+          if (data) {
+            data.forEach(event => {
+              dispatch(
+                EventsApi.util.upsertQueryData('getEventById', event.id, event)
+              );
+            });
+          }
+        } catch (error) {
+          console.error('Error updating cache', error);
+        }
+      },
+    }),
+
     getEventById: builder.query<Event, string>({
       query: id => `events/${id}`,
       providesTags: (result, error, id) => [{ type: 'Events', id }],
@@ -94,6 +164,26 @@ export const EventsApi = createApi({
               { type: 'LikedEvents', id: 'LIST' },
             ]
           : [{ type: 'LikedEvents', id: 'LIST' }],
+    }),
+
+    getUserEvents: builder.query<Event[], string>({
+      query: userId => `events/user/${userId}`,
+
+      transformResponse: (response: { content: Event[] }) => {
+        console.log(response);
+
+        return response.content;
+      },
+      providesTags: result =>
+        result
+          ? [
+              ...result.map(({ id }) => ({
+                type: 'UserEventsList' as const,
+                id,
+              })),
+              { type: 'UserEventsList', id: 'LIST' },
+            ]
+          : [{ type: 'UserEventsList', id: 'LIST' }],
     }),
 
     addLikedEvent: builder.mutation<
@@ -153,4 +243,8 @@ export const {
   useDeleteLikedEventMutation,
   useGetEventByIdQuery,
   useGetAllMyEventsQuery,
+  useLazyGetAllEventsFilteredQuery,
+  useLazyGetEventByIdQuery,
+  useGetUserEventsQuery,
+  useLazyGetUserEventsQuery,
 } = EventsApi;

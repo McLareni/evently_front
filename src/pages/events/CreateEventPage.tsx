@@ -77,7 +77,6 @@ const CreateEventPage: React.FC = () => {
         <div className="flex gap-6">
           <CreateEventCard photo={photos[0]} eventInfoData={eventInfoData} />
           <CreateEventForm
-            photo={photos[0]}
             photos={photos}
             onPhotoChange={handlePhotoChange}
             getFormData={getFormData}

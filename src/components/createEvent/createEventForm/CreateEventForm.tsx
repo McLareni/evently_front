@@ -21,7 +21,6 @@ import { defaultValues } from './defaultValues';
 
 type CreateEventFormProps = {
   photos: (string | null)[];
-  photo: string | null;
   onPhotoChange: (id: number, photo: string | null) => void;
   getFormData: ({
     title,
@@ -35,7 +34,6 @@ type CreateEventFormProps = {
 
 const CreateEventForm: React.FC<CreateEventFormProps> = ({
   photos,
-  photo,
   onPhotoChange,
   getFormData,
 }) => {
@@ -81,21 +79,23 @@ const CreateEventForm: React.FC<CreateEventFormProps> = ({
     });
   };
 
-  const popupEvent = {
-    title,
-    type: eventTypeName,
-    photoUrl: photo,
-    eventUrl: eventUrl,
-    location: {
-      city: location.city,
-      street: location.street,
-    },
-    date: {
-      day: date.day,
-      time: date.time,
-    },
-    price: +ticketPrice,
-  } as unknown as Event;
+  const popupEvent =
+    imageFile[0] &&
+    ({
+      title,
+      type: eventTypeName,
+      images: [{ url: URL.createObjectURL(imageFile[0]) }],
+      eventUrl: eventUrl,
+      location: {
+        city: location.city,
+        street: location.street,
+      },
+      date: {
+        day: date.day,
+        time: date.time,
+      },
+      price: +ticketPrice,
+    } as unknown as Event);
 
   const onSubmit = ({
     title,
@@ -217,7 +217,9 @@ const CreateEventForm: React.FC<CreateEventFormProps> = ({
         </SharedBtn>
       </div>
       {isLoading && <Spinner />}
-      {isSuccessPopupShown && <PopupEventCreated event={popupEvent} />}
+      {isSuccessPopupShown && popupEvent && (
+        <PopupEventCreated event={popupEvent} />
+      )}
     </form>
   );
 };
