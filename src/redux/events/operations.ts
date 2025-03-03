@@ -37,7 +37,8 @@ export const EventsApi = createApi({
       return headers;
     },
   }),
-  endpoints: builder => (
+  endpoints: builder => ({
+    
     getAllEvents: builder.query<
       Event[],
       { page?: number; size?: number } | void
