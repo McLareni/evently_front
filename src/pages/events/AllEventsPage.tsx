@@ -132,6 +132,7 @@ const AllEventsPage: React.FC = () => {
     if (inView && !isLoading) {
       fetchEvents();
     }
+  // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [inView]);
 
   const resetFilters = () => {

@@ -61,16 +61,22 @@ export const ProfileForm: FC = () => {
       obj1.name === obj2.name &&
       obj1.surname === obj2.surname &&
       obj1.birthdayDate === obj2.birthdayDate &&
-      obj1.phoneNumber === obj2.phoneNumber
+      obj1.phoneNumber === obj2.phoneNumber &&
+      obj1.changePassword === obj2.repeatPassword &&
+      obj1.repeatPassword === obj2.repeatPassword
     );
   };
 
   const onSubmit: SubmitHandler<UserInfo> = data => {
+    console.log(defaultValues);
+
     const newObj = {
       name: data.name,
       surname: data.surname,
       birthdayDate: formatBirthDateFromMask(data.birthdayDate),
       phoneNumber: formatPhoneNumberFromMask(data.phoneNumber),
+      changePassword: data.changePassword,
+      repeatPassword: data.repeatPassword,
     };
     if (ObjectsAreEqual(defaultValues, data)) {
       return toast.error('Немає що змінювати');
@@ -182,8 +188,8 @@ export const ProfileForm: FC = () => {
             validate: {
               required: value =>
                 value.trim().length === 0 ||
-                value.length === 8 ||
-                'Введіть пароль (8 символів)',
+                value.length > 8 ||
+                'Введіть пароль (мін. 8 символів)',
             },
           })}
           forPassword
@@ -200,7 +206,7 @@ export const ProfileForm: FC = () => {
             validate: {
               required: value => {
                 if (value.trim().length > 0 && value.trim().length < 8) {
-                  return 'Повторіть пароль (8 символів)';
+                  return 'Повторіть пароль (мін. 8 символів)';
                 }
                 const password = getValues('changePassword');
                 if (value.trim() !== password) {
