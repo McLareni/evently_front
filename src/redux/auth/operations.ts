@@ -46,12 +46,12 @@ export const logIn = createAsyncThunk(
 export const updateUserInfo = createAsyncThunk<
   User,
   {
-    name: string;
-    surname: string;
-    birthdayDate: string;
-    phoneNumber: string;
-    changePassword: string;
-    repeatPassword: string;
+    name?: string;
+    surname?: string;
+    birthdayDate?: string;
+    phoneNumber?: string;
+    changePassword?: string;
+    repeatPassword?: string;
   },
   { state: RootState }
 >('users', async (user, thunkAPI) => {

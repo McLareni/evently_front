@@ -56,29 +56,25 @@ export const ProfileForm: FC = () => {
     formState: { errors, isValid },
   } = useForm<UserInfo>({ mode: 'onChange', defaultValues });
 
-  const ObjectsAreEqual = (obj1: UserInfo, obj2: UserInfo) => {
-    return (
-      obj1.name === obj2.name &&
-      obj1.surname === obj2.surname &&
-      obj1.birthdayDate === obj2.birthdayDate &&
-      obj1.phoneNumber === obj2.phoneNumber &&
-      obj1.changePassword === obj2.repeatPassword &&
-      obj1.repeatPassword === obj2.repeatPassword
-    );
+  const SearchChanges = (obj1: UserInfo, obj2: UserInfo) => {
+    return {
+      ...(obj1.name !== obj2.name && { name: obj2.name }),
+      ...(obj1.surname !== obj2.surname && { surname: obj2.surname }),
+      ...(obj1.birthdayDate !== obj2.birthdayDate && {
+        birthdayDate: formatBirthDateFromMask(obj2.birthdayDate),
+      }),
+      ...(obj1.phoneNumber !== obj2.phoneNumber && {
+        phoneNumber: formatPhoneNumberFromMask(obj2.phoneNumber),
+      }),
+      ...(obj1.changePassword !== obj2.changePassword && {
+        password: obj2.changePassword,
+      }),
+    };
   };
 
   const onSubmit: SubmitHandler<UserInfo> = data => {
-    console.log(defaultValues);
-
-    const newObj = {
-      name: data.name,
-      surname: data.surname,
-      birthdayDate: formatBirthDateFromMask(data.birthdayDate),
-      phoneNumber: formatPhoneNumberFromMask(data.phoneNumber),
-      changePassword: data.changePassword,
-      repeatPassword: data.repeatPassword,
-    };
-    if (ObjectsAreEqual(defaultValues, data)) {
+    const newObj = SearchChanges(defaultValues, data);
+    if (Object.keys(newObj).length === 0) {
       return toast.error('Немає що змінювати');
     }
     dispatch(updateUserInfo(newObj));

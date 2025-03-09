@@ -97,6 +97,7 @@ function handleUpdateUserFulfilled(state: any, action: PayloadAction<User>) {
   state.user.name = action.payload.name;
   state.user.surname = action.payload.surname;
   state.user.phoneNumber = action.payload.phoneNumber;
+  state.user.birthdayDate = action.payload.birthdayDate;
 }
 
 function handleUpdateUserRejected(state: any, action: any) {
