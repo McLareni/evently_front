@@ -6,22 +6,24 @@ interface IProps {
   id: string;
   rejectEvent: () => void;
   editEvent: () => void;
+  approved?: boolean;
 }
 
-const PopUp: React.FC<IProps> = ({ id, rejectEvent, editEvent }) => {
+const PopUp: React.FC<IProps> = ({ id, rejectEvent, editEvent, approved }) => {
   const navigate = useNavigate();
 
   const copyLink = () => {
-    navigator.clipboard.writeText(window.location.href);
+    navigator.clipboard.writeText(
+      `${window.location.href.slice(0, 21)}/event/${id}`
+    );
     toast.success('Посилання скопійовано');
   };
 
   const handleSeeEvent = () => {
-    if (id) {
-      navigate('/event/${id}');
-    }
-    else{
-      toast.success('Ви не можете переглядати подію, коли вона на перевірці');
+    if (approved) {
+      navigate(`/event/${id}`);
+    } else {
+      toast.info('Ви не можете переглядати подію, коли вона на перевірці');
     }
   };
 

@@ -4,12 +4,12 @@ import { GoKebabHorizontal } from 'react-icons/go';
 import { MdDone } from 'react-icons/md';
 import { RxCross2 } from 'react-icons/rx';
 import { Link } from 'react-router-dom';
+import { toast } from 'react-toastify';
 
 import { formatDateToDayMonth } from '@/helpers/filters/formatDateToDayMonth';
 import clsx from 'clsx';
 
 import PopUp from './PopUp';
-import { toast } from 'react-toastify';
 
 type EventStatus = 'APPROVED' | 'CANCELLED' | 'PENDING';
 
@@ -53,12 +53,12 @@ const EventRow: React.FC<IProps> = ({ event, popUpIsShow, openPopUp }) => {
   const month = dateString.split(' ')[1].slice(0, 3).toUpperCase();
 
   const handleEditEvent = () => {
-    toast.info("Редагування подій поки що не доступне");
-  }
+    toast.info('Редагування подій поки що не доступне');
+  };
 
   const handleRejectEvent = () => {
-    toast.info("Скасування подій поки що не доступне");
-  }
+    toast.info('Скасування подій поки що не доступне');
+  };
 
   return (
     <>
@@ -125,7 +125,14 @@ const EventRow: React.FC<IProps> = ({ event, popUpIsShow, openPopUp }) => {
             className="w-6 h-6 rotate-90 rounded-full hover:bg-lightBlue hover:cursor-pointer"
           />
         </div>
-        {popUpIsShow && <PopUp id={event.eventStatus === 'APPROVED' ? event.id : ''} rejectEvent={handleRejectEvent} editEvent={handleEditEvent}/>}
+        {popUpIsShow && (
+          <PopUp
+            id={event.id}
+            approved={event.eventStatus === 'APPROVED'}
+            rejectEvent={handleRejectEvent}
+            editEvent={handleEditEvent}
+          />
+        )}
       </td>
     </>
   );
