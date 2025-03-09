@@ -4,6 +4,7 @@ import { GoKebabHorizontal } from 'react-icons/go';
 import { MdDone } from 'react-icons/md';
 import { RxCross2 } from 'react-icons/rx';
 import { Link } from 'react-router-dom';
+import { toast } from 'react-toastify';
 
 import { formatDateToDayMonth } from '@/helpers/filters/formatDateToDayMonth';
 import clsx from 'clsx';
@@ -50,6 +51,14 @@ const EventRow: React.FC<IProps> = ({ event, popUpIsShow, openPopUp }) => {
   const dateString = formatDateToDayMonth(event.date.day);
   const day = dateString.split(' ')[0];
   const month = dateString.split(' ')[1].slice(0, 3).toUpperCase();
+
+  const handleEditEvent = () => {
+    toast.info('Редагування подій поки що не доступне');
+  };
+
+  const handleRejectEvent = () => {
+    toast.info('Скасування подій поки що не доступне');
+  };
 
   return (
     <>
@@ -116,7 +125,14 @@ const EventRow: React.FC<IProps> = ({ event, popUpIsShow, openPopUp }) => {
             className="w-6 h-6 rotate-90 rounded-full hover:bg-lightBlue hover:cursor-pointer"
           />
         </div>
-        {popUpIsShow && <PopUp id={event.id} />}
+        {popUpIsShow && (
+          <PopUp
+            id={event.id}
+            approved={event.eventStatus === 'APPROVED'}
+            rejectEvent={handleRejectEvent}
+            editEvent={handleEditEvent}
+          />
+        )}
       </td>
     </>
   );

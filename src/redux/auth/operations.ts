@@ -46,10 +46,12 @@ export const logIn = createAsyncThunk(
 export const updateUserInfo = createAsyncThunk<
   User,
   {
-    name: string;
-    surname: string;
-    birthdayDate: string;
-    phoneNumber: string;
+    name?: string;
+    surname?: string;
+    birthdayDate?: string;
+    phoneNumber?: string;
+    changePassword?: string;
+    repeatPassword?: string;
   },
   { state: RootState }
 >('users', async (user, thunkAPI) => {
@@ -78,6 +80,8 @@ export const getUser = createAsyncThunk<User, void, { state: RootState }>(
       }
       setAuthToken(token);
       const response = await axios.get(`/users/${state.auth.user.id}`);
+      console.log(response.data);
+
       return response.data;
     } catch (error) {
       return thunkAPI.rejectWithValue((error as Error).message);

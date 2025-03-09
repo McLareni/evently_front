@@ -99,7 +99,7 @@ const HeroSection: React.FC<IProps> = ({ idEvent, event }) => {
           countLike={+countLike}
           isLiked={isLiked}
           images={
-            event.images.length
+            event?.images?.length
               ? [...event.images.map(img => img.url)]
               : [event.photoUrl || '']
           }

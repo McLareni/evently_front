@@ -90,7 +90,7 @@ export const AllEventsSelect: React.FC<AllEventsSelectProps> = ({
             ? 'font-bold text-buttonPurple hover:[text-shadow:_0_0_.65px_rgb(0_0_0_/_0.5)]'
             : 'text-gray-700'
         } relative inline-flex justify-center items-center rounded-md px-2 py-1 bg-background text-sm text-gray-700 
-         focus:outline-none relative ${className}`}
+         focus:outline-none ${className}`}
         style={{ width: buttonWidth }}
         onClick={() => setIsOpen(!isOpen)}
       >
