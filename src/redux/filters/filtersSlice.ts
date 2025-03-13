@@ -52,6 +52,8 @@ const filtersSlice = createSlice({
       state.filteredEventsId = action.payload;
     },
     resetAllFilters(state) {
+      console.log('clear');
+
       state.selectedTypes = [];
       state.selectedDates = [];
       state.rangeDatesArray = [];
@@ -81,7 +83,7 @@ const filtersSlice = createSlice({
     },
     removeNearby(state) {
       state.selectedTypes = state.selectedTypes.filter(
-        item => item !== 'Під домом'
+        item => item !== 'UNDER_HOUSE'
       );
     },
     setIsNearbyFromHeader(state, action: PayloadAction<boolean>) {
