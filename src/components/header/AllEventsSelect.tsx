@@ -3,14 +3,10 @@ import { IoIosArrowDown } from 'react-icons/io';
 import { NavLink } from 'react-router-dom';
 
 import {
-  setFilteredEventsId,
   setFirstRender,
-  setIsNearbyFromHeader,
   setOneFilterType,
 } from '@/redux/filters/filtersSlice';
 import { useAppDispatch } from '@/redux/hooks';
-
-import { useLazyGetAllEventsQueryWithTrigger } from '@/hooks/query/useLazyGetAllEventsQueryWithTrigger';
 
 interface AllEventsSelectProps {
   options: Option[];
@@ -19,6 +15,18 @@ interface AllEventsSelectProps {
   dropdownWidth?: string;
   buttonWidth?: string;
 }
+
+const EventTypes: Record<string, string> = {
+  'Усі події': 'ALL_EVENTS',
+  Інше: 'OTHER',
+  'Спортивні заходи': 'SPORTS_EVENTS',
+  'Бізнес та нетворкінг': 'BUSINESS_NETWORKING',
+  'Майстер класи': 'MASTER_CLASS',
+  Концерти: 'CONCERTS',
+  'Під домом': 'UNDER_HOUSE',
+  'Stand-up': 'STAND_UP',
+  Популярні: 'POPULAR',
+};
 
 export const AllEventsSelect: React.FC<AllEventsSelectProps> = ({
   options,
@@ -30,35 +38,11 @@ export const AllEventsSelect: React.FC<AllEventsSelectProps> = ({
   const [isOpen, setIsOpen] = useState<boolean>(false);
 
   const dropdownRef = useRef<HTMLDivElement>(null);
-
-  const { events } = useLazyGetAllEventsQueryWithTrigger();
-
   const dispatch = useAppDispatch();
 
   const handleClick = (value: string) => {
     dispatch(setFirstRender(false));
-    dispatch(setOneFilterType(value));
-    if (events && events.length > 0) {
-      if (value === 'Популярні') {
-        dispatch(
-          setFilteredEventsId(
-            events
-              .filter(item => item.category === 'TOP_EVENTS')
-              .map(item => item.id)
-          )
-        );
-      } else if (value === 'Усі події') {
-        dispatch(setFilteredEventsId(events.map(item => item.id)));
-      } else if (value === 'Під домом') {
-        dispatch(setIsNearbyFromHeader(true));
-      } else {
-        dispatch(
-          setFilteredEventsId(
-            events.filter(item => item.type === value).map(item => item.id)
-          )
-        );
-      }
-    }
+    dispatch(setOneFilterType(EventTypes[value]));
     setIsOpen(false);
   };
 

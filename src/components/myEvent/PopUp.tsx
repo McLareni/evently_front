@@ -14,7 +14,7 @@ const PopUp: React.FC<IProps> = ({ id, rejectEvent, editEvent, approved }) => {
 
   const copyLink = () => {
     navigator.clipboard.writeText(
-      `${window.location.href.slice(0, 21)}/event/${id}`
+      `https://evently-book.vercel.app/event/${id}`
     );
     toast.success('Посилання скопійовано');
   };

@@ -1,33 +1,20 @@
 import { NavLink } from 'react-router-dom';
 
 import {
-  setFilteredEventsId,
   setOneFilterType,
 } from '@/redux/filters/filtersSlice';
 import { useAppDispatch } from '@/redux/hooks';
 
 import { cityOptions, eventTypes } from '@/assets/staticData/statickData';
-import { useLazyGetAllEventsQueryWithTrigger } from '@/hooks/query/useLazyGetAllEventsQueryWithTrigger';
 
 import CustomSelect from '../ui/CustomSelect';
 import { AllEventsSelect } from './AllEventsSelect';
 
 export const Navigation: React.FC = () => {
-  const { events } = useLazyGetAllEventsQueryWithTrigger();
-
   const dispatch = useAppDispatch();
 
   const handleClick = () => {
-    dispatch(setOneFilterType('Популярні'));
-    if (events && events.length > 0) {
-      dispatch(
-        setFilteredEventsId(
-          events
-            .filter(item => item.category === 'TOP_EVENTS')
-            .map(item => item.id)
-        )
-      );
-    }
+    dispatch(setOneFilterType('POPULAR'));
   };
 
   return (

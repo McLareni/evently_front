@@ -1,4 +1,4 @@
-import { useCallback, useEffect, useState } from 'react';
+import { useEffect, useState } from 'react';
 import { useInView } from 'react-intersection-observer';
 
 import { useLazyGetAllEventsFilteredQuery } from '@/redux/events/operations';
@@ -40,13 +40,15 @@ const AllEventsPage: React.FC = () => {
   const [isFullList, setIsFullList] = useState(false);
   const [page, setPage] = useState(0);
 
-  const [filterEvent, { isLoading }] = useLazyGetAllEventsFilteredQuery();
+  const [filterEvent, { isLoading, isFetching }] =
+    useLazyGetAllEventsFilteredQuery();
 
   const { addTypeFilter, addDateFilter, addPriceFilter } = useFilter({
     events,
   });
 
-  const filterEvents = useCallback(async () => {
+  const filterEvents = async () => {
+    setIsFullList(false);
     const response = await filterEvent({
       page: 0,
       size: size,
@@ -76,17 +78,19 @@ const AllEventsPage: React.FC = () => {
         },
       },
     });
-    console.log(response);
-
     setPage(1);
-    setEvents(response.data || []);
-  }, [filter, filterEvent]);
 
-  console.log('evets', events);
+    if (response.status === 'uninitialized') {
+      filterEvents();
+    }
+
+    setEvents(response.data || []);
+  };
 
   useEffect(() => {
     filterEvents();
-  }, [filterEvents]);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
 
   useEffect(() => {
     const fetchEvents = async () => {
@@ -121,7 +125,7 @@ const AllEventsPage: React.FC = () => {
       });
 
       setPage(prev => prev + 1);
-      setEvents(events => [...events, ...(response.data || [])]);
+      setEvents(prevEvents => [...prevEvents, ...(response.data || [])]);
 
       if ((response?.data?.length || 0) < 9) {
         console.log('Full list');
@@ -129,15 +133,20 @@ const AllEventsPage: React.FC = () => {
         setIsFullList(true);
       }
     };
-    if (inView && !isLoading) {
+    if (inView && !isLoading && !isFullList && !isFetching) {
       fetchEvents();
     }
-  // eslint-disable-next-line react-hooks/exhaustive-deps
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [inView]);
 
-  const resetFilters = () => {
+  const resetFilters = async () => {
     dispatch(resetAllFilters());
-    filterEvents();
+    const response = await filterEvent({
+      page: 0,
+      size: size,
+      filter: {},
+    });
+    setEvents(response.data || []);
   };
 
   useEffect(() => {
@@ -149,9 +158,7 @@ const AllEventsPage: React.FC = () => {
 
   useScrollToTop();
 
-  console.log(inView, isFullList);
-
-  if (!inView && isLoading) return <Spinner />;
+  if (isLoading) return <Spinner />;
 
   return (
     <Main className="flex flex-col gap-16 pb-16">
@@ -167,7 +174,12 @@ const AllEventsPage: React.FC = () => {
           <div className="flex flex-col gap-[24px]">
             <AllEvents events={events || []} title={false} />
             {userCoordinates && selectedTypes.includes('UNDER_HOUSE') && (
-              <GoogleMap events={events || []} userLocation={userCoordinates} />
+              <GoogleMap
+                events={
+                  events || [{ location: { latitude: 50, longitude: 45 } }]
+                }
+                userLocation={userCoordinates}
+              />
             )}
             {inView && !isFullList && (
               <div>

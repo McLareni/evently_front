@@ -24,7 +24,7 @@ const EventTypes: Record<string, string> = {
   Інше: 'OTHER',
   'Спортивні заходи': 'SPORTS_EVENTS',
   'Бізнес та нетворкінг': 'BUSINESS_NETWORKING',
-  'Майстер-класи': 'MASTER_CLASS',
+  'Майстер класи': 'MASTER_CLASS',
   Концерти: 'CONCERTS',
   'Під домом': 'UNDER_HOUSE',
   'Stand-up': 'STAND_UP',
