@@ -222,45 +222,50 @@ const DateAndPlace = ({
         </div>
         <div>
           <span>Початок</span>
-          <div
-            ref={dropdownStartTime}
-            className="border-2 border-buttonPurple rounded-[10px] overflow-hidden 
-                        w-[210px] max-h-[230px]"
-          >
-            <button
-              type="button"
-              className="flex justify-between items-center w-full h-[52px] px-[12px] focus:outline-none"
-              onClick={() => setStartTimeSelect(prev => !prev)}
+          <div className="w-[210px] p-[2px] bg-createEventInputBorder rounded-[10px]">
+            <div
+              ref={dropdownStartTime}
+              className="rounded-[8px] overflow-hidden 
+                        w-full max-h-[230px]"
             >
-              <div className="flex">
-                <BiTimeFive size="24px" />
-                {startSelected ? (
-                  <p className="pl-2">{date.time}</p>
-                ) : (
-                  <p className="pl-2 text-uploadBtnBg">Оберіть час</p>
-                )}
-              </div>
-              <BiChevronDown />
-            </button>
-            {startTimeSelect && (
-              <ul
-                className="w-[210px] border-buttonPurple
-                pl-[10px] pt-[12px] pr-[20px] h-[215px] overflow-auto border-t-2 bg-background"
+              <button
+                type="button"
+                className="bg-background flex justify-between items-center w-full h-[52px] px-[12px] focus:outline-none"
+                onClick={() => setStartTimeSelect(prev => !prev)}
               >
-                {filteredStartTimeOptions.map(option => (
-                  <li
-                    onClick={() => {
-                      setValue('date.time', option);
-                      setStartTimeSelect(false);
-                    }}
-                    className="cursor-pointer h-[31px] pt-[4px] pl-[5px] rounded-[10px] hover:bg-lightPurple ease-in-out duration-500"
-                    key={option}
-                  >
-                    {option}
-                  </li>
-                ))}
-              </ul>
-            )}
+                <div className="flex">
+                  <BiTimeFive size="24px" />
+                  {startSelected ? (
+                    <p className="pl-2">{date.time}</p>
+                  ) : (
+                    <p className="pl-2 text-uploadBtnBg">Оберіть час</p>
+                  )}
+                </div>
+                <BiChevronDown />
+              </button>
+              {startTimeSelect && (
+                <div className="w-full h-[2px] bg-transparent" />
+              )}
+              {startTimeSelect && (
+                <ul
+                  className="w-[210px] border-buttonPurple
+                pl-[10px] pt-[12px] pr-[20px] h-[215px] overflow-auto bg-background"
+                >
+                  {filteredStartTimeOptions.map(option => (
+                    <li
+                      onClick={() => {
+                        setValue('date.time', option);
+                        setStartTimeSelect(false);
+                      }}
+                      className="cursor-pointer h-[31px] pt-[4px] pl-[5px] rounded-[10px] hover:bg-lightPurple ease-in-out duration-500"
+                      key={option}
+                    >
+                      {option}
+                    </li>
+                  ))}
+                </ul>
+              )}
+            </div>
           </div>
         </div>
         <div>
