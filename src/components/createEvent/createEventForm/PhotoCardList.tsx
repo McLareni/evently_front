@@ -18,7 +18,7 @@ export const PhotoCardList = ({
 }: PhotoCardListProps) => {
   const subtitles = [
     'Рекомендований розмір 400х400',
-    'Максимальний розмір файлу: 50 МБ',
+    'Максимальний розмір файлу: 1 МБ',
     'Підтримувані файли: .JPEG, .PNG',
   ];
 
