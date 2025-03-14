@@ -187,35 +187,36 @@ const DateAndPlace = ({
         Дата та час<span className="star">*</span>
       </span>
       <div className="flex gap-4">
-        <div className="w-[245px]">
+        <div className="w-[245px] mb-[18px]">
           <span>Дата</span>
-          <div
-            ref={dropdownDate}
-            className="border-2 border-buttonPurple rounded-[10px] overflow-hidden 
-                        w-[245px] mb-[18px]"
-          >
-            <button
-              type="button"
-              onClick={toggleIsCalendarShown}
-              className="flex justify-between items-center w-full h-[52px] px-[12px] focus:outline-none"
-            >
-              <div className="flex">
-                <AiOutlineCalendar size="24px" />
-                {date.day.length > 0 ? (
-                  <p className="pl-2">{formattedDate}</p>
-                ) : (
-                  <p className="pl-2 text-uploadBtnBg">Оберіть дату</p>
+          <div className="w-[245px] p-[2px] bg-createEventInputBorder rounded-[10px]">
+            <div ref={dropdownDate} className="overflow-hidden rounded-[8px]">
+              <button
+                type="button"
+                onClick={toggleIsCalendarShown}
+                className="bg-background flex justify-between items-center w-full h-[52px] px-[12px] focus:outline-none"
+              >
+                <div className="flex">
+                  <AiOutlineCalendar size="24px" />
+                  {date.day.length > 0 ? (
+                    <p className="pl-2">{formattedDate}</p>
+                  ) : (
+                    <p className="pl-2 text-uploadBtnBg">Оберіть дату</p>
+                  )}
+                </div>
+                <BiChevronDown />
+              </button>
+              {isCalendarShown && (
+                <div className="w-full h-[2px] bg-transparent" />
+              )}
+              <div className="">
+                {isCalendarShown && (
+                  <CreateEventCalendar
+                    handleDateChange={handleDateChange}
+                    toggleIsCalendarShown={toggleIsCalendarShown}
+                  />
                 )}
               </div>
-              <BiChevronDown />
-            </button>
-            <div className="">
-              {isCalendarShown && (
-                <CreateEventCalendar
-                  handleDateChange={handleDateChange}
-                  toggleIsCalendarShown={toggleIsCalendarShown}
-                />
-              )}
             </div>
           </div>
         </div>
@@ -224,7 +225,7 @@ const DateAndPlace = ({
           <div
             ref={dropdownStartTime}
             className="border-2 border-buttonPurple rounded-[10px] overflow-hidden 
-                        w-[210px] max-h-[230px] mb-[18px]"
+                        w-[210px] max-h-[230px]"
           >
             <button
               type="button"
@@ -266,7 +267,7 @@ const DateAndPlace = ({
           <span>Кінець</span>
           <div
             ref={dropdownEndTime}
-            className="inline-block border-2 border-buttonPurple rounded-[10px] overflow-hidden w-[210px] max-h-[230px] mb-[18px] "
+            className="inline-block border-2 border-buttonPurple rounded-[10px] overflow-hidden w-[210px] max-h-[230px]"
           >
             <button
               type="button"
