@@ -52,8 +52,6 @@ const filtersSlice = createSlice({
       state.filteredEventsId = action.payload;
     },
     resetAllFilters(state) {
-      console.log('clear');
-
       state.selectedTypes = [];
       state.selectedDates = [];
       state.rangeDatesArray = [];

@@ -10,7 +10,6 @@ import {
 import {
   // getFilteredEventsId,
   getFirstRender,
-  getSelectedTypes,
   getUserCoordinates,
 } from '@/redux/filters/selectors';
 import { useAppDispatch, useAppSelector } from '@/redux/hooks';
@@ -33,12 +32,12 @@ const AllEventsPage: React.FC = () => {
 
   const firstRender = useAppSelector(getFirstRender);
   const userCoordinates = useAppSelector(getUserCoordinates);
-  const selectedTypes = useAppSelector(getSelectedTypes);
 
   const filter = useAppSelector(state => state.filter);
   const [events, setEvents] = useState<Event[]>([]);
   const [isFullList, setIsFullList] = useState(false);
   const [page, setPage] = useState(0);
+  const [mapIsHidden, setMapIsHidden] = useState(true);
 
   const [filterEvent, { isLoading, isFetching }] =
     useLazyGetAllEventsFilteredQuery();
@@ -54,10 +53,14 @@ const AllEventsPage: React.FC = () => {
       size: size,
       filter: {
         eventTypes: filter?.selectedTypes.filter(
-          type => type !== 'ALL_EVENTS' && type !== 'POPULAR'
+          type =>
+            type !== 'ALL_EVENTS' &&
+            type !== 'POPULAR' &&
+            type !== 'UNDER_HOUSE'
         ),
         isPopular: filter.selectedTypes.includes('POPULAR'),
-        isNearby: filter.selectedTypes.includes('UNDER_HOUSE'),
+        isNearby:
+          filter.selectedTypes.includes('UNDER_HOUSE') && !!userCoordinates,
         latitude: filter.userCoordinates?.latitude,
         longitude: filter.userCoordinates?.longitude,
         isThisWeek: !!filter.selectedDates.includes('На цьому тижні'),
@@ -85,6 +88,14 @@ const AllEventsPage: React.FC = () => {
     }
 
     setEvents(response.data || []);
+
+    console.log('Map', filter.selectedTypes.includes('UNDER_HOUSE'));
+
+    if (filter.selectedTypes.includes('UNDER_HOUSE') && !!userCoordinates) {
+      setMapIsHidden(false);
+    } else {
+      setMapIsHidden(true);
+    }
   };
 
   useEffect(() => {
@@ -99,7 +110,10 @@ const AllEventsPage: React.FC = () => {
         size: size,
         filter: {
           eventTypes: filter?.selectedTypes.filter(
-            type => type !== 'ALL_EVENTS' && type !== 'POPULAR'
+            type =>
+              type !== 'ALL_EVENTS' &&
+              type !== 'POPULAR' &&
+              type !== 'UNDER_HOUSE'
           ),
           isPopular: filter.selectedTypes.includes('POPULAR'),
           isNearby: filter.selectedTypes.includes('UNDER_HOUSE'),
@@ -140,6 +154,7 @@ const AllEventsPage: React.FC = () => {
   }, [inView]);
 
   const resetFilters = async () => {
+    setMapIsHidden(true);
     dispatch(resetAllFilters());
     const response = await filterEvent({
       page: 0,
@@ -172,15 +187,10 @@ const AllEventsPage: React.FC = () => {
         />
         {events && events?.length > 0 ? (
           <div className="flex flex-col gap-[24px]">
-            <AllEvents events={events || []} title={false} />
-            {userCoordinates && selectedTypes.includes('UNDER_HOUSE') && (
-              <GoogleMap
-                events={
-                  events || [{ location: { latitude: 50, longitude: 45 } }]
-                }
-                userLocation={userCoordinates}
-              />
+            {!mapIsHidden && (
+              <GoogleMap events={events || []} userLocation={userCoordinates} />
             )}
+            <AllEvents events={events || []} title={false} />
             {inView && !isFullList && (
               <div>
                 <SmallSpinner />
@@ -189,11 +199,9 @@ const AllEventsPage: React.FC = () => {
             <div ref={ref} id="inView"></div>
           </div>
         ) : (
-          isLoading && (
-            <span className="text-[64px] font-oswald text-buttonPurple">
-              Нічого не знайдено
-            </span>
-          )
+          <span className="text-[64px] font-oswald text-buttonPurple">
+            Нічого не знайдено
+          </span>
         )}
       </div>
     </Main>

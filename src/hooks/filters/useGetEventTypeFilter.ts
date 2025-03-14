@@ -4,11 +4,9 @@ import { toast } from 'react-toastify';
 import {
   addSelectedTypes,
   removeNearby,
-  setIsNearbyFromHeader,
   setUserCoordinates,
 } from '@/redux/filters/filtersSlice';
 import {
-  getIsNearbyFromHeader,
   getSelectedTypes,
   getUserCoordinates,
 } from '@/redux/filters/selectors';
@@ -18,7 +16,6 @@ export function useGetEventTypeFilter() {
   const dispatch = useAppDispatch();
 
   const selectedTypes = useAppSelector(getSelectedTypes);
-  const isNearbyFromHeader = useAppSelector(getIsNearbyFromHeader);
   const userAddress = useAppSelector(getUserCoordinates);
 
   const addTypeFilter = (filter: string) => {
@@ -44,15 +41,20 @@ export function useGetEventTypeFilter() {
       navigator.geolocation.getCurrentPosition(
         position => {
           // TODO
-          // const coordinates = {
-          //   latitude: position.coords.latitude,
-          //   longitude: position.coords.longitude,
-          // };
-          const coordinates = { latitude: 50.43749, longitude: 30.514977 };
+          const coordinates = {
+            latitude: position.coords.latitude,
+            longitude: position.coords.longitude,
+          };
+          // const coordinates = { latitude: 50.43749, longitude: 30.514977 };
           console.log('Адреса юзера: Антоновича 42, Київ; радіус 2 км');
           toast.success('Місцезнаходження виявлено');
-          dispatch(addSelectedTypes(['UNDER_HOUSE']));
-          dispatch(setUserCoordinates(coordinates));
+          dispatch(addSelectedTypes([...selectedTypes, 'UNDER_HOUSE']));
+          dispatch(
+            setUserCoordinates({
+              latitude: coordinates.latitude && 50.43749,
+              longitude: coordinates.longitude && 30.514977,
+            })
+          );
         },
         error => {
           console.log(error);
@@ -61,21 +63,14 @@ export function useGetEventTypeFilter() {
             toast.error('Ввімкніть доступ до місцезнаходження!');
             dispatch(removeNearby());
           }
-        }
+        },
+        { enableHighAccuracy: true, timeout: 10000, maximumAge: 0 }
       );
 
-    if (
-      selectedTypes.includes('UNDER_HOUSE') &&
-      !isNearbyFromHeader &&
-      !userAddress
-    ) {
+    if (selectedTypes.includes('UNDER_HOUSE') && !userAddress?.latitude) {
       getMyPosition();
     }
-    if (selectedTypes.includes('UNDER_HOUSE') && isNearbyFromHeader) {
-      dispatch(setIsNearbyFromHeader(false));
-      getMyPosition();
-    }
-  }, [dispatch, isNearbyFromHeader, selectedTypes, userAddress]);
+  }, [dispatch, selectedTypes, userAddress]);
 
   useEffect(() => {
     if (selectedTypes.length === 0) {
