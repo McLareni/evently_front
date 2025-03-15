@@ -5,6 +5,14 @@ import { Calendar } from 'react-date-range';
 import { uk } from 'date-fns/locale';
 import dayjs from 'dayjs';
 
+const customUk = {
+  ...uk,
+  localize: {
+    ...uk.localize,
+    day: (n: number) => ['нд', 'пн', 'вт', 'ср', 'чт', 'пт', 'сб'][n],
+  },
+} as typeof uk;
+
 interface CreateEventCalendarProps {
   handleDateChange: (newDate: string) => void;
   toggleIsCalendarShown: () => void;
@@ -29,7 +37,7 @@ export const CreateEventCalendar = ({
     <Calendar
       showMonthAndYearPickers={false}
       onChange={item => setDate(item)}
-      locale={uk}
+      locale={customUk}
       showDateDisplay={false}
       date={date}
       className="bg-background"

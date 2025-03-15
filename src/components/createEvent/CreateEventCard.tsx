@@ -1,7 +1,7 @@
 import { AiOutlineCalendar } from 'react-icons/ai';
 import { FaRegMoneyBillAlt } from 'react-icons/fa';
 import { GrLocation } from 'react-icons/gr';
-import { PiHeartFill } from 'react-icons/pi';
+import { PiHeartLight } from 'react-icons/pi';
 
 import { formatDateToDayMonth } from '@/helpers/filters/formatDateToDayMonth';
 import { FormaDataForCard } from '@/pages/events/CreateEventPage';
@@ -58,7 +58,7 @@ const CreateEventCard: React.FC<CardProps> = ({ photo, eventInfoData }) => {
         )}
         <div className="flex absolute justify-between p-6 w-full">
           <div className="focus:outline-none ml-auto bg-background w-[32px] h-[32px] flex items-center justify-center rounded-full opacity-60">
-            <PiHeartFill className="w-6 h-6 text-borderColor cursor-pointer" />
+            <PiHeartLight className="w-6 h-6 text-borderColor cursor-pointer" />
           </div>
         </div>
         <div
