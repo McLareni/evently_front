@@ -1,4 +1,5 @@
 import { useEffect, useState } from 'react';
+import { useGeolocated } from 'react-geolocated';
 import { useInView } from 'react-intersection-observer';
 
 import { useLazyGetAllEventsFilteredQuery } from '@/redux/events/operations';
@@ -7,11 +8,7 @@ import {
   setFilteredEventsId,
   setFirstRender,
 } from '@/redux/filters/filtersSlice';
-import {
-  // getFilteredEventsId,
-  getFirstRender,
-  getUserCoordinates,
-} from '@/redux/filters/selectors';
+import { getFirstRender } from '@/redux/filters/selectors';
 import { useAppDispatch, useAppSelector } from '@/redux/hooks';
 
 import { useFilter } from '@/hooks/filters/useFilter';
@@ -31,7 +28,6 @@ const AllEventsPage: React.FC = () => {
   const dispatch = useAppDispatch();
 
   const firstRender = useAppSelector(getFirstRender);
-  const userCoordinates = useAppSelector(getUserCoordinates);
 
   const filter = useAppSelector(state => state.filter);
   const [events, setEvents] = useState<Event[]>([]);
@@ -42,14 +38,20 @@ const AllEventsPage: React.FC = () => {
   const [filterEvent, { isLoading, isFetching }] =
     useLazyGetAllEventsFilteredQuery();
 
+  const { coords, getPosition } = useGeolocated({
+    positionOptions: {
+      enableHighAccuracy: false,
+    },
+    userDecisionTimeout: 5000,
+    suppressLocationOnMount: true,
+  });
   const { addTypeFilter, addDateFilter, addPriceFilter } = useFilter({
     events,
   });
 
-  const filterEvents = async () => {
-    setIsFullList(false);
-    const response = await filterEvent({
-      page: 0,
+  const filterEventsFn = async (pageN: number) => {
+    return await filterEvent({
+      page: pageN,
       size: size,
       filter: {
         eventTypes: filter?.selectedTypes.filter(
@@ -59,10 +61,15 @@ const AllEventsPage: React.FC = () => {
             type !== 'UNDER_HOUSE'
         ),
         isPopular: filter.selectedTypes.includes('POPULAR'),
-        isNearby:
-          filter.selectedTypes.includes('UNDER_HOUSE') && !!userCoordinates,
-        latitude: filter.userCoordinates?.latitude,
-        longitude: filter.userCoordinates?.longitude,
+        isNearby: filter.selectedTypes.includes('UNDER_HOUSE') && !!coords,
+        latitude:
+          filter.selectedTypes.includes('UNDER_HOUSE') && coords?.latitude
+            ? 50.43749
+            : undefined,
+        longitude:
+          filter.selectedTypes.includes('UNDER_HOUSE') && coords?.longitude
+            ? 30.514977
+            : undefined,
         isThisWeek: !!filter.selectedDates.includes('На цьому тижні'),
         dayRange: filter?.rangeDatesArray[0]
           ? {
@@ -81,6 +88,16 @@ const AllEventsPage: React.FC = () => {
         },
       },
     });
+  };
+
+  const filterEvents = async () => {
+    setIsFullList(false);
+
+    if (filter.selectedTypes.includes('UNDER_HOUSE') && !coords) {
+      getPosition();
+      return;
+    }
+    const response = await filterEventsFn(0);
     setPage(1);
 
     if (response.status === 'uninitialized') {
@@ -89,9 +106,7 @@ const AllEventsPage: React.FC = () => {
 
     setEvents(response.data || []);
 
-    console.log('Map', filter.selectedTypes.includes('UNDER_HOUSE'));
-
-    if (filter.selectedTypes.includes('UNDER_HOUSE') && !!userCoordinates) {
+    if (filter.selectedTypes.includes('UNDER_HOUSE') && !!coords) {
       setMapIsHidden(false);
     } else {
       setMapIsHidden(true);
@@ -99,44 +114,26 @@ const AllEventsPage: React.FC = () => {
   };
 
   useEffect(() => {
+    console.log(filter.selectedTypes);
+
+    if (filter.selectedTypes.length > 1) {
+      return;
+    }
+
     filterEvents();
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
+  }, [coords]);
+
+  useEffect(() => {
+    if (filter.selectedTypes.includes('UNDER_HOUSE') && !coords) {
+      getPosition();
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [filter]);
 
   useEffect(() => {
     const fetchEvents = async () => {
-      const response = await filterEvent({
-        page: page,
-        size: size,
-        filter: {
-          eventTypes: filter?.selectedTypes.filter(
-            type =>
-              type !== 'ALL_EVENTS' &&
-              type !== 'POPULAR' &&
-              type !== 'UNDER_HOUSE'
-          ),
-          isPopular: filter.selectedTypes.includes('POPULAR'),
-          isNearby: filter.selectedTypes.includes('UNDER_HOUSE'),
-          latitude: filter.userCoordinates?.latitude,
-          longitude: filter.userCoordinates?.longitude,
-          isThisWeek: !!filter.selectedDates.includes('На цьому тижні'),
-          dayRange: filter?.rangeDatesArray[0]
-            ? {
-                startDay: filter?.rangeDatesArray[0],
-                endDay:
-                  filter?.rangeDatesArray[filter.rangeDatesArray.length - 1],
-              }
-            : undefined,
-          isToday: !!filter.selectedDates.includes('Сьогодні'),
-          isOnTheWeekend: filter.selectedDates.includes('На вихідних'),
-          isFree: filter.selectedPrices.includes(0),
-          isUnder500: filter.selectedPrices.includes(500),
-          priceRange: {
-            priceFrom: filter.selectedPrices.includes(1000) ? 500 : undefined,
-            priceTo: filter.selectedPrices.includes(1000) ? 1000 : undefined,
-          },
-        },
-      });
+      const response = await filterEventsFn(page);
 
       setPage(prev => prev + 1);
       setEvents(prevEvents => [...prevEvents, ...(response.data || [])]);
@@ -188,7 +185,10 @@ const AllEventsPage: React.FC = () => {
         {events && events?.length > 0 ? (
           <div className="flex flex-col gap-[24px]">
             {!mapIsHidden && (
-              <GoogleMap events={events || []} userLocation={userCoordinates} />
+              <GoogleMap
+                events={events || []}
+                userLocation={{ latitude: 50.43749, longitude: 30.514977 }}
+              />
             )}
             <AllEvents events={events || []} title={false} />
             {inView && !isFullList && (
