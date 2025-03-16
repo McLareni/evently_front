@@ -19,8 +19,8 @@ export const SORT_USER = [
   'phoneNumber',
   'email',
   'creationDate',
-  'status',
   'role',
+  'status',
 ] as SORT_USER_TYPE[];
 
 interface IProps {
@@ -119,7 +119,7 @@ const AdminTable: React.FC<IProps> = ({
                   )
                 }
                 className={clsx(
-                  'bg-lightBlue border-buttonPurple border p-[10px_12px] text-textDark text-[16px] leading-4 font-bold align-text-top text-wrap max-w-[135px] min-w-[90px] hover:cursor-pointer'
+                  'bg-lightBlue border-buttonPurple border p-[10px_12px] text-textDark text-[16px] leading-4 font-bold align-text text-wrap max-w-[135px] min-w-[90px] hover:cursor-pointer'
                 )}
               >
                 <p className="relative pr-6">
