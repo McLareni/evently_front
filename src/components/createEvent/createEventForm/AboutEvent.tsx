@@ -151,9 +151,9 @@ const AboutEvent: React.FC<AboutEventProps> = ({
                     }
                     className={`${
                       selectedCategory === category.name
-                        ? 'bg-gradient-to-r from-[#12C2E9] to-[#C471ED]'
+                        ? 'bg-gradient-to-r from-[#12C2E9] to-[#C471ED] text-[white]'
                         : 'bg-gradient-to-r from-[#E9E6FF] to-[#D5FEFF]'
-                    } hover:from-[#12C2E9] hover:to-[#C471ED] transition ease-in-out duration-700 cursor-pointer flex items-center rounded-[20px] border-[1px] border-borderColor text-xl mr-4 last:pr-0 h-12 px-[18px] min-w-[80px] max-w-[230px]`}
+                    } hover:from-[#12C2E9] hover:to-[#C471ED] transition ease-in-out duration-300 cursor-pointer flex items-center rounded-[20px] border-[1px] border-borderColor text-xl mr-4 last:pr-0 h-12 px-[18px] min-w-[80px] max-w-[230px]`}
                   >
                     {category.name}
                   </div>
