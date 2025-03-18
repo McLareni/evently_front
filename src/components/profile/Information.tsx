@@ -13,7 +13,7 @@ const Information = () => {
 
   return (
     <div>
-      <div className="-mx-[15px] -mt-[15px] h-[192px] bg-bg-gradient rounded-[20px] px-[32px] py-[21px] flex gap-[48px]">
+      <div className="h-[192px] bg-bg-gradient rounded-[20px] px-[32px] py-[21px] flex gap-[48px]">
         <CropUploadImage />
         <p
           className="font-oswald text-[64px] inline-block"

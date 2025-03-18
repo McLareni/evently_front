@@ -13,7 +13,7 @@ export const ProfileInput = forwardRef<HTMLInputElement, ProfileInputProps>(
     const [passwordVisible, setPasswordVisible] = useState(false);
 
     const inputStyles = `w-full h-[64px] border-[2px] rounded-[10px]
-    px-[24px] outline-none bg-background text-[24px]
+    px-[24px] outline-none bg-background text-[20px]
     focus:placeholder-transparent
     ${isFocused ? 'border-buttonPurple' : 'border-lightPurple'}
     ${forPassword && 'pr-[72px]'}`;

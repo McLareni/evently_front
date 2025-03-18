@@ -63,7 +63,7 @@ export const FilterEvents: React.FC<FilterEventsProps> = ({
   return (
     <div className="pl-[60px] relative">
       <div
-        className="sticky top-[150px] max-h-[calc(100vh-200px)] w-[312px] border-buttonPurple border-[1px]
+        className="sticky top-[140px] max-h-[calc(100vh-200px)] w-[312px] border-buttonPurple border-[1px]
       rounded-[20px] flex flex-col gap-[24px] pt-[18px] pr-[5px]"
       >
         <div className="overflow-y-scroll overscroll-contain">
