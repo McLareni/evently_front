@@ -15,7 +15,7 @@ export const ProfileTabLayout = () => {
       <ProfileTab />
 
       <section
-        className={`rounded-[20px] py-4 px-[15px] w-full h-auto ${borderIsHidden ? '' : 'border border-buttonPurple border-spacing-8'}`}
+        className={`rounded-[20px] px-[15px] w-full h-auto ${borderIsHidden ? '' : 'border border-buttonPurple border-spacing-8'}`}
       >
         <Suspense fallback={<div>Loading...</div>}>
           <Outlet />

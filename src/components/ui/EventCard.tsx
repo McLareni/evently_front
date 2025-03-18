@@ -139,7 +139,7 @@ export const EventCard: React.FC<EventCardProps> = ({
       )}
       <div className={`flex absolute justify-between p-6 w-full`}>
         {category === 'TOP_EVENTS' && event.eventStatus === 'APPROVED' && (
-          <div className="flex justify-center items-center w-[58px] h-[35px] bg-badge-gradient rounded-[20px]">
+          <div className="flex justify-center items-center w-[58px] h-[33px] bg-badge-gradient rounded-[20px]">
             <span className="text-background">ТОП</span>
           </div>
         )}
@@ -166,10 +166,10 @@ export const EventCard: React.FC<EventCardProps> = ({
       >
         <div className="flex justify-between w-full">
           <div
-            className={`flex items-center justify-center h-8 rounded-[20px]
+            className={`flex items-center justify-center h-[33px] rounded-[20px]
                  border-[2px] border-borderColor bg-bg-gradient`}
           >
-            <p className={`font-normal text-md text-textDark px-4 py-2.5 `}>
+            <p className={`font-normal text-md text-textDark px-4`}>
               {type}
             </p>
           </div>

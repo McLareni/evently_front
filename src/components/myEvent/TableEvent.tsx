@@ -39,7 +39,7 @@ const TableEvent = () => {
   if (!events || !events.length) {
     return (
       <>
-        <h2 className="text-[48px] font-oswald text-buttonPurple">
+        <h2 className="text-[48px] leading-normal font-oswald text-buttonPurple">
           Ваш список подій поки що порожній.
         </h2>
         <p className="text-[36px] font-oswald text-buttonPurple">
