@@ -1,5 +1,5 @@
 import { Suspense } from 'react';
-import { Outlet } from 'react-router-dom';
+import { Outlet, useLocation } from 'react-router-dom';
 
 import { useResetAllFiltersAfterRouting } from '@/hooks/filters/useResetAllFiltersAfterRouting';
 
@@ -11,11 +11,24 @@ import { LayoutHorizontalLines } from './LayoutHorizontalLines';
 export const Layout = () => {
   useResetAllFiltersAfterRouting();
 
+  const route = useLocation().pathname;
+  const showLines = () => {
+    return route === '/' ||
+      route === 'create_event' ||
+      route === 'event/:idEvent'
+      ? false
+      : true;
+  };
+  const linesShown = showLines();
+
   return (
     <>
       <Header />
-      <main className="pt-[140px] relative flex-grow w-[1440px]">
-        <LayoutHorizontalLines />
+      <main
+        className={`${linesShown ? 'pt-[140px]' : 'pt-[108px]'}
+        relative flex-grow w-[1440px]`}
+      >
+        {linesShown && <LayoutHorizontalLines />}
         <Suspense fallback={<div>Loading...</div>}>
           <Outlet />
         </Suspense>
