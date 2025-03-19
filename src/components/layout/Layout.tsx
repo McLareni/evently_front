@@ -12,13 +12,15 @@ export const Layout = () => {
   useResetAllFiltersAfterRouting();
 
   const route = useLocation().pathname;
+
   const showLines = () => {
     return route === '/' ||
-      route === 'create_event' ||
-      route === 'event/:idEvent'
+      route === '/create_event' ||
+      route.startsWith('/event/')
       ? false
       : true;
   };
+
   const linesShown = showLines();
 
   return (
