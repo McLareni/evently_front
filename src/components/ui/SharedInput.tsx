@@ -1,4 +1,5 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
+
 /* eslint-disable no-unused-vars */
 import React, { useEffect, useState } from 'react';
 import { UseFormReturn } from 'react-hook-form';
@@ -23,6 +24,7 @@ interface SharedInputProps {
   };
   autofocus?: boolean;
   onBlur?: ((e: React.FocusEvent<HTMLInputElement>) => void) | undefined;
+  maxLength?: number;
 }
 
 export const SharedInput: React.FC<SharedInputProps> = ({
@@ -39,6 +41,7 @@ export const SharedInput: React.FC<SharedInputProps> = ({
   autofocus,
   isSubmitted,
   onBlur,
+  maxLength,
 }) => {
   const [isFocused, setIsFocused] = useState(false);
   const [hasValue, setHasValue] = useState(!!defaultValue);
@@ -96,6 +99,7 @@ export const SharedInput: React.FC<SharedInputProps> = ({
         onFocus={handleFocus}
         defaultValue={defaultValue}
         autoFocus={autofocus}
+        maxLength={maxLength}
         {...register(id, { ...validation, onBlur: handleBlur })}
         className={clsx(
           `flex-grow w-full font-medium h-[60px] text-base bg-background placeholder:text-darkGray
