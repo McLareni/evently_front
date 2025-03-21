@@ -93,7 +93,7 @@ export const RegisterInputPassword: React.FC<RegisterInputPasswordProps> = ({
               isSubmitted={isSubmitted}
               onBlur={e => handleBlur(e)}
               register={register}
-              maxLength={40}
+              maxLength={15}
               validation={{ required: true, validate: validateName }}
               errors={errors}
             />

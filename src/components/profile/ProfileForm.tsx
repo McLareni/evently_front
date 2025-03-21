@@ -90,10 +90,11 @@ export const ProfileForm: FC = () => {
             validate: {
               required: value =>
                 value.trim().length === 0 ||
-                (value.trim().length > 1 && value.trim().length <= 50) ||
-                "Введіть ім'я (від 2 до 50 символів)",
+                value.trim().length > 1 ||
+                "Введіть ім'я (від 2 до 15 символів)",
             },
           })}
+          maxLength={15}
           placeholder="Ім'я"
           id="name"
           htmlFor="name"
