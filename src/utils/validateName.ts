@@ -12,7 +12,7 @@ export const validateName = (name: string) => {
   }
 
   const IsValidName =
-    name.length < 2
+    name.trim().length < 2
       ? `Ім'я має бути від 2 до ${MAX_NAME_LENGTH} символів`
       : true;
 
