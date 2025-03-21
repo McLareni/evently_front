@@ -16,6 +16,7 @@ import {
   formatBirthDateToMask,
   formatPhoneToMask,
 } from '@/helpers/userForm/formatToMask';
+import { MAX_NAME_LENGTH, validateName } from '@/utils/validateName';
 import { useMask } from '@react-input/mask';
 
 import Button from '../ui/Button';
@@ -87,13 +88,10 @@ export const ProfileForm: FC = () => {
       <div className="flex gap-[24px] mb-[8px]">
         <ProfileInput
           {...register('name', {
-            validate: {
-              required: value =>
-                value.trim().length === 0 ||
-                (value.trim().length > 1 && value.trim().length <= 50) ||
-                "Введіть ім'я (від 2 до 50 символів)",
-            },
+            required: true,
+            validate: validateName,
           })}
+          maxLength={MAX_NAME_LENGTH}
           placeholder="Ім'я"
           id="name"
           htmlFor="name"
