@@ -2,6 +2,7 @@ import { useEffect, useState } from 'react';
 import { useForm } from 'react-hook-form';
 
 import { statusPassword, validateName, validatePassword } from '@/utils';
+import { MAX_NAME_LENGTH } from '@/utils/validateName';
 
 import {
   PrivacyAgreement,
@@ -93,7 +94,7 @@ export const RegisterInputPassword: React.FC<RegisterInputPasswordProps> = ({
               isSubmitted={isSubmitted}
               onBlur={e => handleBlur(e)}
               register={register}
-              maxLength={15}
+              maxLength={MAX_NAME_LENGTH}
               validation={{ required: true, validate: validateName }}
               errors={errors}
             />
