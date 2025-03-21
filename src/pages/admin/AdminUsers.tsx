@@ -74,7 +74,7 @@ const AdminUsers = () => {
   }
 
   return (
-    <main className='px-8'>
+    <main>
       <button
         onClick={handleGetUsers}
         className="flex gap-1 text-textDark text-xs leading-6 font-lato focus:outline-0 mb-[15px]"

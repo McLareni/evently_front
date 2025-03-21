@@ -103,7 +103,7 @@ const ProfileTab = () => {
 
   return (
     <>
-      <nav className="min-w-[312px] min-h-[700px] h-auto border border-buttonPurple rounded-[20px] px-1">
+      <nav className="w-[290px] min-h-[700px] h-auto border border-buttonPurple rounded-[20px] px-1">
         <ul className="mt-[21px]">
           {tabUser.map((item, index) => (
             <ItemTab
