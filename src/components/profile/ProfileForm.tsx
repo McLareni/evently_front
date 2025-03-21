@@ -83,7 +83,13 @@ export const ProfileForm: FC = () => {
   };
 
   return (
-    <form className="flex flex-col" onSubmit={handleSubmit(onSubmit)}>
+    <form
+      className="flex flex-col"
+      onSubmit={e => {
+        e.preventDefault();
+        handleSubmit(onSubmit);
+      }}
+    >
       {isLoading && <Spinner />}
       <div className="flex gap-[24px] mb-[8px]">
         <ProfileInput
@@ -139,9 +145,19 @@ export const ProfileForm: FC = () => {
             validate: value => {
               if (value.length > 0 && value.length < 10) {
                 return 'Введіть дату народження';
-              }
-              if (!isValueDate(value) && value.length !== 0) {
+              } else if (!isValueDate(value) && value.length !== 0) {
                 return 'Невірний формат дати';
+              } else if (new Date(value) < new Date('01.01.1900')) {
+                return 'Введіть правильну дату народження';
+              }
+              const today = new Date();
+              const adulthoodDate = new Date(
+                today.getFullYear() - 18,
+                today.getMonth(),
+                today.getDate()
+              );
+              if (new Date(value) > adulthoodDate) {
+                return 'Тобі має бути більше 18 років';
               }
             },
           }}
@@ -154,7 +170,7 @@ export const ProfileForm: FC = () => {
             <ProfileInput
               {...field}
               ref={phoneInputRef}
-              placeholder="099 999 99 99"
+              placeholder="+38(099)999-99-99"
               id="phoneNumber"
               htmlFor="phoneNumber"
               type="tel"
@@ -164,15 +180,23 @@ export const ProfileForm: FC = () => {
           )}
           rules={{
             required: false,
-            validate: value =>
-              value.length === 0 ||
-              value.length === 17 ||
-              'Введіть номер телефону',
+            validate: value => {
+              if (value.length !== 17 && value.length > 0)
+                return 'Введіть номер телефону';
+
+              if (value.length === 17) {
+                if (value[4] !== '0' || value[5] === '0') {
+                  return 'Введіть дійсний код українських операторів';
+                }
+                if (value.includes('000-00-00')) {
+                  return 'Введіть правильний номер телефону';
+                }
+              }
+            },
           }}
         />
       </div>
 
-      {/* Паролі не підключені */}
       <div className="flex flex-col gap-[8px] mb-[8px]">
         <p className="mb-[32px] font-oswald text-[24px] font-medium">
           Змінити пароль
