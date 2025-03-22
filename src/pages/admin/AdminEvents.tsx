@@ -100,7 +100,7 @@ const AdminEvents = () => {
   }
 
   return (
-    <main className="relative pb-10 h-full">
+    <main className="relative pb-10 px-2 h-full">
       <Modal isOpen={modalIsOpen} onClose={handleCloseModal}>
         <ModalDecision event={currEvent} openModal={handleOpenModal} />
       </Modal>
