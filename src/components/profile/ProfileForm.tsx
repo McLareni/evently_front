@@ -82,13 +82,7 @@ export const ProfileForm: FC = () => {
   };
 
   return (
-    <form
-      className="flex flex-col"
-      onSubmit={e => {
-        e.preventDefault();
-        handleSubmit(onSubmit);
-      }}
-    >
+    <form className="flex flex-col" onSubmit={handleSubmit(onSubmit)}>
       {isLoading && <Spinner />}
       <div className="flex gap-[24px] mb-[8px]">
         <ProfileInput
@@ -149,7 +143,11 @@ export const ProfileForm: FC = () => {
                 return 'Введіть дату народження';
               } else if (!isValueDate(value) && value.length !== 0) {
                 return 'Невірний формат дати';
-              } else if (new Date(value) < new Date('01.01.1900')) {
+              } else if (
+                new Date(
+                  `${value.slice(6, 11)}-${value.slice(3, 5)}-${value.slice(0, 2)}`
+                ) < new Date('1900-01-01')
+              ) {
                 return 'Введіть правильну дату народження';
               }
               const today = new Date();
@@ -158,7 +156,11 @@ export const ProfileForm: FC = () => {
                 today.getMonth(),
                 today.getDate()
               );
-              if (new Date(value) > adulthoodDate) {
+              if (
+                new Date(
+                  `${value.slice(6, 11)}-${value.slice(3, 5)}-${value.slice(0, 2)}`
+                ) > adulthoodDate
+              ) {
                 return 'Тобі має бути більше 18 років';
               }
             },
