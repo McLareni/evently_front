@@ -139,10 +139,29 @@ export const ProfileForm: FC = () => {
             validate: value => {
               if (value.length > 0 && value.length < 10) {
                 return 'Введіть дату народження';
-              }
-              if (!isValueDate(value) && value.length !== 0) {
+              } else if (!isValueDate(value) && value.length !== 0) {
                 return 'Невірний формат дати';
+              } else if (
+                new Date(
+                  `${value.slice(6, 11)}-${value.slice(3, 5)}-${value.slice(0, 2)}`
+                ) < new Date('1900-01-01')
+              ) {
+                return 'Введіть правильну дату народження';
               }
+              const today = new Date();
+              const adulthoodDate = new Date(
+                today.getFullYear() - 18,
+                today.getMonth(),
+                today.getDate()
+              );
+              if (
+                new Date(
+                  `${value.slice(6, 11)}-${value.slice(3, 5)}-${value.slice(0, 2)}`
+                ) > adulthoodDate
+              ) {
+                return 'Тобі має бути більше 18 років';
+              }
+
             },
           }}
         />
