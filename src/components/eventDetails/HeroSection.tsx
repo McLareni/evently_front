@@ -38,8 +38,6 @@ const HeroSection: React.FC<IProps> = ({ idEvent, event }) => {
   const user = useAppSelector(selectUser);
   const { count: countLike, getLike } = useGetCountLikeEvent(idEvent || '');
 
-  console.log(event);
-
   const toggleIsLiked = async () => {
     if (!isLiked) {
       const addLiked = async () => {
@@ -166,9 +164,7 @@ const HeroSection: React.FC<IProps> = ({ idEvent, event }) => {
             </p>
           </div>
           <button className="bg-dark-gradient w-[421px] h-12 rounded-[71px_8px] text-background text-2xl mt-[55px] hover:border-4 hover:border-buttonPurple hover:shadow-shadowPrimaryBtn focus:outline-none active:shadow-primaryBtnActive">
-            {event.price === 0 && event.eventFormat === 'ONLINE'
-              ? 'Зареєструватись'
-              : 'Купити квиток'}
+            Купити квиток
           </button>
           <button
             onClick={() => setPopupShare(true)}

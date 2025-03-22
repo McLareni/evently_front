@@ -2,6 +2,7 @@ import { useEffect, useState } from 'react';
 import { useForm } from 'react-hook-form';
 
 import { statusPassword, validateName, validatePassword } from '@/utils';
+import { MAX_NAME_LENGTH } from '@/utils/validateName';
 
 import {
   PrivacyAgreement,
@@ -38,14 +39,16 @@ export const RegisterInputPassword: React.FC<RegisterInputPasswordProps> = ({
     handleSubmit,
     watch,
     trigger,
-    formState: { errors },
+    formState: { errors, isValid },
   } = useForm<RegisterFormInputsPassword>({
     mode: 'onChange',
   });
 
-  const onSubmit = async (data: RegisterFormInputsPassword) => {
-    const { name, password, confirmPassword } = data;
-
+  const onSubmit = async ({
+    name,
+    password,
+    confirmPassword,
+  }: RegisterFormInputsPassword) => {
     setUserData(prev => ({ ...prev, password, name, confirmPassword }));
     setStatusAuth('confirm_email');
   };
@@ -59,7 +62,6 @@ export const RegisterInputPassword: React.FC<RegisterInputPasswordProps> = ({
 
   // Error handling on blur
   const handleBlur = (e: React.FocusEvent<HTMLInputElement>) => {
-    // setErrorMessage('');
     const { name } = e.target;
     if (name === 'name') {
       trigger('name');
@@ -92,6 +94,7 @@ export const RegisterInputPassword: React.FC<RegisterInputPasswordProps> = ({
               isSubmitted={isSubmitted}
               onBlur={e => handleBlur(e)}
               register={register}
+              maxLength={MAX_NAME_LENGTH}
               validation={{ required: true, validate: validateName }}
               errors={errors}
             />
@@ -117,6 +120,7 @@ export const RegisterInputPassword: React.FC<RegisterInputPasswordProps> = ({
               isSubmitted={isSubmitted}
               onBlur={e => handleBlur(e)}
               register={register}
+              maxLength={40}
               validation={{ required: true, validate: validatePassword }}
               errors={errors}
             />
@@ -138,6 +142,7 @@ export const RegisterInputPassword: React.FC<RegisterInputPasswordProps> = ({
               isSubmitted={isSubmitted}
               onBlur={e => handleBlur(e)}
               register={register}
+              maxLength={40}
               validation={{
                 required: true,
                 validate: value => value === watch('password'),
@@ -160,6 +165,7 @@ export const RegisterInputPassword: React.FC<RegisterInputPasswordProps> = ({
             onClick={() => setIsSubmitted(true)}
             primary
             className={`w-[364px] mt-10 ml-auto mr-auto`}
+            disabled={!isValid}
           >
             Створити акаунт
           </SharedBtn>

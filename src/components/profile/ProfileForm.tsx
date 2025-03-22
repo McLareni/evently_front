@@ -16,6 +16,7 @@ import {
   formatBirthDateToMask,
   formatPhoneToMask,
 } from '@/helpers/userForm/formatToMask';
+import { MAX_NAME_LENGTH, validateName } from '@/utils/validateName';
 import { useMask } from '@react-input/mask';
 
 import Button from '../ui/Button';
@@ -87,13 +88,10 @@ export const ProfileForm: FC = () => {
       <div className="flex gap-[24px] mb-[8px]">
         <ProfileInput
           {...register('name', {
-            validate: {
-              required: value =>
-                value.trim().length === 0 ||
-                (value.trim().length > 1 && value.trim().length <= 50) ||
-                "Введіть ім'я (від 2 до 50 символів)",
-            },
+            required: true,
+            validate: validateName,
           })}
+          maxLength={MAX_NAME_LENGTH}
           placeholder="Ім'я"
           id="name"
           htmlFor="name"
@@ -163,6 +161,7 @@ export const ProfileForm: FC = () => {
               ) {
                 return 'Тобі має бути більше 18 років';
               }
+
             },
           }}
         />
@@ -174,7 +173,7 @@ export const ProfileForm: FC = () => {
             <ProfileInput
               {...field}
               ref={phoneInputRef}
-              placeholder="+38(099)999-99-99"
+              placeholder="099 999 99 99"
               id="phoneNumber"
               htmlFor="phoneNumber"
               type="tel"
@@ -184,23 +183,15 @@ export const ProfileForm: FC = () => {
           )}
           rules={{
             required: false,
-            validate: value => {
-              if (value.length !== 17 && value.length > 0)
-                return 'Введіть номер телефону';
-
-              if (value.length === 17) {
-                if (value[4] !== '0' || value[5] === '0') {
-                  return 'Введіть дійсний код українських операторів';
-                }
-                if (value.includes('000-00-00')) {
-                  return 'Введіть правильний номер телефону';
-                }
-              }
-            },
+            validate: value =>
+              value.length === 0 ||
+              value.length === 17 ||
+              'Введіть номер телефону',
           }}
         />
       </div>
 
+      {/* Паролі не підключені */}
       <div className="flex flex-col gap-[8px] mb-[8px]">
         <p className="mb-[32px] font-oswald text-[24px] font-medium">
           Змінити пароль
