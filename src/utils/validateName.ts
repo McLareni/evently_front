@@ -1,19 +1,7 @@
-export const MAX_NAME_LENGTH = 15;
-
 export const validateName = (name: string) => {
-  const pattern = /^[a-zA-Zа-яА-ЯёЁіІїЇєЄґҐ\s']+$/;
-
-  if (name.trim().length === 0) {
-    return "Введіть ім'я";
-  }
-
-  if (!pattern.test(name)) {
-    return 'Лише літери';
-  }
-
   const IsValidName =
-    name.trim().length < 2
-      ? `Ім'я має бути від 2 до ${MAX_NAME_LENGTH} символів`
+    name.length > 40 || name.length < 3
+      ? "Ім'я має бути від 3 до 40 символів"
       : true;
 
   return IsValidName;
