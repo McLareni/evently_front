@@ -109,6 +109,7 @@ const CreateEventForm: React.FC<CreateEventFormProps> = ({
     eventUrl,
     location,
     date,
+    phoneNumber,
   }: CreateEventFormValues) => {
     const formattedNumberOfTickets =
       numberOfTickets.length === 0 ? '1' : numberOfTickets;
@@ -128,6 +129,7 @@ const CreateEventForm: React.FC<CreateEventFormProps> = ({
       organizers,
       numberOfTickets: +formattedNumberOfTickets,
       ticketPrice: +formattedPrice,
+      phoneNumber,
     } as unknown as CreateEventFormValues;
 
     const firstImage = imageFile[0];
@@ -205,7 +207,12 @@ const CreateEventForm: React.FC<CreateEventFormProps> = ({
         errors={errors}
         clearErrors={clearErrors}
       />
-      <AboutOrganizer control={control} setValue={setValue} watch={watch} />
+      <AboutOrganizer
+        control={control}
+        setValue={setValue}
+        watch={watch}
+        errors={errors}
+      />
       <div className="text-center">
         <SharedBtn
           disabled={!isValid || !validateForm}
