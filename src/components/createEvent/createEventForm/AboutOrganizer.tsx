@@ -8,6 +8,7 @@ import {
 } from 'react-hook-form';
 import { AiFillCheckCircle } from 'react-icons/ai';
 import { BiSmile } from 'react-icons/bi';
+import { MdDone } from 'react-icons/md';
 
 import { selectUser } from '@/redux/auth/selectors';
 import { useAppSelector } from '@/redux/hooks';
@@ -21,6 +22,8 @@ type AboutOrganizerProps = {
   setValue: UseFormSetValue<CreateEventFormValues>;
   watch: UseFormWatch<CreateEventFormValues>;
   errors: FieldErrors<CreateEventFormValues>;
+  agreement: boolean;
+  checkAgreement: () => void;
 };
 
 const MAX_DESCRIPTION_LENGTH = 400;
@@ -30,6 +33,8 @@ const AboutOrganizer: React.FC<AboutOrganizerProps> = ({
   setValue,
   watch,
   errors,
+  agreement,
+  checkAgreement,
 }) => {
   const [showPicker, setShowPicker] = useState(false);
   const [tipShown, setTipShown] = useState(false);
@@ -63,7 +68,7 @@ const AboutOrganizer: React.FC<AboutOrganizerProps> = ({
 
   return (
     <div className="relative w-[760px] rounded-[20px] border-2 border-buttonPurple flex flex-col py-10 px-10">
-      {!errors.phoneNumber && phoneNumber && (
+      {!errors.phoneNumber && phoneNumber && agreement && (
         <AiFillCheckCircle
           size={40}
           color="#3BE660"
@@ -160,6 +165,30 @@ const AboutOrganizer: React.FC<AboutOrganizerProps> = ({
           )}
         </div>
       </div>
+
+      <label className="flex items-center cursor-pointer">
+        <input
+          id="unlimitedTickets"
+          type="checkbox"
+          className="appearance-none"
+          checked={agreement}
+          onChange={checkAgreement}
+        />
+        <div className="h-5 w-5 flex items-center justify-center bg-lightPink rounded-[5px]">
+          {agreement && <MdDone className="text-black w-6 h-6" />}
+        </div>
+        <span className="ml-2">
+          З умовами погоджуюсь.{' '}
+          <a
+            className="underline"
+            href="/Правила.pdf"
+            target="_blank"
+            rel="noopener noreferrer"
+          >
+            Правила
+          </a>
+        </span>
+      </label>
     </div>
   );
 };
