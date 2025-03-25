@@ -32,6 +32,7 @@ const AboutOrganizer: React.FC<AboutOrganizerProps> = ({
   errors,
 }) => {
   const [showPicker, setShowPicker] = useState(false);
+  const [tipShown, setTipShown] = useState(false);
 
   const user = useAppSelector(selectUser);
 
@@ -45,6 +46,10 @@ const AboutOrganizer: React.FC<AboutOrganizerProps> = ({
       setValue('aboutOrganizer', aboutOrganizer + emojiObject.emoji);
       setShowPicker(false);
     }
+  };
+
+  const onTipHover = () => {
+    setTipShown(!tipShown);
   };
 
   const aboutOrganizer = watch('aboutOrganizer');
@@ -100,9 +105,23 @@ const AboutOrganizer: React.FC<AboutOrganizerProps> = ({
       )}
 
       <div className="flex flex-col pb-2">
-        <label className="pb-3 text-2xl" htmlFor="title">
-          Номер телефону<span className="star">*</span>
-        </label>
+        <div className="pb-3 text-2xl flex">
+          <label htmlFor="title">
+            Номер телефону<span className="star">*</span>
+          </label>
+          <div
+            className="relative"
+            onMouseEnter={onTipHover}
+            onMouseLeave={onTipHover}
+          >
+            i
+            {tipShown && (
+              <div className="absolute top-0 left-2 bg-[white] p-2 border-2 border-[red] rounded-lg">
+                тратата
+              </div>
+            )}
+          </div>
+        </div>
         <Controller
           name="phoneNumber"
           control={control}
