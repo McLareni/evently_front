@@ -34,7 +34,6 @@ const PhotoCard: React.FC<PhotoCardProps> = ({
   const [isHovered, setIsHovered] = useState(false);
   const [showCropper, setShowCropper] = useState(false);
   const [imageToCrop, setImageToCrop] = useState<string | null>(null);
-
   const [croppedImage, setCroppedImage] = useState<string | null>(null);
 
   const cropperRef = useRef<any>(null);
@@ -135,6 +134,7 @@ const PhotoCard: React.FC<PhotoCardProps> = ({
               </div>
               <div className="text-xs font-medium text-gray-700 mb-2">
                 {title}
+                {id === 0 && <span className="star">*</span>}
               </div>
             </>
           )}
