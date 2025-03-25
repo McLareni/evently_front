@@ -44,6 +44,40 @@ const AboutOrganizer: React.FC<AboutOrganizerProps> = ({
 
   return (
     <div className="w-[760px] rounded-[20px] border-2 border-buttonPurple flex flex-col py-10 px-10">
+      <div className="flex flex-col relative">
+        <label htmlFor="aboutOrganizer" className="pb-4 text-2xl">
+          Про організатора
+        </label>
+        <Controller
+          name="aboutOrganizer"
+          control={control}
+          render={({ field }) => (
+            <div className="relative w-full p-[2px] h-[120px] bg-createEventInputBorder rounded-[10px]">
+              <textarea
+                {...field}
+                className="focus:outline-none w-full h-full p-4 rounded-[8px] resize-none"
+                maxLength={MAX_DESCRIPTION_LENGTH}
+                id="aboutOrganizer"
+                placeholder="Розкажи про себе"
+              ></textarea>
+              <button
+                className="absolute right-[16px] bottom-[16px] focus:outline-none"
+                type="button"
+                onClick={() => setShowPicker(val => !val)}
+              >
+                <BiSmile size={24} />
+              </button>
+            </div>
+          )}
+        />
+        <div className="text-right text-sm text-gray-500 mt-0.5 h-[20px] text-uploadBtnBg">
+          {aboutOrganizer?.length || 0}/{MAX_DESCRIPTION_LENGTH}
+        </div>
+      </div>
+      {showPicker && (
+        <Picker style={{ width: '100%' }} onEmojiClick={onEmojiClick} />
+      )}
+
       <div className="flex flex-col pb-2">
         <label className="pb-3 text-2xl" htmlFor="title">
           Номер телефону<span className="star">*</span>
@@ -55,14 +89,14 @@ const AboutOrganizer: React.FC<AboutOrganizerProps> = ({
             required: "Номер обов'язковий",
             validate: value => {
               if (value.length !== 17 && value.length > 0)
-                return 'Введіть номер телефону';
+                return 'Введи номер телефону';
 
               if (value.length === 17) {
                 if (value[4] !== '0' || value[5] === '0') {
-                  return 'Введіть дійсний код українських операторів';
+                  return 'Введи дійсний код українських операторів';
                 }
                 if (value.includes('000-00-00')) {
-                  return 'Введіть правильний номер телефону';
+                  return 'Введи правильний номер телефону';
                 }
               }
             },
@@ -86,36 +120,6 @@ const AboutOrganizer: React.FC<AboutOrganizerProps> = ({
           )}
         </div>
       </div>
-
-      <div className="flex flex-col pb-[25px] relative">
-        <label htmlFor="aboutOrganizer" className="pb-4 text-2xl">
-          Про організатора
-        </label>
-        <Controller
-          name="aboutOrganizer"
-          control={control}
-          render={({ field }) => (
-            <div className="w-full p-[2px] h-[120px] bg-createEventInputBorder rounded-[10px]">
-              <textarea
-                {...field}
-                className="focus:outline-none w-full h-full p-4 rounded-[8px] resize-none"
-                maxLength={MAX_DESCRIPTION_LENGTH}
-                id="aboutOrganizer"
-                placeholder="Розкажіть про себе"
-              ></textarea>
-            </div>
-          )}
-        />
-        <div className="text-right text-sm text-gray-500 mt-0.5 h-[14px] text-uploadBtnBg">
-          {aboutOrganizer?.length || 0}/{MAX_DESCRIPTION_LENGTH}
-        </div>
-        <button type="button" onClick={() => setShowPicker(val => !val)}>
-          <BiSmile size={24} className="absolute right-[16px] bottom-[60px]" />
-        </button>
-      </div>
-      {showPicker && (
-        <Picker style={{ width: '100%' }} onEmojiClick={onEmojiClick} />
-      )}
     </div>
   );
 };

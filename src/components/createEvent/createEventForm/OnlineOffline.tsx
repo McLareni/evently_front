@@ -47,7 +47,7 @@ export const OnlineOffline = ({
   return (
     <>
       <span className="pb-4 text-2xl">
-        Оберіть формат події<span className="star">*</span>
+        Формат події<span className="star">*</span>
       </span>
       <div className="pb-6">
         <button

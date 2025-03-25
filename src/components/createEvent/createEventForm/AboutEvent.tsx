@@ -104,7 +104,7 @@ const AboutEvent: React.FC<AboutEventProps> = ({
             },
           }}
           render={({ field }) => (
-            <div className="w-full p-[2px] h-[120px] bg-createEventInputBorder rounded-[10px]">
+            <div className="relative w-full p-[2px] h-[120px] bg-createEventInputBorder rounded-[10px]">
               <textarea
                 className="focus:outline-none w-full h-full p-4 rounded-[8px] resize-none"
                 maxLength={MAX_DESCRIPTION_LENGTH}
@@ -112,6 +112,13 @@ const AboutEvent: React.FC<AboutEventProps> = ({
                 placeholder="Коротко опиши ідею та концепцію події"
                 {...field}
               ></textarea>
+              <button
+                className="absolute right-[16px] bottom-[16px] focus:outline-none"
+                type="button"
+                onClick={() => setShowPicker(val => !val)}
+              >
+                <BiSmile size={24} />
+              </button>
             </div>
           )}
         />
@@ -122,12 +129,6 @@ const AboutEvent: React.FC<AboutEventProps> = ({
           <div className="ml-auto text-sm text-gray-500 mt-0.5 h-[14px] text-uploadBtnBg">
             {description?.length || 0}/{MAX_DESCRIPTION_LENGTH}
           </div>
-          <button type="button" onClick={() => setShowPicker(val => !val)}>
-            <BiSmile
-              size={24}
-              className="absolute right-[16px] bottom-[40px]"
-            />
-          </button>
         </div>
         {showPicker && (
           <Picker style={{ width: '100%' }} onEmojiClick={onEmojiClick} />
