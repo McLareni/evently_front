@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import {
   Control,
   Controller,
@@ -6,8 +6,13 @@ import {
   UseFormSetValue,
   UseFormWatch,
 } from 'react-hook-form';
+import { AiFillCheckCircle } from 'react-icons/ai';
 import { BiSmile } from 'react-icons/bi';
 
+import { selectUser } from '@/redux/auth/selectors';
+import { useAppSelector } from '@/redux/hooks';
+
+import { formatPhoneToMask } from '@/helpers/userForm/formatToMask';
 import { useMask } from '@react-input/mask';
 import Picker, { EmojiClickData } from 'emoji-picker-react';
 
@@ -28,6 +33,8 @@ const AboutOrganizer: React.FC<AboutOrganizerProps> = ({
 }) => {
   const [showPicker, setShowPicker] = useState(false);
 
+  const user = useAppSelector(selectUser);
+
   const phoneInputRef = useMask({
     mask: '+38(___)___-__-__',
     replacement: { _: /\d/ },
@@ -41,9 +48,23 @@ const AboutOrganizer: React.FC<AboutOrganizerProps> = ({
   };
 
   const aboutOrganizer = watch('aboutOrganizer');
+  const phoneNumber = watch('phoneNumber');
+
+  useEffect(() => {
+    if (user.phoneNumber) {
+      setValue('phoneNumber', formatPhoneToMask(user.phoneNumber));
+    }
+  }, [setValue, user.phoneNumber]);
 
   return (
-    <div className="w-[760px] rounded-[20px] border-2 border-buttonPurple flex flex-col py-10 px-10">
+    <div className="relative w-[760px] rounded-[20px] border-2 border-buttonPurple flex flex-col py-10 px-10">
+      {!errors.phoneNumber && phoneNumber && (
+        <AiFillCheckCircle
+          size={40}
+          color="#3BE660"
+          style={{ position: 'absolute', right: '8px', top: '8px' }}
+        />
+      )}
       <div className="flex flex-col relative">
         <label htmlFor="aboutOrganizer" className="pb-4 text-2xl">
           Про організатора

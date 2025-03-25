@@ -5,6 +5,7 @@ import { useForm } from 'react-hook-form';
 import { selectUser } from '@/redux/auth/selectors';
 import { useAppSelector } from '@/redux/hooks';
 
+import { formatPhoneNumberFromMask } from '@/helpers/userForm/formatFromMask';
 import { FormaDataForCard } from '@/pages/events/CreateEventPage';
 import { createEvent } from '@/utils/eventsHttp';
 
@@ -129,7 +130,7 @@ const CreateEventForm: React.FC<CreateEventFormProps> = ({
       organizers,
       numberOfTickets: +formattedNumberOfTickets,
       ticketPrice: +formattedPrice,
-      phoneNumber,
+      phoneNumber: formatPhoneNumberFromMask(phoneNumber),
     } as unknown as CreateEventFormValues;
 
     const firstImage = imageFile[0];
