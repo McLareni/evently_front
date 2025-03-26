@@ -76,7 +76,8 @@ export const AllEventsSelect: React.FC<AllEventsSelectProps> = ({
         } relative inline-flex justify-center items-center rounded-md px-2 py-1 bg-background text-sm text-gray-700 
          focus:outline-none ${className}`}
         style={{ width: buttonWidth }}
-        onClick={() => setIsOpen(!isOpen)}
+        onMouseEnter={() => setIsOpen(true)}
+        
       >
         <span className=" text-base">{label}</span>
         <IoIosArrowDown

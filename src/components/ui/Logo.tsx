@@ -1,7 +1,9 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
 
+
 import logo from '/images/logo.svg';
+import logoLetter from '../../../public/images/letter_O.svg';
 
 export const MainLogo: React.FC = () => {
   const scrollToTop = () => {
@@ -21,13 +23,9 @@ export const MainLogo: React.FC = () => {
           className="absolute inset-0 w-full h-full object-contain"
         />
         {/* Букви "о" на лініях */}
-        <div className="absolute flex space-x-2 top-[58%] left-[51%] transform -translate-x-1/2 -translate-y-1/2">
-          <span className="text-2xl text-black-900 group-hover:-translate-y-2 transition-transform duration-300">
-            o
-          </span>
-          <span className="text-2xl text-black-900 group-hover:-translate-y-2 transition-transform duration-300">
-            o
-          </span>
+        <div className="absolute flex space-x-2 top-[63%] left-[51%] transform -translate-x-1/2 -translate-y-1/2">
+          <img src={logoLetter} className="w-[14px] group-hover:-translate-y-2 transition-transform duration-300" />
+          <img src={logoLetter} className="w-[14px] group-hover:-translate-y-2 transition-transform duration-300" />
         </div>
       </div>
     </Link>
