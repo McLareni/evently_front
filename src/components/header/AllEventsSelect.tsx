@@ -77,7 +77,7 @@ export const AllEventsSelect: React.FC<AllEventsSelectProps> = ({
          focus:outline-none ${className}`}
         style={{ width: buttonWidth }}
         onMouseEnter={() => setIsOpen(true)}
-        onMouseLeave={() => setIsOpen(false)}
+        
       >
         <span className=" text-base">{label}</span>
         <IoIosArrowDown
