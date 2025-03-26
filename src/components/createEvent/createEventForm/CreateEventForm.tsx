@@ -46,6 +46,7 @@ const CreateEventForm: React.FC<CreateEventFormProps> = ({
     null,
   ]);
   const [agreement, setAgreement] = useState(false);
+  const [adult, setAdult] = useState(false);
 
   const {
     control,
@@ -83,6 +84,10 @@ const CreateEventForm: React.FC<CreateEventFormProps> = ({
 
   const checkAgreement = () => {
     setAgreement(!agreement);
+  };
+
+  const checkAdult = () => {
+    setAdult(!adult);
   };
 
   const popupEvent =
@@ -220,10 +225,12 @@ const CreateEventForm: React.FC<CreateEventFormProps> = ({
         errors={errors}
         agreement={agreement}
         checkAgreement={checkAgreement}
+        checkAdult={checkAdult}
+        adult={adult}
       />
       <div className="text-center">
         <SharedBtn
-          disabled={!isValid || !validateForm || !agreement}
+          disabled={!isValid || !validateForm || !agreement || !adult}
           type="submit"
           primary
           className="mt-8 bg-gradient-to-r from-[#9B8FF3] to-[#38F6F9] w-[230px] h-[48px]"

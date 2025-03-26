@@ -6,7 +6,7 @@ import {
   UseFormSetValue,
   UseFormWatch,
 } from 'react-hook-form';
-import { AiFillCheckCircle } from 'react-icons/ai';
+import { AiFillCheckCircle, AiOutlineExclamation } from 'react-icons/ai';
 import { BiSmile } from 'react-icons/bi';
 import { MdDone } from 'react-icons/md';
 
@@ -24,6 +24,8 @@ type AboutOrganizerProps = {
   errors: FieldErrors<CreateEventFormValues>;
   agreement: boolean;
   checkAgreement: () => void;
+  adult: boolean;
+  checkAdult: () => void;
 };
 
 const MAX_DESCRIPTION_LENGTH = 400;
@@ -35,9 +37,10 @@ const AboutOrganizer: React.FC<AboutOrganizerProps> = ({
   errors,
   agreement,
   checkAgreement,
+  adult,
+  checkAdult,
 }) => {
   const [showPicker, setShowPicker] = useState(false);
-  const [tipShown, setTipShown] = useState(false);
 
   const user = useAppSelector(selectUser);
 
@@ -53,10 +56,6 @@ const AboutOrganizer: React.FC<AboutOrganizerProps> = ({
     }
   };
 
-  const onTipHover = () => {
-    setTipShown(!tipShown);
-  };
-
   const aboutOrganizer = watch('aboutOrganizer');
   const phoneNumber = watch('phoneNumber');
 
@@ -68,7 +67,7 @@ const AboutOrganizer: React.FC<AboutOrganizerProps> = ({
 
   return (
     <div className="relative w-[760px] rounded-[20px] border-2 border-buttonPurple flex flex-col py-10 px-10">
-      {!errors.phoneNumber && phoneNumber && agreement && (
+      {!errors.phoneNumber && phoneNumber && agreement && adult && (
         <AiFillCheckCircle
           size={40}
           color="#3BE660"
@@ -111,21 +110,14 @@ const AboutOrganizer: React.FC<AboutOrganizerProps> = ({
 
       <div className="flex flex-col pb-2">
         <div className="pb-3 text-2xl flex">
-          <label htmlFor="title">
-            Номер телефону<span className="star">*</span>
+          <label htmlFor="title" className="flex items-center gap-2">
+            <div className="flex justify-center items-center border-[#ff0f00] border-2 rounded-full w-[24px] h-[24px]">
+              <AiOutlineExclamation color="#ff0f00" size={14} />
+            </div>
+            <span className="star text-[16px]">
+              Номер телефону обоязковий конфедеціний, для звязку адміністратора
+            </span>
           </label>
-          <div
-            className="relative"
-            onMouseEnter={onTipHover}
-            onMouseLeave={onTipHover}
-          >
-            i
-            {tipShown && (
-              <div className="absolute top-0 left-2 bg-[white] p-2 border-2 border-[red] rounded-lg">
-                тратата
-              </div>
-            )}
-          </div>
         </div>
         <Controller
           name="phoneNumber"
@@ -166,7 +158,7 @@ const AboutOrganizer: React.FC<AboutOrganizerProps> = ({
         </div>
       </div>
 
-      <label className="flex items-center cursor-pointer">
+      <label className="flex items-center cursor-pointer mb-[12px]">
         <input
           id="unlimitedTickets"
           type="checkbox"
@@ -174,20 +166,44 @@ const AboutOrganizer: React.FC<AboutOrganizerProps> = ({
           checked={agreement}
           onChange={checkAgreement}
         />
-        <div className="h-5 w-5 flex items-center justify-center bg-lightPink rounded-[5px]">
+        <div className="h-5 w-5 flex items-center justify-center border-text-dark border-2 rounded-[5px]">
           {agreement && <MdDone className="text-black w-6 h-6" />}
         </div>
         <span className="ml-2">
-          З умовами погоджуюсь.{' '}
+          Я погоджуюсь із{' '}
           <a
-            className="underline"
+            className="underline text-buttonPurple"
             href="/Правила.pdf"
             target="_blank"
             rel="noopener noreferrer"
           >
-            Правила
+            Політикою конфіденційності
+          </a>{' '}
+          та{' '}
+          <a
+            className="underline text-buttonPurple"
+            href="/Правила.pdf"
+            target="_blank"
+            rel="noopener noreferrer"
+          >
+            Умовами використання
           </a>
+          .
         </span>
+      </label>
+
+      <label className="flex items-center cursor-pointer">
+        <input
+          id="adult"
+          type="checkbox"
+          className="appearance-none"
+          checked={adult}
+          onChange={checkAdult}
+        />
+        <div className="h-5 w-5 flex items-center justify-center border-text-dark border-2 rounded-[5px]">
+          {adult && <MdDone className="text-black w-6 h-6" />}
+        </div>
+        <span className="ml-2">Мені виповнилося 18 років.</span>
       </label>
     </div>
   );
