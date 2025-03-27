@@ -201,7 +201,7 @@ const DateAndPlace = ({
                   {date.day.length > 0 ? (
                     <p className="pl-2">{formattedDate}</p>
                   ) : (
-                    <p className="pl-2 text-uploadBtnBg">Оберіть дату</p>
+                    <p className="pl-2 text-uploadBtnBg">Обери дату</p>
                   )}
                 </div>
                 <BiChevronDown />
@@ -237,7 +237,7 @@ const DateAndPlace = ({
                   {startSelected ? (
                     <p className="pl-2">{date.time}</p>
                   ) : (
-                    <p className="pl-2 text-uploadBtnBg">Оберіть час</p>
+                    <p className="pl-2 text-uploadBtnBg">Обери час</p>
                   )}
                 </div>
                 <BiChevronDown />
@@ -284,7 +284,7 @@ const DateAndPlace = ({
                   {endSelected ? (
                     <p className="pl-2">{date.endTime}</p>
                   ) : (
-                    <p className="pl-2 text-uploadBtnBg">Оберіть час</p>
+                    <p className="pl-2 text-uploadBtnBg">Обери час</p>
                   )}
                 </div>
                 <BiChevronDown />
