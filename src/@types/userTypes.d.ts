@@ -35,9 +35,9 @@ interface Coordinates {
 }
 
 interface Image {
+  creationDate: string;
   id: string;
-  photoInBytes: string;
-  creationDate: Date;
-  url: string;
   main: boolean;
+  name: string;
+  url: string;
 }
