@@ -4,7 +4,7 @@ import { useAppSelector } from '@/redux/hooks';
 import { PDF } from '@/PDF';
 import { useLazyGetAllEventsQueryWithTrigger } from '@/hooks/query/useLazyGetAllEventsQueryWithTrigger';
 import { useScrollToTop } from '@/hooks/useScrollToTop';
-import { PDFDownloadLink, PDFViewer } from '@react-pdf/renderer';
+import { PDFDownloadLink, PDFViewer, usePDF } from '@react-pdf/renderer';
 
 import { AllEvents } from '@/components/allEvents/AllEvents';
 import { Container } from '@/components/container/Container';
@@ -29,6 +29,8 @@ const Home: React.FC = () => {
     .slice(0, shownEvents);
   const topEvents = events?.filter(event => event.category === 'TOP_EVENTS');
 
+  const [instance] = usePDF({ document: <PDF user={user} /> });
+
   if (isLoading) return <Spinner />;
 
   return (
@@ -41,9 +43,17 @@ const Home: React.FC = () => {
 
       <Button type="button">
         <PDFDownloadLink document={<PDF user={user} />} fileName="ticket.pdf">
-          Скачати Pdf
+          Скачати PDF
         </PDFDownloadLink>
       </Button>
+
+      {instance.url && (
+        <Button type="button">
+          <a href={instance.url} target="_blank" rel="noreferrer">
+            Скачати PDF
+          </a>
+        </Button>
+      )}
 
       <>
         <TopEvents filteredEvents={topEvents} />
