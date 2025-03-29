@@ -40,3 +40,16 @@ export const PDF = ({ user }: { user: User }) => (
     </Page>
   </Document>
 );
+
+export const PDF1 = ({ event }: { event: Event }) => (
+  <Document>
+    <Page size="A4" style={styles.page}>
+      {event && (
+        <View style={styles.section}>
+          <Text style={styles.text}>Назва: {event.title}</Text>
+          <Text style={styles.text}>Ціна: {event.price}</Text>
+        </View>
+      )}
+    </Page>
+  </Document>
+);

@@ -9,11 +9,15 @@ import {
   useLazyGetUserEventsQuery,
 } from '@/redux/events/operations';
 
+import { PDF1 } from '@/PDF';
+import { usePDF } from '@react-pdf/renderer';
+
 import AboutUser from '@/components/eventDetails/AboutUser';
 import BackgroundStars from '@/components/eventDetails/BackgroundStars';
 import CreateBtnSection from '@/components/eventDetails/CreateBtnSection';
 import HeroSection from '@/components/eventDetails/HeroSection';
 import { EventCard } from '@/components/ui';
+import Button from '@/components/ui/Button';
 import { GoogleMap } from '@/components/ui/GoogleMap';
 import ShortEventList from '@/components/ui/ShortEventList';
 import { ShowAllButton } from '@/components/ui/ShowAllButton';
@@ -111,6 +115,16 @@ const EventDetails = () => {
 
   console.log(topEvents);
 
+  const [instance, updateInstance] = usePDF({
+    document: undefined,
+  });
+
+  useEffect(() => {
+    if (event) {
+      updateInstance(<PDF1 event={event} />);
+    }
+  });
+
   if (isLoading) {
     return <Spinner />;
   }
@@ -121,6 +135,14 @@ const EventDetails = () => {
 
   return (
     <main className="px-12 pb-10">
+      {event && instance.url && (
+        <Button type="button">
+          <a href={instance.url} target="_blank" rel="noreferrer">
+            Скачати PDF
+          </a>
+        </Button>
+      )}
+
       <BackgroundStars />
       <div className="relative z-10">
         <HeroSection
