@@ -8,6 +8,7 @@ interface PhotoCardListProps {
   handleImageFileChange: (id: number, photo: (File | null)[]) => void;
   photos: (string | null)[];
   validateForm: boolean;
+  countOldPhotos: number;
 }
 
 export const PhotoCardList = ({
@@ -15,6 +16,7 @@ export const PhotoCardList = ({
   handleImageFileChange,
   photos,
   validateForm,
+  countOldPhotos,
 }: PhotoCardListProps) => {
   const subtitles = [
     'Рекомендований розмір 400х400',
@@ -34,6 +36,7 @@ export const PhotoCardList = ({
             photo={photos[id]}
             onPhotoChange={onPhotoChange}
             handleImageFileChange={handleImageFileChange}
+            isOldPhoto={id < countOldPhotos}
           />
         ))}
       </div>

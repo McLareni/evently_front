@@ -6,6 +6,7 @@ import { selectUser } from '@/redux/auth/selectors';
 import { useAppSelector } from '@/redux/hooks';
 
 import { formatPhoneNumberFromMask } from '@/helpers/userForm/formatFromMask';
+import { formatPhoneToMask } from '@/helpers/userForm/formatToMask';
 import { FormaDataForCard } from '@/pages/events/CreateEventPage';
 import { createEvent } from '@/utils/eventsHttp';
 
@@ -31,13 +32,20 @@ type CreateEventFormProps = {
     day,
     location,
   }: FormaDataForCard) => void;
+  isEdit?: boolean;
+  event?: Event;
+  countOldPhotos?: number;
 };
 
 const CreateEventForm: React.FC<CreateEventFormProps> = ({
   photos,
   onPhotoChange,
   getFormData,
+  isEdit,
+  event,
+  countOldPhotos = 0,
 }) => {
+  const { phoneNumber } = useAppSelector(selectUser);
   const [isSuccessPopupShown, setIsSuccessPopupShown] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
   const [imageFile, setImageFile] = useState<(File | null)[]>([
@@ -58,7 +66,7 @@ const CreateEventForm: React.FC<CreateEventFormProps> = ({
     formState: { isValid, errors },
   } = useForm<CreateEventFormValues>({
     mode: 'onChange',
-    defaultValues: defaultValues,
+    defaultValues: (isEdit && event) || defaultValues,
   });
 
   const title = watch('title');
@@ -89,6 +97,29 @@ const CreateEventForm: React.FC<CreateEventFormProps> = ({
   const checkAdult = () => {
     setAdult(!adult);
   };
+
+  useEffect(() => {
+    if (isEdit && event) {
+      setValue('title', event.title);
+      setValue('description', event.description);
+      setValue('eventTypeName', event.type);
+      setValue('isOffline', event.eventFormat === 'OFFLINE');
+      setValue('location', event.location);
+      setValue('date', event.date);
+      setValue('eventUrl', event.eventUrl || '');
+      setValue('freeTickets', event.price === 0);
+      setValue('ticketPrice', event.price.toString());
+      setValue('numberOfTickets', event.numberOfTickets);
+      setValue('unlimitedTickets', event.unlimitedTickets);
+      setValue('aboutOrganizer', event.aboutOrganizer || '');
+      setValue(
+        'phoneNumber',
+        event.phoneNumber || formatPhoneToMask(phoneNumber)
+      );
+
+      trigger('phoneNumber');
+    }
+  }, [event]);
 
   const popupEvent =
     imageFile[0] &&
@@ -123,7 +154,7 @@ const CreateEventForm: React.FC<CreateEventFormProps> = ({
     phoneNumber,
   }: CreateEventFormValues) => {
     const formattedNumberOfTickets =
-      numberOfTickets.length === 0 ? '1' : numberOfTickets;
+      numberOfTickets === 0 ? '1' : numberOfTickets;
     const formattedPrice = ticketPrice.length === 0 ? 0 : ticketPrice;
     const eventFormat = isOffline ? 'OFFLINE' : 'ONLINE';
 
@@ -138,7 +169,7 @@ const CreateEventForm: React.FC<CreateEventFormProps> = ({
       eventFormat,
       date,
       organizers,
-      numberOfTickets: +formattedNumberOfTickets,
+      numberOfTickets: +(formattedNumberOfTickets || 0),
       ticketPrice: +formattedPrice,
       phoneNumber: formatPhoneNumberFromMask(phoneNumber),
     } as unknown as CreateEventFormValues;
@@ -148,6 +179,11 @@ const CreateEventForm: React.FC<CreateEventFormProps> = ({
     const thirdImage = imageFile[2];
 
     setIsLoading(true);
+
+    if (isEdit) {
+      return;
+    }
+
     createEvent(event, firstImage, secondImage, thirdImage)
       .then(response => {
         if (response.status === 201) {
@@ -197,6 +233,7 @@ const CreateEventForm: React.FC<CreateEventFormProps> = ({
         handleImageFileChange={handleImageFileChange}
         photos={photos}
         validateForm={validateForm}
+        countOldPhotos={countOldPhotos}
       />
       <AboutEvent
         control={control}

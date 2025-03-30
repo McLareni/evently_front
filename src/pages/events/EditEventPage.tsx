@@ -1,22 +1,19 @@
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
+import { useParams } from 'react-router';
+
+import { useLazyGetEventByIdQuery } from '@/redux/events/operations';
 
 import { Container } from '@/components/container/Container';
 import CreateEventCard from '@/components/createEvent/CreateEventCard';
 import CreateEventForm from '@/components/createEvent/createEventForm/CreateEventForm';
 
-export interface FormaDataForCard {
-  title: string;
-  eventTypeName: string | undefined;
-  ticketPrice: string;
-  freeTickets: boolean;
-  isOffline?: boolean;
-  location?: CreateEventLocation;
-  day: string;
-  time: string;
-}
+import { FormaDataForCard } from './CreateEventPage';
 
-const CreateEventPage: React.FC = () => {
+const EditEventPage: React.FC = () => {
+  const { idEvent } = useParams();
+  const [loadEvent, { data: event }] = useLazyGetEventByIdQuery();
   const [photos, setPhotos] = useState<(string | null)[]>([null, null, null]);
+  const [countOldPhotos, setCountOldPhotos] = useState<number>(0);
   const [eventInfoData, setEventInfoData] = useState<FormaDataForCard>({
     title: '',
     eventTypeName: '',
@@ -33,6 +30,29 @@ const CreateEventPage: React.FC = () => {
     day: '',
     time: '',
   });
+
+  useEffect(() => {
+    const fetchEvent = async () => {
+      const response = loadEvent(idEvent || '');
+      const event = (await response).data;
+      setEventInfoData({
+        title: event?.title || '',
+        eventTypeName: event?.type || '',
+        ticketPrice: event?.price.toString() || '',
+        freeTickets: event?.price === 0,
+        isOffline: !event?.eventUrl,
+        location: event ? { ...event.location } : undefined,
+        day: event?.date.day || '',
+        time: event?.date.time || '',
+      });
+      console.log(await response);
+
+      setPhotos(event?.images.map(img => img.url) || []);
+      setCountOldPhotos(event?.images.length || 0);
+    };
+
+    fetchEvent();
+  }, [idEvent, event]);
 
   const getFormData = ({
     title,
@@ -77,6 +97,9 @@ const CreateEventPage: React.FC = () => {
         <div className="flex gap-6">
           <CreateEventCard photo={photos[0]} eventInfoData={eventInfoData} />
           <CreateEventForm
+            isEdit
+            countOldPhotos={countOldPhotos}
+            event={event}
             photos={photos}
             onPhotoChange={handlePhotoChange}
             getFormData={getFormData}
@@ -87,4 +110,4 @@ const CreateEventPage: React.FC = () => {
   );
 };
 
-export default CreateEventPage;
+export default EditEventPage;

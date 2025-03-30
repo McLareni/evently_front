@@ -17,7 +17,7 @@ export const defaultValues = {
     endTime: '',
   },
   ticketPrice: '',
-  numberOfTickets: '',
+  numberOfTickets: 0,
   location: {
     city: '',
     street: '',

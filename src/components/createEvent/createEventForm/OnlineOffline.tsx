@@ -106,6 +106,11 @@ export const OnlineOffline = ({
                   autoComplete="true"
                   className="w-full h-full outline-none"
                   placeholder="Адреса проведення"
+                  defaultValue={
+                    watch('location.city')
+                      ? `${watch('location.city')}, ${watch('location.street')} ${watch('location.venue')}`
+                      : ''
+                  }
                   onPlaceSelect={place => {
                     if (!place || !place.geometry) return;
                     const formattedPlace = {

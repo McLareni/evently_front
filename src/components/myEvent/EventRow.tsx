@@ -52,10 +52,6 @@ const EventRow: React.FC<IProps> = ({ event, popUpIsShow, openPopUp }) => {
   const day = dateString.split(' ')[0];
   const month = dateString.split(' ')[1].slice(0, 3).toUpperCase();
 
-  const handleEditEvent = () => {
-    toast.info('Редагування подій поки що не доступне');
-  };
-
   const handleRejectEvent = () => {
     toast.info('Скасування подій поки що не доступне');
   };
@@ -130,7 +126,6 @@ const EventRow: React.FC<IProps> = ({ event, popUpIsShow, openPopUp }) => {
             id={event.id}
             approved={event.eventStatus === 'APPROVED'}
             rejectEvent={handleRejectEvent}
-            editEvent={handleEditEvent}
           />
         )}
       </td>

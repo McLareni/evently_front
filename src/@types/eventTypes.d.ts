@@ -8,18 +8,12 @@ interface Event {
   phoneNumber: string;
   numberOfTickets: number;
   availableTickets: number;
-  location: {
-    city: string;
-    street: string | null;
-    venue: string | null;
-    latitude: string | null;
-    longitude: string | null;
-  };
+  location: CreateEventLocation;
   organizers: User;
   aboutOrganizer?: string;
   rating: number;
   eventFormat: string;
-  eventUrl: string | null;
+  eventUrl?: string;
   eventStatus: 'PENDING' | 'APPROVED' | 'CANCELLED';
   images: Image[];
   date: {
@@ -139,7 +133,7 @@ type CreateEventFormValues = {
     endTime: string;
   };
   ticketPrice: string;
-  numberOfTickets: string;
+  numberOfTickets: number | string;
   location: CreateEventLocation;
   eventUrl: string;
   freeTickets: boolean;

@@ -146,7 +146,7 @@ const TicketPrice: React.FC<TicketPriceProps> = ({
               rules={{
                 validate: {
                   isValid: value =>
-                    unlimitedTickets || +value > 0 || 'Невірний формат',
+                    unlimitedTickets || +(value || 0) > 0 || 'Невірний формат',
                 },
               }}
               render={({ field }) => (
