@@ -5,6 +5,7 @@ import { useForm } from 'react-hook-form';
 import { selectUser } from '@/redux/auth/selectors';
 import { useAppSelector } from '@/redux/hooks';
 
+import { formatPhoneNumberFromMask } from '@/helpers/userForm/formatFromMask';
 import { FormaDataForCard } from '@/pages/events/CreateEventPage';
 import { createEvent } from '@/utils/eventsHttp';
 
@@ -44,6 +45,7 @@ const CreateEventForm: React.FC<CreateEventFormProps> = ({
     null,
     null,
   ]);
+  const [agreement, setAgreement] = useState(false);
 
   const {
     control,
@@ -79,6 +81,10 @@ const CreateEventForm: React.FC<CreateEventFormProps> = ({
     });
   };
 
+  const checkAgreement = () => {
+    setAgreement(!agreement);
+  };
+
   const popupEvent =
     imageFile[0] &&
     ({
@@ -109,6 +115,7 @@ const CreateEventForm: React.FC<CreateEventFormProps> = ({
     eventUrl,
     location,
     date,
+    phoneNumber,
   }: CreateEventFormValues) => {
     const formattedNumberOfTickets =
       numberOfTickets.length === 0 ? '1' : numberOfTickets;
@@ -128,6 +135,7 @@ const CreateEventForm: React.FC<CreateEventFormProps> = ({
       organizers,
       numberOfTickets: +formattedNumberOfTickets,
       ticketPrice: +formattedPrice,
+      phoneNumber: formatPhoneNumberFromMask(phoneNumber),
     } as unknown as CreateEventFormValues;
 
     const firstImage = imageFile[0];
@@ -205,10 +213,17 @@ const CreateEventForm: React.FC<CreateEventFormProps> = ({
         errors={errors}
         clearErrors={clearErrors}
       />
-      <AboutOrganizer control={control} setValue={setValue} watch={watch} />
+      <AboutOrganizer
+        control={control}
+        setValue={setValue}
+        watch={watch}
+        errors={errors}
+        agreement={agreement}
+        checkAgreement={checkAgreement}
+      />
       <div className="text-center">
         <SharedBtn
-          disabled={!isValid || !validateForm}
+          disabled={!isValid || !validateForm || !agreement}
           type="submit"
           primary
           className="mt-8 bg-gradient-to-r from-[#9B8FF3] to-[#38F6F9] w-[230px] h-[48px]"

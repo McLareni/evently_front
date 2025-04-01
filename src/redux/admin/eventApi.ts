@@ -58,10 +58,15 @@ export const EventApi = createApi({
       { status: number },
       { id: string; action: 'APPROVED' | 'CANCELLED' }
     >({
-      query: ({ id, action }) => ({
-        url: `/admin/events/${id}/status?status=${action}`,
-        method: 'PATCH',
-      }),
+      query: ({ id, action }) => {
+        const urlToEvent = encodeURIComponent(
+          `https://evently-book.vercel.app/event/${id}`
+        );
+        return {
+          url: `/admin/events/${id}/status?status=${action}&urlToEvent=${urlToEvent}`,
+          method: 'PATCH',
+        };
+      },
       invalidatesTags: ['Count'],
       async onQueryStarted(_, { dispatch, queryFulfilled }) {
         try {

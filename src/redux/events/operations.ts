@@ -4,7 +4,7 @@ import { RootState } from '../store';
 
 const URL = import.meta.env.VITE_URL;
 
-interface IFilter {
+export interface IFilter {
   eventTypes?: string[];
   isPopular?: boolean;
   isNearby?: boolean;
@@ -120,8 +120,13 @@ export const EventsApi = createApi({
 
     getEventById: builder.query<Event, string>({
       query: id => `events/${id}`,
-      providesTags: (result, error, id) => [{ type: 'Events', id }],
-      keepUnusedDataFor: 1000,
+      providesTags: (result, error, id) =>
+        result ? [{ type: 'Events', id: id.toString() }] : [],
+      transformResponse: (response: Event) => {
+        console.log('API Response:', response);
+        return response;
+      },
+      keepUnusedDataFor: 60,
     }),
 
     getAllMyEvents: builder.query<Event[], string>({
@@ -244,6 +249,7 @@ export const {
   useGetEventByIdQuery,
   useGetAllMyEventsQuery,
   useLazyGetAllEventsFilteredQuery,
+  useGetAllEventsFilteredQuery,
   useLazyGetEventByIdQuery,
   useGetUserEventsQuery,
   useLazyGetUserEventsQuery,

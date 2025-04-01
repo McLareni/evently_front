@@ -10,7 +10,8 @@ export const Organizers: React.FC = () => {
         <Link to="/organizers">
           <SharedBtn
             type="button"
-            className={`w-[276px] mx-auto h-[48px] border-buttonPurple border-[1px] bg-none color-none hover:shadow-shadowPrimaryBtn active:shadow-primaryBtnActive`}
+            secondary
+            className={`w-[276px] mx-auto h-[48px]`}
           >
             Стати організатором
           </SharedBtn>

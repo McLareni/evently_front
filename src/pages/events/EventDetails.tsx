@@ -3,7 +3,8 @@ import { FiFlag } from 'react-icons/fi';
 import { useParams } from 'react-router';
 
 import {
-  useGetAllEventsQuery,
+  useGetAllEventsFilteredQuery,
+  useLazyGetAllEventsFilteredQuery,
   useLazyGetEventByIdQuery,
   useLazyGetUserEventsQuery,
 } from '@/redux/events/operations';
@@ -18,13 +19,34 @@ import ShortEventList from '@/components/ui/ShortEventList';
 import { ShowAllButton } from '@/components/ui/ShowAllButton';
 import Spinner from '@/components/ui/Spinner';
 
+const EventTypes: Record<string, string> = {
+  'Усі події': 'ALL_EVENTS',
+  Інше: 'OTHER',
+  'Спортивні заходи': 'SPORTS_EVENTS',
+  'Бізнес та нетворкінг': 'BUSINESS_NETWORKING',
+  'Майстер класи': 'MASTER_CLASS',
+  Концерти: 'CONCERTS',
+  'Під домом': 'UNDER_HOUSE',
+  'Stand-up': 'STAND_UP',
+  Популярні: 'POPULAR',
+};
+
 const EventDetails = () => {
   const { idEvent } = useParams();
   const [trigger, { data: event, isLoading }] = useLazyGetEventByIdQuery();
-  const { data: events } = useGetAllEventsQuery();
+  const [refreshTopEvents, { data: topEvents }] =
+    useLazyGetAllEventsFilteredQuery();
+  const { data: similarEvents } = useGetAllEventsFilteredQuery({
+    page: 0,
+    size: 4,
+    filter: {
+      eventTypes: [EventTypes[event?.type || '']],
+    },
+  });
   const [userEventstrigger, { data: userEvents }] = useLazyGetUserEventsQuery();
-
-  const [randomTopEvents, setRandomTopEvents] = useState<Event[] | null>(null);
+  const [randomTopEvents, setRandomTopEvents] = useState<Event[] | undefined>(
+    topEvents?.slice(0, 3)
+  );
 
   const userId = event && event.organizers && event.organizers.id;
 
@@ -34,12 +56,35 @@ const EventDetails = () => {
       ({ eventStatus, id }) => eventStatus === 'APPROVED' && id !== idEvent
     );
 
-  const topEvents = events?.filter(
-    (event: Event) => event.category === 'TOP_EVENTS'
-  );
+  // const topEvents = events?.filter(
+  //   (event: Event) => event.category === 'TOP_EVENTS'
+  // );
 
   useEffect(() => {
-    if (idEvent) trigger(idEvent);
+    async function fetchEvent() {
+      const response = await trigger(idEvent || '');
+      if (response.status === 'uninitialized') {
+        fetchEvent();
+      }
+      const responseTopEvents = await refreshTopEvents({
+        page: 0,
+        size: 20,
+        filter: {
+          isPopular: true,
+        },
+      });
+      if (responseTopEvents.status === 'uninitialized') {
+        refreshTopEvents({
+          page: 0,
+          size: 20,
+          filter: {
+            isPopular: true,
+          },
+        });
+      }
+    }
+
+    if (idEvent) fetchEvent();
   }, [idEvent, trigger]);
 
   useEffect(() => {
@@ -48,25 +93,23 @@ const EventDetails = () => {
     }
   }, [userId, userEventstrigger]);
 
-  useEffect(() => {
-    const randomEvents = topEvents?.sort(() => Math.random() - 0.5).slice(0, 3);
-    if (!randomTopEvents && randomEvents) {
-      setRandomTopEvents(randomEvents);
-    }
-    if (randomEvents) {
-      let interval = setInterval(() => {
-        setRandomTopEvents(randomEvents);
-      }, 10000);
+  // useEffect(() => {
+  //   const randomEvents = topEvents?.sort(() => Math.random() - 0.5).slice(0, 3);
+  //   if (!randomTopEvents && randomEvents) {
+  //     setRandomTopEvents(randomEvents);
+  //   }
+  //   if (randomEvents) {
+  //     let interval = setInterval(() => {
+  //       setRandomTopEvents(randomEvents);
+  //     }, 10000);
 
-      return () => {
-        clearInterval(interval);
-      };
-    }
-  }, [randomTopEvents, topEvents, events]);
+  //     return () => {
+  //       clearInterval(interval);
+  //     };
+  //   }
+  // }, [randomTopEvents, topEvents]);
 
-  const similarEvents = events
-    ?.filter((event: Event) => event.type === event.type)
-    .slice(0, 4);
+  console.log(topEvents);
 
   if (isLoading) {
     return <Spinner />;
@@ -116,7 +159,7 @@ const EventDetails = () => {
             </button>
           </div>
           <div className="w-[344px] border-2 rounded-[20px] border-buttonPurple p-4 flex flex-col gap-8">
-            {randomTopEvents?.map(event => (
+            {topEvents?.map(event => (
               <EventCard key={event.id} event={event} />
             ))}
           </div>

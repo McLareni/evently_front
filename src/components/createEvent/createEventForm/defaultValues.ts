@@ -28,4 +28,5 @@ export const defaultValues = {
   eventUrl: '',
   freeTickets: false,
   isOffline: true,
+  phoneNumber: '',
 };

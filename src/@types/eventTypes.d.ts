@@ -144,6 +144,7 @@ type CreateEventFormValues = {
   eventUrl: string;
   freeTickets: boolean;
   isOffline?: boolean;
+  phoneNumber: string;
 };
 
 interface PageType {

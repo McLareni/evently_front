@@ -41,7 +41,7 @@ export const Hero: React.FC = () => {
     <div className="w-full px-[41px]">
       <Slider ref={sliderRef} {...settings}>
         {slides.map(item => (
-          <div key={item.id} className="aspect-[1356/606]">
+          <div key={item.id} className="aspect-[1356/420]">
             <img
               src={item.url}
               alt={item.title}
@@ -50,7 +50,7 @@ export const Hero: React.FC = () => {
           </div>
         ))}
       </Slider>
-      <div className="flex items-center mt-[20px] justify-center gap-[8px]">
+      <div className="flex items-center justify-center gap-[8px]">
         <PrevNextBtn onClick={setPrevSlide} />
         <Dots
           slides={slides}
