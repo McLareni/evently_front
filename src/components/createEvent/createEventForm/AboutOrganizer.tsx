@@ -106,13 +106,13 @@ const AboutOrganizer: React.FC<AboutOrganizerProps> = ({
 
       <div className="flex flex-col pb-2">
         <div className="pb-3 text-2xl flex">
-          <label htmlFor="title" className="flex items-center gap-2">
+          <label htmlFor="title" className="flex items-center gap-4">
+            <span className="text-[24px]">
+              Вартість квитків<span className="star">*</span>
+            </span>
             <div className="flex justify-center items-center border-[#ff0f00] border-2 rounded-full w-[24px] h-[24px]">
               <AiOutlineExclamation color="#ff0f00" size={14} />
             </div>
-            <span className="star text-[16px]">
-              Номер телефону обоязковий конфедеціний, для звязку адміністратора
-            </span>
           </label>
         </div>
         <Controller
