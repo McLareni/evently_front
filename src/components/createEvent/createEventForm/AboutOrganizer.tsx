@@ -162,7 +162,7 @@ const AboutOrganizer: React.FC<AboutOrganizerProps> = ({
           checked={agreement}
           onChange={checkAgreement}
         />
-        <div className="h-5 w-5 flex items-center justify-center border-text-dark border-2 rounded-[5px]">
+        <div className="h-5 w-5 flex items-center justify-center bg-lightPink rounded-[5px]">
           {agreement && <MdDone className="text-black w-6 h-6" />}
         </div>
         <span className="ml-2">
