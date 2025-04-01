@@ -15,7 +15,7 @@ export const Footer: React.FC = () => {
       <FooterLines />
       <MainLines />
       <div className="pr-[175px] flex flex-col gap-[43px] ">
-        <MainLogo className='h-[68px] w-[62px]' letters='w-[10px]'/>
+        <MainLogo className='!h-[68px] !w-[62px]' letters='!w-[10px]'/>
         <a href="tel:+380995745676" className='text-sm hover:font-bold'>+380(99) 574 56 76</a>
       </div>
       <nav className="pr-[193px]">
@@ -47,7 +47,7 @@ export const Footer: React.FC = () => {
         </Link>
       </nav>
       <div>
-        <p className='hover:font-bold cursor-default text-sm'>
+        <p className='cursor-default text-sm'>
           Ми у соц. мережах
         </p>
         <div className="flex mt-4">

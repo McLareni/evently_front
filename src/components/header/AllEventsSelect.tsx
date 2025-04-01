@@ -77,7 +77,8 @@ export const AllEventsSelect: React.FC<AllEventsSelectProps> = ({
          focus:outline-none ${className}`}
         style={{ width: buttonWidth }}
         onMouseEnter={() => setIsOpen(true)}
-        onClick={(value) => setIsOpen(!value)}
+        onMouseLeave={() => setIsOpen(false)}
+        // onClick={(value) => setIsOpen(!value)}
       >
         <span className=" text-base">{label}</span>
         <IoIosArrowDown
@@ -89,9 +90,11 @@ export const AllEventsSelect: React.FC<AllEventsSelectProps> = ({
       {isOpen && (
         <div
           role="menu"
-          className="origin-top absolute left-1/2 transform -translate-x-1/2 mt-1 rounded-[20px] shadow-lg bg-background 
+          className="origin-top absolute left-1/2 transform -translate-x-1/2 pt-1 rounded-[20px] shadow-lg bg-background 
           border-solid border-[1px] border-buttonPurple ring-1 ring-black ring-opacity-5 focus:outline-none z-10"
           style={{ width: dropdownWidth }}
+          onMouseEnter={() => setIsOpen(true)}
+          onMouseLeave={() => setIsOpen(false)}
         >
           <div className="py-1">
             {options.map(option => (
