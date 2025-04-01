@@ -115,7 +115,7 @@ const AboutOrganizer: React.FC<AboutOrganizerProps> = ({
 
       <div className="flex flex-col pb-2">
         <div className="pb-3 text-2xl flex relative">
-          <label htmlFor="title" className="flex items-center gap-4">
+          <label htmlFor="phoneNumber" className="flex items-center gap-4">
             <span className="text-[24px]">
               Вартість квитків<span className="star">*</span>
             </span>
@@ -132,7 +132,7 @@ const AboutOrganizer: React.FC<AboutOrganizerProps> = ({
               <div className="absolute left-60">
                 <div className="relative w-[230px]">
                   <img
-                    src="/public/images/phone-number-tooltip.svg"
+                    src="/images/phone-number-tooltip.svg"
                     width={230}
                     height={90}
                   />
