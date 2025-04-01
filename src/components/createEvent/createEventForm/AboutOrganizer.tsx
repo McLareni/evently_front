@@ -37,6 +37,15 @@ const AboutOrganizer: React.FC<AboutOrganizerProps> = ({
   checkAgreement,
 }) => {
   const [showPicker, setShowPicker] = useState(false);
+  const [shownTooltip, setShownTooltip] = useState(false);
+
+  const showTooltip = () => {
+    setShownTooltip(true);
+  };
+
+  const hideTooltip = () => {
+    setShownTooltip(false);
+  };
 
   const user = useAppSelector(selectUser);
 
@@ -111,27 +120,34 @@ const AboutOrganizer: React.FC<AboutOrganizerProps> = ({
               Вартість квитків<span className="star">*</span>
             </span>
             <div className="flex justify-center items-center border-[#ff0f00] border-2 rounded-full w-[24px] h-[24px]">
-              <AiOutlineExclamation color="#ff0f00" size={14} />
+              <AiOutlineExclamation
+                color="#ff0f00"
+                size={14}
+                onMouseEnter={showTooltip}
+                onMouseLeave={hideTooltip}
+              />
             </div>
 
-            <div className="absolute left-60">
-              <div className="relative w-[230px]">
-                <img
-                  src="/public/images/phone-number-tooltip.svg"
-                  width={230}
-                  height={90}
-                />
-                <p className="leading-[1.5] text-[12px] absolute right-4 top-[6px]">
-                  Не хвилюйтесь, ваш номер не
-                  <br />
-                  буде публічним – він доступний
-                  <br />
-                  тільки адміністраторам сервісу
-                  <br />
-                  для зв’язку з вами в разі потреби
-                </p>
+            {shownTooltip && (
+              <div className="absolute left-60">
+                <div className="relative w-[230px]">
+                  <img
+                    src="/public/images/phone-number-tooltip.svg"
+                    width={230}
+                    height={90}
+                  />
+                  <p className="leading-[1.5] text-[12px] absolute right-4 top-[6px]">
+                    Не хвилюйтесь, ваш номер не
+                    <br />
+                    буде публічним – він доступний
+                    <br />
+                    тільки адміністраторам сервісу
+                    <br />
+                    для зв’язку з вами в разі потреби
+                  </p>
+                </div>
               </div>
-            </div>
+            )}
           </label>
         </div>
         <Controller
