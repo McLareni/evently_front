@@ -34,10 +34,6 @@ const router = createBrowserRouter([
         // loader: getAllEventsLoader,
       },
       {
-        path: 'create_event',
-        element: <CreateEventForm />,
-      },
-      {
         path: 'event/:idEvent',
         element: <EventDetails />,
       },
@@ -53,6 +49,10 @@ const router = createBrowserRouter([
       {
         element: <LoginRouter />,
         children: [
+          {
+            path: 'create_event',
+            element: <CreateEventForm />,
+          },
           { path: 'user_profile', element: <Profile /> },
           { path: 'favourite', element: <Favourite /> },
           { path: 'my-event', element: <MyEvent /> },

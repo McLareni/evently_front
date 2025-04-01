@@ -24,8 +24,6 @@ type AboutOrganizerProps = {
   errors: FieldErrors<CreateEventFormValues>;
   agreement: boolean;
   checkAgreement: () => void;
-  adult: boolean;
-  checkAdult: () => void;
 };
 
 const MAX_DESCRIPTION_LENGTH = 400;
@@ -37,10 +35,17 @@ const AboutOrganizer: React.FC<AboutOrganizerProps> = ({
   errors,
   agreement,
   checkAgreement,
-  adult,
-  checkAdult,
 }) => {
   const [showPicker, setShowPicker] = useState(false);
+  const [shownTooltip, setShownTooltip] = useState(false);
+
+  const showTooltip = () => {
+    setShownTooltip(true);
+  };
+
+  const hideTooltip = () => {
+    setShownTooltip(false);
+  };
 
   const user = useAppSelector(selectUser);
 
@@ -67,7 +72,7 @@ const AboutOrganizer: React.FC<AboutOrganizerProps> = ({
 
   return (
     <div className="relative w-[760px] rounded-[20px] border-2 border-buttonPurple flex flex-col py-10 px-10">
-      {!errors.phoneNumber && phoneNumber && agreement && adult && (
+      {!errors.phoneNumber && phoneNumber && agreement && (
         <AiFillCheckCircle
           size={40}
           color="#3BE660"
@@ -109,14 +114,40 @@ const AboutOrganizer: React.FC<AboutOrganizerProps> = ({
       )}
 
       <div className="flex flex-col pb-2">
-        <div className="pb-3 text-2xl flex">
-          <label htmlFor="title" className="flex items-center gap-2">
-            <div className="flex justify-center items-center border-[#ff0f00] border-2 rounded-full w-[24px] h-[24px]">
-              <AiOutlineExclamation color="#ff0f00" size={14} />
-            </div>
-            <span className="star text-[16px]">
-              Номер телефону обоязковий конфедеціний, для звязку адміністратора
+        <div className="pb-3 text-2xl flex relative">
+          <label htmlFor="phoneNumber" className="flex items-center gap-4">
+            <span className="text-[24px]">
+              Вартість квитків<span className="star">*</span>
             </span>
+            <div className="flex justify-center items-center border-[#ff0f00] border-2 rounded-full w-[24px] h-[24px]">
+              <AiOutlineExclamation
+                color="#ff0f00"
+                size={14}
+                onMouseEnter={showTooltip}
+                onMouseLeave={hideTooltip}
+              />
+            </div>
+
+            {shownTooltip && (
+              <div className="absolute left-60">
+                <div className="relative w-[230px]">
+                  <img
+                    src="/images/phone-number-tooltip.svg"
+                    width={230}
+                    height={90}
+                  />
+                  <p className="leading-[1.5] text-[12px] absolute right-4 top-[6px]">
+                    Не хвилюйтесь, ваш номер не
+                    <br />
+                    буде публічним – він доступний
+                    <br />
+                    тільки адміністраторам сервісу
+                    <br />
+                    для зв’язку з вами в разі потреби
+                  </p>
+                </div>
+              </div>
+            )}
           </label>
         </div>
         <Controller
@@ -146,7 +177,7 @@ const AboutOrganizer: React.FC<AboutOrganizerProps> = ({
                 type="text"
                 id="title"
                 className="focus:outline-none w-full h-full p-4 rounded-[8px]"
-                placeholder="+38(099)999-99-99"
+                placeholder="+38(0**)***-**-**"
               />
             </div>
           )}
@@ -166,7 +197,7 @@ const AboutOrganizer: React.FC<AboutOrganizerProps> = ({
           checked={agreement}
           onChange={checkAgreement}
         />
-        <div className="h-5 w-5 flex items-center justify-center border-text-dark border-2 rounded-[5px]">
+        <div className="h-5 w-5 flex items-center justify-center bg-lightPink rounded-[5px]">
           {agreement && <MdDone className="text-black w-6 h-6" />}
         </div>
         <span className="ml-2">
@@ -190,20 +221,6 @@ const AboutOrganizer: React.FC<AboutOrganizerProps> = ({
           </a>
           .
         </span>
-      </label>
-
-      <label className="flex items-center cursor-pointer">
-        <input
-          id="adult"
-          type="checkbox"
-          className="appearance-none"
-          checked={adult}
-          onChange={checkAdult}
-        />
-        <div className="h-5 w-5 flex items-center justify-center border-text-dark border-2 rounded-[5px]">
-          {adult && <MdDone className="text-black w-6 h-6" />}
-        </div>
-        <span className="ml-2">Мені виповнилося 18 років.</span>
       </label>
     </div>
   );
