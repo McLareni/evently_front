@@ -26,16 +26,22 @@ export const TicketDraft: React.FC<TicketDraftProps> = ({
         </div>
         <div>
           <p className="mb-[16px]">{event?.date.day}</p>
-          <p className="mb-[16px]">{event?.date.time}</p>
-          <p>
-            {event?.location.city}, {event?.location.street}
+          <p className="mb-[16px]">
+            {event?.date.time} - {event?.date.endTime}
           </p>
+          {event?.eventUrl ? (
+            <p>Онлайн</p>
+          ) : (
+            <p>
+              {event?.location.city}, {event?.location.street}
+            </p>
+          )}
         </div>
       </div>
       <div className="mt-auto mx-auto">
         <SharedBtn
           onClick={() => setCurrentActionHandler(currentAction + 1)}
-          type="button"
+          type={currentAction === 1 ? 'button' : 'submit'}
           primary
           className="bg-gradient-to-r from-[#9B8FF3] to-[#38F6F9] w-[230px] h-[48px]"
         >

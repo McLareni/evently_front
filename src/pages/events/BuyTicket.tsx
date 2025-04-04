@@ -9,7 +9,7 @@ import { Action3 } from '@/components/buyTicket/Action3';
 import { BuyTicketTabs } from '@/components/buyTicket/BuyTicketTabs';
 import { Container } from '@/components/container/Container';
 
-import { TicketDraft } from './TicketDraft';
+import { TicketDraft } from '../../components/buyTicket/TicketDraft';
 
 const BuyTicket: React.FC = () => {
   const [currentAction, setCurrentAction] = useState(1);
@@ -60,7 +60,7 @@ const BuyTicket: React.FC = () => {
             />
           </div>
         )}
-        {currentAction === 3 && <Action3 />}
+        {currentAction === 3 && <Action3 event={event} />}
       </Container>
     </div>
   );

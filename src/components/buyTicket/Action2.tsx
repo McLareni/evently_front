@@ -75,12 +75,13 @@ export const Action2: FC = () => {
   };
 
   const onSubmit: SubmitHandler<UserInfo> = data => {
-    const newObj = SearchChanges(defaultValues, data);
-    if (Object.keys(newObj).length === 0) {
-      return toast.error('Немає що змінювати');
-    }
-    dispatch(updateUserInfo(newObj));
-    !isLoading && dispatch(getUser());
+    // const newObj = SearchChanges(defaultValues, data);
+    // if (Object.keys(newObj).length === 0) {
+    //   return toast.error('Немає що змінювати');
+    // }
+    // dispatch(updateUserInfo(newObj));
+    // !isLoading && dispatch(getUser());
+    console.log(data);
   };
 
   const checkAgreement = () => {
@@ -106,6 +107,7 @@ export const Action2: FC = () => {
           type="text"
           label="Ім'я"
           error={errors?.name?.message}
+          width="380"
         />
 
         <ProfileInput
@@ -123,6 +125,7 @@ export const Action2: FC = () => {
           type="text"
           label="Прізвище"
           error={errors?.surname?.message}
+          width="380"
         />
       </div>
 
@@ -140,6 +143,7 @@ export const Action2: FC = () => {
               type="numeric"
               label="Дата народження"
               error={errors?.birthdayDate?.message}
+              width="380"
             />
           )}
           rules={{
@@ -186,6 +190,7 @@ export const Action2: FC = () => {
               type="tel"
               label="Номер телефону"
               error={errors?.phoneNumber?.message}
+              width="380"
             />
           )}
           rules={{

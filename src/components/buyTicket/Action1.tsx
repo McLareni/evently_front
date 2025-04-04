@@ -59,7 +59,9 @@ export const Action1: React.FC<Action1Props> = ({
       </div>
       <div className="flex gap-[24px] items-center">
         <ImPriceTag size={38} />
-        <span className="text-[48px]">{price}</span>
+        <span className="text-[48px]">
+          {price !== 0 ? price : 'Безкоштовно'}
+        </span>
       </div>
     </div>
   );
