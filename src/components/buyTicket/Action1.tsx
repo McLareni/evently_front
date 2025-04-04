@@ -46,14 +46,14 @@ export const Action1: React.FC<Action1Props> = ({
             onClick={decrement}
             className="focus:outline-none text-buttonPurple"
           >
-            <AiOutlineMinusCircle size={36} color="buttonPurple" />
+            <AiOutlineMinusCircle size={36} />
           </button>
           <span className="text-[48px]">{ticketCount}</span>
           <button
             onClick={increment}
             className="focus:outline-none text-buttonPurple"
           >
-            <AiOutlinePlusCircle size={36} color="buttonPurple" />
+            <AiOutlinePlusCircle size={36} />
           </button>
         </div>
       </div>
