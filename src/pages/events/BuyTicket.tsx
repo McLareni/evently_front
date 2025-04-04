@@ -5,6 +5,7 @@ import { useLazyGetEventByIdQuery } from '@/redux/events/operations';
 
 import { Action1 } from '@/components/buyTicket/Action1';
 import { Action2 } from '@/components/buyTicket/Action2';
+import { Action3 } from '@/components/buyTicket/Action3';
 import { BuyTicketTabs } from '@/components/buyTicket/BuyTicketTabs';
 import { Container } from '@/components/container/Container';
 
@@ -59,6 +60,7 @@ const BuyTicket: React.FC = () => {
             />
           </div>
         )}
+        {currentAction === 3 && <Action3 />}
       </Container>
     </div>
   );
