@@ -10,6 +10,7 @@ import Notifications from '@/pages/admin/Notification';
 import PromoEvents from '@/pages/admin/PromoEvents';
 import UserProfileAdmin from '@/pages/admin/UserProfile';
 import AllEventsPage from '@/pages/events/AllEventsPage';
+import BuyTicket from '@/pages/events/BuyTicket';
 import CreateEventForm from '@/pages/events/CreateEventPage';
 import EventDetails from '@/pages/events/EventDetails';
 import Favourite from '@/pages/user/Favourite';
@@ -54,6 +55,7 @@ const router = createBrowserRouter([
             element: <CreateEventForm />,
           },
           { path: 'user_profile', element: <Profile /> },
+          { path: 'event/:idEvent/buy_ticket', element: <BuyTicket /> },
           { path: 'favourite', element: <Favourite /> },
           { path: 'my-event', element: <MyEvent /> },
           {
