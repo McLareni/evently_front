@@ -16,7 +16,7 @@ export const Layout = () => {
   const showLines = () => {
     return route === '/' ||
       route === '/create_event' ||
-      route.startsWith('/event/')
+      (route.startsWith('/event/') && !route.includes('buy_ticket'))
       ? false
       : true;
   };

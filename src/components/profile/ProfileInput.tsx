@@ -5,10 +5,14 @@ export interface ProfileInputProps extends HTMLProps<HTMLInputElement> {
   forPassword?: boolean;
   error?: string;
   label: string;
+  width?: string;
 }
 
 export const ProfileInput = forwardRef<HTMLInputElement, ProfileInputProps>(
-  ({ label, error, forPassword = false, onBlur, ...props }, ref) => {
+  (
+    { label, error, forPassword = false, onBlur, width = '312', ...props },
+    ref
+  ) => {
     const [isFocused, setIsFocused] = useState(false);
     const [passwordVisible, setPasswordVisible] = useState(false);
 
@@ -33,7 +37,7 @@ export const ProfileInput = forwardRef<HTMLInputElement, ProfileInputProps>(
     };
 
     return (
-      <fieldset className="relative w-[312px]">
+      <fieldset style={{ width: `${width}px` }} className={`relative`}>
         <div className="relative">
           <input
             autoComplete="on"
