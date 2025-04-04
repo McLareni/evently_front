@@ -117,7 +117,7 @@ const AboutOrganizer: React.FC<AboutOrganizerProps> = ({
         <div className="pb-3 text-2xl flex relative">
           <label htmlFor="phoneNumber" className="flex items-center gap-4">
             <span className="text-[24px]">
-              Вартість квитків<span className="star">*</span>
+              Номер телефону<span className="star">*</span>
             </span>
             <div className="flex justify-center items-center border-[#ff0f00] border-2 rounded-full w-[24px] h-[24px]">
               <AiOutlineExclamation
