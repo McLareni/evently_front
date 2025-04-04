@@ -38,6 +38,30 @@ const BuyTicket: React.FC = () => {
   return (
     <div className="font-oswald leading-none">
       <Container>
+        <div className="mb-[10px] flex justify-between">
+          <div
+            className={`${currentAction === 1 ? 'bg-[url(/images/ticket/buy-ticket-tab-active.svg)]' : 'bg-[url(/images/ticket/buy-ticket-tab.svg)]'} bg-cover bg-center w-[400px] h-[20px] flex justify-center align-center`}
+          >
+            <div>
+              <span className="text-[14px]">Оберіть квиток</span>
+            </div>
+          </div>
+          <div
+            className={`${currentAction === 2 ? 'bg-[url(/images/ticket/buy-ticket-tab-active.svg)]' : 'bg-[url(/images/ticket/buy-ticket-tab.svg)]'} bg-cover bg-center w-[400px] h-[20px] flex justify-center align-center`}
+          >
+            <div>
+              <span className="text-[14px]">Доставка і оплата</span>
+            </div>
+          </div>
+          <div
+            className={`${currentAction === 3 ? 'bg-[url(/images/ticket/buy-ticket-tab-active.svg)]' : 'bg-[url(/images/ticket/buy-ticket-tab.svg)]'} bg-cover bg-center w-[400px] h-[20px] flex justify-center align-center`}
+          >
+            <div>
+              <span className="text-[14px]">Насолоджуйтесь подією</span>
+            </div>
+          </div>
+        </div>
+
         <div className="flex justify-between">
           <div className="bg-[url('/images/ticket/ticket-info.svg')] bg-cover bg-center w-[860px] h-[250px] px-[64px] py-[36px] flex flex-col justify-between">
             <div className="flex items-center justify-between">
