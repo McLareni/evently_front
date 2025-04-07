@@ -10,7 +10,8 @@ export const ProfileTabLayout = () => {
   const { pathname } = useLocation();
 
   const isAdminMenu = pathname.includes('admin');
-  const withoutAsideTabs = pathname.includes('create_event');
+  const withoutAsideTabs =
+    pathname.includes('create_event') || pathname.includes('buy_ticket');
 
   return (
     <main

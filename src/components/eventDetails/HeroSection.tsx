@@ -6,6 +6,7 @@ import {
 } from 'react-icons/ai';
 import { FaRegMoneyBillAlt } from 'react-icons/fa';
 import { GrLocation } from 'react-icons/gr';
+import { Link } from 'react-router-dom';
 import { toast } from 'react-toastify';
 
 import { selectUser } from '@/redux/auth/selectors';
@@ -165,11 +166,16 @@ const HeroSection: React.FC<IProps> = ({ idEvent, event }) => {
               {event?.price > 0 ? event?.price + ' ₴' : 'Безкоштовно'}
             </p>
           </div>
-          <button className="bg-dark-gradient w-[421px] h-12 rounded-[71px_8px] text-background text-2xl mt-[55px] hover:border-4 hover:border-buttonPurple hover:shadow-shadowPrimaryBtn focus:outline-none active:shadow-primaryBtnActive">
-            {event.price === 0 && event.eventFormat === 'ONLINE'
-              ? 'Зареєструватись'
-              : 'Купити квиток'}
-          </button>
+          <Link to={`buy_ticket`}>
+            <button
+              type="button"
+              className="bg-dark-gradient w-[421px] h-12 rounded-[71px_8px] text-background text-2xl mt-[55px] hover:border-4 hover:border-buttonPurple hover:shadow-shadowPrimaryBtn focus:outline-none active:shadow-primaryBtnActive"
+            >
+              {event.price === 0 && event.eventFormat === 'ONLINE'
+                ? 'Зареєструватись'
+                : 'Купити квиток'}
+            </button>
+          </Link>
           <button
             onClick={() => setPopupShare(true)}
             className="focus:outline-0 absolute top-[56px] right-[26px]"
