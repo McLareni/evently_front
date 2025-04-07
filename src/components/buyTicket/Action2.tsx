@@ -18,6 +18,7 @@ import {
   formatBirthDateToMask,
   formatPhoneToMask,
 } from '@/helpers/userForm/formatToMask';
+import { validateEmail } from '@/utils';
 import { MAX_NAME_LENGTH, validateName } from '@/utils/validateName';
 import { useMask } from '@react-input/mask';
 
@@ -27,23 +28,17 @@ import Spinner from '../ui/Spinner';
 export const Action2: FC = () => {
   const [agreement, setAgreement] = useState(false);
 
-  const { name, surname, birthdayDate, phoneNumber } =
-    useAppSelector(selectUser);
+  const { name, surname, phoneNumber, email } = useAppSelector(selectUser);
   const isLoading = useAppSelector(selectIsLoading);
 
   const dispatch = useAppDispatch();
 
-  const defaultValues: UserInfo = {
+  const defaultValues: BuyTicketUser = {
     name: name || '',
     surname: surname || '',
-    birthdayDate: formatBirthDateToMask(birthdayDate),
+    email: email || '',
     phoneNumber: formatPhoneToMask(phoneNumber),
   };
-
-  const birthdayInputRef = useMask({
-    mask: '__.__.____',
-    replacement: { _: /\d/ },
-  });
 
   const phoneInputRef = useMask({
     mask: '+38(___)___-__-__',
@@ -56,25 +51,9 @@ export const Action2: FC = () => {
     control,
     getValues,
     formState: { errors, isValid },
-  } = useForm<UserInfo>({ mode: 'onChange', defaultValues });
+  } = useForm<BuyTicketUser>({ mode: 'onChange', defaultValues });
 
-  const SearchChanges = (obj1: UserInfo, obj2: UserInfo) => {
-    return {
-      ...(obj1.name !== obj2.name && { name: obj2.name }),
-      ...(obj1.surname !== obj2.surname && { surname: obj2.surname }),
-      ...(obj1.birthdayDate !== obj2.birthdayDate && {
-        birthdayDate: formatBirthDateFromMask(obj2.birthdayDate),
-      }),
-      ...(obj1.phoneNumber !== obj2.phoneNumber && {
-        phoneNumber: formatPhoneNumberFromMask(obj2.phoneNumber),
-      }),
-      ...(obj1.changePassword !== obj2.changePassword && {
-        password: obj2.changePassword,
-      }),
-    };
-  };
-
-  const onSubmit: SubmitHandler<UserInfo> = data => {
+  const onSubmit: SubmitHandler<BuyTicketUser> = data => {
     // const newObj = SearchChanges(defaultValues, data);
     // if (Object.keys(newObj).length === 0) {
     //   return toast.error('Немає що змінювати');
@@ -90,11 +69,11 @@ export const Action2: FC = () => {
 
   return (
     <form
-      className="flex flex-col border-[1px] border-buttonPurple rounded-[10px] p-[16px] mb-auto"
+      className="flex flex-col border-[1px] border-buttonPurple rounded-[10px] p-[24px] mb-auto gap-[20px]"
       onSubmit={handleSubmit(onSubmit)}
     >
       {isLoading && <Spinner />}
-      <div className="flex gap-[24px] mb-[8px]">
+      <div className="flex gap-[52px] mb-[8px]">
         <ProfileInput
           {...register('name', {
             required: true,
@@ -129,54 +108,7 @@ export const Action2: FC = () => {
         />
       </div>
 
-      <div className="flex gap-[24px] mb-[8px]">
-        <Controller
-          name="birthdayDate"
-          control={control}
-          render={({ field }) => (
-            <ProfileInput
-              {...field}
-              ref={birthdayInputRef}
-              placeholder="ДД.ММ.РРРР"
-              id="birthday"
-              htmlFor="birthday"
-              type="numeric"
-              label="Дата народження"
-              error={errors?.birthdayDate?.message}
-              width="380"
-            />
-          )}
-          rules={{
-            required: false,
-            validate: value => {
-              if (value.length > 0 && value.length < 10) {
-                return 'Введіть дату народження';
-              } else if (!isValueDate(value) && value.length !== 0) {
-                return 'Невірний формат дати';
-              } else if (
-                new Date(
-                  `${value.slice(6, 11)}-${value.slice(3, 5)}-${value.slice(0, 2)}`
-                ) < new Date('1900-01-01')
-              ) {
-                return 'Введіть правильну дату народження';
-              }
-              const today = new Date();
-              const adulthoodDate = new Date(
-                today.getFullYear() - 18,
-                today.getMonth(),
-                today.getDate()
-              );
-              if (
-                new Date(
-                  `${value.slice(6, 11)}-${value.slice(3, 5)}-${value.slice(0, 2)}`
-                ) > adulthoodDate
-              ) {
-                return 'Тобі має бути більше 18 років';
-              }
-            },
-          }}
-        />
-
+      <div className="flex gap-[52px] mb-[8px]">
         <Controller
           name="phoneNumber"
           control={control}
@@ -208,6 +140,26 @@ export const Action2: FC = () => {
                 }
               }
             },
+          }}
+        />
+        <Controller
+          name="email"
+          control={control}
+          render={({ field }) => (
+            <ProfileInput
+              {...field}
+              placeholder="Електронна пошта"
+              id="birthday"
+              htmlFor="birthday"
+              type="numeric"
+              label="Електронна пошта"
+              error={errors?.email?.message}
+              width="380"
+            />
+          )}
+          rules={{
+            required: false,
+            validate: value => validateEmail(value),
           }}
         />
       </div>
