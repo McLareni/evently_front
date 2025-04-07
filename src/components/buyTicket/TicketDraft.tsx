@@ -38,7 +38,7 @@ export const TicketDraft: React.FC<TicketDraftProps> = ({
 
   return (
     <div className="bg-[url('/images/ticket/ticket-background.svg')] bg-cover bg-center w-[378px] h-[584px] flex flex-col px-[10px]">
-      <div className="overflow-scroll overscroll-contain h-[365px] px-[10px] mt-[20px]">
+      <div className="overflow-scroll overscroll-contain h-[370px] px-[10px] mt-[20px]">
         <img
           className="h-[200px] w-full object-cover rounded-[10px] mb-[32px]"
           src={event?.images[0].url}
