@@ -119,31 +119,28 @@ const AboutOrganizer: React.FC<AboutOrganizerProps> = ({
             <span className="text-[24px]">
               Номер телефону<span className="star">*</span>
             </span>
-            <div className="flex justify-center items-center border-[#ff0f00] border-2 rounded-full w-[24px] h-[24px]">
-              <AiOutlineExclamation
-                color="#ff0f00"
-                size={14}
-                onMouseEnter={showTooltip}
-                onMouseLeave={hideTooltip}
-              />
+            <div
+              onMouseEnter={showTooltip}
+              onMouseLeave={hideTooltip}
+              className="flex justify-center items-center border-[#ff0f00] border-2 rounded-full w-[24px] h-[24px]"
+            >
+              <AiOutlineExclamation color="#ff0f00" size={14} />
             </div>
 
             {shownTooltip && (
-              <div className="absolute left-60">
+              <div className="absolute left-[250px]">
                 <div className="relative w-[230px]">
                   <img
                     src="/images/phone-number-tooltip.svg"
-                    width={230}
+                    width={170}
                     height={90}
                   />
-                  <p className="leading-[1.5] text-[12px] absolute right-4 top-[6px]">
-                    Не хвилюйтесь, ваш номер не
+                  <p className="leading-[1.5] text-[12px] absolute left-6 top-[6px]">
+                    Ваш номер бачать лише
                     <br />
-                    буде публічним – він доступний
+                    адміністратор для зв’язку
                     <br />
-                    тільки адміністраторам сервісу
-                    <br />
-                    для зв’язку з вами в разі потреби
+                    за потреби
                   </p>
                 </div>
               </div>
