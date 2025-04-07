@@ -13,7 +13,7 @@ import { TicketDraft } from '../../components/buyTicket/TicketDraft';
 
 const BuyTicket: React.FC = () => {
   const [currentAction, setCurrentAction] = useState(1);
-  const [price, setPrice] = useState<number>();
+  const [price, setPrice] = useState<number>(0);
   const [ticketCount, setTicketCount] = useState(1);
   console.log(price, ticketCount);
 

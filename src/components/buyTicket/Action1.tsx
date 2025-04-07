@@ -33,9 +33,9 @@ export const Action1: React.FC<Action1Props> = ({
   }, [event, ticketCount]);
 
   useEffect(() => {
+    getTicketCount(ticketCount);
     if (price) {
       getPrice(price);
-      getTicketCount(ticketCount);
     }
   }, [getPrice, getTicketCount, price, ticketCount]);
 
