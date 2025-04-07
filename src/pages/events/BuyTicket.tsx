@@ -57,6 +57,8 @@ const BuyTicket: React.FC = () => {
               event={event}
               setCurrentActionHandler={setCurrentActionHandler}
               currentAction={currentAction}
+              ticketCount={ticketCount}
+              price={price}
             />
           </div>
         )}
