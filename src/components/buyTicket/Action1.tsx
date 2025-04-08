@@ -3,7 +3,7 @@ import { useEffect, useState } from 'react';
 import { AiOutlineMinusCircle, AiOutlinePlusCircle } from 'react-icons/ai';
 import { ImPriceTag } from 'react-icons/im';
 
-import { ProfileInput } from '../profile/ProfileInput';
+import { BuyTicketInput } from './BuyTicketInput';
 
 interface Action1Props {
   event: Event | undefined;
@@ -63,13 +63,13 @@ export const Action1: React.FC<Action1Props> = ({
         <div className="flex gap-[24px] items-center">
           <ImPriceTag size={38} />
           <span className="text-[48px]">
-            {price !== 0 ? price : 'Безкоштовно'}
+            {price !== 0 ? `${price} грн` : 'Безкоштовно'}
           </span>
         </div>
       </div>
       <div className="relative">
-        <ProfileInput
-          placeholder="Промокод"
+        <BuyTicketInput
+          placeholder="Введіть промокод"
           id="name"
           htmlFor="name"
           type="text"
@@ -77,7 +77,10 @@ export const Action1: React.FC<Action1Props> = ({
           // error={errors?.name?.message}
           width="860"
         />
-        <button className="absolute right-8 top-6 focus:outline-none">
+        <button
+          className={`absolute right-8 top-[18px]
+          focus:outline-none text-[24px] text-buttonPurple font-medium`}
+        >
           Застосувати
         </button>
       </div>
