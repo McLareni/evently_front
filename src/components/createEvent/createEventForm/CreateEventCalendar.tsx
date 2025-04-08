@@ -1,17 +1,8 @@
 /* eslint-disable no-unused-vars */
 import { useEffect, useState } from 'react';
-import { Calendar } from 'react-date-range';
 
-import { uk } from 'date-fns/locale';
-import dayjs from 'dayjs';
-
-const customUk = {
-  ...uk,
-  localize: {
-    ...uk.localize,
-    day: (n: number) => ['нд', 'пн', 'вт', 'ср', 'чт', 'пт', 'сб'][n],
-  },
-} as typeof uk;
+import { Calendar } from 'bme-calendar';
+import 'bme-calendar/style.css';
 
 interface CreateEventCalendarProps {
   handleDateChange: (newDate: string) => void;
@@ -22,25 +13,14 @@ export const CreateEventCalendar = ({
   handleDateChange,
   toggleIsCalendarShown,
 }: CreateEventCalendarProps) => {
-  const [date, setDate] = useState<Date | undefined>();
-
-  const formattedDate = date ? dayjs(date).format('YYYY-MM-DD') : '';
+  const [day, setDay] = useState<string>();
 
   useEffect(() => {
-    if (date) {
+    if (day) {
+      handleDateChange(day);
       toggleIsCalendarShown();
-      handleDateChange(formattedDate);
     }
-  }, [date, formattedDate, handleDateChange, toggleIsCalendarShown]);
+  }, [day, handleDateChange, toggleIsCalendarShown]);
 
-  return (
-    <Calendar
-      showMonthAndYearPickers={false}
-      onChange={item => setDate(item)}
-      locale={customUk}
-      showDateDisplay={false}
-      date={date}
-      className="bg-background"
-    />
-  );
+  return <Calendar setDay={setDay} />;
 };

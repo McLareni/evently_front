@@ -10,16 +10,18 @@ export const ProfileTabLayout = () => {
   const { pathname } = useLocation();
 
   const isAdminMenu = pathname.includes('admin');
+  const withoutAsideTabs =
+    pathname.includes('create_event') || pathname.includes('buy_ticket');
 
   return (
     <main
       className={clsx(
-        'flex relative p-[0px_55px_55px_55px]',
+        !withoutAsideTabs ? 'flex relative p-[0px_55px_55px_55px]' : '',
         isAdminMenu ? 'gap-[16px]' : 'gap-[25px]'
       )}
     >
       <MainLines />
-      <ProfileTab />
+      {!withoutAsideTabs && <ProfileTab />}
 
       <section
         className={`rounded-[20px] w-full h-auto ${isAdminMenu ? 'border border-buttonPurple border-spacing-8 py-4' : ''}`}

@@ -29,6 +29,8 @@ type UserInfo = Pick<
   | 'repeatPassword'
 >;
 
+type BuyTicketUser = Pick<User, 'name' | 'surname' | 'email' | 'phoneNumber'>;
+
 interface Coordinates {
   latitude: number;
   longitude: number;

@@ -22,7 +22,7 @@ export const MainLogo: React.FC<LogoProps> = ({
   return (
     <Link
       to={'/'}
-      className={`${className}relative w-[84px] h-[88px] flex items-center justify-center`}
+      className={`${className} relative w-[84px] h-[88px] flex items-center justify-center `}
       onClick={scrollToTop}
     >
       <div className="relative group w-full h-full">
