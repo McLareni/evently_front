@@ -24,6 +24,7 @@ import { useMask } from '@react-input/mask';
 
 import { ProfileInput } from '../profile/ProfileInput';
 import Spinner from '../ui/Spinner';
+import { BuyTicketInput } from './BuyTicketInput';
 
 export const Action2: FC = () => {
   const [agreement, setAgreement] = useState(false);
@@ -69,18 +70,19 @@ export const Action2: FC = () => {
 
   return (
     <form
-      className="flex flex-col border-[1px] border-buttonPurple rounded-[10px] p-[24px] mb-auto gap-[20px]"
+      className="flex flex-col border-[2px] border-buttonPurple rounded-[10px] p-[24px] mb-auto gap-[20px]"
       onSubmit={handleSubmit(onSubmit)}
     >
       {isLoading && <Spinner />}
+      <h2 className="font-medium mb-4">Контактна інформація</h2>
       <div className="flex gap-[52px] mb-[8px]">
-        <ProfileInput
+        <BuyTicketInput
           {...register('name', {
             required: true,
             validate: validateName,
           })}
           maxLength={MAX_NAME_LENGTH}
-          placeholder="Ім'я"
+          placeholder="Введіть ім'я"
           id="name"
           htmlFor="name"
           type="text"
@@ -89,7 +91,7 @@ export const Action2: FC = () => {
           width="380"
         />
 
-        <ProfileInput
+        <BuyTicketInput
           {...register('surname', {
             validate: {
               required: value =>
@@ -98,7 +100,7 @@ export const Action2: FC = () => {
                 'Введіть прізвище (від 2 до 50 символів)',
             },
           })}
-          placeholder="Прізвище"
+          placeholder="Введіть прізвище"
           id="surname"
           htmlFor="surname"
           type="text"
@@ -113,7 +115,7 @@ export const Action2: FC = () => {
           name="phoneNumber"
           control={control}
           render={({ field }) => (
-            <ProfileInput
+            <BuyTicketInput
               {...field}
               ref={phoneInputRef}
               placeholder="+38(099)999-99-99"
@@ -146,9 +148,9 @@ export const Action2: FC = () => {
           name="email"
           control={control}
           render={({ field }) => (
-            <ProfileInput
+            <BuyTicketInput
               {...field}
-              placeholder="Електронна пошта"
+              placeholder="Введіть електронну пошту"
               id="birthday"
               htmlFor="birthday"
               type="numeric"
@@ -171,8 +173,8 @@ export const Action2: FC = () => {
           checked={agreement}
           onChange={checkAgreement}
         />
-        <div className="h-5 w-5 flex items-center justify-center bg-lightPink rounded-[5px]">
-          {agreement && <MdDone className="text-black w-6 h-6" />}
+        <div className="h-5 w-5 flex items-center justify-center border-[1px] border-buttonPurple">
+          {agreement && <MdDone className="text-buttonPurple w-6 h-6" />}
         </div>
         <span className="ml-2">
           Я згоден(а) отримувати рекламну інформацію на мою пошту
@@ -180,7 +182,10 @@ export const Action2: FC = () => {
       </label>
 
       <div className="flex items-center">
-        <div className="flex justify-center items-center border-buttonPurple border-2 rounded-full w-[24px] h-[24px]  text-buttonPurple">
+        <div
+          className={`flex justify-center items-center border-buttonPurple border-2 rounded-full
+            w-[24px] h-[24px] text-buttonPurple`}
+        >
           <AiOutlineExclamation size={14} />
         </div>
         <span className="ml-2">

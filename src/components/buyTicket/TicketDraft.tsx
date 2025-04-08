@@ -1,4 +1,6 @@
 /* eslint-disable no-unused-vars */
+import { useState } from 'react';
+
 import { SharedBtn } from '@/components/ui';
 
 interface TicketDraftProps {
@@ -16,6 +18,16 @@ export const TicketDraft: React.FC<TicketDraftProps> = ({
   ticketCount,
   price,
 }) => {
+  const [shownTooltip, setShownTooltip] = useState(false);
+
+  const showTooltip = () => {
+    setShownTooltip(true);
+  };
+
+  const hideTooltip = () => {
+    setShownTooltip(false);
+  };
+
   const formatTicket = () => {
     const countString = ticketCount.toString();
     const lastChar = countString.charAt(countString.length - 1);
@@ -70,7 +82,35 @@ export const TicketDraft: React.FC<TicketDraftProps> = ({
             <p className="mb-[16px]">
               {ticketCount} {formattedTicket}
             </p>
-            <p className="mb-[16px]">Збір за послуги</p>
+            <div className="relative">
+              <p className="mb-[16px]">Збір за послуги</p>
+              <div
+                onMouseEnter={showTooltip}
+                onMouseLeave={hideTooltip}
+                className={`absolute -top-3 -right-2 border-[1px]
+                border-buttonPurple w-[14px] h-[14px] rounded-full
+                flex justify-center items-center`}
+              >
+                <span className="text-[10px] text-buttonPurple">?</span>
+                {shownTooltip && (
+                  <div className="absolute left-[20px]">
+                    <div className="relative w-[120px]">
+                      <img
+                        src="/images/ticket/payment-info.svg"
+                        width={120}
+                        height={120}
+                      />
+                      <p className="leading-[1.5] text-[12px] absolute left-6 top-[6px]">
+                        Плата за обробку
+                        <br />
+                        замовлення, сервіс
+                        <br />і нашу роботу
+                      </p>
+                    </div>
+                  </div>
+                )}
+              </div>
+            </div>
             <p>Сума</p>
           </div>
           <div>
