@@ -35,3 +35,24 @@ export const createEvent = async (
     throw new Error(`Failed to create event ${error}`);
   }
 };
+
+export const editEvent = async (
+  event?: Event,
+) => {
+  const token = store.getState().auth.token;
+
+  console.log(event);
+
+  try {
+    const response = await axios.put(`events/${event?.id}`, event, {
+      headers: {
+        'Content-Type': 'application/json',
+        Authorization: `Bearer ${token}`,
+      },
+    });
+
+    return response;
+  } catch (error) {
+    throw new Error(`Failed to create event ${error}`);
+  }
+};

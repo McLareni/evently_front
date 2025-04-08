@@ -8,7 +8,7 @@ import { useAppSelector } from '@/redux/hooks';
 import { formatPhoneNumberFromMask } from '@/helpers/userForm/formatFromMask';
 import { formatPhoneToMask } from '@/helpers/userForm/formatToMask';
 import { FormaDataForCard } from '@/pages/events/CreateEventPage';
-import { createEvent } from '@/utils/eventsHttp';
+import { createEvent, editEvent } from '@/utils/eventsHttp';
 
 import { SharedBtn } from '@/components/ui';
 import { PopupEventCreated } from '@/components/ui/PopupEventCreated';
@@ -118,6 +118,8 @@ const CreateEventForm: React.FC<CreateEventFormProps> = ({
       );
 
       trigger('phoneNumber');
+
+      console.log(watch('date'));
     }
   }, [event]);
 
@@ -158,7 +160,38 @@ const CreateEventForm: React.FC<CreateEventFormProps> = ({
     const formattedPrice = ticketPrice.length === 0 ? 0 : ticketPrice;
     const eventFormat = isOffline ? 'OFFLINE' : 'ONLINE';
 
-    const event = {
+    const firstImage = imageFile[0];
+    const secondImage = imageFile[1];
+    const thirdImage = imageFile[2];
+
+    setIsLoading(true);
+
+    if (isEdit) {
+      editEvent({
+        id: event?.id,
+        title: watch('title'),
+        description: watch('description'),
+        unlimitedTickets: watch('unlimitedTickets') || false,
+        numberOfTickets: watch('numberOfTickets') as number,
+        aboutOrganizer: watch('aboutOrganizer'),
+        eventUrl: watch('eventUrl'),
+        price: Number(watch('ticketPrice')),
+        type: watch('eventType'),
+      } as Event)
+        .then(response => {
+          if (response.status === 201) {
+            setIsSuccessPopupShown(true);
+          }
+          setIsLoading(false);
+        })
+        .catch(error => {
+          setIsLoading(false);
+          console.error(error);
+        });
+      return;
+    }
+
+    const eventInfo = {
       title,
       description,
       eventType,
@@ -174,17 +207,7 @@ const CreateEventForm: React.FC<CreateEventFormProps> = ({
       phoneNumber: formatPhoneNumberFromMask(phoneNumber),
     } as unknown as CreateEventFormValues;
 
-    const firstImage = imageFile[0];
-    const secondImage = imageFile[1];
-    const thirdImage = imageFile[2];
-
-    setIsLoading(true);
-
-    if (isEdit) {
-      return;
-    }
-
-    createEvent(event, firstImage, secondImage, thirdImage)
+    createEvent(eventInfo, firstImage, secondImage, thirdImage)
       .then(response => {
         if (response.status === 201) {
           setIsSuccessPopupShown(true);
@@ -247,6 +270,7 @@ const CreateEventForm: React.FC<CreateEventFormProps> = ({
         watch={watch}
         errors={errors}
         trigger={trigger}
+        isEdit={isEdit}
       />
       <TicketPrice
         control={control}
@@ -254,6 +278,7 @@ const CreateEventForm: React.FC<CreateEventFormProps> = ({
         watch={watch}
         errors={errors}
         clearErrors={clearErrors}
+        isEdit
       />
       <AboutOrganizer
         control={control}

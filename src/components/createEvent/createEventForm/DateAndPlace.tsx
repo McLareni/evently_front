@@ -6,11 +6,16 @@ import {
   UseFormTrigger,
   UseFormWatch,
 } from 'react-hook-form';
-import { AiFillCheckCircle, AiOutlineCalendar } from 'react-icons/ai';
+import {
+  AiFillCheckCircle,
+  AiOutlineCalendar,
+  AiOutlineExclamation,
+} from 'react-icons/ai';
 import { BiChevronDown } from 'react-icons/bi';
 import { BiTimeFive } from 'react-icons/bi';
 
 import { formatDateToDayMonth } from '@/helpers/filters/formatDateToDayMonth';
+import clsx from 'clsx';
 import dayjs from 'dayjs';
 
 import { CreateEventCalendar } from './CreateEventCalendar';
@@ -22,6 +27,7 @@ interface DateAndPlaceProps {
   watch: UseFormWatch<CreateEventFormValues>;
   errors: FieldErrors<CreateEventFormValues>;
   trigger: UseFormTrigger<CreateEventFormValues>;
+  isEdit?: boolean;
 }
 
 const DateAndPlace = ({
@@ -30,6 +36,7 @@ const DateAndPlace = ({
   watch,
   errors,
   trigger,
+  isEdit,
 }: DateAndPlaceProps) => {
   const [startTimeSelect, setStartTimeSelect] = useState(false);
   const [endTimeSelect, setEndTimeSelect] = useState(false);
@@ -173,6 +180,14 @@ const DateAndPlace = ({
 
   return (
     <div className="relative max-w-[760px] rounded-[20px] border-2 border-buttonPurple flex flex-col pt-10 pb-8 px-8 mb-8">
+      {isEdit && (
+        <div className="flex gap-2 mb-[10px]">
+          <AiOutlineExclamation className="rounded-full border border-error fill-error w-6 h-6" />
+          <h3 className="text-error text-base font-normal font-lato">
+            Ви не можете змінити дату, час або адресу події
+          </h3>
+        </div>
+      )}
       {daySelected &&
         startSelected &&
         endSelected &&
@@ -195,16 +210,17 @@ const DateAndPlace = ({
                 type="button"
                 onClick={toggleIsCalendarShown}
                 className="bg-background flex justify-between items-center w-full h-[52px] px-[12px] focus:outline-none"
+                disabled={isEdit}
               >
                 <div className="flex">
-                  <AiOutlineCalendar size="24px" />
+                  <AiOutlineCalendar size="24px"  className={clsx({'fill-uploadBtnBg': isEdit})}/>
                   {date.day.length > 0 ? (
-                    <p className="pl-2">{formattedDate}</p>
+                    <p className={clsx("pl-2", {'text-uploadBtnBg': isEdit})}>{formattedDate}</p>
                   ) : (
                     <p className="pl-2 text-uploadBtnBg">Обери дату</p>
                   )}
                 </div>
-                <BiChevronDown />
+                <BiChevronDown  className={clsx({'fill-uploadBtnBg': isEdit})}/>
               </button>
               {isCalendarShown && (
                 <div className="w-full h-[2px] bg-transparent" />
@@ -231,16 +247,24 @@ const DateAndPlace = ({
                 type="button"
                 className="bg-background flex justify-between items-center w-full h-[52px] px-[12px] focus:outline-none"
                 onClick={() => setStartTimeSelect(prev => !prev)}
+                disabled={isEdit}
               >
                 <div className="flex">
-                  <BiTimeFive size="24px" />
+                  <BiTimeFive
+                    size="24px"
+                    className={clsx({ 'fill-uploadBtnBg': isEdit })}
+                  />
                   {startSelected ? (
-                    <p className="pl-2">{date.time}</p>
+                    <p className={clsx('pl-2', { 'text-uploadBtnBg': isEdit })}>
+                      {date.time}
+                    </p>
                   ) : (
                     <p className="pl-2 text-uploadBtnBg">Обери час</p>
                   )}
                 </div>
-                <BiChevronDown />
+                <BiChevronDown
+                  className={clsx({ 'fill-uploadBtnBg': isEdit })}
+                />
               </button>
               {startTimeSelect && (
                 <div className="w-full h-[2px] bg-transparent" />
@@ -278,16 +302,24 @@ const DateAndPlace = ({
                 type="button"
                 className="bg-background flex justify-between items-center w-full h-[52px] px-[12px] focus:outline-none"
                 onClick={() => setEndTimeSelect(prev => !prev)}
+                disabled={isEdit}
               >
                 <div className="flex">
-                  <BiTimeFive size="24px" />
+                  <BiTimeFive
+                    size="24px"
+                    className={clsx({ 'fill-uploadBtnBg': isEdit })}
+                  />
                   {endSelected ? (
-                    <p className="pl-2">{date.endTime}</p>
+                    <p className={clsx('pl-2', { 'text-uploadBtnBg': isEdit })}>
+                      {date.endTime}
+                    </p>
                   ) : (
                     <p className="pl-2 text-uploadBtnBg">Обери час</p>
                   )}
                 </div>
-                <BiChevronDown />
+                <BiChevronDown
+                  className={clsx({ 'fill-uploadBtnBg': isEdit })}
+                />
               </button>
               {endTimeSelect && (
                 <div className="w-full h-[2px] bg-transparent" />
@@ -318,6 +350,7 @@ const DateAndPlace = ({
         watch={watch}
         errors={errors}
         trigger={trigger}
+        isEdit={isEdit}
       />
     </div>
   );
