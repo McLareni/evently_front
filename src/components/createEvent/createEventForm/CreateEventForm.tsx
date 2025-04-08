@@ -35,6 +35,7 @@ type CreateEventFormProps = {
   isEdit?: boolean;
   event?: Event;
   countOldPhotos?: number;
+  showSuccessEditEvent: () => void;
 };
 
 const CreateEventForm: React.FC<CreateEventFormProps> = ({
@@ -43,6 +44,7 @@ const CreateEventForm: React.FC<CreateEventFormProps> = ({
   getFormData,
   isEdit,
   event,
+  showSuccessEditEvent,
   countOldPhotos = 0,
 }) => {
   const { phoneNumber } = useAppSelector(selectUser);
@@ -91,10 +93,6 @@ const CreateEventForm: React.FC<CreateEventFormProps> = ({
 
   const checkAgreement = () => {
     setAgreement(!agreement);
-  };
-
-  const checkAdult = () => {
-    setAdult(!adult);
   };
 
   useEffect(() => {
@@ -178,8 +176,8 @@ const CreateEventForm: React.FC<CreateEventFormProps> = ({
         type: watch('eventType'),
       } as Event)
         .then(response => {
-          if (response.status === 201) {
-            setIsSuccessPopupShown(true);
+          if (response.status === 200) {
+            showSuccessEditEvent();
           }
           setIsLoading(false);
         })
@@ -249,59 +247,61 @@ const CreateEventForm: React.FC<CreateEventFormProps> = ({
   }, [setValue, user]);
 
   return (
-    <form onSubmit={handleSubmit(onSubmit)}>
-      <PhotoCardList
-        onPhotoChange={onPhotoChange}
-        handleImageFileChange={handleImageFileChange}
-        photos={photos}
-        validateForm={validateForm}
-        countOldPhotos={countOldPhotos}
-      />
-      <AboutEvent
-        control={control}
-        setValue={setValue}
-        watch={watch}
-        errors={errors}
-      />
-      <DateAndPlace
-        control={control}
-        setValue={setValue}
-        watch={watch}
-        errors={errors}
-        trigger={trigger}
-        isEdit={isEdit}
-      />
-      <TicketPrice
-        control={control}
-        setValue={setValue}
-        watch={watch}
-        errors={errors}
-        clearErrors={clearErrors}
-        isEdit
-      />
-      <AboutOrganizer
-        control={control}
-        setValue={setValue}
-        watch={watch}
-        errors={errors}
-        agreement={agreement}
-        checkAgreement={checkAgreement}
-      />
-      <div className="text-center">
-        <SharedBtn
-          disabled={!isValid || !validateForm || !agreement}
-          type="submit"
-          primary
-          className="mt-8 bg-gradient-to-r from-[#9B8FF3] to-[#38F6F9] w-[230px] h-[48px]"
-        >
-          Створити подію
-        </SharedBtn>
-      </div>
-      {isLoading && <Spinner />}
-      {isSuccessPopupShown && popupEvent && (
-        <PopupEventCreated event={popupEvent} />
-      )}
-    </form>
+    <>
+      <form onSubmit={handleSubmit(onSubmit)}>
+        <PhotoCardList
+          onPhotoChange={onPhotoChange}
+          handleImageFileChange={handleImageFileChange}
+          photos={photos}
+          validateForm={validateForm}
+          countOldPhotos={countOldPhotos}
+        />
+        <AboutEvent
+          control={control}
+          setValue={setValue}
+          watch={watch}
+          errors={errors}
+        />
+        <DateAndPlace
+          control={control}
+          setValue={setValue}
+          watch={watch}
+          errors={errors}
+          trigger={trigger}
+          isEdit={isEdit}
+        />
+        <TicketPrice
+          control={control}
+          setValue={setValue}
+          watch={watch}
+          errors={errors}
+          clearErrors={clearErrors}
+          isEdit
+        />
+        <AboutOrganizer
+          control={control}
+          setValue={setValue}
+          watch={watch}
+          errors={errors}
+          agreement={agreement}
+          checkAgreement={checkAgreement}
+        />
+        <div className="text-center">
+          <SharedBtn
+            disabled={!isValid || !validateForm || !agreement}
+            type="submit"
+            primary
+            className="mt-8 bg-gradient-to-r from-[#9B8FF3] to-[#38F6F9] w-[230px] h-[48px]"
+          >
+            Створити подію
+          </SharedBtn>
+        </div>
+        {isLoading && <Spinner />}
+        {isSuccessPopupShown && popupEvent && (
+          <PopupEventCreated event={popupEvent} />
+        )}
+      </form>
+    </>
   );
 };
 

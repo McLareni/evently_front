@@ -1,19 +1,23 @@
 import { useEffect, useState } from 'react';
-import { useParams } from 'react-router';
+import { useNavigate, useParams } from 'react-router';
 
 import { useLazyGetEventByIdQuery } from '@/redux/events/operations';
 
 import { Container } from '@/components/container/Container';
 import CreateEventCard from '@/components/createEvent/CreateEventCard';
 import CreateEventForm from '@/components/createEvent/createEventForm/CreateEventForm';
+import { Modal, SharedBtn } from '@/components/ui';
 
 import { FormaDataForCard } from './CreateEventPage';
 
 const EditEventPage: React.FC = () => {
   const { idEvent } = useParams();
+  const navigate = useNavigate();
   const [loadEvent, { data: event }] = useLazyGetEventByIdQuery();
   const [photos, setPhotos] = useState<(string | null)[]>([null, null, null]);
   const [countOldPhotos, setCountOldPhotos] = useState<number>(0);
+  const [isSuccessEditEvent, setIsSuccessEditEvent] = useState(false);
+
   const [eventInfoData, setEventInfoData] = useState<FormaDataForCard>({
     title: '',
     eventTypeName: '',
@@ -103,9 +107,32 @@ const EditEventPage: React.FC = () => {
             photos={photos}
             onPhotoChange={handlePhotoChange}
             getFormData={getFormData}
+            showSuccessEditEvent={() => setIsSuccessEditEvent(true)}
           />
         </div>
       </Container>
+      <Modal isOpen={isSuccessEditEvent} hiddenCross>
+        <div className="py-6 px-[57px] text-center border border-buttonPurple rounded-[20px]">
+          <h2 className="text-xl font-bold font-lato mb-4">
+            Твоя подія на перевірці!
+          </h2>
+          <h3 className="text-xl font-normal font-lato mb-6">
+            Ми повідомимо про статус <br /> упродовж 48 годин на пошту та в
+            <br /> розділі &quot;Мої події&quot;.
+          </h3>
+          <SharedBtn
+            type="button"
+            className="w-[200px] h-[38px] leading-[0px]"
+            primary
+            onClick={() => {
+              setIsSuccessEditEvent(false);
+              navigate('/my-event');
+            }}
+          >
+            Закрити
+          </SharedBtn>
+        </div>
+      </Modal>
     </>
   );
 };

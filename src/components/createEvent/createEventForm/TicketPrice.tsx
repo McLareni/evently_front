@@ -51,7 +51,8 @@ const TicketPrice: React.FC<TicketPriceProps> = ({
         <div className="flex gap-2 mb-[10px]">
           <AiOutlineExclamation className="rounded-full border border-error fill-error w-6 h-6" />
           <h3 className="text-error text-base font-normal font-lato">
-            Ви не можете змінити дату, час або адресу події
+            Ви не можете змінити вартість та кількість квитків, оскільки вже
+            мали продажі
           </h3>
         </div>
       )}
