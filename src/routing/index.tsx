@@ -20,7 +20,7 @@ import { Layout } from '@/components/layout/Layout';
 
 import AdminRouter from './privateRouters/AdminRouter';
 import LoginRouter from './privateRouters/LoginRouter';
-import OrganizersPage from '@/pages/OrganaizersPage';
+import OrganizersPage from '@/pages/OrganizersPage';
 
 const NotFound = React.lazy(() => import('../pages/NotFoundPage'));
 
