@@ -21,6 +21,7 @@ import { Layout } from '@/components/layout/Layout';
 
 import AdminRouter from './privateRouters/AdminRouter';
 import LoginRouter from './privateRouters/LoginRouter';
+import OrganizersPage from '@/pages/OrganizersPage';
 
 const NotFound = React.lazy(() => import('../pages/NotFoundPage'));
 
@@ -35,6 +36,10 @@ const router = createBrowserRouter([
         // loader: getAllEventsLoader,
       },
       {
+        path: 'create_event',
+        element: <CreateEventForm />,
+      },
+      {
         path: 'event/:idEvent',
         element: <EventDetails />,
       },
@@ -43,6 +48,10 @@ const router = createBrowserRouter([
         element: <AllEventsPage />,
         // loader: getAllEventsLoader,
       },
+      { 
+        path: 'organizers', 
+        element: <OrganizersPage/>
+      },
       {
         path: 'user/:idUser',
         element: <UserProfile />,
@@ -50,10 +59,6 @@ const router = createBrowserRouter([
       {
         element: <LoginRouter />,
         children: [
-          {
-            path: 'create_event',
-            element: <CreateEventForm />,
-          },
           { path: 'user_profile', element: <Profile /> },
           { path: 'event/:idEvent/buy_ticket', element: <BuyTicket /> },
           { path: 'favourite', element: <Favourite /> },
@@ -83,7 +88,7 @@ const router = createBrowserRouter([
       //routes for future components
       // Header routes
       { path: 'popular', element: '' },
-      { path: 'organizers', element: '' },
+
       { path: 'about', element: '' },
 
       { path: 'Kyiv', element: '' },
