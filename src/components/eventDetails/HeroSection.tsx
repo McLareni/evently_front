@@ -169,7 +169,8 @@ const HeroSection: React.FC<IProps> = ({ idEvent, event }) => {
           <Link to={`buy_ticket`}>
             <button
               type="button"
-              className="bg-dark-gradient w-[421px] h-12 rounded-[71px_8px] text-background text-2xl mt-[55px] hover:border-4 hover:border-buttonPurple hover:shadow-shadowPrimaryBtn focus:outline-none active:shadow-primaryBtnActive"
+              className={`bg-gradient-to-r from-[#9B8FF3] to-[#38F6F9] w-[421px] h-12 rounded-[71px_8px] text-background text-2xl
+                mt-[55px] hover:shadow-shadowPrimaryBtn focus:outline-none active:shadow-primaryBtnActive`}
             >
               {event.price === 0 && event.eventFormat === 'ONLINE'
                 ? 'Зареєструватись'
