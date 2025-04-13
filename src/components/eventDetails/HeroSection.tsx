@@ -132,6 +132,18 @@ const HeroSection: React.FC<IProps> = ({ idEvent, event }) => {
             </div>
           </div>
           <div className="flex flex-col gap-4">
+            <p className="font-lato text-xl font-normal text-textDart flex gap-6">
+              <span>
+                <AiOutlineCalendar className="w-6 h-6" />
+              </span>
+              {formatDateToDayMonth(event?.date.day)}
+            </p>
+            <p className="font-lato text-xl font-normal text-textDart flex gap-6">
+              <span>
+                <AiOutlineClockCircle className="w-6 h-6" />
+              </span>
+              {event?.date.time} - {event?.date.endTime || 'Do'}
+            </p>
             {event?.eventUrl ? (
               <p className="font-lato text-xl font-normal text-textDart flex gap-6">
                 <span>
@@ -147,18 +159,6 @@ const HeroSection: React.FC<IProps> = ({ idEvent, event }) => {
                 {`${event?.location.city} ${event?.location.street}`}
               </p>
             )}
-            <p className="font-lato text-xl font-normal text-textDart flex gap-6">
-              <span>
-                <AiOutlineClockCircle className="w-6 h-6" />
-              </span>
-              {event?.date.time} - {event?.date.endTime || 'Do'}
-            </p>
-            <p className="font-lato text-xl font-normal text-textDart flex gap-6">
-              <span>
-                <AiOutlineCalendar className="w-6 h-6" />
-              </span>
-              {formatDateToDayMonth(event?.date.day)}
-            </p>
             <p className="font-lato text-2xl font-normal text-textDart flex gap-6 items-center">
               <span>
                 <FaRegMoneyBillAlt className="w-6 h-6" />
@@ -169,7 +169,8 @@ const HeroSection: React.FC<IProps> = ({ idEvent, event }) => {
           <Link to={`buy_ticket`}>
             <button
               type="button"
-              className="bg-dark-gradient w-[421px] h-12 rounded-[71px_8px] text-background text-2xl mt-[55px] hover:border-4 hover:border-buttonPurple hover:shadow-shadowPrimaryBtn focus:outline-none active:shadow-primaryBtnActive"
+              className={`bg-gradient-to-r from-[#9B8FF3] to-[#38F6F9] w-[421px] h-12 rounded-[71px_8px] text-background text-2xl
+                mt-[55px] hover:shadow-shadowPrimaryBtn focus:outline-none active:shadow-primaryBtnActive`}
             >
               {event.price === 0 && event.eventFormat === 'ONLINE'
                 ? 'Зареєструватись'

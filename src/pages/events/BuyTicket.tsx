@@ -40,7 +40,7 @@ const BuyTicket: React.FC = () => {
   }, [idEvent, trigger]);
 
   return (
-    <div className="font-oswald leading-none">
+    <div className="font-oswald leading-none pb-[55px]">
       <Container>
         <BuyTicketTabs currentAction={currentAction} />
         {(currentAction === 1 || currentAction === 2) && (
