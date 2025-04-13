@@ -14,7 +14,7 @@ interface Event {
   rating: number;
   eventFormat: string;
   eventUrl?: string;
-  eventStatus: 'PENDING' | 'APPROVED' | 'CANCELLED';
+  eventStatus: EventStatus;
   images: Image[];
   date: {
     day: string;
@@ -147,3 +147,5 @@ interface PageType {
   totalElements: number;
   totalPages: number;
 }
+
+type EventStatus = 'PENDING' | 'APPROVED' | 'CANCELLED' | 'DELETE';

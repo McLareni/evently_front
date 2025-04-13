@@ -1,19 +1,21 @@
-import React, { ReactElement } from 'react';
+import React, { ReactElement, useState } from 'react';
 import { AiOutlineExclamation } from 'react-icons/ai';
 import { GoKebabHorizontal } from 'react-icons/go';
 import { MdDone } from 'react-icons/md';
 import { RxCross2 } from 'react-icons/rx';
 import { Link } from 'react-router-dom';
-import { toast } from 'react-toastify';
+
+import { useDeleteMyEventMutation } from '@/redux/events/operations';
 
 import { formatDateToDayMonth } from '@/helpers/filters/formatDateToDayMonth';
 import clsx from 'clsx';
 
+import { Modal, SharedBtn } from '../ui';
+import ConfirmationDeletePopUp from './ConfirmationDeletePopUp';
 import PopUp from './PopUp';
 
-type EventStatus = 'APPROVED' | 'CANCELLED' | 'PENDING';
-
 const status: Record<
+  // eslint-disable-next-line no-undef
   EventStatus,
   { color: string; text: string; svg: ReactElement }
 > = {
@@ -38,6 +40,11 @@ const status: Record<
       <AiOutlineExclamation className="w-6 h-6 fill-[#F4E544] border-2 rounded-full border-[#F4E544]" />
     ),
   },
+  DELETE: {
+    color: '',
+    text: '',
+    svg: <></>,
+  },
 };
 
 interface IProps {
@@ -48,12 +55,19 @@ interface IProps {
 }
 
 const EventRow: React.FC<IProps> = ({ event, popUpIsShow, openPopUp }) => {
+  const [deletePopUp, setDeletePopUp] = useState(false);
+  const [confirmationDeletePopUp, setConfirmationDeletePopUp] = useState(false);
+  const [deleteMyEvent] = useDeleteMyEventMutation();
+
   const dateString = formatDateToDayMonth(event.date.day);
   const day = dateString.split(' ')[0];
   const month = dateString.split(' ')[1].slice(0, 3).toUpperCase();
 
-  const handleRejectEvent = () => {
-    toast.info('Скасування подій поки що не доступне');
+  // fix
+  const isSoldTicket = true;
+
+  const handleDeleteEvent = () => {
+    setDeletePopUp(true);
   };
 
   return (
@@ -107,13 +121,10 @@ const EventRow: React.FC<IProps> = ({ event, popUpIsShow, openPopUp }) => {
       <td className="p-[5px] relative">
         <div className="flex justify-between">
           <p
-            className={clsx(
-              'flex gap-[6px]',
-              status[event.eventStatus as EventStatus].color
-            )}
+            className={clsx('flex gap-[6px]', status[event.eventStatus].color)}
           >
-            <span>{status[event.eventStatus as EventStatus].svg}</span>
-            {status[event.eventStatus as EventStatus].text}
+            <span>{status[event.eventStatus].svg}</span>
+            {status[event.eventStatus].text}
           </p>
           <GoKebabHorizontal
             data-name="kebab"
@@ -125,10 +136,65 @@ const EventRow: React.FC<IProps> = ({ event, popUpIsShow, openPopUp }) => {
           <PopUp
             id={event.id}
             approved={event.eventStatus === 'APPROVED'}
-            rejectEvent={handleRejectEvent}
+            deleteEvent={handleDeleteEvent}
           />
         )}
       </td>
+      {deletePopUp && (
+        <Modal
+          isOpen={deletePopUp}
+          hiddenCross
+          onClose={() => setDeletePopUp(false)}
+        >
+          <div className="py-6 px-[57px] text-center border border-buttonPurple rounded-[20px]">
+            <h2 className="text-xl font-bold font-lato mb-4">
+              Скасувати подію?
+            </h2>
+            <h3 className="text-xl font-normal font-lato mb-6">
+              {isSoldTicket ? (
+                <>
+                  Це може вплинути на довіру <br /> користувачів. Усі кошти з
+                  продажу <br />
+                  квитків буде повернено. Ти впевнений?
+                </>
+              ) : (
+                <>
+                  Це може вплинути на довіру <br /> користувачів, а також подія
+                  буде <br /> <b>видалена назавжди.</b> Ти впевнений?
+                </>
+              )}
+            </h3>
+            <div className="flex justify-around">
+              <SharedBtn
+                type="button"
+                className="w-[120px] h-[38px] leading-[0px]"
+                primary
+                onClick={() => {
+                  setConfirmationDeletePopUp(true);
+                }}
+              >
+                Так
+              </SharedBtn>
+              <SharedBtn
+                type="button"
+                className="w-[120px] h-[38px] leading-[0px]"
+                secondary
+                onClick={() => {
+                  setDeletePopUp(false);
+                }}
+              >
+                Ні
+              </SharedBtn>
+            </div>
+          </div>
+        </Modal>
+      )}
+      {confirmationDeletePopUp && (
+        <ConfirmationDeletePopUp
+          popUpIsShow={confirmationDeletePopUp}
+          onClose={() => setConfirmationDeletePopUp(false)}
+        />
+      )}
     </>
   );
 };

@@ -56,9 +56,19 @@ const ModalDecision: React.FC<IProps> = ({ event, openModal }) => {
               changeActiveImage={handleChangeActiveImage}
             />
           )}
+          {event?.eventStatus === 'DELETE' && (
+            <div className="text-center">
+              <h1 className="text-error text-4xl font-oswald border-[3px] border-error rounded-[10px] w-fit mx-auto my-9 px-3">
+                СКАСОВАНО
+              </h1>
+              <button className="border border-buttonPurple bg-lightPurple rounded-[10px] p-[7px_8px] text-xl">
+                Подивитись причину
+              </button>
+            </div>
+          )}
         </div>
 
-        <div>
+        <div className="relative pb-[100px]">
           <div className="grid grid-cols-custom grid-rows-custom gap-x-[19px]">
             <div>
               <h2 className="text-textDark text-2xl font-medium mb-4">
@@ -89,7 +99,7 @@ const ModalDecision: React.FC<IProps> = ({ event, openModal }) => {
             <div>
               <img
                 src={
-                  event?.organizers?.avatarImage?.photoInBytes
+                  event?.organizers?.avatarImage?.url
                     ? event?.organizers?.avatarImage.url
                     : userPlaceholder
                 }
@@ -163,7 +173,7 @@ const ModalDecision: React.FC<IProps> = ({ event, openModal }) => {
               </p>
             </div>
           )}
-          <div className="flex justify-around gap-8 mt-8">
+          <div className="flex justify-around gap-8 mt-8 absolute bottom-0 left-[50%] translate-x-[-50%]">
             {event?.eventStatus !== 'CANCELLED' && (
               <button
                 onClick={() => openModal('CANCELLED')}

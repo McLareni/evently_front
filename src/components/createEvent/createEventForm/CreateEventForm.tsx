@@ -35,7 +35,7 @@ type CreateEventFormProps = {
   isEdit?: boolean;
   event?: Event;
   countOldPhotos?: number;
-  showSuccessEditEvent: () => void;
+  showSuccessEditEvent?: () => void;
 };
 
 const CreateEventForm: React.FC<CreateEventFormProps> = ({
@@ -44,7 +44,7 @@ const CreateEventForm: React.FC<CreateEventFormProps> = ({
   getFormData,
   isEdit,
   event,
-  showSuccessEditEvent,
+  showSuccessEditEvent = () => {},
   countOldPhotos = 0,
 }) => {
   const { phoneNumber } = useAppSelector(selectUser);

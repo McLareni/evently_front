@@ -2,13 +2,14 @@ import React from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { toast } from 'react-toastify';
 
+
 interface IProps {
   id: string;
-  rejectEvent: () => void;
   approved?: boolean;
+  deleteEvent: () => void
 }
 
-const PopUp: React.FC<IProps> = ({ id, rejectEvent, approved }) => {
+const PopUp: React.FC<IProps> = ({ id, approved, deleteEvent }) => {
   const navigate = useNavigate();
 
   const copyLink = () => {
@@ -50,7 +51,7 @@ const PopUp: React.FC<IProps> = ({ id, rejectEvent, approved }) => {
         Копіювати URL
       </h2>
       <h2
-        onClick={rejectEvent}
+        onClick={deleteEvent}
         className="pl-6 py-2 text-base font-normal font-lato text-error leading-[38px] rounded-[18px] hover:cursor-pointer hover:bg-gray"
       >
         Скасувати
