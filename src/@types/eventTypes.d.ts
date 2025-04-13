@@ -148,4 +148,4 @@ interface PageType {
   totalPages: number;
 }
 
-type EventStatus = 'PENDING' | 'APPROVED' | 'CANCELLED' | 'DELETE';
+type EventStatus = 'PENDING' | 'APPROVED' | 'CANCELLED' | 'DELETE' | 'EDIT';

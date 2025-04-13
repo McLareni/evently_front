@@ -7,6 +7,7 @@ import { useNavigate } from 'react-router';
 import clsx from 'clsx';
 
 import userPlaceholder from '../../../../public/images/user-placeholder.png';
+import EditNavigate from './EditNavigate';
 import ImageNavigation from './ImageNavigation';
 import Stars from './Stars';
 
@@ -68,7 +69,7 @@ const ModalDecision: React.FC<IProps> = ({ event, openModal }) => {
           )}
         </div>
 
-        <div className="relative pb-[100px]">
+        <div className="relative pb-[80px]">
           <div className="grid grid-cols-custom grid-rows-custom gap-x-[19px]">
             <div>
               <h2 className="text-textDark text-2xl font-medium mb-4">
@@ -173,6 +174,7 @@ const ModalDecision: React.FC<IProps> = ({ event, openModal }) => {
               </p>
             </div>
           )}
+          {event?.eventStatus === 'EDIT' && <EditNavigate />}
           <div className="flex justify-around gap-8 mt-8 absolute bottom-0 left-[50%] translate-x-[-50%]">
             {event?.eventStatus !== 'CANCELLED' && (
               <button
