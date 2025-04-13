@@ -13,7 +13,7 @@ const EditNavigate: React.FC = () => {
       >
         <BiChevronDown className="rotate-90 w-12 h-12 bg-gray rounded-full" />
       </button>
-      <h2 className="font-lato text-base font-bold">
+      <h2 className="font-lato text-base font-bold w-[164px] text-center">
         {newVersion ? 'Відредагована подія' : 'Поточна подія'}
       </h2>
       <button

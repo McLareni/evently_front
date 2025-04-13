@@ -174,8 +174,8 @@ const ModalDecision: React.FC<IProps> = ({ event, openModal }) => {
               </p>
             </div>
           )}
-          {event?.eventStatus === 'EDIT' && <EditNavigate />}
-          <div className="flex justify-around gap-8 mt-8 absolute bottom-0 left-[50%] translate-x-[-50%]">
+          {<EditNavigate />}
+          <div className="flex justify-around gap-[100px] mt-8 absolute bottom-0 left-[50%] translate-x-[-50%]">
             {event?.eventStatus !== 'CANCELLED' && (
               <button
                 onClick={() => openModal('CANCELLED')}
