@@ -174,7 +174,8 @@ const AboutOrganizer: React.FC<AboutOrganizerProps> = ({
                 type="text"
                 id="title"
                 className="focus:outline-none w-full h-full p-4 rounded-[8px]"
-                placeholder="+38(0**)***-**-**"
+                placeholder="+38(099)999-99-99"
+                defaultValue={phoneNumber}
               />
             </div>
           )}

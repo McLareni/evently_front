@@ -15,7 +15,10 @@ type CardProps = {
   eventInfoData: FormaDataForCard;
 };
 
-const CreateEventCard: React.FC<CardProps> = ({ photo, eventInfoData }) => {
+const CreateEventCard: React.FC<CardProps> = ({
+  photo,
+  eventInfoData,
+}) => {
   const {
     title,
     eventTypeName,
@@ -90,10 +93,10 @@ const CreateEventCard: React.FC<CardProps> = ({ photo, eventInfoData }) => {
             </li>
             <li className="flex items-center gap-[18px]">
               <GrLocation size="24px" />
-              {location.city.length === 0 && isOffline && <p>Місце</p>}
-              {location.city.length > 0 && isOffline && (
+              {!location?.city && isOffline && <p>Місце</p>}
+              {!!location?.city && isOffline && (
                 <p>
-                  {location.city}, {location.street}
+                  {location?.city}, {location?.street}
                 </p>
               )}
               {!isOffline && <p>Онлайн</p>}

@@ -7,7 +7,7 @@ import {
   UseFormSetValue,
   UseFormWatch,
 } from 'react-hook-form';
-import { AiFillCheckCircle } from 'react-icons/ai';
+import { AiFillCheckCircle, AiOutlineExclamation } from 'react-icons/ai';
 import { FaRegMoneyBillAlt } from 'react-icons/fa';
 import { HiOutlineTicket } from 'react-icons/hi';
 import { MdDone } from 'react-icons/md';
@@ -18,6 +18,7 @@ type TicketPriceProps = {
   watch: UseFormWatch<CreateEventFormValues>;
   errors: FieldErrors<CreateEventFormValues>;
   clearErrors: UseFormClearErrors<CreateEventFormValues>;
+  isEdit?: boolean;
 };
 
 const TicketPrice: React.FC<TicketPriceProps> = ({
@@ -26,6 +27,7 @@ const TicketPrice: React.FC<TicketPriceProps> = ({
   watch,
   errors,
   clearErrors,
+  isEdit = false,
 }) => {
   const freeTickets = watch('freeTickets') as boolean;
   const unlimitedTickets = watch('unlimitedTickets') as boolean;
@@ -45,6 +47,15 @@ const TicketPrice: React.FC<TicketPriceProps> = ({
 
   return (
     <div className="relative max-w-[760px] rounded-[20px] border-2 border-buttonPurple flex flex-col py-8 pl-8 mb-8">
+      {isEdit && (
+        <div className="flex gap-2 mb-[10px]">
+          <AiOutlineExclamation className="rounded-full border border-error fill-error w-6 h-6" />
+          <h3 className="text-error text-base font-normal font-lato">
+            Ви не можете змінити вартість та кількість квитків, оскільки вже
+            мали продажі
+          </h3>
+        </div>
+      )}
       {!errors.ticketPrice &&
         !errors.numberOfTickets &&
         (freeTickets || ticketPrice) &&
@@ -59,32 +70,36 @@ const TicketPrice: React.FC<TicketPriceProps> = ({
         Вартість квитків<span className="star">*</span>
       </span>
       <div className="pb-6">
-        <button
-          type="button"
-          className={`${
-            freeTickets
-              ? 'bg-lightPurple text-gray-700'
-              : 'bg-buttonPurple text-white'
-          } focus:outline-none font-normal text-xl rounded-[20px] mr-4 py-[12.5px] px-[18px]`}
-          onClick={() => {
-            setValue('freeTickets', false);
-          }}
-        >
-          Платні
-        </button>
-        <button
-          type="button"
-          className={`${
-            freeTickets
-              ? 'bg-buttonPurple text-white'
-              : 'bg-lightPurple text-gray-700'
-          } focus:outline-none font-normal text-xl rounded-[20px] mr-4 py-[12.5px] px-[18px]`}
-          onClick={() => {
-            setValue('freeTickets', true);
-          }}
-        >
-          Безкоштовно
-        </button>
+        {(!isEdit || !freeTickets) && (
+          <button
+            type="button"
+            className={`${
+              freeTickets
+                ? 'bg-lightPurple text-gray-700'
+                : 'bg-buttonPurple text-white'
+            } focus:outline-none font-normal text-xl rounded-[20px] mr-4 py-[12.5px] px-[18px]`}
+            onClick={() => {
+              setValue('freeTickets', false);
+            }}
+          >
+            Платні
+          </button>
+        )}
+        {(!isEdit || freeTickets) && (
+          <button
+            type="button"
+            className={`${
+              freeTickets
+                ? 'bg-buttonPurple text-white'
+                : 'bg-lightPurple text-gray-700'
+            } focus:outline-none font-normal text-xl rounded-[20px] mr-4 py-[12.5px] px-[18px]`}
+            onClick={() => {
+              setValue('freeTickets', true);
+            }}
+          >
+            Безкоштовно
+          </button>
+        )}
       </div>
       <div className="flex gap-[16px]">
         <div className="flex flex-col">
@@ -146,7 +161,7 @@ const TicketPrice: React.FC<TicketPriceProps> = ({
               rules={{
                 validate: {
                   isValid: value =>
-                    unlimitedTickets || +value > 0 || 'Невірний формат',
+                    unlimitedTickets || +(value || 0) > 0 || 'Невірний формат',
                 },
               }}
               render={({ field }) => (
@@ -174,29 +189,31 @@ const TicketPrice: React.FC<TicketPriceProps> = ({
             </div>
           </div>
         </div>
-        <div className="self-end mb-[32px]">
-          <Controller
-            name="unlimitedTickets"
-            control={control}
-            render={({ field }) => (
-              <label className="flex items-center cursor-pointer">
-                <input
-                  id="unlimitedTickets"
-                  type="checkbox"
-                  className="appearance-none"
-                  checked={field.value}
-                  onChange={e => field.onChange(e.target.checked)}
-                />
-                <div className="h-5 w-5 flex items-center justify-center bg-lightPink rounded-[5px]">
-                  {unlimitedTickets && (
-                    <MdDone className="text-black w-6 h-6" />
-                  )}
-                </div>
-                <span className="ml-2">Необмежена кількість</span>
-              </label>
-            )}
-          />
-        </div>
+        {!isEdit && (
+          <div className="self-end mb-[32px]">
+            <Controller
+              name="unlimitedTickets"
+              control={control}
+              render={({ field }) => (
+                <label className="flex items-center cursor-pointer">
+                  <input
+                    id="unlimitedTickets"
+                    type="checkbox"
+                    className="appearance-none"
+                    checked={field.value}
+                    onChange={e => field.onChange(e.target.checked)}
+                  />
+                  <div className="h-5 w-5 flex items-center justify-center bg-lightPink rounded-[5px]">
+                    {unlimitedTickets && (
+                      <MdDone className="text-black w-6 h-6" />
+                    )}
+                  </div>
+                  <span className="ml-2">Необмежена кількість</span>
+                </label>
+              )}
+            />
+          </div>
+        )}
       </div>
     </div>
   );

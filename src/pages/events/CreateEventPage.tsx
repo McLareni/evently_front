@@ -10,7 +10,7 @@ export interface FormaDataForCard {
   ticketPrice: string;
   freeTickets: boolean;
   isOffline?: boolean;
-  location: CreateEventLocation;
+  location?: CreateEventLocation;
   day: string;
   time: string;
 }

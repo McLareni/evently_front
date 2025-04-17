@@ -1,15 +1,15 @@
 import React from 'react';
-import { useNavigate } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import { toast } from 'react-toastify';
+
 
 interface IProps {
   id: string;
-  rejectEvent: () => void;
-  editEvent: () => void;
   approved?: boolean;
+  deleteEvent: () => void
 }
 
-const PopUp: React.FC<IProps> = ({ id, rejectEvent, editEvent, approved }) => {
+const PopUp: React.FC<IProps> = ({ id, approved, deleteEvent }) => {
   const navigate = useNavigate();
 
   const copyLink = () => {
@@ -32,12 +32,12 @@ const PopUp: React.FC<IProps> = ({ id, rejectEvent, editEvent, approved }) => {
       data-name="kebab"
       className="absolute right-0 top-12 z-10 w-[206px] bg-background border border-buttonPurple rounded-[10px] py-3 flex flex-col gap-1"
     >
-      <h2
-        onClick={editEvent}
+      <Link
+        to={`/edit_event/${id}`}
         className="pl-6 py-2 text-base font-normal font-lato text-textDark leading-[38px] rounded-[18px] hover:cursor-pointer hover:bg-gray"
       >
         Редагувати
-      </h2>
+      </Link>
       <h2
         onClick={handleSeeEvent}
         className="pl-6 py-2 text-base font-normal font-lato text-textDark leading-[38px] rounded-[18px] hover:cursor-pointer hover:bg-gray"
@@ -51,7 +51,7 @@ const PopUp: React.FC<IProps> = ({ id, rejectEvent, editEvent, approved }) => {
         Копіювати URL
       </h2>
       <h2
-        onClick={rejectEvent}
+        onClick={deleteEvent}
         className="pl-6 py-2 text-base font-normal font-lato text-error leading-[38px] rounded-[18px] hover:cursor-pointer hover:bg-gray"
       >
         Скасувати

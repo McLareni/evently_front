@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react';
+import { useEffect } from 'react';
 import { FiFlag } from 'react-icons/fi';
 import { useParams } from 'react-router';
 
@@ -44,9 +44,6 @@ const EventDetails = () => {
     },
   });
   const [userEventstrigger, { data: userEvents }] = useLazyGetUserEventsQuery();
-  const [randomTopEvents, setRandomTopEvents] = useState<Event[] | undefined>(
-    topEvents?.slice(0, 3)
-  );
 
   const userId = event && event.organizers && event.organizers.id;
 
@@ -55,10 +52,6 @@ const EventDetails = () => {
     userEvents.filter(
       ({ eventStatus, id }) => eventStatus === 'APPROVED' && id !== idEvent
     );
-
-  // const topEvents = events?.filter(
-  //   (event: Event) => event.category === 'TOP_EVENTS'
-  // );
 
   useEffect(() => {
     async function fetchEvent() {
@@ -92,24 +85,6 @@ const EventDetails = () => {
       userEventstrigger(userId);
     }
   }, [userId, userEventstrigger]);
-
-  // useEffect(() => {
-  //   const randomEvents = topEvents?.sort(() => Math.random() - 0.5).slice(0, 3);
-  //   if (!randomTopEvents && randomEvents) {
-  //     setRandomTopEvents(randomEvents);
-  //   }
-  //   if (randomEvents) {
-  //     let interval = setInterval(() => {
-  //       setRandomTopEvents(randomEvents);
-  //     }, 10000);
-
-  //     return () => {
-  //       clearInterval(interval);
-  //     };
-  //   }
-  // }, [randomTopEvents, topEvents]);
-
-  console.log(topEvents);
 
   if (isLoading) {
     return <Spinner />;

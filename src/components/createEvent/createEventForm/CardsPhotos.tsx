@@ -21,6 +21,7 @@ interface PhotoCardProps {
   photo: string | null;
   onPhotoChange: (id: number, photo: string | null) => void;
   handleImageFileChange: (id: number, image: File[]) => void;
+  isOldPhoto?: boolean;
 }
 
 const PhotoCard: React.FC<PhotoCardProps> = ({
@@ -30,6 +31,7 @@ const PhotoCard: React.FC<PhotoCardProps> = ({
   photo,
   onPhotoChange,
   handleImageFileChange,
+  isOldPhoto,
 }) => {
   const [isHovered, setIsHovered] = useState(false);
   const [showCropper, setShowCropper] = useState(false);
@@ -102,7 +104,11 @@ const PhotoCard: React.FC<PhotoCardProps> = ({
     <div className="py-8 relative">
       <div
         className="relative flex flex-col items-center justify-center w-[189px] h-[229px] bg-gray-100 rounded-[10px] hover:shadow-md cursor-pointer"
-        onClick={() => document.getElementById(`file-input-${id}`)?.click()}
+        onClick={() => {
+          return isOldPhoto
+            ? () => {}
+            : document.getElementById(`file-input-${id}`)?.click();
+        }}
         onMouseEnter={() => setIsHovered(true)}
         onMouseLeave={() => setIsHovered(false)}
       >
@@ -110,13 +116,13 @@ const PhotoCard: React.FC<PhotoCardProps> = ({
           <img
             src={photo}
             alt="Uploaded"
-            className={`absolute inset-0 w-full h-full object-cover rounded-[10px] ${isHovered ? 'blur-sm' : ''} transition-all duration-300`}
+            className={`absolute inset-0 w-full h-full object-cover rounded-[10px] ${isHovered && !isOldPhoto ? 'blur-sm' : ''} transition-all duration-300`}
           />
         ) : (
           <div className="absolute inset-0 bg-cover bg-center opacity-20 bg-[url('/images/exampleCard.svg')]"></div>
         )}
 
-        {photo && isHovered && (
+        {photo && isHovered && !isOldPhoto && (
           <div className="absolute flex gap-[24px] top-2 right-2 text-gray-700 z-20 top-[50%] left-[50%] translate-x-[-50%] translate-y-[-50%]">
             <GoPencil className="h-6 w-6 z-10" onClick={handleEditPhoto} />
             <BiTrash

@@ -157,6 +157,13 @@ export const EventsApi = createApi({
         }
       },
     }),
+    deleteMyEvent: builder.mutation<string, string>({
+      query: id => ({
+        url: `event/user/${id}`,
+        method: 'DELETE',
+      }),
+      invalidatesTags: [{ type: 'MyEvents', id: 'LIST' }],
+    }),
 
     getLikedEvents: builder.query<Event[], string>({
       query: userId => `liked-events/${userId}`,
@@ -253,4 +260,5 @@ export const {
   useLazyGetEventByIdQuery,
   useGetUserEventsQuery,
   useLazyGetUserEventsQuery,
+  useDeleteMyEventMutation,
 } = EventsApi;
