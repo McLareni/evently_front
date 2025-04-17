@@ -153,7 +153,7 @@ const CreateEventForm: React.FC<CreateEventFormProps> = ({
     phoneNumber,
   }: CreateEventFormValues) => {
     const formattedNumberOfTickets =
-      numberOfTickets === 0 ? '1' : numberOfTickets;
+      numberOfTickets === 0 ? '' : numberOfTickets;
     const formattedPrice = ticketPrice.length === 0 ? 0 : ticketPrice;
     const eventFormat = isOffline ? 'OFFLINE' : 'ONLINE';
 
@@ -199,7 +199,7 @@ const CreateEventForm: React.FC<CreateEventFormProps> = ({
       eventFormat,
       date,
       organizers,
-      numberOfTickets: +(formattedNumberOfTickets || 0),
+      numberOfTickets: formattedNumberOfTickets || '',
       ticketPrice: +formattedPrice,
       phoneNumber: formatPhoneNumberFromMask(phoneNumber),
     } as unknown as CreateEventFormValues;
