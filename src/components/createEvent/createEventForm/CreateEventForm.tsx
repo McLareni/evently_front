@@ -105,7 +105,7 @@ const CreateEventForm: React.FC<CreateEventFormProps> = ({
       setValue('date', event.date);
       setValue('eventUrl', event.eventUrl || '');
       setValue('freeTickets', event.price === 0);
-      setValue('ticketPrice', event.price.toString());
+      setValue('ticketPrice', event.price?.toString() || '');
       setValue('numberOfTickets', event.numberOfTickets);
       setValue('unlimitedTickets', event.unlimitedTickets);
       setValue('aboutOrganizer', event.aboutOrganizer || '');
@@ -238,8 +238,8 @@ const CreateEventForm: React.FC<CreateEventFormProps> = ({
     freeTickets,
     isOffline,
     location,
-    date.day,
-    date.time,
+    date?.day,
+    date?.time,
   ]);
 
   useEffect(() => {
@@ -276,7 +276,7 @@ const CreateEventForm: React.FC<CreateEventFormProps> = ({
           watch={watch}
           errors={errors}
           clearErrors={clearErrors}
-          isEdit
+          isEdit={isEdit}
         />
         <AboutOrganizer
           control={control}
@@ -293,7 +293,7 @@ const CreateEventForm: React.FC<CreateEventFormProps> = ({
             primary
             className="mt-8 bg-gradient-to-r from-[#9B8FF3] to-[#38F6F9] w-[230px] h-[48px]"
           >
-            Створити подію
+            {isEdit ? 'Зберегти зміни' : 'Створити подію'}
           </SharedBtn>
         </div>
         {isLoading && <Spinner />}

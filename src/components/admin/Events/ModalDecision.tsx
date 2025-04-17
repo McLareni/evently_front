@@ -57,8 +57,8 @@ const ModalDecision: React.FC<IProps> = ({ event, openModal }) => {
               changeActiveImage={handleChangeActiveImage}
             />
           )}
-          {event?.eventStatus === 'DELETE' && (
-            <div className="text-center">
+          {(
+            <div className="text-center pb-[80px]">
               <h1 className="text-error text-4xl font-oswald border-[3px] border-error rounded-[10px] w-fit mx-auto my-9 px-3">
                 СКАСОВАНО
               </h1>
@@ -174,7 +174,7 @@ const ModalDecision: React.FC<IProps> = ({ event, openModal }) => {
               </p>
             </div>
           )}
-          {<EditNavigate />}
+          {event?.eventStatus === 'EDIT' && <EditNavigate />}
           <div className="flex justify-around gap-[100px] mt-8 absolute bottom-0 left-[50%] translate-x-[-50%]">
             {event?.eventStatus !== 'CANCELLED' && (
               <button

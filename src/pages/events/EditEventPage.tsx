@@ -118,7 +118,7 @@ const EditEventPage: React.FC = () => {
           </h2>
           <h3 className="text-xl font-normal font-lato mb-6">
             Ми повідомимо про статус <br /> упродовж 48 годин на пошту та в
-            <br /> розділі &quot;Мої події&quot;.
+            <br /> розділі &quot;Мої події&quot;
           </h3>
           <SharedBtn
             type="button"
