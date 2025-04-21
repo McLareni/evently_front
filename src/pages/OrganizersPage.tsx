@@ -38,6 +38,7 @@ const OrganizersPage = () => {
             name: "Емілія" 
         },
     ]
+      
     return (
         <>
             <Container>
