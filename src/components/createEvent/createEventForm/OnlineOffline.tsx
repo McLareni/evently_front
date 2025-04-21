@@ -8,6 +8,7 @@ import {
 } from 'react-hook-form';
 
 import { GoogleMapsInput } from './GoogleMapsInput';
+import clsx from 'clsx';
 
 interface OnlineOfflineProps {
   control: Control<CreateEventFormValues>;
@@ -15,6 +16,7 @@ interface OnlineOfflineProps {
   watch: UseFormWatch<CreateEventFormValues>;
   errors: FieldErrors<CreateEventFormValues>;
   trigger: UseFormTrigger<CreateEventFormValues>;
+  isEdit?: boolean;
 }
 
 export const OnlineOffline = ({
@@ -23,6 +25,7 @@ export const OnlineOffline = ({
   watch,
   errors,
   trigger,
+  isEdit = false,
 }: OnlineOfflineProps) => {
   const isOffline = watch('isOffline');
 
@@ -50,29 +53,33 @@ export const OnlineOffline = ({
         Формат події<span className="star">*</span>
       </span>
       <div className="pb-6">
-        <button
-          type="button"
-          className={`${
-            isOffline
-              ? 'bg-buttonPurple text-white'
-              : 'bg-lightPurple text-gray-700'
-          } focus:outline-none font-normal text-xl rounded-[20px] mr-4 py-[12.5px] px-[18px]`}
-          onClick={setOffline}
-        >
-          Оффлайн
-        </button>
+        {(!isEdit || isOffline) && (
+          <button
+            type="button"
+            className={`${
+              isOffline
+                ? 'bg-buttonPurple text-white'
+                : 'bg-lightPurple text-gray-700'
+            } focus:outline-none font-normal text-xl rounded-[20px] mr-4 py-[12.5px] px-[18px]`}
+            onClick={setOffline}
+          >
+            Оффлайн
+          </button>
+        )}
 
-        <button
-          type="button"
-          className={`${
-            isOffline
-              ? 'bg-lightPurple text-gray-700'
-              : 'bg-buttonPurple text-white'
-          } focus:outline-none font-normal text-xl rounded-[20px] mr-4 py-[12.5px] px-[18px]`}
-          onClick={setOnline}
-        >
-          Онлайн
-        </button>
+        {(!isEdit || !isOffline) && (
+          <button
+            type="button"
+            className={`${
+              isOffline
+                ? 'bg-lightPurple text-gray-700'
+                : 'bg-buttonPurple text-white'
+            } focus:outline-none font-normal text-xl rounded-[20px] mr-4 py-[12.5px] px-[18px]`}
+            onClick={setOnline}
+          >
+            Онлайн
+          </button>
+        )}
       </div>
 
       {isOffline ? (
@@ -104,8 +111,14 @@ export const OnlineOffline = ({
                 <GoogleMapsInput
                   id="location"
                   autoComplete="true"
-                  className="w-full h-full outline-none"
+                  className={clsx("w-full h-full outline-none", {'text-uploadBtnBg bg-white': isEdit})}
                   placeholder="Адреса проведення"
+                  disabled={isEdit}
+                  defaultValue={
+                    watch('location.city')
+                      ? `${watch('location.city')}, ${watch('location.street')} ${watch('location.venue')}`
+                      : ''
+                  }
                   onPlaceSelect={place => {
                     if (!place || !place.geometry) return;
                     const formattedPlace = {
@@ -162,7 +175,8 @@ export const OnlineOffline = ({
                   type="text"
                   id="eventUrl"
                   placeholder="https://meet.google.com/..."
-                  className="outline-none w-full h-full rounded-[8px] p-4 border-buttonPurple"
+                  className={clsx("outline-none w-full h-full rounded-[8px] p-4 border-buttonPurple, {'text-uploadBtnBg bg-white': isEdit}")}
+                  disabled={isEdit}
                   onChange={e => {
                     const url = e.target.value;
                     setValue('eventUrl', url);
