@@ -47,7 +47,7 @@ export const Navigation: React.FC = () => {
           Організаторам
         </NavLink>
         <NavLink
-          to="/about"
+          to="/about_us"
           className={({ isActive }) =>
             `w-[63px] ${
               isActive
