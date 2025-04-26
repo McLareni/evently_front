@@ -1,6 +1,7 @@
 /* eslint-disable no-unused-vars */
 import { formatDateToDayMonth } from '@/helpers/filters/formatDateToDayMonth';
 import { formatPhoneNumberFromMask } from '@/helpers/userForm/formatFromMask';
+import { SERVICE } from '@/pages/events/BuyTicket';
 import { buyTicket } from '@/utils/eventsHttp';
 
 import { SharedBtn } from '@/components/ui';
@@ -14,6 +15,8 @@ interface TicketDraftProps {
   ticketCount: number;
   price: number | undefined;
   info: CustomerInfo | null;
+  priceWithDiscount: number;
+  discountValue: number;
 }
 
 export const TicketDraft: React.FC<TicketDraftProps> = ({
@@ -23,6 +26,8 @@ export const TicketDraft: React.FC<TicketDraftProps> = ({
   ticketCount,
   price,
   info,
+  priceWithDiscount,
+  discountValue,
 }) => {
   const formatTicket = () => {
     const countString = ticketCount.toString();
@@ -59,6 +64,7 @@ export const TicketDraft: React.FC<TicketDraftProps> = ({
           clientPhone: formatPhoneNumberFromMask(info.clientPhone),
           clientEmail: info.clientEmail,
         };
+
         const res = await buyTicket({ data: eventData, eventId: event.id });
         console.log(res);
       }
@@ -110,13 +116,17 @@ export const TicketDraft: React.FC<TicketDraftProps> = ({
               <p className="mb-[16px]">Збір за послуги</p>
               <PaymentInfo className="-right-2" />
             </div>
+            {discountValue > 0 && <p className="mb-[16px]">Промокод</p>}
             <p>Сума</p>
           </div>
           <div>
             <div>
               <p className="mb-[16px]">{price} грн</p>
-              <p className="mb-[16px]">0 грн</p>
-              <p className="font-bold">{price} грн</p>
+              <p className="mb-[16px]">{SERVICE} грн</p>
+              {discountValue > 0 && (
+                <p className="mb-[16px]">-{discountValue} грн</p>
+              )}
+              <p className="font-bold">{priceWithDiscount} грн</p>
             </div>
           </div>
         </div>

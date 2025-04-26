@@ -11,15 +11,35 @@ import { Container } from '@/components/container/Container';
 
 import { TicketDraft } from '../../components/buyTicket/TicketDraft';
 
+export const SERVICE = 45;
+
 const BuyTicket: React.FC = () => {
   const [currentAction, setCurrentAction] = useState(1);
-  const [price, setPrice] = useState<number>(0);
+  const [price, setPrice] = useState(0);
   const [ticketCount, setTicketCount] = useState(1);
-
   const [info, setInfo] = useState<CustomerInfo | null>(null);
+  const [discount, setDiscount] = useState(0);
+  const [priceWithDiscount, setPriceWithDiscount] = useState(0);
+  const [discountValue, setDiscountValue] = useState(0);
+
+  useEffect(() => {
+    if (discount > 0) {
+      const discountUah = Math.ceil(((price * discount) / 100) * 100) / 100;
+      setDiscountValue(discountUah);
+
+      const finalSum = price - discountUah + SERVICE;
+      setPriceWithDiscount(finalSum);
+    } else {
+      setPriceWithDiscount(price);
+    }
+  }, [discount, price]);
 
   const setInfoHandler = (data: CustomerInfo) => {
     setInfo(data);
+  };
+
+  const handleSetDiscount = (value: number) => {
+    setDiscount(value);
   };
 
   const { idEvent } = useParams();
@@ -56,6 +76,8 @@ const BuyTicket: React.FC = () => {
                 event={event}
                 getPrice={getPrice}
                 getTicketCount={getTicketCount}
+                handleSetDiscount={handleSetDiscount}
+                discount={discount}
               />
             )}
             {currentAction === 2 && <Action2 setInfoHandler={setInfoHandler} />}
@@ -66,6 +88,8 @@ const BuyTicket: React.FC = () => {
               ticketCount={ticketCount}
               price={price}
               info={info}
+              priceWithDiscount={priceWithDiscount}
+              discountValue={discountValue}
             />
           </div>
         )}

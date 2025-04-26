@@ -6,11 +6,20 @@ export interface BuyTicketInputProps extends HTMLProps<HTMLInputElement> {
   error?: string;
   label: string;
   width?: string;
+  discount: number;
 }
 
 export const BuyTicketInput = forwardRef<HTMLInputElement, BuyTicketInputProps>(
   (
-    { label, error, forPassword = false, onBlur, width = '312', ...props },
+    {
+      label,
+      error,
+      forPassword = false,
+      onBlur,
+      width = '312',
+      discount,
+      ...props
+    },
     ref
   ) => {
     const [isFocused, setIsFocused] = useState(false);
@@ -19,7 +28,8 @@ export const BuyTicketInput = forwardRef<HTMLInputElement, BuyTicketInputProps>(
     const inputStyles = `w-full h-[64px] border-[2px] rounded-[10px]
     px-[24px] outline-none bg-background text-[20px]
     focus:placeholder-transparent border-buttonPurple
-    ${forPassword && 'pr-[72px]'}`;
+    ${forPassword && 'pr-[72px]'}
+    ${discount > 0 && 'border-success text-success'}`;
 
     const labelStyles = `absolute left-6 transition-all ease-in-out
     duration-300 bg-background px-1 -top-2 scale-100 visible opacity-100`;

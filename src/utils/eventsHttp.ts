@@ -62,18 +62,20 @@ export const buyTicket = async ({
   eventId: string;
   data: FullTicketInfo;
 }) => {
-  try {
-    const token = store.getState().auth.token;
+  const token = store.getState().auth.token;
 
-    const response = await axios.post(`/payment/${eventId}`, data, {
-      headers: {
-        'Content-Type': 'application/json',
-        Authorization: `Bearer ${token}`,
-      },
-    });
+  const response = await axios.post(`/payment/${eventId}`, data, {
+    headers: {
+      'Content-Type': 'application/json',
+      Authorization: `Bearer ${token}`,
+    },
+  });
 
-    return response;
-  } catch (error) {
-    throw new Error(`Failed to create event ${error}`);
-  }
+  return response;
+};
+
+export const checkPromoCode = async ({ promoCode }: { promoCode: string }) => {
+  const response = await axios(`payment/promo-code?promoCode=${promoCode}`);
+
+  return response;
 };
