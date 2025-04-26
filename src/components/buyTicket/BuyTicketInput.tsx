@@ -11,18 +11,9 @@ export interface BuyTicketInputProps extends HTMLProps<HTMLInputElement> {
 
 export const BuyTicketInput = forwardRef<HTMLInputElement, BuyTicketInputProps>(
   (
-    {
-      label,
-      error,
-      forPassword = false,
-      onBlur,
-      width = '312',
-      discount,
-      ...props
-    },
+    { label, error, forPassword = false, width = '312', discount, ...props },
     ref
   ) => {
-    const [isFocused, setIsFocused] = useState(false);
     const [passwordVisible, setPasswordVisible] = useState(false);
 
     const inputStyles = `w-full h-[64px] border-[2px] rounded-[10px]
@@ -50,11 +41,6 @@ export const BuyTicketInput = forwardRef<HTMLInputElement, BuyTicketInputProps>(
         <div className="relative">
           <input
             autoComplete="on"
-            onFocus={() => setIsFocused(true)}
-            onBlur={event => {
-              setIsFocused(false);
-              onBlur?.(event);
-            }}
             className={inputStyles}
             type={
               forPassword ? (passwordVisible ? 'text' : 'password') : props.type

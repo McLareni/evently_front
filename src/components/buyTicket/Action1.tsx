@@ -2,6 +2,7 @@
 import { useEffect, useState } from 'react';
 import { AiOutlineMinusCircle, AiOutlinePlusCircle } from 'react-icons/ai';
 import { ImPriceTag } from 'react-icons/im';
+import { RxCrossCircled } from 'react-icons/rx';
 
 import { checkPromoCode } from '@/utils/eventsHttp';
 import { AxiosError } from 'axios';
@@ -22,7 +23,6 @@ export const Action1: React.FC<Action1Props> = ({
   event,
   getPrice,
   getTicketCount,
-  // eslint-disable-next-line @typescript-eslint/no-unused-vars
   handleSetDiscount,
   discount,
   setErrorHandler,
@@ -103,14 +103,26 @@ export const Action1: React.FC<Action1Props> = ({
           onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
             setPromoCode(e.target.value)
           }
+          value={promoCode}
         />
         {discount > 0 ? (
-          <p
-            className={`absolute right-8 top-[18px]
+          <>
+            <p
+              className={`absolute right-8 top-[18px]
          text-success text-[24px] text-buttonPurple font-medium`}
-          >
-            Застосовано
-          </p>
+            >
+              Застосовано
+            </p>
+            <button
+              onClick={() => {
+                handleSetDiscount(0);
+                setPromoCode('');
+              }}
+              className="focus:outline-none text-buttonPurple absolute -right-[32px] -top-[32px]"
+            >
+              <RxCrossCircled size={32} />
+            </button>
+          </>
         ) : (
           <button
             onClick={checkPromoCodeHandler}

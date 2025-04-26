@@ -18,7 +18,7 @@ const BuyTicket: React.FC = () => {
   const [price, setPrice] = useState(0);
   const [ticketCount, setTicketCount] = useState(1);
   const [info, setInfo] = useState<CustomerInfo | null>(null);
-  const [discount, setDiscount] = useState(0);
+  const [discount, setDiscount] = useState(5);
   const [priceWithDiscount, setPriceWithDiscount] = useState(0);
   const [discountValue, setDiscountValue] = useState(0);
   const [errorStatus, setErrorStatus] = useState<number | null>(null);
@@ -66,7 +66,8 @@ const BuyTicket: React.FC = () => {
       const finalSum = price - discountUah + SERVICE;
       setPriceWithDiscount(finalSum);
     } else {
-      setPriceWithDiscount(price);
+      setDiscountValue(0);
+      setPriceWithDiscount(price + SERVICE);
     }
   }, [discount, price]);
 
