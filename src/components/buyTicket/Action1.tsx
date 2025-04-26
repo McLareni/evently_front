@@ -4,6 +4,7 @@ import { AiOutlineMinusCircle, AiOutlinePlusCircle } from 'react-icons/ai';
 import { ImPriceTag } from 'react-icons/im';
 
 import { checkPromoCode } from '@/utils/eventsHttp';
+import { AxiosError } from 'axios';
 
 import { BuyTicketInput } from './BuyTicketInput';
 
@@ -13,6 +14,8 @@ interface Action1Props {
   getTicketCount: (count: number) => void;
   handleSetDiscount: (value: number) => void;
   discount: number;
+  setErrorHandler: (error: number) => void;
+  errorStatus: number | null;
 }
 
 export const Action1: React.FC<Action1Props> = ({
@@ -22,6 +25,8 @@ export const Action1: React.FC<Action1Props> = ({
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
   handleSetDiscount,
   discount,
+  setErrorHandler,
+  errorStatus,
 }) => {
   const [price, setPrice] = useState<number>();
   const [ticketCount, setTicketCount] = useState(1);
@@ -40,8 +45,9 @@ export const Action1: React.FC<Action1Props> = ({
     try {
       const res = await checkPromoCode({ promoCode });
       console.log(res);
-    } catch (e) {
-      console.log(e);
+    } catch (e: unknown) {
+      const error = e as AxiosError;
+      setErrorHandler(error.response?.status as number);
     }
   };
 
@@ -92,7 +98,7 @@ export const Action1: React.FC<Action1Props> = ({
           type="text"
           label="Промокод"
           discount={discount}
-          // error={errors?.name?.message}
+          error={errorStatus === 404 && 'Невалідний промокод'}
           width="860"
           onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
             setPromoCode(e.target.value)
@@ -109,7 +115,8 @@ export const Action1: React.FC<Action1Props> = ({
           <button
             onClick={checkPromoCodeHandler}
             className={`absolute right-8 top-[18px]
-          focus:outline-none text-[24px] text-buttonPurple font-medium`}
+          focus:outline-none text-[24px] text-buttonPurple font-medium
+          ${errorStatus === 404 && 'text-darkGray'}`}
           >
             Застосувати
           </button>

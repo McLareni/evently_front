@@ -21,18 +21,15 @@ const BuyTicket: React.FC = () => {
   const [discount, setDiscount] = useState(0);
   const [priceWithDiscount, setPriceWithDiscount] = useState(0);
   const [discountValue, setDiscountValue] = useState(0);
+  const [errorStatus, setErrorStatus] = useState<number | null>(null);
 
-  useEffect(() => {
-    if (discount > 0) {
-      const discountUah = Math.ceil(((price * discount) / 100) * 100) / 100;
-      setDiscountValue(discountUah);
+  const { idEvent } = useParams();
 
-      const finalSum = price - discountUah + SERVICE;
-      setPriceWithDiscount(finalSum);
-    } else {
-      setPriceWithDiscount(price);
-    }
-  }, [discount, price]);
+  const [trigger, { data: event }] = useLazyGetEventByIdQuery();
+
+  const setErrorHandler = (error: number) => {
+    setErrorStatus(error);
+  };
 
   const setInfoHandler = (data: CustomerInfo) => {
     setInfo(data);
@@ -41,10 +38,6 @@ const BuyTicket: React.FC = () => {
   const handleSetDiscount = (value: number) => {
     setDiscount(value);
   };
-
-  const { idEvent } = useParams();
-
-  const [trigger, { data: event }] = useLazyGetEventByIdQuery();
 
   const setCurrentActionHandler = (action: number) => {
     setCurrentAction(action);
@@ -65,6 +58,18 @@ const BuyTicket: React.FC = () => {
     if (idEvent) fetchEvent();
   }, [idEvent, trigger]);
 
+  useEffect(() => {
+    if (discount > 0) {
+      const discountUah = Math.ceil(((price * discount) / 100) * 100) / 100;
+      setDiscountValue(discountUah);
+
+      const finalSum = price - discountUah + SERVICE;
+      setPriceWithDiscount(finalSum);
+    } else {
+      setPriceWithDiscount(price);
+    }
+  }, [discount, price]);
+
   return (
     <div className="font-oswald leading-none pb-[55px]">
       <Container>
@@ -78,6 +83,8 @@ const BuyTicket: React.FC = () => {
                 getTicketCount={getTicketCount}
                 handleSetDiscount={handleSetDiscount}
                 discount={discount}
+                setErrorHandler={setErrorHandler}
+                errorStatus={errorStatus}
               />
             )}
             {currentAction === 2 && <Action2 setInfoHandler={setInfoHandler} />}

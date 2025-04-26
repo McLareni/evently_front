@@ -3,10 +3,10 @@ import { AiOutlineEye, AiOutlineEyeInvisible } from 'react-icons/ai';
 
 export interface BuyTicketInputProps extends HTMLProps<HTMLInputElement> {
   forPassword?: boolean;
-  error?: string;
+  error?: string | boolean;
   label: string;
   width?: string;
-  discount: number;
+  discount?: number;
 }
 
 export const BuyTicketInput = forwardRef<HTMLInputElement, BuyTicketInputProps>(
@@ -29,7 +29,8 @@ export const BuyTicketInput = forwardRef<HTMLInputElement, BuyTicketInputProps>(
     px-[24px] outline-none bg-background text-[20px]
     focus:placeholder-transparent border-buttonPurple
     ${forPassword && 'pr-[72px]'}
-    ${discount > 0 && 'border-success text-success'}`;
+    ${discount && discount > 0 && 'border-success text-success'}
+    ${error && 'border-error text-error'}`;
 
     const labelStyles = `absolute left-6 transition-all ease-in-out
     duration-300 bg-background px-1 -top-2 scale-100 visible opacity-100`;
