@@ -1,5 +1,7 @@
 /* eslint-disable no-unused-vars */
 import { formatDateToDayMonth } from '@/helpers/filters/formatDateToDayMonth';
+import { formatPhoneNumberFromMask } from '@/helpers/userForm/formatFromMask';
+import { buyTicket } from '@/utils/eventsHttp';
 
 import { SharedBtn } from '@/components/ui';
 
@@ -11,6 +13,7 @@ interface TicketDraftProps {
   currentAction: number;
   ticketCount: number;
   price: number | undefined;
+  info: CustomerInfo | null;
 }
 
 export const TicketDraft: React.FC<TicketDraftProps> = ({
@@ -19,12 +22,12 @@ export const TicketDraft: React.FC<TicketDraftProps> = ({
   currentAction,
   ticketCount,
   price,
+  info,
 }) => {
   const formatTicket = () => {
     const countString = ticketCount.toString();
     const lastChar = countString.charAt(countString.length - 1);
     const preLastChar = countString.charAt(countString.length - 2);
-    console.log(preLastChar);
 
     if (preLastChar !== '1' && lastChar === '1') {
       return 'квиток';
@@ -39,6 +42,30 @@ export const TicketDraft: React.FC<TicketDraftProps> = ({
     return 'квитків';
   };
   const formattedTicket = formatTicket();
+
+  const sendEventData = async () => {
+    try {
+      if (info && event && price) {
+        const eventData = {
+          product: {
+            productName: event.title,
+            productPrice: event.price.toString(),
+            productCount: ticketCount.toString(),
+            amount: price.toString(),
+          },
+          userId: info.userId,
+          clientFirstName: info.clientFirstName,
+          clientLastName: info.clientLastName,
+          clientPhone: formatPhoneNumberFromMask(info.clientPhone),
+          clientEmail: info.clientEmail,
+        };
+        const res = await buyTicket({ data: eventData, eventId: event.id });
+        console.log(res);
+      }
+    } catch (e) {
+      console.log(e);
+    }
+  };
 
   return (
     <div className="font-lato text-[16px] bg-[url('/images/ticket/ticket-background.svg')] bg-cover bg-center w-[378px] h-[584px] flex flex-col px-[10px] pb-[54px]">
@@ -94,14 +121,25 @@ export const TicketDraft: React.FC<TicketDraftProps> = ({
           </div>
         </div>
       </div>
-      <SharedBtn
-        onClick={() => setCurrentActionHandler(currentAction + 1)}
-        type={currentAction === 1 ? 'button' : 'submit'}
-        primary
-        className="mt-auto mx-auto bg-gradient-to-r from-[#9B8FF3] to-[#38F6F9] w-[230px] h-[48px]"
-      >
-        {currentAction === 1 ? 'Продовжити' : 'Оплатити'}
-      </SharedBtn>
+      {currentAction === 1 ? (
+        <SharedBtn
+          onClick={() => setCurrentActionHandler(2)}
+          type="button"
+          primary
+          className="mt-auto mx-auto bg-gradient-to-r from-[#9B8FF3] to-[#38F6F9] w-[230px] h-[48px]"
+        >
+          Продовжити
+        </SharedBtn>
+      ) : (
+        <SharedBtn
+          onClick={sendEventData}
+          type="button"
+          primary
+          className="mt-auto mx-auto bg-gradient-to-r from-[#9B8FF3] to-[#38F6F9] w-[230px] h-[48px]"
+        >
+          Оплатити
+        </SharedBtn>
+      )}
     </div>
   );
 };

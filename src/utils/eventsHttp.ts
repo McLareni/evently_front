@@ -36,15 +36,36 @@ export const createEvent = async (
   }
 };
 
-export const editEvent = async (
-  event?: Event,
-) => {
+export const editEvent = async (event?: Event) => {
   const token = store.getState().auth.token;
 
   console.log(event);
 
   try {
     const response = await axios.put(`events/${event?.id}`, event, {
+      headers: {
+        'Content-Type': 'application/json',
+        Authorization: `Bearer ${token}`,
+      },
+    });
+
+    return response;
+  } catch (error) {
+    throw new Error(`Failed to create event ${error}`);
+  }
+};
+
+export const buyTicket = async ({
+  eventId,
+  data,
+}: {
+  eventId: string;
+  data: FullTicketInfo;
+}) => {
+  try {
+    const token = store.getState().auth.token;
+
+    const response = await axios.post(`/payment/${eventId}`, data, {
       headers: {
         'Content-Type': 'application/json',
         Authorization: `Bearer ${token}`,

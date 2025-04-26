@@ -15,9 +15,15 @@ const BuyTicket: React.FC = () => {
   const [currentAction, setCurrentAction] = useState(1);
   const [price, setPrice] = useState<number>(0);
   const [ticketCount, setTicketCount] = useState(1);
-  console.log(price, ticketCount);
+
+  const [info, setInfo] = useState<CustomerInfo | null>(null);
+
+  const setInfoHandler = (data: CustomerInfo) => {
+    setInfo(data);
+  };
 
   const { idEvent } = useParams();
+
   const [trigger, { data: event }] = useLazyGetEventByIdQuery();
 
   const setCurrentActionHandler = (action: number) => {
@@ -52,13 +58,14 @@ const BuyTicket: React.FC = () => {
                 getTicketCount={getTicketCount}
               />
             )}
-            {currentAction === 2 && <Action2 />}
+            {currentAction === 2 && <Action2 setInfoHandler={setInfoHandler} />}
             <TicketDraft
               event={event}
               setCurrentActionHandler={setCurrentActionHandler}
               currentAction={currentAction}
               ticketCount={ticketCount}
               price={price}
+              info={info}
             />
           </div>
         )}
