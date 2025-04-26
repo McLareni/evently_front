@@ -5,11 +5,7 @@ export const validateName = (name: string) => {
 
   const trimmedName = name.trim();
 
-  if (trimmedName.length === 0) {
-    return "Введіть ім'я";
-  }
-
-  if (!pattern.test(trimmedName)) {
+  if (!pattern.test(trimmedName) && trimmedName.length !== 0) {
     return 'Лише літери';
   }
 
@@ -23,13 +19,13 @@ export const validateName = (name: string) => {
 export const validateSurName = (surname: string) => {
   const pattern = /^[a-zA-Zа-яА-ЯёЁіІїЇєЄґҐ\s']+$/;
 
-  const trimmedName = surname.trim();
+  const trimmedSurname = surname.trim();
 
-  if (!pattern.test(trimmedName) && trimmedName.length !== 0) {
+  if (!pattern.test(trimmedSurname) && trimmedSurname.length !== 0) {
     return 'Лише літери';
   }
 
-  if (trimmedName.length > 0 && trimmedName.length < 2) {
+  if (trimmedSurname.length > 0 && trimmedSurname.length < 2) {
     return `Прізвище має бути від 2 до ${MAX_NAME_LENGTH} символів`;
   }
 
