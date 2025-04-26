@@ -1,3 +1,4 @@
+/* eslint-disable no-unused-vars */
 import { FC, useEffect, useState } from 'react';
 import { Controller, useForm } from 'react-hook-form';
 import { AiOutlineExclamation } from 'react-icons/ai';
@@ -8,25 +9,29 @@ import { useAppSelector } from '@/redux/hooks';
 
 import { formatPhoneToMask } from '@/helpers/userForm/formatToMask';
 import { validateEmail } from '@/utils';
-import { MAX_NAME_LENGTH, validateName } from '@/utils/validateName';
+import {
+  MAX_NAME_LENGTH,
+  validateName,
+  validateSurName,
+} from '@/utils/validateName';
 import { useMask } from '@react-input/mask';
 
 import Spinner from '../ui/Spinner';
 import { BuyTicketInput } from './BuyTicketInput';
 
 interface Action2Props {
-  // eslint-disable-next-line no-unused-vars
   setInfoHandler: (data: CustomerInfo) => void;
+  setFormValid: (isValid: boolean) => void;
 }
 
-export const Action2: FC<Action2Props> = ({ setInfoHandler }) => {
+export const Action2: FC<Action2Props> = ({ setInfoHandler, setFormValid }) => {
   const [agreement, setAgreement] = useState(false);
 
   const { name, surname, phoneNumber, email, id } = useAppSelector(selectUser);
   const isLoading = useAppSelector(selectIsLoading);
 
   const defaultValues: BuyTicketUser = {
-    id: id,
+    id: id || '',
     name: name || '',
     surname: surname || '',
     email: email || '',
@@ -42,7 +47,7 @@ export const Action2: FC<Action2Props> = ({ setInfoHandler }) => {
     register,
     control,
     watch,
-    formState: { errors },
+    formState: { errors, isValid },
   } = useForm<BuyTicketUser>({ mode: 'onChange', defaultValues });
 
   const userId = watch('id');
@@ -62,11 +67,15 @@ export const Action2: FC<Action2Props> = ({ setInfoHandler }) => {
 
     setInfoHandler(tickerInfo);
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [clientEmail, clientFirstName, clientLastName, clientPhone, userId]);
+  }, [clientEmail, clientFirstName, clientLastName, clientPhone]);
 
   const checkAgreement = () => {
     setAgreement(!agreement);
   };
+
+  useEffect(() => {
+    setFormValid(isValid);
+  }, [isValid, setFormValid]);
 
   return (
     <form className="flex flex-col border-[2px] border-buttonPurple rounded-[10px] p-[24px] mb-auto gap-[20px]">
@@ -75,7 +84,6 @@ export const Action2: FC<Action2Props> = ({ setInfoHandler }) => {
       <div className="flex gap-[52px] mb-[8px]">
         <BuyTicketInput
           {...register('name', {
-            required: true,
             validate: validateName,
           })}
           maxLength={MAX_NAME_LENGTH}
@@ -90,12 +98,7 @@ export const Action2: FC<Action2Props> = ({ setInfoHandler }) => {
 
         <BuyTicketInput
           {...register('surname', {
-            validate: {
-              required: value =>
-                value.trim().length === 0 ||
-                (value.trim().length > 1 && value.trim().length <= 50) ||
-                'Введіть прізвище (від 2 до 50 символів)',
-            },
+            validate: validateSurName,
           })}
           placeholder="Введіть прізвище"
           id="surname"
@@ -125,10 +128,8 @@ export const Action2: FC<Action2Props> = ({ setInfoHandler }) => {
             />
           )}
           rules={{
-            required: false,
             validate: value => {
-              if (value.length !== 17 && value.length > 0)
-                return 'Введіть номер телефону';
+              if (value.length !== 17) return 'Введіть номер телефону';
 
               if (value.length === 17) {
                 if (value[4] !== '0' || value[5] === '0') {

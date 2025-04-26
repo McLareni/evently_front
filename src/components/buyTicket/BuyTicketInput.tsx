@@ -1,5 +1,6 @@
 import { HTMLProps, forwardRef, useState } from 'react';
 import { AiOutlineEye, AiOutlineEyeInvisible } from 'react-icons/ai';
+import { RxCross2 } from 'react-icons/rx';
 
 export interface BuyTicketInputProps extends HTMLProps<HTMLInputElement> {
   forPassword?: boolean;
@@ -18,7 +19,7 @@ export const BuyTicketInput = forwardRef<HTMLInputElement, BuyTicketInputProps>(
 
     const inputStyles = `w-full h-[64px] border-[2px] rounded-[10px]
     px-[24px] outline-none bg-background text-[20px]
-    focus:placeholder-transparent border-buttonPurple
+    focus:placeholder-transparent border-buttonPurple mb-[8px]
     ${forPassword && 'pr-[72px]'}
     ${discount && discount > 0 && 'border-success text-success'}
     ${error && 'border-error text-error'}`;
@@ -66,7 +67,13 @@ export const BuyTicketInput = forwardRef<HTMLInputElement, BuyTicketInputProps>(
           {label}
         </label>
         <div className="h-[24px]">
-          {error && <span className="text-error">{error}</span>}
+          {error && (
+            <div className="flex gap-[8px]">
+              <RxCross2 color="red" />
+
+              <span>{error}</span>
+            </div>
+          )}
         </div>
       </fieldset>
     );

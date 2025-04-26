@@ -22,10 +22,15 @@ const BuyTicket: React.FC = () => {
   const [priceWithDiscount, setPriceWithDiscount] = useState(0);
   const [discountValue, setDiscountValue] = useState(0);
   const [errorStatus, setErrorStatus] = useState<number | null>(null);
+  const [isFormValid, setIsFormValid] = useState(false);
 
   const { idEvent } = useParams();
 
   const [trigger, { data: event }] = useLazyGetEventByIdQuery();
+
+  const setFormValid = (isValid: boolean) => {
+    setIsFormValid(isValid);
+  };
 
   const setErrorHandler = (error: number) => {
     setErrorStatus(error);
@@ -88,7 +93,12 @@ const BuyTicket: React.FC = () => {
                 errorStatus={errorStatus}
               />
             )}
-            {currentAction === 2 && <Action2 setInfoHandler={setInfoHandler} />}
+            {currentAction === 2 && (
+              <Action2
+                setInfoHandler={setInfoHandler}
+                setFormValid={setFormValid}
+              />
+            )}
             <TicketDraft
               event={event}
               setCurrentActionHandler={setCurrentActionHandler}
@@ -98,6 +108,7 @@ const BuyTicket: React.FC = () => {
               info={info}
               priceWithDiscount={priceWithDiscount}
               discountValue={discountValue}
+              isFormValid={isFormValid}
             />
           </div>
         )}

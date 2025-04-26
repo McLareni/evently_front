@@ -17,6 +17,7 @@ interface TicketDraftProps {
   info: CustomerInfo | null;
   priceWithDiscount: number;
   discountValue: number;
+  isFormValid: boolean;
 }
 
 export const TicketDraft: React.FC<TicketDraftProps> = ({
@@ -28,6 +29,7 @@ export const TicketDraft: React.FC<TicketDraftProps> = ({
   info,
   priceWithDiscount,
   discountValue,
+  isFormValid,
 }) => {
   const formatTicket = () => {
     const countString = ticketCount.toString();
@@ -145,6 +147,7 @@ export const TicketDraft: React.FC<TicketDraftProps> = ({
           onClick={sendEventData}
           type="button"
           primary
+          disabled={!isFormValid}
           className="mt-auto mx-auto bg-gradient-to-r from-[#9B8FF3] to-[#38F6F9] w-[230px] h-[48px]"
         >
           Оплатити
