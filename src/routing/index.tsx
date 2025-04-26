@@ -23,6 +23,7 @@ import { Layout } from '@/components/layout/Layout';
 import AdminRouter from './privateRouters/AdminRouter';
 import LoginRouter from './privateRouters/LoginRouter';
 import OrganizersPage from '@/pages/OrganizersPage';
+import AboutusPage from '@/pages/AboutusPage';
 
 const NotFound = React.lazy(() => import('../pages/NotFoundPage'));
 
@@ -57,6 +58,9 @@ const router = createBrowserRouter([
         path: 'organizers', 
         element: <OrganizersPage/>
       },
+      { path: 'about_us',
+        element: <AboutusPage/> },
+
       {
         path: 'user/:idUser',
         element: <UserProfile />,
@@ -94,7 +98,7 @@ const router = createBrowserRouter([
       // Header routes
       { path: 'popular', element: '' },
 
-      { path: 'about', element: '' },
+   
 
       { path: 'Kyiv', element: '' },
       { path: 'Odesa', element: '' },
