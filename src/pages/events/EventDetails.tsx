@@ -61,7 +61,7 @@ const EventDetails = () => {
       }
       const responseTopEvents = await refreshTopEvents({
         page: 0,
-        size: 20,
+        size: 3,
         filter: {
           isPopular: true,
         },
@@ -69,7 +69,7 @@ const EventDetails = () => {
       if (responseTopEvents.status === 'uninitialized') {
         refreshTopEvents({
           page: 0,
-          size: 20,
+          size: 3,
           filter: {
             isPopular: true,
           },
