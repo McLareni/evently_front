@@ -68,7 +68,44 @@ export const TicketDraft: React.FC<TicketDraftProps> = ({
         };
 
         const res = await buyTicket({ data: eventData, eventId: event.id });
-        console.log(res);
+
+        if (res) {
+          const form = document.createElement('form');
+          form.method = 'POST';
+          form.action = 'https://secure.wayforpay.com/pay';
+
+          const fields: Record<string, string> = {
+            merchantAccount: res.merchantAccount,
+            merchantAuthType: res.merchantAuthType,
+            merchantDomainName: res.merchantDomainName,
+            orderReference: res.orderReference,
+            orderDate: res.orderDate,
+            amount: res.amount,
+            currency: res.currency,
+            orderTimeout: res.orderTimeout,
+            productName: res.product.productName,
+            productPrice: res.product.productPrice,
+            productCount: res.product.productCount,
+            clientFirstName: res.clientFirstName,
+            clientLastName: res.clientLastName,
+            clientAddress: 'clientAddress',
+            clientCity: 'clientCity',
+            clientEmail: res.clientEmail,
+            defaultPaymentSystem: res.defaultPaymentSystem,
+            merchantSignature: res.merchantSignature,
+          };
+
+          for (const key in fields) {
+            const input = document.createElement('input');
+            input.type = 'hidden';
+            input.name = key;
+            input.value = fields[key];
+            form.appendChild(input);
+          }
+
+          document.body.appendChild(form);
+          form.submit();
+        }
       }
     } catch (e) {
       console.log(e);

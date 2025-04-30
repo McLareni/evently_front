@@ -64,18 +64,18 @@ export const buyTicket = async ({
 }) => {
   const token = store.getState().auth.token;
 
-  const response = await axios.post(`/payment/${eventId}`, data, {
+  const response = (await axios.post(`pay/${eventId}`, data, {
     headers: {
       'Content-Type': 'application/json',
       Authorization: `Bearer ${token}`,
     },
-  });
+  })) as { data: ResponseWithSignature };
 
-  return response;
+  return response.data;
 };
 
 export const checkPromoCode = async ({ promoCode }: { promoCode: string }) => {
-  const response = await axios(`payment/promo-code?promoCode=${promoCode}`);
+  const response = await axios(`pay/promo-code?promoCode=${promoCode}`);
 
   return response;
 };

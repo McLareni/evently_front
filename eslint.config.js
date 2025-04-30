@@ -32,7 +32,8 @@ export default [
         BuyTicketUser: true,
         CustomerInfo: true,
         ProductInfo: true,
-        FullTicketInfo: true
+        FullTicketInfo: true,
+        ResponseWithSignature: true
       },
       parser: typescriptEslintParser,
       sourceType: 'module',

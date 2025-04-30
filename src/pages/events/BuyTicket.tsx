@@ -11,7 +11,7 @@ import { Container } from '@/components/container/Container';
 
 import { TicketDraft } from '../../components/buyTicket/TicketDraft';
 
-export const SERVICE = 45;
+export const SERVICE = 0;
 
 const BuyTicket: React.FC = () => {
   const [currentAction, setCurrentAction] = useState(1);
