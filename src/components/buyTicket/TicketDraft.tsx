@@ -1,4 +1,6 @@
 /* eslint-disable no-unused-vars */
+import { useState } from 'react';
+
 import { formatDateToDayMonth } from '@/helpers/filters/formatDateToDayMonth';
 import { formatPhoneNumberFromMask } from '@/helpers/userForm/formatFromMask';
 import { SERVICE } from '@/pages/events/BuyTicket';
@@ -6,6 +8,7 @@ import { buyTicket } from '@/utils/eventsHttp';
 
 import { SharedBtn } from '@/components/ui';
 
+import Spinner from '../ui/Spinner';
 import { PaymentInfo } from './PaymentInfo';
 
 interface TicketDraftProps {
@@ -31,6 +34,8 @@ export const TicketDraft: React.FC<TicketDraftProps> = ({
   discountValue,
   isFormValid,
 }) => {
+  const [isLoading, setIsLoading] = useState(false);
+
   const formatTicket = () => {
     const countString = ticketCount.toString();
     const lastChar = countString.charAt(countString.length - 1);
@@ -45,12 +50,13 @@ export const TicketDraft: React.FC<TicketDraftProps> = ({
     if (lastChar === '2' || lastChar === '3' || lastChar === '4') {
       return 'квитки';
     }
-
     return 'квитків';
   };
+
   const formattedTicket = formatTicket();
 
   const sendEventData = async () => {
+    setIsLoading(true);
     try {
       if (info && event && price) {
         const eventData = {
@@ -109,11 +115,14 @@ export const TicketDraft: React.FC<TicketDraftProps> = ({
       }
     } catch (e) {
       console.log(e);
+    } finally {
+      setIsLoading(false);
     }
   };
 
   return (
     <div className="font-lato text-[16px] bg-[url('/images/ticket/ticket-background.svg')] bg-cover bg-center w-[378px] h-[584px] flex flex-col px-[10px] pb-[54px]">
+      {isLoading && <Spinner />}
       <div className="overflow-scroll overscroll-contain h-[370px] px-[10px] mt-[20px]">
         <img
           className="h-[200px] w-full object-cover rounded-[10px] mb-[32px]"

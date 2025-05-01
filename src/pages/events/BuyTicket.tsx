@@ -11,14 +11,14 @@ import { Container } from '@/components/container/Container';
 
 import { TicketDraft } from '../../components/buyTicket/TicketDraft';
 
-export const SERVICE = 0;
+export const SERVICE = 45;
 
 const BuyTicket: React.FC = () => {
   const [currentAction, setCurrentAction] = useState(1);
   const [price, setPrice] = useState(0);
   const [ticketCount, setTicketCount] = useState(1);
   const [info, setInfo] = useState<CustomerInfo | null>(null);
-  const [discount, setDiscount] = useState(5);
+  const [discount, setDiscount] = useState(0);
   const [priceWithDiscount, setPriceWithDiscount] = useState(0);
   const [discountValue, setDiscountValue] = useState(0);
   const [errorStatus, setErrorStatus] = useState<number | null>(null);
@@ -32,7 +32,7 @@ const BuyTicket: React.FC = () => {
     setIsFormValid(isValid);
   };
 
-  const setErrorHandler = (error: number) => {
+  const setErrorHandler = (error: number | null) => {
     setErrorStatus(error);
   };
 
