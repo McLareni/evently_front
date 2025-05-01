@@ -64,7 +64,7 @@ export const TicketDraft: React.FC<TicketDraftProps> = ({
             productName: event.title,
             productPrice: event.price.toString(),
             productCount: ticketCount.toString(),
-            amount: price.toString(),
+            amount: priceWithDiscount.toString(),
           },
           userId: info.userId,
           clientFirstName: info.clientFirstName,
