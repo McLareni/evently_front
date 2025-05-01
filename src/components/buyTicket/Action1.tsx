@@ -128,7 +128,7 @@ export const Action1: React.FC<Action1Props> = ({
                 handleSetDiscount(0);
                 setPromoCode('');
               }}
-              className="focus:outline-none text-buttonPurple absolute -right-[32px] -top-[32px]"
+              className="focus:outline-none text-buttonPurple absolute -right-[32px] -top-[24px]"
             >
               <RxCrossCircled size={32} />
             </button>
