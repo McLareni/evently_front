@@ -100,50 +100,52 @@ export const Action1: React.FC<Action1Props> = ({
           </span>
         </div>
       </div>
-      <div className="relative">
-        <BuyTicketInput
-          placeholder="Введіть промокод"
-          id="name"
-          htmlFor="name"
-          type="text"
-          label="Промокод"
-          discount={discount}
-          error={errorStatus === 404 && 'Неправильний промокод'}
-          width="860"
-          onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
-            setPromoCode(e.target.value)
-          }
-          value={promoCode}
-        />
-        {discount > 0 ? (
-          <>
-            <p
-              className={`absolute right-8 top-[18px]
+      {price !== 0 && (
+        <div className="relative">
+          <BuyTicketInput
+            placeholder="Введіть промокод"
+            id="name"
+            htmlFor="name"
+            type="text"
+            label="Промокод"
+            discount={discount}
+            error={errorStatus === 404 && 'Неправильний промокод'}
+            width="860"
+            onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
+              setPromoCode(e.target.value)
+            }
+            value={promoCode}
+          />
+          {discount > 0 ? (
+            <>
+              <p
+                className={`absolute right-8 top-[18px]
          text-success text-[24px] text-buttonPurple font-medium`}
-            >
-              Застосовано
-            </p>
+              >
+                Застосовано
+              </p>
+              <button
+                onClick={() => {
+                  handleSetDiscount(0);
+                  setPromoCode('');
+                }}
+                className="focus:outline-none text-buttonPurple absolute -right-[32px] -top-[24px]"
+              >
+                <RxCrossCircled size={32} />
+              </button>
+            </>
+          ) : (
             <button
-              onClick={() => {
-                handleSetDiscount(0);
-                setPromoCode('');
-              }}
-              className="focus:outline-none text-buttonPurple absolute -right-[32px] -top-[24px]"
-            >
-              <RxCrossCircled size={32} />
-            </button>
-          </>
-        ) : (
-          <button
-            onClick={checkPromoCodeHandler}
-            className={`absolute right-8 top-[18px]
+              onClick={checkPromoCodeHandler}
+              className={`absolute right-8 top-[18px]
           focus:outline-none text-[24px] text-buttonPurple font-medium
           ${errorStatus === 404 && 'text-darkGray'}`}
-          >
-            Застосувати
-          </button>
-        )}
-      </div>
+            >
+              Застосувати
+            </button>
+          )}
+        </div>
+      )}
     </div>
   );
 };

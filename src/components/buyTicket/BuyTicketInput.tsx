@@ -20,11 +20,12 @@ export const BuyTicketInput = forwardRef<HTMLInputElement, BuyTicketInputProps>(
     const inputStyles = `w-full h-[64px] border-[2px] rounded-[10px]
     px-[24px] outline-none bg-background text-[20px]
     focus:placeholder-transparent border-buttonPurple mb-[8px]
+    placeholder-textDark
     ${forPassword && 'pr-[72px]'}
     ${discount && discount > 0 && 'border-success text-success'}
     ${error && 'border-error text-error'}`;
 
-    const labelStyles = `absolute left-6 transition-all ease-in-out
+    const labelStyles = `absolute left-4 transition-all ease-in-out
     duration-300 bg-background px-1 -top-2 scale-100 visible opacity-100`;
 
     const buttonStyles = `absolute top-[50%] -translate-y-2/4 right-[24px] 
@@ -70,7 +71,6 @@ export const BuyTicketInput = forwardRef<HTMLInputElement, BuyTicketInputProps>(
           {error && (
             <div className="flex gap-[8px]">
               <RxCross2 color="red" />
-
               <span>{error}</span>
             </div>
           )}
