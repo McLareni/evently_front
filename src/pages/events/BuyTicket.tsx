@@ -1,10 +1,13 @@
 import { useEffect, useState } from 'react';
 import { useParams } from 'react-router';
 
+import { selectIsLoggedIn } from '@/redux/auth/selectors';
 import { useLazyGetEventByIdQuery } from '@/redux/events/operations';
+import { useAppSelector } from '@/redux/hooks';
 
 import { Action1 } from '@/components/buyTicket/Action1';
 import { Action2 } from '@/components/buyTicket/Action2';
+import { Action2CheckEmail } from '@/components/buyTicket/Action2CheckEmail';
 import { Action3 } from '@/components/buyTicket/Action3';
 import { BuyTicketTabs } from '@/components/buyTicket/BuyTicketTabs';
 import { Container } from '@/components/container/Container';
@@ -23,10 +26,17 @@ const BuyTicket: React.FC = () => {
   const [discountValue, setDiscountValue] = useState(0);
   const [errorStatus, setErrorStatus] = useState<number | null>(null);
   const [isFormValid, setIsFormValid] = useState(false);
+  const [isEmailExists, setIsEmailExists] = useState<null | boolean>(null);
 
   const { idEvent } = useParams();
 
   const [trigger, { data: event }] = useLazyGetEventByIdQuery();
+
+  const isLoggedIn = useAppSelector(selectIsLoggedIn);
+
+  const setIsEmailExistsHandler = (isExists: boolean) => {
+    setIsEmailExists(isExists);
+  };
 
   const setFormValid = (isValid: boolean) => {
     setIsFormValid(isValid);
@@ -93,10 +103,15 @@ const BuyTicket: React.FC = () => {
                 errorStatus={errorStatus}
               />
             )}
-            {currentAction === 2 && (
+            {currentAction === 2 && isLoggedIn && (
               <Action2
                 setInfoHandler={setInfoHandler}
                 setFormValid={setFormValid}
+              />
+            )}
+            {currentAction === 2 && !isLoggedIn && isEmailExists === null && (
+              <Action2CheckEmail
+                setIsEmailExistsHandler={setIsEmailExistsHandler}
               />
             )}
             <TicketDraft

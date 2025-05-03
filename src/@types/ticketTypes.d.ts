@@ -41,3 +41,8 @@ type ResponseWithSignature = {
   serviceUrl: string;
   merchantSignature: string;
 };
+
+type BuyTicketUser = Pick<
+  User,
+  'id' | 'name' | 'surname' | 'email' | 'phoneNumber'
+>;

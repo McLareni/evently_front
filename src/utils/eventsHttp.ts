@@ -79,3 +79,9 @@ export const checkPromoCode = async ({ promoCode }: { promoCode: string }) => {
 
   return response;
 };
+
+export const checkUserExists = async ({ email }: { email: string }) => {
+  const response = await axios(`authorize/exist/${email}`);
+
+  return response;
+};
