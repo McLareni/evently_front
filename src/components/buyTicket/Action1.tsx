@@ -108,7 +108,7 @@ export const Action1: React.FC<Action1Props> = ({
           type="text"
           label="Промокод"
           discount={discount}
-          error={errorStatus === 404 && 'Невалідний промокод'}
+          error={errorStatus === 404 && 'Неправильний промокод'}
           width="860"
           onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
             setPromoCode(e.target.value)
