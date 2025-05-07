@@ -1,6 +1,7 @@
 /* eslint-disable no-unused-vars */
 import { FC, useState } from 'react';
 import { Controller, useForm } from 'react-hook-form';
+import { toast } from 'react-toastify';
 
 import { validateEmail } from '@/utils';
 import { checkUserExists } from '@/utils/eventsHttp';
@@ -35,6 +36,11 @@ export const Action2CheckEmail: FC<Action2CheckEmailProps> = ({
     setNewUserEmailHandler(data.email);
     try {
       const res = await checkUserExists({ email: data.email });
+      console.log(res);
+      if (res.data.status === 403) {
+        toast.error('Email видалено');
+        return;
+      }
       setIsEmailExistsHandler(res.data.emailExist);
     } catch (e) {
       console.log(e);
