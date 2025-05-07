@@ -2,6 +2,7 @@ import { FC, useState } from 'react';
 import { Controller, SubmitHandler, useForm } from 'react-hook-form';
 import { FcGoogle } from 'react-icons/fc';
 
+import { register as registration } from '@/redux/auth/operations';
 import { useAppDispatch } from '@/redux/hooks';
 
 import { formatPhoneNumberFromMask } from '@/helpers/userForm/formatFromMask';
@@ -46,19 +47,20 @@ export const Action2NewUser: FC<Action2NewUserProps> = ({ newUserEmail }) => {
 
   const onSubmit: SubmitHandler<NewUserInfo> = async data => {
     setIsLoading(true);
-    const formattedDate = {
+    const formattedData = {
       ...data,
       phoneNumber: formatPhoneNumberFromMask(data.phoneNumber),
     };
     try {
-      // dispatch(updateUserInfo(data));
-      // !isLoading && dispatch(getUser());
+      const res = await dispatch(registration(formattedData));
+
+      console.log(res);
     } catch (e) {
       console.log(e);
     } finally {
       setIsLoading(false);
     }
-    console.log(formattedDate);
+    console.log(formattedData);
   };
 
   return (
