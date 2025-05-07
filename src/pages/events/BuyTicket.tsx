@@ -108,7 +108,7 @@ const BuyTicket: React.FC = () => {
       <Container>
         <BuyTicketTabs currentAction={currentAction} />
         {(currentAction === 1 || currentAction === 2) && (
-          <div className="flex justify-between">
+          <div className="flex gap-[80px]">
             {currentAction === 1 && (
               <Action1
                 event={event}
