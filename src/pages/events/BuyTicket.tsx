@@ -8,6 +8,7 @@ import { useAppSelector } from '@/redux/hooks';
 import { Action1 } from '@/components/buyTicket/Action1';
 import { Action2 } from '@/components/buyTicket/Action2';
 import { Action2CheckEmail } from '@/components/buyTicket/Action2CheckEmail';
+import { Action2UserExists } from '@/components/buyTicket/Action2UserExists';
 import { Action3 } from '@/components/buyTicket/Action3';
 import { BuyTicketTabs } from '@/components/buyTicket/BuyTicketTabs';
 import { Container } from '@/components/container/Container';
@@ -85,6 +86,7 @@ const BuyTicket: React.FC = () => {
       setPriceWithDiscount(price + SERVICE);
     }
   }, [discount, price]);
+  console.log(isEmailExists);
 
   return (
     <div className="font-oswald leading-none pb-[55px]">
@@ -113,6 +115,9 @@ const BuyTicket: React.FC = () => {
               <Action2CheckEmail
                 setIsEmailExistsHandler={setIsEmailExistsHandler}
               />
+            )}
+            {currentAction === 2 && !isLoggedIn && isEmailExists && (
+              <Action2UserExists />
             )}
             <TicketDraft
               event={event}

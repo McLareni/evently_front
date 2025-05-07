@@ -44,7 +44,7 @@ export const Action2CheckEmail: FC<Action2CheckEmailProps> = ({
     >
       {isLoading && <Spinner />}
       <h2 className="font-medium mb-4">Контактна інформація</h2>
-      <div className="flex gap-[52px] mb-[8px]">
+      <div className="flex flex-col gap-[8px]">
         <Controller
           name="email"
           control={control}
