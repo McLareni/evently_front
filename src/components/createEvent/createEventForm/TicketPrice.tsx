@@ -19,6 +19,7 @@ type TicketPriceProps = {
   errors: FieldErrors<CreateEventFormValues>;
   clearErrors: UseFormClearErrors<CreateEventFormValues>;
   isEdit?: boolean;
+  event: Event | undefined;
 };
 
 const TicketPrice: React.FC<TicketPriceProps> = ({
@@ -28,26 +29,35 @@ const TicketPrice: React.FC<TicketPriceProps> = ({
   errors,
   clearErrors,
   isEdit = false,
+  event,
 }) => {
   const freeTickets = watch('freeTickets') as boolean;
   const unlimitedTickets = watch('unlimitedTickets') as boolean;
   const ticketPrice = watch('ticketPrice');
   const numberOfTickets = watch('numberOfTickets');
 
+  const ticketsHasBeenSold = event?.soldTickets !== '0';
+
   useEffect(() => {
     if (unlimitedTickets) {
       setValue('numberOfTickets', '');
       clearErrors('numberOfTickets');
+    } else {
+      setValue('numberOfTickets', event?.numberOfTickets.toString() || '');
+      clearErrors('numberOfTickets');
     }
     if (freeTickets) {
       setValue('ticketPrice', '');
+      clearErrors('ticketPrice');
+    } else {
+      setValue('ticketPrice', event?.price.toString() || '');
       clearErrors('ticketPrice');
     }
   }, [clearErrors, freeTickets, unlimitedTickets, setValue]);
 
   return (
     <div className="relative max-w-[760px] rounded-[20px] border-2 border-buttonPurple flex flex-col py-8 pl-8 mb-8">
-      {isEdit && (
+      {isEdit && ticketsHasBeenSold && (
         <div className="flex gap-2 mb-[10px]">
           <AiOutlineExclamation className="rounded-full border border-error fill-error w-6 h-6" />
           <h3 className="text-error text-base font-normal font-lato">
@@ -56,6 +66,17 @@ const TicketPrice: React.FC<TicketPriceProps> = ({
           </h3>
         </div>
       )}
+      {isEdit &&
+        +numberOfTickets < +(event?.soldTickets || 0) &&
+        !unlimitedTickets && (
+          <div className="flex gap-2 mb-[10px]">
+            <AiOutlineExclamation className="rounded-full border border-error fill-error w-6 h-6" />
+            <h3 className="text-error text-base font-normal font-lato">
+              Ви не можете кількість квитків, оскільки кількість квитків менша
+              ніж у вас вже продано білетів
+            </h3>
+          </div>
+        )}
       {!errors.ticketPrice &&
         !errors.numberOfTickets &&
         (freeTickets || ticketPrice) &&
@@ -70,7 +91,7 @@ const TicketPrice: React.FC<TicketPriceProps> = ({
         Вартість квитків<span className="star">*</span>
       </span>
       <div className="pb-6">
-        {(!isEdit || !freeTickets) && (
+        {(isEdit || !freeTickets) && (
           <button
             type="button"
             className={`${
@@ -85,7 +106,7 @@ const TicketPrice: React.FC<TicketPriceProps> = ({
             Платні
           </button>
         )}
-        {(!isEdit || freeTickets) && (
+        {(isEdit || freeTickets) && (
           <button
             type="button"
             className={`${
@@ -189,31 +210,31 @@ const TicketPrice: React.FC<TicketPriceProps> = ({
             </div>
           </div>
         </div>
-        {!isEdit && (
-          <div className="self-end mb-[32px]">
-            <Controller
-              name="unlimitedTickets"
-              control={control}
-              render={({ field }) => (
-                <label className="flex items-center cursor-pointer">
-                  <input
-                    id="unlimitedTickets"
-                    type="checkbox"
-                    className="appearance-none"
-                    checked={field.value}
-                    onChange={e => field.onChange(e.target.checked)}
-                  />
-                  <div className="h-5 w-5 flex items-center justify-center bg-lightPink rounded-[5px]">
-                    {unlimitedTickets && (
-                      <MdDone className="text-black w-6 h-6" />
-                    )}
-                  </div>
-                  <span className="ml-2">Необмежена кількість</span>
-                </label>
-              )}
-            />
-          </div>
-        )}
+
+        <div className="self-end mb-[32px]">
+          <Controller
+            name="unlimitedTickets"
+            control={control}
+            render={({ field }) => (
+              <label className="flex items-center cursor-pointer">
+                <input
+                  id="unlimitedTickets"
+                  type="checkbox"
+                  className="appearance-none"
+                  checked={field.value}
+                  onChange={e => field.onChange(e.target.checked)}
+                  disabled={!isEdit}
+                />
+                <div className="h-5 w-5 flex items-center justify-center bg-lightPink rounded-[5px]">
+                  {unlimitedTickets && (
+                    <MdDone className="text-black w-6 h-6" />
+                  )}
+                </div>
+                <span className="ml-2">Необмежена кількість</span>
+              </label>
+            )}
+          />
+        </div>
       </div>
     </div>
   );

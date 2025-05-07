@@ -1,8 +1,10 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { HiOutlineTicket } from 'react-icons/hi';
 import { MdDone } from 'react-icons/md';
 import { RxCross2 } from 'react-icons/rx';
 import { useNavigate } from 'react-router';
+
+import { useLazyGetEditedEventQuery } from '@/redux/admin/eventApi';
 
 import clsx from 'clsx';
 
@@ -14,25 +16,43 @@ import Stars from './Stars';
 interface IProps {
   event?: Event;
   // eslint-disable-next-line no-unused-vars
-  openModal: (status: 'APPROVED' | 'CANCELLED') => void;
+  openModal: (status: 'APPROVED' | 'CANCELLED', requestId?: string) => void;
 }
 
 const ModalDecision: React.FC<IProps> = ({ event, openModal }) => {
   const [activeImage, setActiveImage] = useState(1);
   const navigate = useNavigate();
+  const [currVersionEvent, setCurrVersionEvent] = useState<Event | undefined>(
+    event
+  );
 
-  const images = event?.images.length
-    ? [...event.images.map(img => img.url)]
-    : [event?.photoUrl || ''];
+  const [getEditedEvents, { data: newEvent }] = useLazyGetEditedEventQuery();
+
+  useEffect(() => {
+    if (event?.hasUpdateRequest) {
+      getEditedEvents(event.id);
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [event?.id]);
+
+  const images = currVersionEvent?.images.length
+    ? [...currVersionEvent.images.map(img => img.url)]
+    : [currVersionEvent?.photoUrl || ''];
 
   const handleChangeActiveImage = (direction: 'up' | 'down') => {
     if (direction === 'up') {
-      setActiveImage(prev => (prev === event?.images.length ? 1 : prev + 1));
+      setActiveImage(prev =>
+        prev === currVersionEvent?.images.length ? 1 : prev + 1
+      );
     } else {
       setActiveImage(prev =>
-        prev === 1 ? event?.images.length || 0 : prev - 1
+        prev === 1 ? currVersionEvent?.images.length || 0 : prev - 1
       );
     }
+  };
+
+  const handleLoadNewVersion = (version: 'NEW' | 'OLD') => {
+    setCurrVersionEvent(version === 'NEW' ? newEvent : event);
   };
 
   return (
@@ -57,7 +77,7 @@ const ModalDecision: React.FC<IProps> = ({ event, openModal }) => {
               changeActiveImage={handleChangeActiveImage}
             />
           )}
-          {(
+          {event?.hasCancelRequest && (
             <div className="text-center pb-[80px]">
               <h1 className="text-error text-4xl font-oswald border-[3px] border-error rounded-[10px] w-fit mx-auto my-9 px-3">
                 СКАСОВАНО
@@ -73,26 +93,26 @@ const ModalDecision: React.FC<IProps> = ({ event, openModal }) => {
           <div className="grid grid-cols-custom grid-rows-custom gap-x-[19px]">
             <div>
               <h2 className="text-textDark text-2xl font-medium mb-4">
-                {event?.title}
+                {currVersionEvent?.title}
               </h2>
               <div className="font-normal text-md text-textDark flex gap-4">
                 <div
                   className={`flex items-center justify-center h-8 rounded-[20px]
                  border-[2px] border-borderColor bg-bg-gradient`}
                 >
-                  <p className="px-4 py-2.5">{event?.type}</p>
+                  <p className="px-4 py-2.5">{currVersionEvent?.type}</p>
                 </div>
 
                 <div
                   className={clsx(
                     `flex items-center justify-center h-8 rounded-[20px]`,
-                    event?.eventUrl
+                    currVersionEvent?.eventUrl
                       ? 'bg-buttonPurple text-background'
                       : 'bg-lightPurple'
                   )}
                 >
                   <p className="px-4 py-2.5">
-                    {event?.eventUrl ? 'Онлайн' : 'Офлайн'}
+                    {currVersionEvent?.eventUrl ? 'Онлайн' : 'Офлайн'}
                   </p>
                 </div>
               </div>
@@ -100,24 +120,26 @@ const ModalDecision: React.FC<IProps> = ({ event, openModal }) => {
             <div>
               <img
                 src={
-                  event?.organizers?.avatarImage?.url
-                    ? event?.organizers?.avatarImage.url
+                  currVersionEvent?.organizers?.avatarImage?.url
+                    ? currVersionEvent?.organizers?.avatarImage.url
                     : userPlaceholder
                 }
                 alt=""
                 className="h-[72px] w-[72px] rounded-full object-cover"
               />
               <h2
-                onClick={() => navigate(`/user/${event?.organizers.id}`)}
+                onClick={() =>
+                  navigate(`/user/${currVersionEvent?.organizers.id}`)
+                }
                 className="text-textDark font-lato text-2xl underline my-2 hover:cursor-pointer"
               >
-                {event?.organizers?.name}
+                {currVersionEvent?.organizers?.name}
               </h2>
               <div className="flex">
                 <span className="mr-2">
-                  <Stars rating={event?.rating || 0} />
+                  <Stars rating={currVersionEvent?.rating || 0} />
                 </span>
-                ({event?.rating})
+                ({currVersionEvent?.rating})
               </div>
             </div>
             <div className="flex flex-col gap-2">
@@ -129,7 +151,7 @@ const ModalDecision: React.FC<IProps> = ({ event, openModal }) => {
                   className="font-lato text-base leading-[19px] text-textDark underline"
                 >
                   <span className="font-bold">Місце: </span>
-                  {event.eventUrl}
+                  {event?.eventUrl}
                 </a>
               ) : (
                 <p className="font-lato text-base leading-[19px] text-textDart">
@@ -147,11 +169,13 @@ const ModalDecision: React.FC<IProps> = ({ event, openModal }) => {
               </p>
               <p className="font-lato text-base leading-[19px] text-textDart">
                 <span className="font-bold">Ціна: </span>
-                {event?.price + ' ₴' || 'необмежена'}
+                {currVersionEvent?.price + ' ₴' || 'необмежена'}
               </p>
               <p className="font-lato text-base leading-[19px] text-textDart flex">
                 <span className="font-bold mr-1">Кількість квитків: </span>
-                {event?.tickets}{' '}
+                {currVersionEvent?.unlimitedTickets
+                  ? 'необмежена'
+                  : currVersionEvent?.numberOfTickets}
                 <HiOutlineTicket className="h-[19px] w-[19px] ml-1" />
               </p>
             </div>
@@ -161,24 +185,26 @@ const ModalDecision: React.FC<IProps> = ({ event, openModal }) => {
               Опис події
             </h2>
             <p className="text-wrap overflow-y-scroll text-base leading-[19px] pb-1 max-h-[114px]">
-              {event?.description}
+              {currVersionEvent?.description}
             </p>
           </div>
-          {event?.aboutOrganizer && (
+          {currVersionEvent?.aboutOrganizer && (
             <div>
               <h2 className="text-textDark font-medium text-2xl leading-[36px] mb-4 mt-8">
                 Про організатора
               </h2>
               <p className="text-wrap overflow-y-scroll text-base leading-[19px] pb-1 max-h-[80px]">
-                {event?.aboutOrganizer}
+                {currVersionEvent?.aboutOrganizer}
               </p>
             </div>
           )}
-          {event?.eventStatus === 'EDIT' && <EditNavigate />}
+          {event?.hasUpdateRequest && (
+            <EditNavigate loadNewEvent={handleLoadNewVersion} />
+          )}
           <div className="flex justify-around gap-[100px] mt-8 absolute bottom-0 left-[50%] translate-x-[-50%]">
             {event?.eventStatus !== 'CANCELLED' && (
               <button
-                onClick={() => openModal('CANCELLED')}
+                onClick={() => openModal('CANCELLED', newEvent?.id)}
                 className="flex gap-2 justify-center items-center w-[180px] h-12 border border-buttonPurple bg-background rounded-[10px] focus:outline-0 hover:shadow-shadowSecondaryBtn"
               >
                 <RxCross2 className="h-6 w-6" />
@@ -187,7 +213,7 @@ const ModalDecision: React.FC<IProps> = ({ event, openModal }) => {
             )}
             {event?.eventStatus !== 'APPROVED' && (
               <button
-                onClick={() => openModal('APPROVED')}
+                onClick={() => openModal('APPROVED', newEvent?.id)}
                 className="flex gap-2 justify-center items-center w-[180px] h-12 border border-buttonPurple bg-lightPurple rounded-[10px] focus:outline-0 hover:shadow-shadowPrimaryBtn active:shadow-primaryBtnActive"
               >
                 <MdDone className="h-6 w-6" />

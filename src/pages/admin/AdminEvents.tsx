@@ -1,6 +1,7 @@
 import { useState } from 'react';
 
 import {
+  useAcceptEditEventMutation,
   useChangeEventStatusMutation,
   useGetAdminEventsQuery,
   useGetCountStatusEventsQuery,
@@ -23,6 +24,7 @@ const AdminEvents = () => {
   const [confirmationModal, setConfirmationModal] = useState(false);
   const [filterStatus, setFilterStatus] = useState<FilterStatus>('');
   const [action, setAction] = useState<'APPROVED' | 'CANCELLED'>('APPROVED');
+  const [requestId, setRequestId] = useState<string>('');
 
   const { data, isFetching: fetchingEvents } = useGetAdminEventsQuery({
     page,
@@ -31,6 +33,7 @@ const AdminEvents = () => {
   const { data: countStatusEvents, isFetching: fetchingCount } =
     useGetCountStatusEventsQuery();
   const [changeStatusEventFn] = useChangeEventStatusMutation();
+  const [acceptEditEvent] = useAcceptEditEventMutation();
 
   const { content: events, page: pageInfo } = data || { content: [], page: {} };
 
@@ -53,10 +56,12 @@ const AdminEvents = () => {
   const openModal = (
     event: Event,
     target: HTMLElement,
-    actionStatus: 'APPROVED' | 'CANCELLED' | ''
+    actionStatus: 'APPROVED' | 'CANCELLED' | '',
+    requestId?: string
   ) => {
     if (event) {
       setCurrEvent(event);
+      setRequestId(requestId || '');
 
       if (target) {
         if (target?.tagName !== 'BUTTON') {
@@ -72,10 +77,19 @@ const AdminEvents = () => {
   };
 
   const changeStatusEvent = async () => {
-    await changeStatusEventFn({
-      id: currEvent?.id || '',
-      action,
-    });
+    if (currEvent?.hasUpdateRequest) {
+      await acceptEditEvent({
+        id: currEvent?.id || '',
+        requestId,
+      });
+    }
+
+    if (!currEvent?.hasCancelRequest && !currEvent?.hasUpdateRequest) {
+      await changeStatusEventFn({
+        id: currEvent?.id || '',
+        action,
+      });
+    }
 
     setModalIsOpen(false);
     setConfirmationModal(false);
@@ -90,9 +104,10 @@ const AdminEvents = () => {
   const startCountPage = totalEvents === 0 ? 0 : 9 * (page - 1) + 1;
   const endCountPage = page * 9 > (totalEvents || 0) ? totalEvents : page * 9;
 
-  const handleOpenModal = (status: 'APPROVED' | 'CANCELLED') => {
+  const handleOpenModal = (status: 'APPROVED' | 'CANCELLED', requestId?: string) => {
     setConfirmationModal(true);
     setAction(status);
+    setRequestId(requestId || '');
   };
 
   if (fetchingEvents || fetchingCount) {

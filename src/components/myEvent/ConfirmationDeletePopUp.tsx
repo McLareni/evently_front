@@ -1,28 +1,39 @@
 import React, { useState } from 'react';
 import { SubmitHandler, useForm } from 'react-hook-form';
 
+import { useDeleteMyEventMutation } from '@/redux/events/operations';
+
+
 import { Modal, SharedBtn } from '../ui';
 
 interface IProps {
   popUpIsShow: boolean;
   onClose?: () => void;
+  idEvent: string;
 }
 const MAX_LENGTH = 400;
 
 const ConfirmationDeletePopUp: React.FC<IProps> = ({
   popUpIsShow,
   onClose,
+  idEvent,
 }) => {
   const [lenghtDesc, setLenghtDesc] = useState(0);
   const { register, handleSubmit } = useForm({
     defaultValues: { phoneNumber: '', description: '' },
   });
 
+  const [deleteMyEvent] = useDeleteMyEventMutation();
+
   const onSubmit: SubmitHandler<{
     phoneNumber: string;
     description: string;
-  }> = data => {
-    console.log(data);
+  }> = async data => {
+    await deleteMyEvent({
+      idEvent,
+      contact: data.phoneNumber,
+      reason: data.description,
+    });
   };
 
   return (
