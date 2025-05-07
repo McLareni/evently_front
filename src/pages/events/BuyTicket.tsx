@@ -1,7 +1,7 @@
 import { useEffect, useState } from 'react';
 import { useParams } from 'react-router';
 
-import { selectIsLoggedIn } from '@/redux/auth/selectors';
+import { selectIsLoggedIn, selectUser } from '@/redux/auth/selectors';
 import { useLazyGetEventByIdQuery } from '@/redux/events/operations';
 import { useAppSelector } from '@/redux/hooks';
 
@@ -34,6 +34,7 @@ const BuyTicket: React.FC = () => {
   const [trigger, { data: event }] = useLazyGetEventByIdQuery();
 
   const isLoggedIn = useAppSelector(selectIsLoggedIn);
+  const { email } = useAppSelector(selectUser);
 
   const setIsEmailExistsHandler = (isExists: boolean) => {
     setIsEmailExists(isExists);
@@ -105,7 +106,7 @@ const BuyTicket: React.FC = () => {
                 errorStatus={errorStatus}
               />
             )}
-            {currentAction === 2 && isLoggedIn && (
+            {currentAction === 2 && isLoggedIn && email && (
               <Action2
                 setInfoHandler={setInfoHandler}
                 setFormValid={setFormValid}
