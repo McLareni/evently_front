@@ -1,7 +1,9 @@
 import { FC, useState } from 'react';
 import { Controller, SubmitHandler, useForm } from 'react-hook-form';
 import { FcGoogle } from 'react-icons/fc';
+import { toast } from 'react-toastify';
 
+import { handleLogOut } from '@/redux/auth/authSlice';
 import { register as registration } from '@/redux/auth/operations';
 import { useAppDispatch } from '@/redux/hooks';
 
@@ -54,13 +56,15 @@ export const Action2NewUser: FC<Action2NewUserProps> = ({ newUserEmail }) => {
     try {
       const res = await dispatch(registration(formattedData));
 
-      console.log(res);
+      if (res.payload.status === 400) {
+        dispatch(handleLogOut());
+        return toast.error('Невірні дані');
+      }
     } catch (e) {
       console.log(e);
     } finally {
       setIsLoading(false);
     }
-    console.log(formattedData);
   };
 
   return (

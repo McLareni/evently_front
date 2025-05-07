@@ -1,6 +1,7 @@
 import { FC, useState } from 'react';
 import { Controller, SubmitHandler, useForm } from 'react-hook-form';
 import { FcGoogle } from 'react-icons/fc';
+import { toast } from 'react-toastify';
 
 import { getUser, logIn } from '@/redux/auth/operations';
 import { useAppDispatch } from '@/redux/hooks';
@@ -32,6 +33,10 @@ export const Action2UserExists: FC = () => {
     setIsLoading(true);
     try {
       const res = await dispatch(logIn(data));
+      console.log(res);
+      if ('error' in res) {
+        return toast.error('Невірний email або пароль');
+      }
       if (res) {
         await dispatch(getUser());
       }

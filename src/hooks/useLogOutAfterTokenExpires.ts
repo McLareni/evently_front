@@ -12,7 +12,7 @@ export function useLogOutAfterTokenExpires() {
 
   const dispatch = useAppDispatch();
 
-  const tokenExpires = token !== null && jwtDecode(token).exp;
+  const tokenExpires = token && jwtDecode(token).exp;
   const expirationDate = tokenExpires && dayjs(tokenExpires * 1000);
   const expirationDateFormatted =
     expirationDate && expirationDate.format('YYYY-MM-DD HH:mm:ss');

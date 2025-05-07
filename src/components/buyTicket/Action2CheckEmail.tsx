@@ -38,8 +38,7 @@ export const Action2CheckEmail: FC<Action2CheckEmailProps> = ({
       const res = await checkUserExists({ email: data.email });
       console.log(res);
       if (res.data.status === 403) {
-        toast.error('Email видалено');
-        return;
+        return toast.error('Email видалено або заблоковано');
       }
       setIsEmailExistsHandler(res.data.emailExist);
     } catch (e) {

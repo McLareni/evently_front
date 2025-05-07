@@ -93,7 +93,6 @@ const BuyTicket: React.FC = () => {
       setPriceWithDiscount(price + SERVICE);
     }
   }, [discount, price]);
-  console.log(isEmailExists);
 
   return (
     <div className="font-oswald leading-none pb-[55px]">
