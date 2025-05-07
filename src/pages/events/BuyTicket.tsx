@@ -13,6 +13,7 @@ import { Action2UserExists } from '@/components/buyTicket/Action2UserExists';
 import { Action3 } from '@/components/buyTicket/Action3';
 import { BuyTicketTabs } from '@/components/buyTicket/BuyTicketTabs';
 import { Container } from '@/components/container/Container';
+import Spinner from '@/components/ui/Spinner';
 
 import { TicketDraft } from '../../components/buyTicket/TicketDraft';
 
@@ -33,7 +34,9 @@ const BuyTicket: React.FC = () => {
 
   const { idEvent } = useParams();
 
-  const [trigger, { data: event }] = useLazyGetEventByIdQuery();
+  const [trigger, { data: event, isLoading }] = useLazyGetEventByIdQuery();
+
+  console.log(isLoading);
 
   const isLoggedIn = useAppSelector(selectIsLoggedIn);
   const { email } = useAppSelector(selectUser);
@@ -76,10 +79,15 @@ const BuyTicket: React.FC = () => {
 
   useEffect(() => {
     async function fetchEvent() {
-      await trigger(idEvent || '');
+      const response = await trigger(idEvent as string);
+
+      if (response.status === 'uninitialized') {
+        fetchEvent();
+      }
     }
+
     if (idEvent) fetchEvent();
-  }, [idEvent, trigger]);
+  }, [event, idEvent, trigger]);
 
   useEffect(() => {
     if (discount > 0) {
@@ -96,6 +104,7 @@ const BuyTicket: React.FC = () => {
 
   return (
     <div className="font-oswald leading-none pb-[55px]">
+      {isLoading && <Spinner />}
       <Container>
         <BuyTicketTabs currentAction={currentAction} />
         {(currentAction === 1 || currentAction === 2) && (
