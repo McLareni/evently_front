@@ -1,5 +1,6 @@
 import { FC, useState } from 'react';
 import { Controller, SubmitHandler, useForm } from 'react-hook-form';
+import { FcGoogle } from 'react-icons/fc';
 
 import { useAppDispatch } from '@/redux/hooks';
 
@@ -8,7 +9,7 @@ import { validateEmail } from '@/utils';
 import { MAX_NAME_LENGTH, validateName } from '@/utils/validateName';
 import { useMask } from '@react-input/mask';
 
-import Button from '../ui/Button';
+import { SharedBtn } from '../ui';
 import Spinner from '../ui/Spinner';
 import { BuyTicketInput } from './BuyTicketInput';
 
@@ -26,7 +27,7 @@ export const Action2NewUser: FC<Action2NewUserProps> = ({ newUserEmail }) => {
     surname: '',
     phoneNumber: '',
     email: newUserEmail,
-    changePassword: '',
+    password: '',
     repeatPassword: '',
   };
 
@@ -44,22 +45,39 @@ export const Action2NewUser: FC<Action2NewUserProps> = ({ newUserEmail }) => {
   } = useForm<NewUserInfo>({ mode: 'onChange', defaultValues });
 
   const onSubmit: SubmitHandler<NewUserInfo> = async data => {
+    setIsLoading(true);
     const formattedDate = {
       ...data,
       phoneNumber: formatPhoneNumberFromMask(data.phoneNumber),
     };
-    // dispatch(updateUserInfo(data));
-    // !isLoading && dispatch(getUser());
+    try {
+      // dispatch(updateUserInfo(data));
+      // !isLoading && dispatch(getUser());
+    } catch (e) {
+      console.log(e);
+    } finally {
+      setIsLoading(false);
+    }
     console.log(formattedDate);
   };
 
   return (
     <form
-      className="flex flex-col border-[2px] border-buttonPurple rounded-[10px] p-[24px] mb-auto"
+      className="font-lato flex flex-col border-[2px] border-buttonPurple rounded-[10px] p-[24px] mb-auto"
       onSubmit={handleSubmit(onSubmit)}
     >
       {isLoading && <Spinner />}
-      <div className="flex gap-[24px] mb-[8px]">
+      <div
+        className={`mb-[36px] bg-lightPurple w-[380px] h-[64px] border-[2px] rounded-[10px]
+            px-[24px] outline-none bg-background text-[20px] border-buttonPurple`}
+      >
+        <p className={`text-sm`}>
+          Користувач із цією електронною поштою ще не зареєстрований на нашому
+          веб-сайті. Зареєструйтеся для участі.
+        </p>
+      </div>
+
+      <div className="flex gap-[24px] mb-[24px]">
         <BuyTicketInput
           {...register('name', {
             required: true,
@@ -94,7 +112,7 @@ export const Action2NewUser: FC<Action2NewUserProps> = ({ newUserEmail }) => {
         />
       </div>
 
-      <div className="flex gap-[24px] mb-[8px]">
+      <div className="flex gap-[24px] mb-[24px]">
         <Controller
           name="phoneNumber"
           control={control}
@@ -150,12 +168,9 @@ export const Action2NewUser: FC<Action2NewUserProps> = ({ newUserEmail }) => {
         />
       </div>
 
-      <div className="flex flex-col gap-[8px] mb-[8px]">
-        <p className="mb-[32px] font-oswald text-[24px] font-medium">
-          Змінити пароль
-        </p>
+      <div className="flex flex-col gap-[24px] mb-[8px] w-[380px]">
         <BuyTicketInput
-          {...register('changePassword', {
+          {...register('password', {
             validate: {
               required: value =>
                 value.trim().length === 0 ||
@@ -164,12 +179,12 @@ export const Action2NewUser: FC<Action2NewUserProps> = ({ newUserEmail }) => {
             },
           })}
           forPassword
-          placeholder="Введіть новий пароль"
-          id="changePassword"
-          htmlFor="changePassword"
+          placeholder="Пароль"
+          id="password"
+          htmlFor="password"
           autoComplete="new-password"
-          label="Введіть новий пароль"
-          error={errors?.changePassword?.message}
+          label="Пароль"
+          error={errors?.password?.message}
           width="380"
         />
 
@@ -180,7 +195,7 @@ export const Action2NewUser: FC<Action2NewUserProps> = ({ newUserEmail }) => {
                 if (value.trim().length > 0 && value.trim().length < 8) {
                   return 'Повторіть пароль (мін. 8 символів)';
                 }
-                const password = getValues('changePassword');
+                const password = getValues('password');
                 if (value.trim() !== password) {
                   return 'Паролі не збігаються';
                 }
@@ -195,11 +210,25 @@ export const Action2NewUser: FC<Action2NewUserProps> = ({ newUserEmail }) => {
           error={errors?.repeatPassword?.message}
           width="380"
         />
+        <p className="text-center">або</p>
+        <button
+          type="button"
+          className={`mb-[8px] w-[380px] h-[64px] border-[2px] rounded-[10px]
+                          px-[24px] outline-none bg-background text-[20px] border-buttonPurple
+                          flex justify-center items-center gap-2`}
+        >
+          <FcGoogle className="w-10 h-10" />
+          Продовжити через Google
+        </button>
+        <SharedBtn
+          disabled={!isValid}
+          type="submit"
+          primary
+          className="mt-auto w-full bg-gradient-to-r from-[#9B8FF3] to-[#38F6F9] w-[230px] h-[48px]"
+        >
+          Створити акаунт
+        </SharedBtn>
       </div>
-
-      <Button type="submit" disabled={!isValid}>
-        Зберегти
-      </Button>
     </form>
   );
 };

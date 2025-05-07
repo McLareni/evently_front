@@ -46,11 +46,11 @@ export const Action2CheckEmail: FC<Action2CheckEmailProps> = ({
   return (
     <form
       onSubmit={handleSubmit(onSubmit)}
-      className="flex flex-col border-[2px] border-buttonPurple rounded-[10px] p-[24px] mb-auto gap-[20px]"
+      className="font-lato flex flex-col border-[2px] border-buttonPurple rounded-[10px] p-[24px] mb-auto gap-[20px]"
     >
       {isLoading && <Spinner />}
       <h2 className="font-medium mb-4">Контактна інформація</h2>
-      <div className="flex flex-col gap-[8px]">
+      <div className="flex flex-col gap-[32px]">
         <Controller
           name="email"
           control={control}
@@ -74,7 +74,7 @@ export const Action2CheckEmail: FC<Action2CheckEmailProps> = ({
           disabled={!isValid}
           type="submit"
           primary
-          className="mt-auto mx-auto bg-gradient-to-r from-[#9B8FF3] to-[#38F6F9] w-[230px] h-[48px]"
+          className="mt-auto w-full bg-gradient-to-r from-[#9B8FF3] to-[#38F6F9] w-[230px] h-[48px]"
         >
           Продовжити
         </SharedBtn>

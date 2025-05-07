@@ -79,7 +79,7 @@ export const Action2: FC<Action2Props> = ({ setInfoHandler, setFormValid }) => {
   }, [isValid, setFormValid]);
 
   return (
-    <form className="flex flex-col border-[2px] border-buttonPurple rounded-[10px] p-[24px] mb-auto gap-[20px]">
+    <form className="font-lato flex flex-col border-[2px] border-buttonPurple rounded-[10px] p-[24px] mb-auto gap-[20px]">
       {isLoading && <Spinner />}
       <h2 className="font-medium mb-4">Контактна інформація</h2>
       <div className="flex gap-[52px] mb-[8px]">

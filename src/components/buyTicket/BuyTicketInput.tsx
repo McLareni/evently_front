@@ -19,7 +19,7 @@ export const BuyTicketInput = forwardRef<HTMLInputElement, BuyTicketInputProps>(
 
     const inputStyles = `w-full h-[64px] border-[2px] rounded-[10px]
     px-[24px] outline-none bg-background text-[20px]
-    focus:placeholder-transparent border-buttonPurple mb-[8px]
+    focus:placeholder-transparent border-buttonPurple
     placeholder-textDark
     ${forPassword && 'pr-[72px]'}
     ${discount && discount > 0 && 'border-success text-success'}
@@ -38,7 +38,7 @@ export const BuyTicketInput = forwardRef<HTMLInputElement, BuyTicketInputProps>(
     return (
       <fieldset
         style={{ width: `${width}px` }}
-        className={`relative font-lato`}
+        className={`relative font-lato, relative`}
       >
         <div className="relative">
           <input
@@ -67,7 +67,7 @@ export const BuyTicketInput = forwardRef<HTMLInputElement, BuyTicketInputProps>(
         <label htmlFor={props.htmlFor} className={labelStyles}>
           {label}
         </label>
-        <div className="h-[24px]">
+        <div className="h-[24px] absolute">
           {error && (
             <div className="flex gap-[8px]">
               <RxCross2 color="red" />

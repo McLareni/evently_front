@@ -31,13 +31,8 @@ type UserInfo = Pick<
 
 type NewUserInfo = Pick<
   User,
-  | 'name'
-  | 'surname'
-  | 'email'
-  | 'phoneNumber'
-  | 'changePassword'
-  | 'repeatPassword'
->;
+  'name' | 'surname' | 'email' | 'phoneNumber' | 'repeatPassword'
+> & { password: string };
 
 interface Coordinates {
   latitude: number;

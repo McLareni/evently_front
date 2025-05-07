@@ -45,7 +45,7 @@ export const Action2UserExists: FC = () => {
   return (
     <form
       onSubmit={handleSubmit(onSubmit)}
-      className="flex flex-col border-[2px] border-buttonPurple rounded-[10px] p-[24px] mb-auto gap-[20px]"
+      className="font-lato flex flex-col border-[2px] border-buttonPurple rounded-[10px] p-[24px] mb-auto gap-[20px]"
     >
       {isLoading && <Spinner />}
       <h2 className="font-medium mb-4">Контактна інформація</h2>
@@ -71,9 +71,8 @@ export const Action2UserExists: FC = () => {
         />
 
         <div
-          className={`w-[380px] h-[64px] border-[2px] rounded-[10px]
-    px-[24px] outline-none bg-background text-[20px] border-buttonPurple
-    `}
+          className={`bg-lightPurple w-[380px] h-[64px] border-[2px] rounded-[10px]
+            px-[24px] outline-none bg-background text-[20px] border-buttonPurple`}
         >
           <p className={`text-sm`}>
             Користувач із цією електронною адресою вже зареєстрований на нашому
@@ -101,12 +100,12 @@ export const Action2UserExists: FC = () => {
           error={errors?.password?.message}
           width="380"
         />
-        <p className="mb-[24px] text-center">або</p>
+        <p className="my-[24px] text-center">або</p>
         <button
           type="button"
           className={`mb-[32px] w-[380px] h-[64px] border-[2px] rounded-[10px]
-    px-[24px] outline-none bg-background text-[20px] border-buttonPurple
-    flex justify-center items-center gap-2`}
+            px-[24px] outline-none bg-background text-[20px] border-buttonPurple
+            flex justify-center items-center gap-2`}
         >
           <FcGoogle className="w-10 h-10" />
           Продовжити через Google
