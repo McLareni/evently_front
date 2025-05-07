@@ -1,27 +1,31 @@
 import { HTMLProps, forwardRef, useState } from 'react';
 import { AiOutlineEye, AiOutlineEyeInvisible } from 'react-icons/ai';
+import { RxCross2 } from 'react-icons/rx';
 
 export interface BuyTicketInputProps extends HTMLProps<HTMLInputElement> {
   forPassword?: boolean;
-  error?: string;
+  error?: string | boolean;
   label: string;
   width?: string;
+  discount?: number;
 }
 
 export const BuyTicketInput = forwardRef<HTMLInputElement, BuyTicketInputProps>(
   (
-    { label, error, forPassword = false, onBlur, width = '312', ...props },
+    { label, error, forPassword = false, width = '312', discount, ...props },
     ref
   ) => {
-    const [isFocused, setIsFocused] = useState(false);
     const [passwordVisible, setPasswordVisible] = useState(false);
 
     const inputStyles = `w-full h-[64px] border-[2px] rounded-[10px]
     px-[24px] outline-none bg-background text-[20px]
     focus:placeholder-transparent border-buttonPurple
-    ${forPassword && 'pr-[72px]'}`;
+    placeholder-textDark
+    ${forPassword && 'pr-[72px]'}
+    ${discount && discount > 0 && 'border-success text-success'}
+    ${error && 'border-error text-error'}`;
 
-    const labelStyles = `absolute left-6 transition-all ease-in-out
+    const labelStyles = `absolute left-4 transition-all ease-in-out
     duration-300 bg-background px-1 -top-2 scale-100 visible opacity-100`;
 
     const buttonStyles = `absolute top-[50%] -translate-y-2/4 right-[24px] 
@@ -34,16 +38,11 @@ export const BuyTicketInput = forwardRef<HTMLInputElement, BuyTicketInputProps>(
     return (
       <fieldset
         style={{ width: `${width}px` }}
-        className={`relative font-lato`}
+        className={`relative font-lato, relative`}
       >
         <div className="relative">
           <input
             autoComplete="on"
-            onFocus={() => setIsFocused(true)}
-            onBlur={event => {
-              setIsFocused(false);
-              onBlur?.(event);
-            }}
             className={inputStyles}
             type={
               forPassword ? (passwordVisible ? 'text' : 'password') : props.type
@@ -68,8 +67,13 @@ export const BuyTicketInput = forwardRef<HTMLInputElement, BuyTicketInputProps>(
         <label htmlFor={props.htmlFor} className={labelStyles}>
           {label}
         </label>
-        <div className="h-[24px]">
-          {error && <span className="text-error">{error}</span>}
+        <div className="h-[24px] absolute">
+          {error && (
+            <div className="flex gap-[8px]">
+              <RxCross2 color="red" />
+              <span>{error}</span>
+            </div>
+          )}
         </div>
       </fieldset>
     );
