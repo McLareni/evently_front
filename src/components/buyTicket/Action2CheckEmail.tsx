@@ -1,9 +1,6 @@
 /* eslint-disable no-unused-vars */
-import { FC } from 'react';
+import { FC, useState } from 'react';
 import { Controller, useForm } from 'react-hook-form';
-
-import { selectIsLoading } from '@/redux/auth/selectors';
-import { useAppSelector } from '@/redux/hooks';
 
 import { validateEmail } from '@/utils';
 import { checkUserExists } from '@/utils/eventsHttp';
@@ -14,12 +11,14 @@ import { BuyTicketInput } from './BuyTicketInput';
 
 interface Action2CheckEmailProps {
   setIsEmailExistsHandler: (isExists: boolean) => void;
+  setNewUserEmailHandler: (email: string) => void;
 }
 
 export const Action2CheckEmail: FC<Action2CheckEmailProps> = ({
   setIsEmailExistsHandler,
+  setNewUserEmailHandler,
 }) => {
-  const isLoading = useAppSelector(selectIsLoading);
+  const [isLoading, setIsLoading] = useState(false);
 
   const defaultValues: { email: string } = {
     email: '',
@@ -32,9 +31,16 @@ export const Action2CheckEmail: FC<Action2CheckEmailProps> = ({
   } = useForm<BuyTicketUser>({ mode: 'onChange', defaultValues });
 
   const onSubmit = async (data: { email: string }) => {
-    const res = await checkUserExists({ email: data.email });
-    setIsEmailExistsHandler(res.data.emailExist);
-    console.log(res);
+    setIsLoading(true);
+    setNewUserEmailHandler(data.email);
+    try {
+      const res = await checkUserExists({ email: data.email });
+      setIsEmailExistsHandler(res.data.emailExist);
+    } catch (e) {
+      console.log(e);
+    } finally {
+      setIsLoading(false);
+    }
   };
 
   return (

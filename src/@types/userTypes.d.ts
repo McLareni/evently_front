@@ -29,6 +29,16 @@ type UserInfo = Pick<
   | 'repeatPassword'
 >;
 
+type NewUserInfo = Pick<
+  User,
+  | 'name'
+  | 'surname'
+  | 'email'
+  | 'phoneNumber'
+  | 'changePassword'
+  | 'repeatPassword'
+>;
+
 interface Coordinates {
   latitude: number;
   longitude: number;

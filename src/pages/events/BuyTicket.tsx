@@ -8,6 +8,7 @@ import { useAppSelector } from '@/redux/hooks';
 import { Action1 } from '@/components/buyTicket/Action1';
 import { Action2 } from '@/components/buyTicket/Action2';
 import { Action2CheckEmail } from '@/components/buyTicket/Action2CheckEmail';
+import { Action2NewUser } from '@/components/buyTicket/Action2NewUser';
 import { Action2UserExists } from '@/components/buyTicket/Action2UserExists';
 import { Action3 } from '@/components/buyTicket/Action3';
 import { BuyTicketTabs } from '@/components/buyTicket/BuyTicketTabs';
@@ -28,6 +29,7 @@ const BuyTicket: React.FC = () => {
   const [errorStatus, setErrorStatus] = useState<number | null>(null);
   const [isFormValid, setIsFormValid] = useState(false);
   const [isEmailExists, setIsEmailExists] = useState<null | boolean>(null);
+  const [newUserEmail, setNewUserEmail] = useState('');
 
   const { idEvent } = useParams();
 
@@ -35,6 +37,10 @@ const BuyTicket: React.FC = () => {
 
   const isLoggedIn = useAppSelector(selectIsLoggedIn);
   const { email } = useAppSelector(selectUser);
+
+  const setNewUserEmailHandler = (email: string) => {
+    setNewUserEmail(email);
+  };
 
   const setIsEmailExistsHandler = (isExists: boolean) => {
     setIsEmailExists(isExists);
@@ -114,11 +120,15 @@ const BuyTicket: React.FC = () => {
             )}
             {currentAction === 2 && !isLoggedIn && isEmailExists === null && (
               <Action2CheckEmail
+                setNewUserEmailHandler={setNewUserEmailHandler}
                 setIsEmailExistsHandler={setIsEmailExistsHandler}
               />
             )}
             {currentAction === 2 && !isLoggedIn && isEmailExists && (
               <Action2UserExists />
+            )}
+            {currentAction === 2 && !isLoggedIn && isEmailExists === false && (
+              <Action2NewUser newUserEmail={newUserEmail} />
             )}
             <TicketDraft
               event={event}
