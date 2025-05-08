@@ -74,6 +74,13 @@ export const Action2NewUser: FC<Action2NewUserProps> = ({ newUserEmail }) => {
         dispatch(handleLogOut());
         return toast.error('Невірні дані');
       }
+
+      if (res.payload.status === 201) {
+        dispatch(handleLogOut());
+        return toast.success(
+          'Лист з підтвердженням реєстрації відправлено на пошту'
+        );
+      }
     } catch (e) {
       console.log(e);
     } finally {
