@@ -3,7 +3,9 @@ import { useEffect, useState } from 'react';
 import { useForm } from 'react-hook-form';
 
 import { selectUser } from '@/redux/auth/selectors';
+import { EventsApi } from '@/redux/events/operations';
 import { useAppSelector } from '@/redux/hooks';
+import { store } from '@/redux/store';
 
 import { formatPhoneNumberFromMask } from '@/helpers/userForm/formatFromMask';
 import { formatPhoneToMask } from '@/helpers/userForm/formatToMask';
@@ -163,31 +165,6 @@ const CreateEventForm: React.FC<CreateEventFormProps> = ({
 
     setIsLoading(true);
 
-    if (isEdit) {
-      editEvent({
-        id: event?.id,
-        title: watch('title'),
-        description: watch('description'),
-        unlimitedTickets: watch('unlimitedTickets') || false,
-        numberOfTickets: watch('numberOfTickets') as number,
-        aboutOrganizer: watch('aboutOrganizer'),
-        eventUrl: watch('eventUrl'),
-        price: Number(watch('ticketPrice')),
-        type: watch('eventType'),
-      } as Event)
-        .then(response => {
-          if (response.status === 200) {
-            showSuccessEditEvent();
-          }
-          setIsLoading(false);
-        })
-        .catch(error => {
-          setIsLoading(false);
-          console.error(error);
-        });
-      return;
-    }
-
     const eventInfo = {
       title,
       description,
@@ -203,6 +180,29 @@ const CreateEventForm: React.FC<CreateEventFormProps> = ({
       ticketPrice: +formattedPrice,
       phoneNumber: formatPhoneNumberFromMask(phoneNumber),
     } as unknown as CreateEventFormValues;
+
+    if (isEdit) {
+      editEvent(event?.id || '', eventInfo, secondImage, thirdImage)
+        .then(response => {
+          if (response.status === 200) {
+            showSuccessEditEvent();
+            store.dispatch(
+              EventsApi.util.invalidateTags([
+                {
+                  type: 'MyEvents',
+                  id: 'LIST',
+                },
+              ])
+            );
+          }
+          setIsLoading(false);
+        })
+        .catch(error => {
+          setIsLoading(false);
+          console.error(error);
+        });
+      return;
+    }
 
     createEvent(eventInfo, firstImage, secondImage, thirdImage)
       .then(response => {
@@ -277,6 +277,7 @@ const CreateEventForm: React.FC<CreateEventFormProps> = ({
           errors={errors}
           clearErrors={clearErrors}
           isEdit={isEdit}
+          event={event}
         />
         <AboutOrganizer
           control={control}

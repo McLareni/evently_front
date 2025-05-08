@@ -27,6 +27,11 @@ interface Event {
   type: string;
   category: 'TOP_EVENTS' | 'POPULAR' | 'RECOMMENDED';
 
+  hasCancelRequest: boolean;
+  hasUpdateRequest: boolean;
+  soldTickets: string;
+  profit: string;
+
   // ?
 }
 
@@ -148,4 +153,12 @@ interface PageType {
   totalPages: number;
 }
 
-type EventStatus = 'PENDING' | 'APPROVED' | 'CANCELLED' | 'DELETE' | 'EDIT';
+type EventStatus = 'PENDING' | 'APPROVED' | 'CANCELLED';
+
+interface Reason {
+  id?: string;
+  eventId?: string;
+  userId?: string;
+  contact: string;
+  reason: string;
+}

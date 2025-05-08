@@ -5,8 +5,8 @@ import { useParams } from 'react-router';
 import {
   useGetAllEventsFilteredQuery,
   useLazyGetAllEventsFilteredQuery,
+  useLazyGetAllMyEventsQuery,
   useLazyGetEventByIdQuery,
-  useLazyGetUserEventsQuery,
 } from '@/redux/events/operations';
 
 import AboutUser from '@/components/eventDetails/AboutUser';
@@ -43,7 +43,7 @@ const EventDetails = () => {
       eventTypes: [EventTypes[event?.type || '']],
     },
   });
-  const [userEventstrigger, { data: userEvents }] = useLazyGetUserEventsQuery();
+  const [userEventstrigger, { data: userEvents }] = useLazyGetAllMyEventsQuery();
 
   const userId = event && event.organizers && event.organizers.id;
 

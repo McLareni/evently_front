@@ -5,8 +5,6 @@ import { MdDone } from 'react-icons/md';
 import { RxCross2 } from 'react-icons/rx';
 import { Link } from 'react-router-dom';
 
-import { useDeleteMyEventMutation } from '@/redux/events/operations';
-
 import { formatDateToDayMonth } from '@/helpers/filters/formatDateToDayMonth';
 import clsx from 'clsx';
 
@@ -39,12 +37,7 @@ const status: Record<
     svg: (
       <AiOutlineExclamation className="w-6 h-6 fill-[#F4E544] border-2 rounded-full border-[#F4E544]" />
     ),
-  },
-  DELETE: {
-    color: '',
-    text: '',
-    svg: <></>,
-  },
+  }
 };
 
 interface IProps {
@@ -57,7 +50,6 @@ interface IProps {
 const EventRow: React.FC<IProps> = ({ event, popUpIsShow, openPopUp }) => {
   const [deletePopUp, setDeletePopUp] = useState(false);
   const [confirmationDeletePopUp, setConfirmationDeletePopUp] = useState(false);
-  const [deleteMyEvent] = useDeleteMyEventMutation();
 
   const dateString = formatDateToDayMonth(event.date.day);
   const day = dateString.split(' ')[0];
@@ -112,11 +104,11 @@ const EventRow: React.FC<IProps> = ({ event, popUpIsShow, openPopUp }) => {
       </td>
       <td className="p-[5px] pr-[20px] text-xl font-normal">{event.price}₴</td>
       <td className="p-[5px] pr-[20px] text-xl font-normal">
-        {event.numberOfTickets - event.availableTickets}/
+        {event.soldTickets || 0}/
         {event.unlimitedTickets ? '∞' : event.numberOfTickets}
       </td>
       <td className="p-[5px] pr-[20px] text-xl font-normal">
-        {(event.numberOfTickets - event.availableTickets) * event.price}₴
+        {event.profit || 0}₴
       </td>
       <td className="p-[5px] relative">
         <div className="flex justify-between">
@@ -193,6 +185,7 @@ const EventRow: React.FC<IProps> = ({ event, popUpIsShow, openPopUp }) => {
         <ConfirmationDeletePopUp
           popUpIsShow={confirmationDeletePopUp}
           onClose={() => setConfirmationDeletePopUp(false)}
+          idEvent={event.id}
         />
       )}
     </>

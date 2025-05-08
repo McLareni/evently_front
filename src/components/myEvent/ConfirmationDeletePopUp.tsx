@@ -1,29 +1,57 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { SubmitHandler, useForm } from 'react-hook-form';
+
+import { useDeleteMyEventMutation } from '@/redux/events/operations';
 
 import { Modal, SharedBtn } from '../ui';
 
 interface IProps {
   popUpIsShow: boolean;
   onClose?: () => void;
+  idEvent?: string;
+  placeholder?: Reason;
 }
 const MAX_LENGTH = 400;
 
 const ConfirmationDeletePopUp: React.FC<IProps> = ({
   popUpIsShow,
   onClose,
+  idEvent,
+  placeholder,
 }) => {
   const [lenghtDesc, setLenghtDesc] = useState(0);
-  const { register, handleSubmit } = useForm({
-    defaultValues: { phoneNumber: '', description: '' },
+  const { register, handleSubmit, setValue } = useForm({
+    defaultValues: {
+      phoneNumber: '',
+      description: '',
+    },
   });
+
+  console.log(placeholder);
+
+  const [deleteMyEvent] = useDeleteMyEventMutation();
 
   const onSubmit: SubmitHandler<{
     phoneNumber: string;
     description: string;
-  }> = data => {
-    console.log(data);
+  }> = async data => {
+    if (!placeholder) {
+      await deleteMyEvent({
+        idEvent: idEvent || '',
+        contact: data.phoneNumber,
+        reason: data.description,
+      });
+    } else {
+      onClose?.();
+    }
   };
+
+  useEffect(() => {
+    if (placeholder) {
+      setValue('phoneNumber', placeholder.contact || '');
+      setValue('description', placeholder.reason || '');
+    }
+  }, [placeholder, setValue]);
 
   return (
     <Modal isOpen={popUpIsShow} hiddenCross onClose={onClose}>
@@ -36,6 +64,7 @@ const ConfirmationDeletePopUp: React.FC<IProps> = ({
         </h2>
         <div className="relative">
           <input
+            disabled={!!placeholder?.contact}
             {...register('phoneNumber', {
               validate: value => {
                 if (value.length !== 17 && value.length > 0)
@@ -67,6 +96,7 @@ const ConfirmationDeletePopUp: React.FC<IProps> = ({
 
         <div className="relative">
           <textarea
+            disabled={!!placeholder?.reason}
             {...register('description', {
               required: 'Це поле обов’язкове',
             })}
@@ -93,7 +123,7 @@ const ConfirmationDeletePopUp: React.FC<IProps> = ({
           className="w-[200px] h-[38px] mx-auto text-xl leading-5 font-normal font-lato"
           primary
         >
-          Відправити
+          {placeholder ? 'Закрити' : 'Відправити'}
         </SharedBtn>
       </form>
     </Modal>

@@ -36,15 +36,28 @@ export const createEvent = async (
   }
 };
 
-export const editEvent = async (event?: Event) => {
+export const editEvent = async (
+  id?: string,
+  event?: CreateEventFormValues,
+  secondImage?: File | null,
+  thirdImage?: File | null
+) => {
   const token = store.getState().auth.token;
+
+  const formData = new FormData();
+  formData.append(
+    'event',
+    new Blob([JSON.stringify(event)], { type: 'application/json' })
+  );
+  if (secondImage) formData.append('secondImage', secondImage);
+  if (thirdImage) formData.append('thirdImage', thirdImage);
 
   console.log(event);
 
   try {
-    const response = await axios.put(`events/${event?.id}`, event, {
+    const response = await axios.put(`events/${id}`, formData, {
       headers: {
-        'Content-Type': 'application/json',
+        'Content-Type': 'multipart/form-data',
         Authorization: `Bearer ${token}`,
       },
     });
