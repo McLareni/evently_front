@@ -1,8 +1,14 @@
 /* eslint-disable no-unused-vars */
+import { useState } from 'react';
+
 import { formatDateToDayMonth } from '@/helpers/filters/formatDateToDayMonth';
+import { formatPhoneNumberFromMask } from '@/helpers/userForm/formatFromMask';
+import { SERVICE } from '@/pages/events/BuyTicket';
+import { buyTicket } from '@/utils/eventsHttp';
 
 import { SharedBtn } from '@/components/ui';
 
+import Spinner from '../ui/Spinner';
 import { PaymentInfo } from './PaymentInfo';
 
 interface TicketDraftProps {
@@ -11,6 +17,10 @@ interface TicketDraftProps {
   currentAction: number;
   ticketCount: number;
   price: number | undefined;
+  info: CustomerInfo | null;
+  priceWithDiscount: number;
+  discountValue: number;
+  isFormValid: boolean;
 }
 
 export const TicketDraft: React.FC<TicketDraftProps> = ({
@@ -19,12 +29,17 @@ export const TicketDraft: React.FC<TicketDraftProps> = ({
   currentAction,
   ticketCount,
   price,
+  info,
+  priceWithDiscount,
+  discountValue,
+  isFormValid,
 }) => {
+  const [isLoading, setIsLoading] = useState(false);
+
   const formatTicket = () => {
     const countString = ticketCount.toString();
     const lastChar = countString.charAt(countString.length - 1);
     const preLastChar = countString.charAt(countString.length - 2);
-    console.log(preLastChar);
 
     if (preLastChar !== '1' && lastChar === '1') {
       return 'квиток';
@@ -35,13 +50,79 @@ export const TicketDraft: React.FC<TicketDraftProps> = ({
     if (lastChar === '2' || lastChar === '3' || lastChar === '4') {
       return 'квитки';
     }
-
     return 'квитків';
   };
+
   const formattedTicket = formatTicket();
 
+  const sendEventData = async () => {
+    setIsLoading(true);
+    try {
+      if (info && event && price) {
+        const eventData = {
+          product: {
+            productName: event.title,
+            productPrice: event.price.toString(),
+            productCount: ticketCount.toString(),
+            amount: priceWithDiscount.toString(),
+          },
+          userId: info.userId,
+          clientFirstName: info.clientFirstName,
+          clientLastName: info.clientLastName,
+          clientPhone: formatPhoneNumberFromMask(info.clientPhone),
+          clientEmail: info.clientEmail,
+        };
+
+        const res = await buyTicket({ data: eventData, eventId: event.id });
+
+        if (res) {
+          const form = document.createElement('form');
+          form.method = 'POST';
+          form.action = 'https://secure.wayforpay.com/pay';
+
+          const fields: Record<string, string> = {
+            merchantAccount: res.merchantAccount,
+            merchantAuthType: res.merchantAuthType,
+            merchantDomainName: res.merchantDomainName,
+            orderReference: res.orderReference,
+            orderDate: res.orderDate,
+            amount: res.amount,
+            currency: res.currency,
+            orderTimeout: res.orderTimeout,
+            productName: res.product.productName,
+            productPrice: res.product.productPrice,
+            productCount: res.product.productCount,
+            clientFirstName: res.clientFirstName,
+            clientLastName: res.clientLastName,
+            clientAddress: 'clientAddress',
+            clientCity: 'clientCity',
+            clientEmail: res.clientEmail,
+            defaultPaymentSystem: res.defaultPaymentSystem,
+            merchantSignature: res.merchantSignature,
+          };
+
+          for (const key in fields) {
+            const input = document.createElement('input');
+            input.type = 'hidden';
+            input.name = key;
+            input.value = fields[key];
+            form.appendChild(input);
+          }
+
+          document.body.appendChild(form);
+          form.submit();
+        }
+      }
+    } catch (e) {
+      console.log(e);
+    } finally {
+      setIsLoading(false);
+    }
+  };
+
   return (
-    <div className="font-lato text-[16px] bg-[url('/images/ticket/ticket-background.svg')] bg-cover bg-center w-[378px] h-[584px] flex flex-col px-[10px] pb-[54px]">
+    <div className="font-lato text-[16px] bg-[url('/images/ticket/ticket-background.svg')] bg-cover bg-center min-w-[378px] h-[584px] flex flex-col px-[10px] pb-[54px]">
+      {isLoading && <Spinner />}
       <div className="overflow-scroll overscroll-contain h-[370px] px-[10px] mt-[20px]">
         <img
           className="h-[200px] w-full object-cover rounded-[10px] mb-[32px]"
@@ -83,25 +164,41 @@ export const TicketDraft: React.FC<TicketDraftProps> = ({
               <p className="mb-[16px]">Збір за послуги</p>
               <PaymentInfo className="-right-2" />
             </div>
+            {discountValue > 0 && <p className="mb-[16px]">Промокод</p>}
             <p>Сума</p>
           </div>
           <div>
             <div>
               <p className="mb-[16px]">{price} грн</p>
-              <p className="mb-[16px]">0 грн</p>
-              <p className="font-bold">{price} грн</p>
+              <p className="mb-[16px]">{SERVICE} грн</p>
+              {discountValue > 0 && (
+                <p className="mb-[16px]">-{discountValue} грн</p>
+              )}
+              <p className="font-bold">{priceWithDiscount} грн</p>
             </div>
           </div>
         </div>
       </div>
-      <SharedBtn
-        onClick={() => setCurrentActionHandler(currentAction + 1)}
-        type={currentAction === 1 ? 'button' : 'submit'}
-        primary
-        className="mt-auto mx-auto bg-gradient-to-r from-[#9B8FF3] to-[#38F6F9] w-[230px] h-[48px]"
-      >
-        {currentAction === 1 ? 'Продовжити' : 'Оплатити'}
-      </SharedBtn>
+      {currentAction === 1 ? (
+        <SharedBtn
+          onClick={() => setCurrentActionHandler(2)}
+          type="button"
+          primary
+          className="mt-auto mx-auto bg-gradient-to-r from-[#9B8FF3] to-[#38F6F9] w-[230px] h-[48px]"
+        >
+          Продовжити
+        </SharedBtn>
+      ) : (
+        <SharedBtn
+          onClick={sendEventData}
+          type="button"
+          primary
+          disabled={!isFormValid}
+          className="mt-auto mx-auto bg-gradient-to-r from-[#9B8FF3] to-[#38F6F9] w-[230px] h-[48px]"
+        >
+          Оплатити
+        </SharedBtn>
+      )}
     </div>
   );
 };

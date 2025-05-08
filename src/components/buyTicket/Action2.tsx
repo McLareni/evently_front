@@ -1,40 +1,38 @@
-/* eslint-disable @typescript-eslint/no-unused-expressions */
-import { FC, useState } from 'react';
-import { Controller, SubmitHandler, useForm } from 'react-hook-form';
+/* eslint-disable no-unused-vars */
+import { FC, useEffect, useState } from 'react';
+import { Controller, useForm } from 'react-hook-form';
 import { AiOutlineExclamation } from 'react-icons/ai';
 import { MdDone } from 'react-icons/md';
-import { toast } from 'react-toastify';
 
-import { getUser, updateUserInfo } from '@/redux/auth/operations';
 import { selectIsLoading, selectUser } from '@/redux/auth/selectors';
-import { useAppDispatch, useAppSelector } from '@/redux/hooks';
+import { useAppSelector } from '@/redux/hooks';
 
-import {
-  formatBirthDateFromMask,
-  formatPhoneNumberFromMask,
-  isValueDate,
-} from '@/helpers/userForm/formatFromMask';
-import {
-  formatBirthDateToMask,
-  formatPhoneToMask,
-} from '@/helpers/userForm/formatToMask';
+import { formatPhoneToMask } from '@/helpers/userForm/formatToMask';
 import { validateEmail } from '@/utils';
-import { MAX_NAME_LENGTH, validateName } from '@/utils/validateName';
+import {
+  MAX_NAME_LENGTH,
+  validateName,
+  validateSurName,
+} from '@/utils/validateName';
+import { validatePhoneNumber } from '@/utils/validatePhoneNumber';
 import { useMask } from '@react-input/mask';
 
-import { ProfileInput } from '../profile/ProfileInput';
 import Spinner from '../ui/Spinner';
 import { BuyTicketInput } from './BuyTicketInput';
 
-export const Action2: FC = () => {
+interface Action2Props {
+  setInfoHandler: (data: CustomerInfo) => void;
+  setFormValid: (isValid: boolean) => void;
+}
+
+export const Action2: FC<Action2Props> = ({ setInfoHandler, setFormValid }) => {
   const [agreement, setAgreement] = useState(false);
 
-  const { name, surname, phoneNumber, email } = useAppSelector(selectUser);
+  const { name, surname, phoneNumber, email, id } = useAppSelector(selectUser);
   const isLoading = useAppSelector(selectIsLoading);
 
-  const dispatch = useAppDispatch();
-
   const defaultValues: BuyTicketUser = {
+    id: id || '',
     name: name || '',
     surname: surname || '',
     email: email || '',
@@ -48,37 +46,45 @@ export const Action2: FC = () => {
 
   const {
     register,
-    handleSubmit,
     control,
-    getValues,
+    watch,
     formState: { errors, isValid },
   } = useForm<BuyTicketUser>({ mode: 'onChange', defaultValues });
 
-  const onSubmit: SubmitHandler<BuyTicketUser> = data => {
-    // const newObj = SearchChanges(defaultValues, data);
-    // if (Object.keys(newObj).length === 0) {
-    //   return toast.error('Немає що змінювати');
-    // }
-    // dispatch(updateUserInfo(newObj));
-    // !isLoading && dispatch(getUser());
-    console.log(data);
-  };
+  const userId = watch('id');
+  const clientFirstName = watch('name');
+  const clientLastName = watch('surname');
+  const clientEmail = watch('email');
+  const clientPhone = watch('phoneNumber');
+
+  useEffect(() => {
+    const tickerInfo = {
+      userId: userId,
+      clientFirstName: clientFirstName,
+      clientLastName: clientLastName,
+      clientEmail: clientEmail,
+      clientPhone: clientPhone,
+    };
+
+    setInfoHandler(tickerInfo);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [clientEmail, clientFirstName, clientLastName, clientPhone]);
 
   const checkAgreement = () => {
     setAgreement(!agreement);
   };
 
+  useEffect(() => {
+    setFormValid(isValid);
+  }, [isValid, setFormValid]);
+
   return (
-    <form
-      className="flex flex-col border-[2px] border-buttonPurple rounded-[10px] p-[24px] mb-auto gap-[20px]"
-      onSubmit={handleSubmit(onSubmit)}
-    >
+    <form className="font-lato flex flex-col border-[2px] border-buttonPurple rounded-[10px] p-[24px] mb-auto gap-[20px]">
       {isLoading && <Spinner />}
       <h2 className="font-medium mb-4">Контактна інформація</h2>
       <div className="flex gap-[52px] mb-[8px]">
         <BuyTicketInput
           {...register('name', {
-            required: true,
             validate: validateName,
           })}
           maxLength={MAX_NAME_LENGTH}
@@ -93,12 +99,7 @@ export const Action2: FC = () => {
 
         <BuyTicketInput
           {...register('surname', {
-            validate: {
-              required: value =>
-                value.trim().length === 0 ||
-                (value.trim().length > 1 && value.trim().length <= 50) ||
-                'Введіть прізвище (від 2 до 50 символів)',
-            },
+            validate: validateSurName,
           })}
           placeholder="Введіть прізвище"
           id="surname"
@@ -128,20 +129,7 @@ export const Action2: FC = () => {
             />
           )}
           rules={{
-            required: false,
-            validate: value => {
-              if (value.length !== 17 && value.length > 0)
-                return 'Введіть номер телефону';
-
-              if (value.length === 17) {
-                if (value[4] !== '0' || value[5] === '0') {
-                  return 'Введіть дійсний код українських операторів';
-                }
-                if (value.includes('000-00-00')) {
-                  return 'Введіть правильний номер телефону';
-                }
-              }
-            },
+            validate: validatePhoneNumber,
           }}
         />
         <Controller
@@ -160,8 +148,7 @@ export const Action2: FC = () => {
             />
           )}
           rules={{
-            required: false,
-            validate: value => validateEmail(value),
+            validate: validateEmail,
           }}
         />
       </div>

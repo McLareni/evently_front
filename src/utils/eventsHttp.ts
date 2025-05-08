@@ -67,3 +67,34 @@ export const editEvent = async (
     throw new Error(`Failed to create event ${error}`);
   }
 };
+
+export const buyTicket = async ({
+  eventId,
+  data,
+}: {
+  eventId: string;
+  data: FullTicketInfo;
+}) => {
+  const token = store.getState().auth.token;
+
+  const response = (await axios.post(`pay/${eventId}`, data, {
+    headers: {
+      'Content-Type': 'application/json',
+      Authorization: `Bearer ${token}`,
+    },
+  })) as { data: ResponseWithSignature };
+
+  return response.data;
+};
+
+export const checkPromoCode = async ({ promoCode }: { promoCode: string }) => {
+  const response = await axios(`pay/promo-code?promoCode=${promoCode}`);
+
+  return response;
+};
+
+export const checkUserExists = async ({ email }: { email: string }) => {
+  const response = await axios(`authorize/exist/${email}`);
+
+  return response;
+};

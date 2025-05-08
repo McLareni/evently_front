@@ -46,7 +46,7 @@ const CreateBtnSection = () => {
         <div className="absolute inset-0 z-10 flex items-center justify-around ">
           <MainLogo />
           <h1 className="text-5xl">
-            Не знайшли події своєї мрії? Створи власну!
+            Не знайшов подію своєї мрії? Створи власну!
           </h1>
           <button
             onClick={handleClick}

@@ -1,8 +1,10 @@
 import React from 'react';
 import { createBrowserRouter } from 'react-router-dom';
 
+import AboutusPage from '@/pages/AboutusPage';
 // import { getAllEventsLoader } from '@/loaders/getAllEventsLoader';
 import Home from '@/pages/Home';
+import OrganizersPage from '@/pages/OrganizersPage';
 import UserProfile from '@/pages/UserProfile';
 import AdminEvents from '@/pages/admin/AdminEvents';
 import AdminUsers from '@/pages/admin/AdminUsers';
@@ -22,7 +24,6 @@ import { Layout } from '@/components/layout/Layout';
 
 import AdminRouter from './privateRouters/AdminRouter';
 import LoginRouter from './privateRouters/LoginRouter';
-import OrganizersPage from '@/pages/OrganizersPage';
 
 const NotFound = React.lazy(() => import('../pages/NotFoundPage'));
 
@@ -53,19 +54,21 @@ const router = createBrowserRouter([
         element: <AllEventsPage />,
         // loader: getAllEventsLoader,
       },
-      { 
-        path: 'organizers', 
-        element: <OrganizersPage/>
+      {
+        path: 'organizers',
+        element: <OrganizersPage />,
       },
+      { path: 'about_us', element: <AboutusPage /> },
+
       {
         path: 'user/:idUser',
         element: <UserProfile />,
       },
+      { path: 'event/:idEvent/buy_ticket', element: <BuyTicket /> },
       {
         element: <LoginRouter />,
         children: [
           { path: 'user_profile', element: <Profile /> },
-          { path: 'event/:idEvent/buy_ticket', element: <BuyTicket /> },
           { path: 'favourite', element: <Favourite /> },
           { path: 'my-event', element: <MyEvent /> },
           {
@@ -93,8 +96,6 @@ const router = createBrowserRouter([
       //routes for future components
       // Header routes
       { path: 'popular', element: '' },
-
-      { path: 'about', element: '' },
 
       { path: 'Kyiv', element: '' },
       { path: 'Odesa', element: '' },

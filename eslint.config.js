@@ -30,6 +30,11 @@ export default [
         CreateEventFormValues: true,
         CreateEventLocation: true,
         BuyTicketUser: true,
+        CustomerInfo: true,
+        ProductInfo: true,
+        FullTicketInfo: true,
+        ResponseWithSignature: true,
+        NewUserInfo: true
       },
       parser: typescriptEslintParser,
       sourceType: 'module',
