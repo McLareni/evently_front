@@ -118,6 +118,31 @@ export const EventApi = createApi({
         }
       },
     }),
+
+    acceptDeleteEvent: builder.mutation<any, { id: string; requestId: string }>({
+      query: ({ id, requestId }) => {
+        return {
+          url: `/admin/events/${id}/cancel/${requestId}`,
+          method: 'DELETE',
+        };
+      },
+      invalidatesTags: ['Count'],
+      async onQueryStarted(_, { dispatch, queryFulfilled }) {
+        try {
+          await queryFulfilled;
+
+          dispatch(
+            EventApi.util.invalidateTags([{ type: 'AdminEvent', id: 'LIST' }])
+          );
+        } catch {
+          ///
+        }
+      },
+    }),
+
+    getReason: builder.query<Reason, string>({
+      query: eventId => `/admin/events/cancel/request/${eventId}`,
+    })
   }),
 });
 
@@ -126,5 +151,7 @@ export const {
   useChangeEventStatusMutation,
   useGetCountStatusEventsQuery,
   useLazyGetEditedEventQuery,
-  useAcceptEditEventMutation
+  useAcceptEditEventMutation,
+  useAcceptDeleteEventMutation,
+  useLazyGetReasonQuery,
 } = EventApi;

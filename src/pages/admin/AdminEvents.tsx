@@ -1,6 +1,7 @@
 import { useState } from 'react';
 
 import {
+  useAcceptDeleteEventMutation,
   useAcceptEditEventMutation,
   useChangeEventStatusMutation,
   useGetAdminEventsQuery,
@@ -34,6 +35,7 @@ const AdminEvents = () => {
     useGetCountStatusEventsQuery();
   const [changeStatusEventFn] = useChangeEventStatusMutation();
   const [acceptEditEvent] = useAcceptEditEventMutation();
+  const [acceptDeleteEvent] = useAcceptDeleteEventMutation();
 
   const { content: events, page: pageInfo } = data || { content: [], page: {} };
 
@@ -84,6 +86,13 @@ const AdminEvents = () => {
       });
     }
 
+    if (currEvent?.hasCancelRequest) {
+      await acceptDeleteEvent({
+        id: currEvent?.id || '',
+        requestId,
+      });
+    }
+
     if (!currEvent?.hasCancelRequest && !currEvent?.hasUpdateRequest) {
       await changeStatusEventFn({
         id: currEvent?.id || '',
@@ -104,7 +113,10 @@ const AdminEvents = () => {
   const startCountPage = totalEvents === 0 ? 0 : 9 * (page - 1) + 1;
   const endCountPage = page * 9 > (totalEvents || 0) ? totalEvents : page * 9;
 
-  const handleOpenModal = (status: 'APPROVED' | 'CANCELLED', requestId?: string) => {
+  const handleOpenModal = (
+    status: 'APPROVED' | 'CANCELLED',
+    requestId?: string
+  ) => {
     setConfirmationModal(true);
     setAction(status);
     setRequestId(requestId || '');

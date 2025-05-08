@@ -154,3 +154,11 @@ interface PageType {
 }
 
 type EventStatus = 'PENDING' | 'APPROVED' | 'CANCELLED';
+
+interface Reason {
+  id?: string;
+  eventId?: string;
+  userId?: string;
+  contact: string;
+  reason: string;
+}

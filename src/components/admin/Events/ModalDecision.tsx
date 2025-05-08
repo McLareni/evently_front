@@ -4,9 +4,11 @@ import { MdDone } from 'react-icons/md';
 import { RxCross2 } from 'react-icons/rx';
 import { useNavigate } from 'react-router';
 
-import { useLazyGetEditedEventQuery } from '@/redux/admin/eventApi';
+import { useLazyGetReasonQuery, useLazyGetEditedEventQuery } from '@/redux/admin/eventApi';
 
 import clsx from 'clsx';
+
+import ConfirmationDeletePopUp from '@/components/myEvent/ConfirmationDeletePopUp';
 
 import userPlaceholder from '../../../../public/images/user-placeholder.png';
 import EditNavigate from './EditNavigate';
@@ -25,12 +27,18 @@ const ModalDecision: React.FC<IProps> = ({ event, openModal }) => {
   const [currVersionEvent, setCurrVersionEvent] = useState<Event | undefined>(
     event
   );
+  const [isPopUpOpen, setIsPopUpOpen] = useState(false);
 
   const [getEditedEvents, { data: newEvent }] = useLazyGetEditedEventQuery();
+  const [getReason, {data: reason}] = useLazyGetReasonQuery();
 
   useEffect(() => {
     if (event?.hasUpdateRequest) {
       getEditedEvents(event.id);
+    }
+
+    if(event?.hasCancelRequest) {
+      getReason(event.id);
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [event?.id]);
@@ -82,7 +90,7 @@ const ModalDecision: React.FC<IProps> = ({ event, openModal }) => {
               <h1 className="text-error text-4xl font-oswald border-[3px] border-error rounded-[10px] w-fit mx-auto my-9 px-3">
                 СКАСОВАНО
               </h1>
-              <button className="border border-buttonPurple bg-lightPurple rounded-[10px] p-[7px_8px] text-xl">
+              <button onClick={() => setIsPopUpOpen(true)} className="border border-buttonPurple bg-lightPurple rounded-[10px] p-[7px_8px] text-xl">
                 Подивитись причину
               </button>
             </div>
@@ -202,7 +210,7 @@ const ModalDecision: React.FC<IProps> = ({ event, openModal }) => {
             <EditNavigate loadNewEvent={handleLoadNewVersion} />
           )}
           <div className="flex justify-around gap-[100px] mt-8 absolute bottom-0 left-[50%] translate-x-[-50%]">
-            {event?.eventStatus !== 'CANCELLED' && (
+            {event?.eventStatus !== 'CANCELLED' || !event.hasCancelRequest && (
               <button
                 onClick={() => openModal('CANCELLED', newEvent?.id)}
                 className="flex gap-2 justify-center items-center w-[180px] h-12 border border-buttonPurple bg-background rounded-[10px] focus:outline-0 hover:shadow-shadowSecondaryBtn"
@@ -213,7 +221,7 @@ const ModalDecision: React.FC<IProps> = ({ event, openModal }) => {
             )}
             {event?.eventStatus !== 'APPROVED' && (
               <button
-                onClick={() => openModal('APPROVED', newEvent?.id)}
+                onClick={() => openModal('APPROVED', event?.hasCancelRequest ? reason?.id : newEvent?.id)}
                 className="flex gap-2 justify-center items-center w-[180px] h-12 border border-buttonPurple bg-lightPurple rounded-[10px] focus:outline-0 hover:shadow-shadowPrimaryBtn active:shadow-primaryBtnActive"
               >
                 <MdDone className="h-6 w-6" />
@@ -223,6 +231,11 @@ const ModalDecision: React.FC<IProps> = ({ event, openModal }) => {
           </div>
         </div>
       </div>
+      <ConfirmationDeletePopUp
+        popUpIsShow={isPopUpOpen}
+        onClose={() => setIsPopUpOpen(false)}
+        placeholder={reason}
+      />
     </div>
   );
 };
