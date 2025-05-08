@@ -89,12 +89,11 @@ export const Action2UserExists: FC = () => {
       <div className="w-[380px]">
         <BuyTicketInput
           {...register('password', {
-            validate: {
-              required: value =>
-                value.trim().length === 0 ||
-                value.length > 8 ||
-                'Введіть пароль (мін. 8 символів)',
-            },
+            required: true,
+            validate: value =>
+              value.trim().length === 0 ||
+              value.length > 8 ||
+              'Введіть пароль (мін. 8 символів)',
           })}
           forPassword
           placeholder="Введіть пароль"
