@@ -1,7 +1,12 @@
 import React, { useState } from 'react';
 import { BiChevronDown } from 'react-icons/bi';
 
-const EditNavigate: React.FC = () => {
+interface IProps {
+  // eslint-disable-next-line no-unused-vars
+  loadNewEvent: (version: 'NEW' | 'OLD') => void;
+}
+
+const EditNavigate: React.FC<IProps> = ({ loadNewEvent }) => {
   const [newVersion, setNewVersion] = useState(false);
 
   return (
@@ -9,7 +14,10 @@ const EditNavigate: React.FC = () => {
       <button
         className="focus:outline-0 disabled:opacity-40"
         disabled={!newVersion}
-        onClick={() => setNewVersion(false)}
+        onClick={() => {
+          setNewVersion(false);
+          loadNewEvent('OLD');
+        }}
       >
         <BiChevronDown className="rotate-90 w-12 h-12 bg-gray rounded-full" />
       </button>
@@ -19,7 +27,10 @@ const EditNavigate: React.FC = () => {
       <button
         className="focus:outline-0 disabled:opacity-40"
         disabled={newVersion}
-        onClick={() => setNewVersion(true)}
+        onClick={() => {
+          setNewVersion(true);
+          loadNewEvent('NEW');
+        }}
       >
         <BiChevronDown className="-rotate-90 w-12 h-12 bg-gray rounded-full" />
       </button>

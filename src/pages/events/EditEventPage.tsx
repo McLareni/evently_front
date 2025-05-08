@@ -111,6 +111,7 @@ const EditEventPage: React.FC = () => {
           />
         </div>
       </Container>
+
       <Modal isOpen={isSuccessEditEvent} hiddenCross>
         <div className="py-6 px-[57px] text-center border border-buttonPurple rounded-[20px]">
           <h2 className="text-xl font-bold font-lato mb-4">

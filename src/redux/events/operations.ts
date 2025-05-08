@@ -157,10 +157,14 @@ export const EventsApi = createApi({
         }
       },
     }),
-    deleteMyEvent: builder.mutation<string, string>({
-      query: id => ({
-        url: `event/user/${id}`,
-        method: 'DELETE',
+    deleteMyEvent: builder.mutation<
+      string,
+      { idEvent: string; contact: string; reason: string }
+    >({
+      query: ({idEvent, reason, contact}) => ({
+        url: `events/cancel/request/${idEvent}`,
+        body: { reason, contact },
+        method: 'POST',
       }),
       invalidatesTags: [{ type: 'MyEvents', id: 'LIST' }],
     }),
@@ -178,25 +182,25 @@ export const EventsApi = createApi({
           : [{ type: 'LikedEvents', id: 'LIST' }],
     }),
 
-    getUserEvents: builder.query<Event[], string>({
-      query: userId => `events/user/${userId}`,
+    // getUserEvents: builder.query<Event[], string>({
+    //   query: userId => `events/user/${userId}`,
 
-      transformResponse: (response: { content: Event[] }) => {
-        console.log(response);
+    //   transformResponse: (response: { content: Event[] }) => {
+    //     console.log(response);
 
-        return response.content;
-      },
-      providesTags: result =>
-        result
-          ? [
-              ...result.map(({ id }) => ({
-                type: 'UserEventsList' as const,
-                id,
-              })),
-              { type: 'UserEventsList', id: 'LIST' },
-            ]
-          : [{ type: 'UserEventsList', id: 'LIST' }],
-    }),
+    //     return response.content;
+    //   },
+    //   providesTags: result =>
+    //     result
+    //       ? [
+    //           ...result.map(({ id }) => ({
+    //             type: 'UserEventsList' as const,
+    //             id,
+    //           })),
+    //           { type: 'UserEventsList', id: 'LIST' },
+    //         ]
+    //       : [{ type: 'UserEventsList', id: 'LIST' }],
+    // }),
 
     addLikedEvent: builder.mutation<
       Event,
@@ -255,10 +259,9 @@ export const {
   useDeleteLikedEventMutation,
   useGetEventByIdQuery,
   useGetAllMyEventsQuery,
+  useLazyGetAllMyEventsQuery,
   useLazyGetAllEventsFilteredQuery,
   useGetAllEventsFilteredQuery,
   useLazyGetEventByIdQuery,
-  useGetUserEventsQuery,
-  useLazyGetUserEventsQuery,
   useDeleteMyEventMutation,
 } = EventsApi;

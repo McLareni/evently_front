@@ -17,6 +17,7 @@ export const EventApi = createApi({
       if (token) {
         headers.set('authorization', `Bearer ${token}`);
       }
+      headers.set('Content-Type', 'application/json');
       return headers;
     },
   }),
@@ -91,6 +92,57 @@ export const EventApi = createApi({
       query: () => '/admin/events/count/status',
       providesTags: ['Count'],
     }),
+
+    getEditedEvent: builder.query<Event, string>({
+      query: id => `/admin/events/update/request/${id}`,
+      providesTags: (result, error, id) => [{ type: 'AdminEvent', id }],
+    }),
+
+    acceptEditEvent: builder.mutation<any, { id: string; requestId: string }>({
+      query: ({ id, requestId }) => {
+        return {
+          url: `/admin/events/${id}?updateRequestId=${requestId}`,
+          method: 'PUT',
+        };
+      },
+      invalidatesTags: ['Count'],
+      async onQueryStarted(_, { dispatch, queryFulfilled }) {
+        try {
+          await queryFulfilled;
+
+          dispatch(
+            EventApi.util.invalidateTags([{ type: 'AdminEvent', id: 'LIST' }])
+          );
+        } catch {
+          ///
+        }
+      },
+    }),
+
+    acceptDeleteEvent: builder.mutation<any, { id: string; requestId: string }>({
+      query: ({ id, requestId }) => {
+        return {
+          url: `/admin/events/${id}/cancel/${requestId}`,
+          method: 'DELETE',
+        };
+      },
+      invalidatesTags: ['Count'],
+      async onQueryStarted(_, { dispatch, queryFulfilled }) {
+        try {
+          await queryFulfilled;
+
+          dispatch(
+            EventApi.util.invalidateTags([{ type: 'AdminEvent', id: 'LIST' }])
+          );
+        } catch {
+          ///
+        }
+      },
+    }),
+
+    getReason: builder.query<Reason, string>({
+      query: eventId => `/admin/events/cancel/request/${eventId}`,
+    })
   }),
 });
 
@@ -98,4 +150,8 @@ export const {
   useGetAdminEventsQuery,
   useChangeEventStatusMutation,
   useGetCountStatusEventsQuery,
+  useLazyGetEditedEventQuery,
+  useAcceptEditEventMutation,
+  useAcceptDeleteEventMutation,
+  useLazyGetReasonQuery,
 } = EventApi;
