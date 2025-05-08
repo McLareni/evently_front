@@ -8,11 +8,20 @@ export interface BuyTicketInputProps extends HTMLProps<HTMLInputElement> {
   label: string;
   width?: string;
   discount?: number;
+  showRequired?: boolean;
 }
 
 export const BuyTicketInput = forwardRef<HTMLInputElement, BuyTicketInputProps>(
   (
-    { label, error, forPassword = false, width = '312', discount, ...props },
+    {
+      label,
+      error,
+      forPassword = false,
+      width = '312',
+      discount,
+      showRequired = false,
+      ...props
+    },
     ref
   ) => {
     const [passwordVisible, setPasswordVisible] = useState(false);
@@ -20,7 +29,6 @@ export const BuyTicketInput = forwardRef<HTMLInputElement, BuyTicketInputProps>(
     const inputStyles = `w-full h-[64px] border-[2px] rounded-[10px]
     px-[24px] outline-none bg-background text-[20px]
     focus:placeholder-transparent border-buttonPurple
-    placeholder-textDark
     ${forPassword && 'pr-[72px]'}
     ${discount && discount > 0 && 'border-success text-success'}
     ${error && 'border-error text-error'}`;
@@ -66,6 +74,7 @@ export const BuyTicketInput = forwardRef<HTMLInputElement, BuyTicketInputProps>(
         </div>
         <label htmlFor={props.htmlFor} className={labelStyles}>
           {label}
+          {showRequired && <span className="star">*</span>}
         </label>
         <div className="h-[24px] absolute">
           {error && (

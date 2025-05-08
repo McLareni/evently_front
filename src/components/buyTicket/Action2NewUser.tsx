@@ -1,4 +1,4 @@
-import { FC, useState } from 'react';
+import { FC, useEffect, useState } from 'react';
 import { Controller, SubmitHandler, useForm } from 'react-hook-form';
 import { FcGoogle } from 'react-icons/fc';
 import { toast } from 'react-toastify';
@@ -8,11 +8,16 @@ import { register as registration } from '@/redux/auth/operations';
 import { useAppDispatch } from '@/redux/hooks';
 
 import { formatPhoneNumberFromMask } from '@/helpers/userForm/formatFromMask';
-import { validateEmail } from '@/utils';
-import { MAX_NAME_LENGTH, validateName } from '@/utils/validateName';
+import { statusPassword, validateEmail, validatePassword } from '@/utils';
+import {
+  MAX_NAME_LENGTH,
+  validateName,
+  validateSurName,
+} from '@/utils/validateName';
+import { validatePhoneNumber } from '@/utils/validatePhoneNumber';
 import { useMask } from '@react-input/mask';
 
-import { SharedBtn } from '../ui';
+import { SharedBtn, StatusBarPassword } from '../ui';
 import Spinner from '../ui/Spinner';
 import { BuyTicketInput } from './BuyTicketInput';
 
@@ -22,6 +27,12 @@ interface Action2NewUserProps {
 
 export const Action2NewUser: FC<Action2NewUserProps> = ({ newUserEmail }) => {
   const [isLoading, setIsLoading] = useState(false);
+  const [requiredPassword, setRequiredPassword] = useState<RequiredPassword>({
+    hasMinLength: false,
+    hasUppercase: false,
+    hasNumber: false,
+    hasSpecialChar: false,
+  });
 
   const dispatch = useAppDispatch();
 
@@ -44,8 +55,11 @@ export const Action2NewUser: FC<Action2NewUserProps> = ({ newUserEmail }) => {
     handleSubmit,
     control,
     getValues,
+    watch,
     formState: { errors, isValid },
   } = useForm<NewUserInfo>({ mode: 'onChange', defaultValues });
+
+  const onInputPassword = watch('password');
 
   const onSubmit: SubmitHandler<NewUserInfo> = async data => {
     setIsLoading(true);
@@ -67,6 +81,13 @@ export const Action2NewUser: FC<Action2NewUserProps> = ({ newUserEmail }) => {
     }
   };
 
+  useEffect(() => {
+    setRequiredPassword(prev => ({
+      ...prev,
+      ...statusPassword(onInputPassword),
+    }));
+  }, [onInputPassword]);
+
   return (
     <form
       className="font-lato flex flex-col border-[2px] border-buttonPurple rounded-[10px] p-[24px] mb-auto"
@@ -83,7 +104,7 @@ export const Action2NewUser: FC<Action2NewUserProps> = ({ newUserEmail }) => {
         </p>
       </div>
 
-      <div className="flex gap-[24px] mb-[24px]">
+      <div className="flex gap-[24px] mb-[32px]">
         <BuyTicketInput
           {...register('name', {
             required: true,
@@ -97,16 +118,12 @@ export const Action2NewUser: FC<Action2NewUserProps> = ({ newUserEmail }) => {
           label="Ім'я"
           error={errors?.name?.message}
           width="380"
+          showRequired
         />
 
         <BuyTicketInput
           {...register('surname', {
-            validate: {
-              required: value =>
-                value.trim().length === 0 ||
-                (value.trim().length > 1 && value.trim().length <= 50) ||
-                'Введіть прізвище (від 2 до 50 символів)',
-            },
+            validate: validateSurName,
           })}
           placeholder="Прізвище"
           id="surname"
@@ -118,7 +135,7 @@ export const Action2NewUser: FC<Action2NewUserProps> = ({ newUserEmail }) => {
         />
       </div>
 
-      <div className="flex gap-[24px] mb-[24px]">
+      <div className="flex gap-[24px] mb-[32px]">
         <Controller
           name="phoneNumber"
           control={control}
@@ -133,23 +150,12 @@ export const Action2NewUser: FC<Action2NewUserProps> = ({ newUserEmail }) => {
               label="Номер телефону"
               error={errors?.phoneNumber?.message}
               width="380"
+              showRequired
             />
           )}
           rules={{
-            required: false,
-            validate: value => {
-              if (value.length !== 17 && value.length > 0)
-                return 'Введіть номер телефону';
-
-              if (value.length === 17) {
-                if (value[4] !== '0' || value[5] === '0') {
-                  return 'Введіть дійсний код українських операторів';
-                }
-                if (value.includes('000-00-00')) {
-                  return 'Введіть правильний номер телефону';
-                }
-              }
-            },
+            required: true,
+            validate: validatePhoneNumber,
           }}
         />
 
@@ -166,6 +172,7 @@ export const Action2NewUser: FC<Action2NewUserProps> = ({ newUserEmail }) => {
               label="Електронна пошта"
               error={errors?.email?.message}
               width="380"
+              showRequired
             />
           )}
           rules={{
@@ -174,66 +181,71 @@ export const Action2NewUser: FC<Action2NewUserProps> = ({ newUserEmail }) => {
         />
       </div>
 
-      <div className="flex flex-col gap-[24px] mb-[8px] w-[380px]">
-        <BuyTicketInput
-          {...register('password', {
-            validate: {
-              required: value =>
-                value.trim().length === 0 ||
-                value.length > 8 ||
-                'Введіть пароль (мін. 8 символів)',
-            },
-          })}
-          forPassword
-          placeholder="Пароль"
-          id="password"
-          htmlFor="password"
-          autoComplete="new-password"
-          label="Пароль"
-          error={errors?.password?.message}
-          width="380"
-        />
+      <div className="relative w-[500px]">
+        <div className="flex flex-col gap-[32px] w-[380px]">
+          <div>
+            <BuyTicketInput
+              {...register('password', {
+                validate: validatePassword,
+              })}
+              forPassword
+              placeholder="Пароль"
+              id="password"
+              htmlFor="password"
+              autoComplete="new-password"
+              label="Пароль"
+              width="380"
+              showRequired
+            />
+            {errors.password?.message && (
+              <div>
+                <StatusBarPassword
+                  requiredPassword={requiredPassword}
+                  className="absolute mt-[4px]"
+                />
+              </div>
+            )}
+          </div>
 
-        <BuyTicketInput
-          {...register('repeatPassword', {
-            validate: {
-              required: value => {
-                if (value.trim().length > 0 && value.trim().length < 8) {
-                  return 'Повторіть пароль (мін. 8 символів)';
-                }
-                const password = getValues('password');
-                if (value.trim() !== password) {
-                  return 'Паролі не збігаються';
-                }
+          <BuyTicketInput
+            {...register('repeatPassword', {
+              validate: {
+                required: value => {
+                  const password = getValues('password');
+                  if (value.trim() !== password) {
+                    return 'Паролі не збігаються';
+                  }
+                },
               },
-            },
-          })}
-          forPassword
-          placeholder="Повторіть пароль"
-          id="repeatPassword"
-          htmlFor="repeatPassword"
-          label="Повторіть пароль"
-          error={errors?.repeatPassword?.message}
-          width="380"
-        />
-        <p className="text-center">або</p>
-        <button
-          type="button"
-          className={`mb-[8px] w-[380px] h-[64px] border-[2px] rounded-[10px]
+            })}
+            forPassword
+            placeholder="Повторіть пароль"
+            id="repeatPassword"
+            htmlFor="repeatPassword"
+            label="Повторіть пароль"
+            error={errors?.repeatPassword?.message}
+            width="380"
+            showRequired
+          />
+          <p className="text-center">або</p>
+          <button
+            type="button"
+            className={`mb-[8px] w-[380px] h-[64px] border-[2px] rounded-[10px]
                           px-[24px] outline-none bg-background text-[20px] border-buttonPurple
                           flex justify-center items-center gap-2`}
-        >
-          <FcGoogle className="w-10 h-10" />
-          Продовжити через Google
-        </button>
-        <SharedBtn
-          disabled={!isValid}
-          type="submit"
-          primary
-          className="mt-auto w-full bg-gradient-to-r from-[#9B8FF3] to-[#38F6F9] w-[230px] h-[48px]"
-        >
-          Створити акаунт
-        </SharedBtn>
+          >
+            <FcGoogle className="w-10 h-10" />
+            Продовжити через Google
+          </button>
+          <SharedBtn
+            disabled={!isValid}
+            type="submit"
+            primary
+            className="mt-auto w-full bg-gradient-to-r from-[#9B8FF3] to-[#38F6F9] w-[230px] h-[48px]"
+          >
+            Створити акаунт
+          </SharedBtn>
+        </div>
       </div>
     </form>
   );
