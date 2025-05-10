@@ -1,7 +1,9 @@
 import { useEffect, useRef, useState } from 'react';
 import { AiOutlineHeart } from 'react-icons/ai';
+import { BiMenuAltRight } from 'react-icons/bi';
 import { BsSearch } from 'react-icons/bs';
 import { CgProfile } from 'react-icons/cg';
+import { HiOutlineLocationMarker } from 'react-icons/hi';
 import { RxCross2 } from 'react-icons/rx';
 import { useLocation } from 'react-router';
 
@@ -9,9 +11,11 @@ import { selectIsLoggedIn } from '@/redux/auth/selectors';
 import { useAppSelector } from '@/redux/hooks';
 
 import { useGetLikedEventsWithSkip } from '@/hooks/query/useGetLikedEventsWithSkip';
+import { useMediaQuery } from '@/hooks/useMediaQuery';
 
 import { Auth } from '../auth';
 import { Modal } from '../ui';
+import { AuthMobileModal } from '../ui/AuthMobileModal';
 import { IconButton } from '../ui/IconButton';
 
 interface UserNavigationProps {
@@ -37,6 +41,8 @@ export const UserNavigation: React.FC<UserNavigationProps> = ({
   const location = useLocation();
 
   const inputRef = useRef<HTMLDivElement>(null);
+
+  const isMobile = useMediaQuery('(max-width: 1024px)');
 
   const toggleInput = () => setIsInputVisible(!isInputVisible);
 
@@ -72,13 +78,13 @@ export const UserNavigation: React.FC<UserNavigationProps> = ({
   }, [location]);
 
   return (
-    <div className="flex gap-6 pr-12 items-center">
+    <div className="flex gap-6 items-center mb-[10px] lg:m-0">
       <button
         onClick={toggleInput}
         className="focus:outline-none"
         aria-label="search"
       >
-        <BsSearch className="w-[24px] h-[24px] cursor-pointer hover:[color:#9B8FF3]" />
+        <BsSearch className="hidden lg:block w-[24px] h-[24px] cursor-pointer hover:[color:#9B8FF3]" />
       </button>
       {isInputVisible && (
         <div
@@ -99,6 +105,12 @@ export const UserNavigation: React.FC<UserNavigationProps> = ({
           </div>
         </div>
       )}
+      <IconButton
+        className="lg:hidden"
+        Icon={HiOutlineLocationMarker}
+        onClick={() => console.log('1')}
+        aria-label="geolocation"
+      />
 
       <IconButton
         Icon={AiOutlineHeart}
@@ -118,15 +130,33 @@ export const UserNavigation: React.FC<UserNavigationProps> = ({
         onClick={() => handleLinkClick('user_profile')}
         aria-label="user profile"
       />
-
-      <Modal isOpen={isModalOpen} onClose={() => setIsModalOpen(false)}>
-        <Auth
-          onCloseModal={() => setIsModalOpen(false)}
-          isEmailConfirmed={isEmailConfirmed}
-          resetPasswordByToken={token}
-        />
-      </Modal>
-      <div>UA</div>
+      <IconButton
+        className="lg:hidden"
+        Icon={BiMenuAltRight}
+        onClick={() => console.log('1')}
+        aria-label="burger"
+      />
+      {isMobile ? (
+        <AuthMobileModal
+          isOpen={isModalOpen}
+          onClose={() => setIsModalOpen(false)}
+        >
+          <Auth
+            onCloseModal={() => setIsModalOpen(false)}
+            isEmailConfirmed={isEmailConfirmed}
+            resetPasswordByToken={token}
+          />
+        </AuthMobileModal>
+      ) : (
+        <Modal isOpen={isModalOpen} onClose={() => setIsModalOpen(false)}>
+          <Auth
+            onCloseModal={() => setIsModalOpen(false)}
+            isEmailConfirmed={isEmailConfirmed}
+            resetPasswordByToken={token}
+          />
+        </Modal>
+      )}
+      <div className="hidden lg:block">UA</div>
     </div>
   );
 };

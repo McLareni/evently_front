@@ -119,10 +119,12 @@ export const Login: React.FC<LoginProps> = ({
 
   return (
     <>
-      <h1 className="mb-6">Увійти в акаунт</h1>
+      <h1 className="text-[32px] lg:text-[64px] mb-6 text-center lg:text-left">
+        Увійти в акаунт
+      </h1>
       <form
         onSubmit={handleSubmit(onSubmit)}
-        className="flex flex-col rounded-lg gap-10 w-[500px]"
+        className="flex flex-col lg:rounded-lg gap-10 lg:w-[500px] pb-4 lg:p-0"
       >
         <div className={`relative`}>
           <SharedInput
@@ -185,11 +187,11 @@ export const Login: React.FC<LoginProps> = ({
         </div>
         <span className="text-base ml-auto mr-auto">або</span>
         <div
-          className={`flex gap-2.5 items-center justify-center w-[500px] h-[70px] bg-bgColor rounded-[20px]`}
+          className={`flex gap-2.5 items-center justify-center h-[70px] bg-bgColor lg:rounded-[20px]`}
         >
           <GoogleLoginButton onCloseModal={onCloseModal} />
         </div>
-        <div className={`flex justify-between  w-full -mt-8 h-5`}>
+        <div className={`flex justify-between items-start w-full -mt-8`}>
           <CustomCheckbox
             checked={userData.rememberMe}
             onChange={handleRememberMeChange}
@@ -197,7 +199,7 @@ export const Login: React.FC<LoginProps> = ({
             className={``}
           />
 
-          <div className={`flex gap-2 text-base`}>
+          <div className={`flex flex-col lg:flex-row items-end gap-2`}>
             <span className={`text-black `}> У вас немає акаунту?</span>
             <button
               type="button"

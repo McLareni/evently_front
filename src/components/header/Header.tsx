@@ -27,10 +27,10 @@ export const Header: React.FC = () => {
   };
 
   return (
-    <div className="w-[1440px] font-lato bg-background fixed top-0 z-20">
+    <div className="w-full max-w-[1440px] font-lato bg-background fixed transform -translate-x-1/2 left-1/2 top-0 z-20 ">
       <Container className="relative">
-        <header className="px-4 pt-2 pb-4 bg-gray-100">
-          <div className="flex justify-center items-center h-[84px]">
+        <header className="lg:px-4 lg:pt-2 lg:pb-4 bg-gray-100 flex justify-center">
+          <div className="mx-auto w-full flex justify-between items-center h-[72px] lg:h-[84px]">
             <MainLogo />
             <Navigation />
             <UserNavigation
@@ -39,7 +39,10 @@ export const Header: React.FC = () => {
               setIsModalOpen={setIsModalOpen}
             />
 
-            <div onClick={() => handleLinkClick('create_event')}>
+            <div
+              className="hidden lg:block"
+              onClick={() => handleLinkClick('create_event')}
+            >
               <SharedBtn
                 type="button"
                 primary

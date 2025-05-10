@@ -103,7 +103,7 @@ export const SharedInput: React.FC<SharedInputProps> = ({
         {...register(id, { ...validation, onBlur: handleBlur })}
         className={clsx(
           `flex-grow w-full font-medium h-[60px] text-base bg-background placeholder:text-darkGray
-           rounded-[20px] px-5 py-6 focus:outline-none transition-all duration-200 ease-in-out
+           rounded-[5px] lg:rounded-[20px] px-5 py-6 focus:outline-none transition-all duration-200 ease-in-out
             outline-none`,
           {
             'border-transparent': !errors[id] && !hasValue,

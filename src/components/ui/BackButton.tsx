@@ -7,7 +7,10 @@ interface IProps {
 
 const BackButton: React.FC<IProps> = ({ click }) => {
   return (
-    <button onClick={click} className="absolute top-3 p-2 left-[439px]">
+    <button
+      onClick={click}
+      className="absolute top-3 p-2 left-4 lg:left-[439px]"
+    >
       <BiArrowBack className="w-8 h-8" />
     </button>
   );

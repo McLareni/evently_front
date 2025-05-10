@@ -81,7 +81,7 @@ export const RegisterInputPassword: React.FC<RegisterInputPasswordProps> = ({
       <div className={`flex flex-col h-full justify-between`}>
         <form
           onSubmit={handleSubmit(onSubmit)}
-          className="flex flex-col rounded-lg gap-10 w-[500px]"
+          className="flex flex-col rounded-lg gap-10 lg:w-[500px]"
         >
           <div className="relative">
             <SharedInput
