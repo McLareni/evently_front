@@ -27,7 +27,7 @@ export const Layout = () => {
     <>
       <Header />
       <main
-        className={`${linesShown ? 'pt-[140px]' : 'pt-[108px]'}
+        className={`pt-[88px] ${linesShown ? 'lg:pt-[140px]' : 'lg:pt-[108px]'}
         relative flex-grow w-[1440px]`}
       >
         {linesShown && <LayoutHorizontalLines />}
