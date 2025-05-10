@@ -119,20 +119,6 @@ export const Login: React.FC<LoginProps> = ({
 
   return (
     <>
-      <p
-        className="lg:hidden font-oswald text-[36px] inline-block text-center"
-        style={{
-          background:
-            'linear-gradient(98.01deg, #12C2E9 2.11%, #C471ED 75.16%)',
-          WebkitBackgroundClip: 'text',
-          backgroundClip: 'text',
-          color: 'transparent',
-        }}
-      >
-        Тут починається твоя
-        <br />
-        історія з BookMyEvent!
-      </p>
       <h1 className="text-[32px] lg:text-[64px] mb-6 text-center lg:text-left">
         Увійти в акаунт
       </h1>

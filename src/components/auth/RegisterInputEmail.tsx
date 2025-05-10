@@ -79,11 +79,13 @@ export const RegisterInputEmail: React.FC<RegisterInputEmailProps> = ({
 
   return (
     <>
-      <h1 className="mb-8">Створити акаунт</h1>
+      <h1 className="text-[32px] lg:text-[64px] mb-8 text-center lg:text-left">
+        Створити акаунт
+      </h1>
       <div className={`flex flex-col h-full justify-between`}>
         <form
           onSubmit={handleSubmit(onSubmit)}
-          className="flex flex-col rounded-lg gap-6 w-[500px]"
+          className="flex flex-col rounded-lg gap-6 lg:w-[500px]"
         >
           <div className={`relative`}>
             <SharedInput
