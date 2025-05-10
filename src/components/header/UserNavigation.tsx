@@ -9,9 +9,11 @@ import { selectIsLoggedIn } from '@/redux/auth/selectors';
 import { useAppSelector } from '@/redux/hooks';
 
 import { useGetLikedEventsWithSkip } from '@/hooks/query/useGetLikedEventsWithSkip';
+import { useMediaQuery } from '@/hooks/useMediaQuery';
 
 import { Auth } from '../auth';
 import { Modal } from '../ui';
+import { AuthMobileModal } from '../ui/AuthMobileModal';
 import { IconButton } from '../ui/IconButton';
 
 interface UserNavigationProps {
@@ -37,6 +39,8 @@ export const UserNavigation: React.FC<UserNavigationProps> = ({
   const location = useLocation();
 
   const inputRef = useRef<HTMLDivElement>(null);
+
+  const isMobile = useMediaQuery('(max-width: 1024px)');
 
   const toggleInput = () => setIsInputVisible(!isInputVisible);
 
@@ -119,13 +123,26 @@ export const UserNavigation: React.FC<UserNavigationProps> = ({
         aria-label="user profile"
       />
 
-      <Modal isOpen={isModalOpen} onClose={() => setIsModalOpen(false)}>
-        <Auth
-          onCloseModal={() => setIsModalOpen(false)}
-          isEmailConfirmed={isEmailConfirmed}
-          resetPasswordByToken={token}
-        />
-      </Modal>
+      {isMobile ? (
+        <AuthMobileModal
+          isOpen={isModalOpen}
+          onClose={() => setIsModalOpen(false)}
+        >
+          <Auth
+            onCloseModal={() => setIsModalOpen(false)}
+            isEmailConfirmed={isEmailConfirmed}
+            resetPasswordByToken={token}
+          />
+        </AuthMobileModal>
+      ) : (
+        <Modal isOpen={isModalOpen} onClose={() => setIsModalOpen(false)}>
+          <Auth
+            onCloseModal={() => setIsModalOpen(false)}
+            isEmailConfirmed={isEmailConfirmed}
+            resetPasswordByToken={token}
+          />
+        </Modal>
+      )}
       <div>UA</div>
     </div>
   );

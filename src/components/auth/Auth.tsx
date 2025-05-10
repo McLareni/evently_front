@@ -95,7 +95,9 @@ export const Auth: React.FC<AuthProps> = ({
 
   return (
     <div
-      className={` flex flex-row-reverse overflow-hidden bg-lightPurple border-collapse border border-gray rounded-[20px]`}
+      className={`lg:flex flex-row-reverse lg:overflow-hidden
+        lg:bg-lightPurple border-collapse lg:border border-gray lg:rounded-[20px]
+        h-full`}
     >
       <div className={`flex flex-col mt-12 mb-4 mx-[57px]`}>
         {statusAuth === 'login' && (
@@ -138,7 +140,11 @@ export const Auth: React.FC<AuthProps> = ({
           />
         )}
       </div>
-      <img src={authImg} alt="colage_posters" className="w-[415px] h-[650px]" />
+      <img
+        src={authImg}
+        alt="colage_posters"
+        className="hidden lg:block w-[415px] h-[650px]"
+      />
       {isLoading && <Spinner rounded />}
     </div>
   );
