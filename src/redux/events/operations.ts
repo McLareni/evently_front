@@ -159,13 +159,18 @@ export const EventsApi = createApi({
     }),
     deleteMyEvent: builder.mutation<
       string,
-      { idEvent: string; contact: string; reason: string }
+      { idEvent: string; contact?: string; reason?: string }
     >({
-      query: ({idEvent, reason, contact}) => ({
-        url: `events/cancel/request/${idEvent}`,
-        body: { reason, contact },
-        method: 'POST',
-      }),
+      query: ({ idEvent, reason, contact }) => {
+        const ticketWasSold = !!contact;
+        return {
+          url: ticketWasSold
+            ? `events/cancel/request/${idEvent}`
+            : `events/${idEvent}`,
+          body: ticketWasSold ? { reason, contact } : undefined,
+          method: ticketWasSold ? 'POST' : 'DELETE',
+        };
+      },
       invalidatesTags: [{ type: 'MyEvents', id: 'LIST' }],
     }),
 

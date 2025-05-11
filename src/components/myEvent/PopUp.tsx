@@ -1,15 +1,14 @@
 import React from 'react';
-import { Link, useNavigate } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 import { toast } from 'react-toastify';
-
 
 interface IProps {
   id: string;
   approved?: boolean;
-  deleteEvent: () => void
+  deleteEvent: () => void;
 }
 
-const PopUp: React.FC<IProps> = ({ id, approved, deleteEvent }) => {
+const PopUp: React.FC<IProps> = ({ id, approved = false, deleteEvent }) => {
   const navigate = useNavigate();
 
   const copyLink = () => {
@@ -27,17 +26,25 @@ const PopUp: React.FC<IProps> = ({ id, approved, deleteEvent }) => {
     }
   };
 
+  const handleEditEvent = () => {
+    if (approved) {
+      navigate(`/edit_event/${id}`);
+    } else {
+      toast.info('Ви не можете редагувати подію, коли вона на перевірці');
+    }
+  };
+
   return (
     <div
       data-name="kebab"
       className="absolute right-0 top-12 z-10 w-[206px] bg-background border border-buttonPurple rounded-[10px] py-3 flex flex-col gap-1"
     >
-      <Link
-        to={`/edit_event/${id}`}
+      <h2
+        onClick={handleEditEvent}
         className="pl-6 py-2 text-base font-normal font-lato text-textDark leading-[38px] rounded-[18px] hover:cursor-pointer hover:bg-gray"
       >
         Редагувати
-      </Link>
+      </h2>
       <h2
         onClick={handleSeeEvent}
         className="pl-6 py-2 text-base font-normal font-lato text-textDark leading-[38px] rounded-[18px] hover:cursor-pointer hover:bg-gray"

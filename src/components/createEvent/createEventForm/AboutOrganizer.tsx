@@ -175,7 +175,6 @@ const AboutOrganizer: React.FC<AboutOrganizerProps> = ({
                 id="title"
                 className="focus:outline-none w-full h-full p-4 rounded-[8px]"
                 placeholder="+38(099)999-99-99"
-                defaultValue={phoneNumber}
               />
             </div>
           )}
@@ -199,7 +198,7 @@ const AboutOrganizer: React.FC<AboutOrganizerProps> = ({
           {agreement && <MdDone className="text-black w-6 h-6" />}
         </div>
         <span className="ml-2">
-          Я погоджуюсь із{' '}
+          Я погоджуюсь із
           <a
             className="underline text-buttonPurple"
             href="/Правила.pdf"
@@ -207,8 +206,8 @@ const AboutOrganizer: React.FC<AboutOrganizerProps> = ({
             rel="noopener noreferrer"
           >
             Політикою конфіденційності
-          </a>{' '}
-          та{' '}
+          </a>
+          та
           <a
             className="underline text-buttonPurple"
             href="/Правила.pdf"

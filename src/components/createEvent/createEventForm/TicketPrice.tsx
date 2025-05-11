@@ -12,6 +12,8 @@ import { FaRegMoneyBillAlt } from 'react-icons/fa';
 import { HiOutlineTicket } from 'react-icons/hi';
 import { MdDone } from 'react-icons/md';
 
+import clsx from 'clsx';
+
 type TicketPriceProps = {
   control: Control<CreateEventFormValues>;
   setValue: UseFormSetValue<CreateEventFormValues>;
@@ -91,7 +93,8 @@ const TicketPrice: React.FC<TicketPriceProps> = ({
         Вартість квитків<span className="star">*</span>
       </span>
       <div className="pb-6">
-        {(isEdit || !freeTickets) && (
+        {(!isEdit ||
+          (isEdit && (event?.soldTickets === '0' || freeTickets))) && (
           <button
             type="button"
             className={`${
@@ -102,11 +105,13 @@ const TicketPrice: React.FC<TicketPriceProps> = ({
             onClick={() => {
               setValue('freeTickets', false);
             }}
+            disabled={event?.soldTickets !== '0'}
           >
             Платні
           </button>
         )}
-        {(isEdit || freeTickets) && (
+        {(!isEdit ||
+          (isEdit && (event?.soldTickets === '0' || !freeTickets))) && (
           <button
             type="button"
             className={`${
@@ -117,6 +122,7 @@ const TicketPrice: React.FC<TicketPriceProps> = ({
             onClick={() => {
               setValue('freeTickets', true);
             }}
+            disabled={event?.soldTickets !== '0'}
           >
             Безкоштовно
           </button>
@@ -130,7 +136,10 @@ const TicketPrice: React.FC<TicketPriceProps> = ({
           <div className="relative">
             <FaRegMoneyBillAlt
               color={freeTickets ? '#D0D5D8' : '#000000'}
-              className={`absolute top-[13.25px] left-[17.25px] w-6 h-6 `}
+              className={clsx(
+                `absolute top-[13.25px] left-[17.25px] w-6 h-6 `,
+                { 'text-uploadBtnBg': isEdit && event?.soldTickets !== '0' }
+              )}
             />
             <Controller
               name="ticketPrice"
@@ -149,10 +158,18 @@ const TicketPrice: React.FC<TicketPriceProps> = ({
                     {...field}
                     id="ticketPrice"
                     type="number"
-                    className={`outline-none pl-[49px] w-full h-full p-4 rounded-[8px] [appearance:textfield]
-                    [&::-webkit-outer-spin-button]:appearance-none [&::-webkit-inner-spin-button]:appearance-none`}
+                    className={clsx(
+                      `outline-none pl-[49px] w-full h-full p-4 rounded-[8px] [appearance:textfield]
+                    [&::-webkit-outer-spin-button]:appearance-none [&::-webkit-inner-spin-button]:appearance-none`,
+                      {
+                        'text-uploadBtnBg':
+                          isEdit && event?.soldTickets !== '0',
+                      }
+                    )}
                     placeholder="100 ₴"
-                    disabled={freeTickets}
+                    disabled={
+                      freeTickets || (isEdit && event?.soldTickets !== '0')
+                    }
                   />
                 </div>
               )}
@@ -174,7 +191,10 @@ const TicketPrice: React.FC<TicketPriceProps> = ({
           <div className="relative">
             <HiOutlineTicket
               color={unlimitedTickets ? '#D0D5D8' : '#000000'}
-              className={`absolute top-[13.25px] left-[17.25px] w-6 h-6 `}
+              className={clsx(
+                `absolute top-[13.25px] left-[17.25px] w-6 h-6 `,
+                { 'text-uploadBtnBg': isEdit && event?.soldTickets !== '0' }
+              )}
             />
             <Controller
               name="numberOfTickets"
@@ -185,6 +205,7 @@ const TicketPrice: React.FC<TicketPriceProps> = ({
                     unlimitedTickets || +(value || 0) > 0 || 'Невірний формат',
                 },
               }}
+              disabled={event?.soldTickets !== '0'}
               render={({ field }) => (
                 <div
                   className={`w-[240px] h-[48px] p-[2px] ${unlimitedTickets ? 'bg-[#D0D5D8]' : 'bg-createEventInputBorder'}  rounded-[10px]`}
@@ -193,8 +214,14 @@ const TicketPrice: React.FC<TicketPriceProps> = ({
                     id="numberOfTickets"
                     {...field}
                     type="number"
-                    className={`outline-none pl-[49px] w-full h-full p-4 rounded-[8px] [appearance:textfield] [&::-webkit-outer-spin-button]:appearance-none 
-                [&::-webkit-inner-spin-button]:appearance-none`}
+                    className={clsx(
+                      `outline-none pl-[49px] w-full h-full p-4 rounded-[8px] [appearance:textfield] [&::-webkit-outer-spin-button]:appearance-none 
+                [&::-webkit-inner-spin-button]:appearance-none`,
+                      {
+                        'text-uploadBtnBg':
+                          isEdit && event?.soldTickets !== '0',
+                      }
+                    )}
                     placeholder="100"
                     disabled={unlimitedTickets}
                   />

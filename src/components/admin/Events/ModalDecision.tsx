@@ -128,8 +128,8 @@ const ModalDecision: React.FC<IProps> = ({ event, openModal }) => {
             <div>
               <img
                 src={
-                  currVersionEvent?.organizers?.avatarImage?.url
-                    ? currVersionEvent?.organizers?.avatarImage.url
+                  event?.organizers?.avatarImage?.url
+                    ? event?.organizers?.avatarImage.url
                     : userPlaceholder
                 }
                 alt=""
@@ -137,17 +137,17 @@ const ModalDecision: React.FC<IProps> = ({ event, openModal }) => {
               />
               <h2
                 onClick={() =>
-                  navigate(`/user/${currVersionEvent?.organizers.id}`)
+                  navigate(`/user/${event?.organizers.id}`)
                 }
                 className="text-textDark font-lato text-2xl underline my-2 hover:cursor-pointer"
               >
-                {currVersionEvent?.organizers?.name}
+                {event?.organizers?.name}
               </h2>
               <div className="flex">
                 <span className="mr-2">
-                  <Stars rating={currVersionEvent?.rating || 0} />
+                  <Stars rating={event?.rating || 0} />
                 </span>
-                ({currVersionEvent?.rating})
+                ({event?.rating})
               </div>
             </div>
             <div className="flex flex-col gap-2">
