@@ -1,8 +1,6 @@
 import { NavLink } from 'react-router-dom';
 
-import {
-  setOneFilterType,
-} from '@/redux/filters/filtersSlice';
+import { setOneFilterType } from '@/redux/filters/filtersSlice';
 import { useAppDispatch } from '@/redux/hooks';
 
 import { cityOptions, eventTypes } from '@/assets/staticData/statickData';
@@ -18,7 +16,7 @@ export const Navigation: React.FC = () => {
   };
 
   return (
-    <div className="flex pl-12 pr-24 gap-8 items-center">
+    <div className="hidden lg:flex  mr-12 gap-8 items-center">
       <AllEventsSelect
         options={eventTypes}
         label="Події"

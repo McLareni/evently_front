@@ -64,7 +64,8 @@ export const GoogleLoginButton: React.FC<GoogleLoginProps> = ({
         login();
       }}
       type="button"
-      className={`flex gap-2.5 items-center justify-center w-[500px] h-[60px] bg-background focus:outline-none rounded-[20px]`}
+      className={`flex gap-2.5 items-center justify-center w-full lg:w-[500px] h-[60px]
+        bg-background focus:outline-none rounded-[5px] lg:rounded-[20px] border-lightPurple border-[1px]`}
     >
       <FcGoogle className="w-10 h-10" />
       Продовжити через Google
