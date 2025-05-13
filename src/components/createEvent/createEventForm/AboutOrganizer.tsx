@@ -198,7 +198,7 @@ const AboutOrganizer: React.FC<AboutOrganizerProps> = ({
           {agreement && <MdDone className="text-black w-6 h-6" />}
         </div>
         <span className="ml-2">
-          Я погоджуюсь із
+          Я погоджуюсь із{' '}
           <a
             className="underline text-buttonPurple"
             href="/Правила.pdf"
@@ -207,7 +207,7 @@ const AboutOrganizer: React.FC<AboutOrganizerProps> = ({
           >
             Політикою конфіденційності
           </a>
-          та
+          {' '}та{' '}
           <a
             className="underline text-buttonPurple"
             href="/Правила.pdf"
