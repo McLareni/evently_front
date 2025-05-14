@@ -8,6 +8,7 @@ import {
   useGetCountStatusEventsQuery,
   useLazyGetEditedEventQuery,
   useLazyGetReasonQuery,
+  useRejectEdirtEventMutation,
 } from '@/redux/admin/eventApi';
 
 import { AdminEventsList } from '@/components/admin/Events/AdminEventsList';
@@ -37,6 +38,7 @@ const AdminEvents = () => {
     useGetCountStatusEventsQuery();
   const [changeStatusEventFn] = useChangeEventStatusMutation();
   const [acceptEditEvent] = useAcceptEditEventMutation();
+  const [rejectEditEvent] = useRejectEdirtEventMutation();
   const [acceptDeleteEvent] = useAcceptDeleteEventMutation();
   const [getEditedEvents, { data: newEvent, isLoading: newEventLoading }] =
     useLazyGetEditedEventQuery();
@@ -85,10 +87,17 @@ const AdminEvents = () => {
 
   const changeStatusEvent = async () => {
     if (currEvent?.hasUpdateRequest) {
-      await acceptEditEvent({
-        id: currEvent?.id || '',
-        requestId: newEvent?.id || '',
-      });
+      if (action === 'APPROVED') {
+        await acceptEditEvent({
+          id: currEvent?.id || '',
+          requestId: newEvent?.id || '',
+        });
+      } else if (action === 'CANCELLED') {
+        await rejectEditEvent({
+          id: currEvent?.id || '',
+          requestId: newEvent?.id || '',
+        });
+      }
     }
 
     if (currEvent?.hasCancelRequest) {

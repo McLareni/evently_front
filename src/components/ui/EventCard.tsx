@@ -169,9 +169,7 @@ export const EventCard: React.FC<EventCardProps> = ({
             className={`flex items-center justify-center h-[33px] rounded-[20px]
                  border-[2px] border-borderColor bg-bg-gradient`}
           >
-            <p className={`font-normal text-md text-textDark px-4`}>
-              {type}
-            </p>
+            <p className={`font-normal text-md text-textDark px-4`}>{type}</p>
           </div>
           {isAdmin && (
             <div
@@ -222,7 +220,7 @@ export const EventCard: React.FC<EventCardProps> = ({
         {isAdmin ? (
           <div className="w-full flex justify-center gap-4 text-base mt-4">
             <>
-              {event.eventStatus !== 'CANCELLED' && (
+              {(event.eventStatus !== 'CANCELLED' && !event?.hasCancelRequest) && (
                 <button
                   aria-label="reject button"
                   onClick={e =>
