@@ -1,5 +1,5 @@
 import { useEffect, useRef, useState } from 'react';
-import { AiOutlineHeart } from 'react-icons/ai';
+import { AiOutlineClose, AiOutlineHeart } from 'react-icons/ai';
 import { BiMenuAltRight } from 'react-icons/bi';
 import { BsSearch } from 'react-icons/bs';
 import { CgProfile } from 'react-icons/cg';
@@ -17,6 +17,7 @@ import { Auth } from '../auth';
 import { Modal } from '../ui';
 import { AuthMobileModal } from '../ui/AuthMobileModal';
 import { IconButton } from '../ui/IconButton';
+import { MobileBurgerMenu } from './MobileBurgerMenu';
 
 interface UserNavigationProps {
   // eslint-disable-next-line no-unused-vars
@@ -33,6 +34,11 @@ export const UserNavigation: React.FC<UserNavigationProps> = ({
   const [isInputVisible, setIsInputVisible] = useState(false);
   const [isEmailConfirmed, setIsEmailConfirmed] = useState(false);
   const [token, setToken] = useState<string | null>(null);
+  const [isBurgerOpen, setIsBurgerOpen] = useState(false);
+
+  const toggleBurgerMenu = () => {
+    setIsBurgerOpen(!isBurgerOpen);
+  };
 
   const IsLoggedIn = useAppSelector(selectIsLoggedIn);
 
@@ -132,8 +138,8 @@ export const UserNavigation: React.FC<UserNavigationProps> = ({
       />
       <IconButton
         className="lg:hidden"
-        Icon={BiMenuAltRight}
-        onClick={() => console.log('1')}
+        Icon={isBurgerOpen ? AiOutlineClose : BiMenuAltRight}
+        onClick={toggleBurgerMenu}
         aria-label="burger"
       />
       {isMobile ? (
@@ -155,6 +161,15 @@ export const UserNavigation: React.FC<UserNavigationProps> = ({
             resetPasswordByToken={token}
           />
         </Modal>
+      )}
+      {isMobile && isBurgerOpen && (
+        <AuthMobileModal
+          isOpen={isBurgerOpen}
+          onClose={toggleBurgerMenu}
+          hiddenCross
+        >
+          <MobileBurgerMenu toggleBurgerMenu={toggleBurgerMenu} />
+        </AuthMobileModal>
       )}
       <div className="hidden lg:block">UA</div>
     </div>
