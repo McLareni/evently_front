@@ -65,6 +65,8 @@ const ModalDecision: React.FC<IProps> = ({ event, openModal }) => {
     setCurrVersionEvent(version === 'NEW' ? newEvent : event);
   };
 
+  console.log(event?.unlimitedTickets);
+
   return (
     <div
       className={clsx(
@@ -184,9 +186,9 @@ const ModalDecision: React.FC<IProps> = ({ event, openModal }) => {
               </p>
               <p className="font-lato text-base leading-[19px] text-textDart flex">
                 <span className="font-bold mr-1">Кількість квитків: </span>
-                {currVersionEvent?.unlimitedTickets
-                  ? 'необмежена'
-                  : currVersionEvent?.numberOfTickets}
+                {currVersionEvent?.unlimitedTickets === false
+                  ? currVersionEvent?.numberOfTickets
+                  : 'необмежена'}
                 <HiOutlineTicket className="h-[19px] w-[19px] ml-1" />
               </p>
             </div>
