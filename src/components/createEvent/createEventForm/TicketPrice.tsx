@@ -105,7 +105,7 @@ const TicketPrice: React.FC<TicketPriceProps> = ({
             onClick={() => {
               setValue('freeTickets', false);
             }}
-            disabled={event?.soldTickets !== '0'}
+            disabled={isEdit && event?.soldTickets !== '0'}
           >
             Платні
           </button>
@@ -122,7 +122,7 @@ const TicketPrice: React.FC<TicketPriceProps> = ({
             onClick={() => {
               setValue('freeTickets', true);
             }}
-            disabled={event?.soldTickets !== '0'}
+            disabled={isEdit && event?.soldTickets !== '0'}
           >
             Безкоштовно
           </button>
@@ -250,7 +250,7 @@ const TicketPrice: React.FC<TicketPriceProps> = ({
                   className="appearance-none"
                   checked={field.value}
                   onChange={e => field.onChange(e.target.checked)}
-                  disabled={!isEdit}
+                  disabled={isEdit && event?.soldTickets !== '0'}
                 />
                 <div className="h-5 w-5 flex items-center justify-center bg-lightPink rounded-[5px]">
                   {unlimitedTickets && (

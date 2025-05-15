@@ -4,7 +4,10 @@ import { MdDone } from 'react-icons/md';
 import { RxCross2 } from 'react-icons/rx';
 import { useNavigate } from 'react-router';
 
-import { useLazyGetReasonQuery, useLazyGetEditedEventQuery } from '@/redux/admin/eventApi';
+import {
+  useLazyGetEditedEventQuery,
+  useLazyGetReasonQuery,
+} from '@/redux/admin/eventApi';
 
 import clsx from 'clsx';
 
@@ -30,17 +33,16 @@ const ModalDecision: React.FC<IProps> = ({ event, openModal }) => {
   const [isPopUpOpen, setIsPopUpOpen] = useState(false);
 
   const [getEditedEvents, { data: newEvent }] = useLazyGetEditedEventQuery();
-  const [getReason, {data: reason}] = useLazyGetReasonQuery();
+  const [getReason, { data: reason }] = useLazyGetReasonQuery();
 
   useEffect(() => {
     if (event?.hasUpdateRequest) {
       getEditedEvents(event.id);
     }
 
-    if(event?.hasCancelRequest) {
+    if (event?.hasCancelRequest) {
       getReason(event.id);
     }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [event?.id]);
 
   const images = currVersionEvent?.images.length
@@ -63,6 +65,8 @@ const ModalDecision: React.FC<IProps> = ({ event, openModal }) => {
     setCurrVersionEvent(version === 'NEW' ? newEvent : event);
   };
 
+  console.log(event?.unlimitedTickets);
+
   return (
     <div
       className={clsx(
@@ -76,7 +80,7 @@ const ModalDecision: React.FC<IProps> = ({ event, openModal }) => {
           <img
             src={images[activeImage - 1]}
             alt="Event"
-            className="min-w-[266px] w-[266px] h-[392px] min-h-[392px] rounded-[20px]"
+            className="min-w-[266px] w-[266px] h-[392px] min-h-[392px] rounded-[20px] object-cover object-center"
           />
           {images.length > 1 && (
             <ImageNavigation
@@ -90,7 +94,10 @@ const ModalDecision: React.FC<IProps> = ({ event, openModal }) => {
               <h1 className="text-error text-4xl font-oswald border-[3px] border-error rounded-[10px] w-fit mx-auto my-9 px-3">
                 СКАСОВАНО
               </h1>
-              <button onClick={() => setIsPopUpOpen(true)} className="border border-buttonPurple bg-lightPurple rounded-[10px] p-[7px_8px] text-xl">
+              <button
+                onClick={() => setIsPopUpOpen(true)}
+                className="border border-buttonPurple bg-lightPurple rounded-[10px] p-[7px_8px] text-xl"
+              >
                 Подивитись причину
               </button>
             </div>
@@ -136,9 +143,7 @@ const ModalDecision: React.FC<IProps> = ({ event, openModal }) => {
                 className="h-[72px] w-[72px] rounded-full object-cover"
               />
               <h2
-                onClick={() =>
-                  navigate(`/user/${event?.organizers.id}`)
-                }
+                onClick={() => navigate(`/user/${event?.organizers.id}`)}
                 className="text-textDark font-lato text-2xl underline my-2 hover:cursor-pointer"
               >
                 {event?.organizers?.name}
@@ -181,9 +186,9 @@ const ModalDecision: React.FC<IProps> = ({ event, openModal }) => {
               </p>
               <p className="font-lato text-base leading-[19px] text-textDart flex">
                 <span className="font-bold mr-1">Кількість квитків: </span>
-                {currVersionEvent?.unlimitedTickets
-                  ? 'необмежена'
-                  : currVersionEvent?.numberOfTickets}
+                {currVersionEvent?.unlimitedTickets === false
+                  ? currVersionEvent?.numberOfTickets
+                  : 'необмежена'}
                 <HiOutlineTicket className="h-[19px] w-[19px] ml-1" />
               </p>
             </div>
@@ -210,9 +215,9 @@ const ModalDecision: React.FC<IProps> = ({ event, openModal }) => {
             <EditNavigate loadNewEvent={handleLoadNewVersion} />
           )}
           <div className="flex justify-around gap-[100px] mt-8 absolute bottom-0 left-[50%] translate-x-[-50%]">
-            {event?.eventStatus !== 'CANCELLED' || !event.hasCancelRequest && (
+            {(event?.eventStatus !== 'CANCELLED' || event.hasUpdateRequest) && (
               <button
-                onClick={() => openModal('CANCELLED', newEvent?.id)}
+                onClick={() => openModal('CANCELLED')}
                 className="flex gap-2 justify-center items-center w-[180px] h-12 border border-buttonPurple bg-background rounded-[10px] focus:outline-0 hover:shadow-shadowSecondaryBtn"
               >
                 <RxCross2 className="h-6 w-6" />
@@ -221,7 +226,7 @@ const ModalDecision: React.FC<IProps> = ({ event, openModal }) => {
             )}
             {event?.eventStatus !== 'APPROVED' && (
               <button
-                onClick={() => openModal('APPROVED', event?.hasCancelRequest ? reason?.id : newEvent?.id)}
+                onClick={() => openModal('APPROVED')}
                 className="flex gap-2 justify-center items-center w-[180px] h-12 border border-buttonPurple bg-lightPurple rounded-[10px] focus:outline-0 hover:shadow-shadowPrimaryBtn active:shadow-primaryBtnActive"
               >
                 <MdDone className="h-6 w-6" />

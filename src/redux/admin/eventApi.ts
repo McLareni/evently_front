@@ -98,7 +98,7 @@ export const EventApi = createApi({
       providesTags: (result, error, id) => [{ type: 'AdminEvent', id }],
     }),
 
-    acceptEditEvent: builder.mutation<any, { id: string; requestId: string }>({
+    acceptEditEvent: builder.mutation<void, { id: string; requestId: string }>({
       query: ({ id, requestId }) => {
         return {
           url: `/admin/events/${id}?updateRequestId=${requestId}`,
@@ -119,10 +119,10 @@ export const EventApi = createApi({
       },
     }),
 
-    acceptDeleteEvent: builder.mutation<any, { id: string; requestId: string }>({
+    rejectEdirtEvent: builder.mutation<void, { id: string; requestId: string }>({
       query: ({ id, requestId }) => {
         return {
-          url: `/admin/events/${id}/cancel/${requestId}`,
+          url: `/admin/events/${id}/update/${requestId}`,
           method: 'DELETE',
         };
       },
@@ -140,9 +140,32 @@ export const EventApi = createApi({
       },
     }),
 
+    acceptDeleteEvent: builder.mutation<void, { id: string; requestId: string }>(
+      {
+        query: ({ id, requestId }) => {
+          return {
+            url: `/admin/events/${id}/cancel/${requestId}`,
+            method: 'DELETE',
+          };
+        },
+        invalidatesTags: ['Count'],
+        async onQueryStarted(_, { dispatch, queryFulfilled }) {
+          try {
+            await queryFulfilled;
+
+            dispatch(
+              EventApi.util.invalidateTags([{ type: 'AdminEvent', id: 'LIST' }])
+            );
+          } catch {
+            ///
+          }
+        },
+      }
+    ),
+
     getReason: builder.query<Reason, string>({
       query: eventId => `/admin/events/cancel/request/${eventId}`,
-    })
+    }),
   }),
 });
 
@@ -153,5 +176,6 @@ export const {
   useLazyGetEditedEventQuery,
   useAcceptEditEventMutation,
   useAcceptDeleteEventMutation,
+  useRejectEdirtEventMutation,
   useLazyGetReasonQuery,
 } = EventApi;

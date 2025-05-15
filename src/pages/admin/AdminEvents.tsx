@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 
 import {
   useAcceptDeleteEventMutation,
@@ -6,6 +6,9 @@ import {
   useChangeEventStatusMutation,
   useGetAdminEventsQuery,
   useGetCountStatusEventsQuery,
+  useLazyGetEditedEventQuery,
+  useLazyGetReasonQuery,
+  useRejectEdirtEventMutation,
 } from '@/redux/admin/eventApi';
 
 import { AdminEventsList } from '@/components/admin/Events/AdminEventsList';
@@ -35,7 +38,12 @@ const AdminEvents = () => {
     useGetCountStatusEventsQuery();
   const [changeStatusEventFn] = useChangeEventStatusMutation();
   const [acceptEditEvent] = useAcceptEditEventMutation();
+  const [rejectEditEvent] = useRejectEdirtEventMutation();
   const [acceptDeleteEvent] = useAcceptDeleteEventMutation();
+  const [getEditedEvents, { data: newEvent, isLoading: newEventLoading }] =
+    useLazyGetEditedEventQuery();
+  const [getReason, { data: reason, isLoading: reasonLoading }] =
+    useLazyGetReasonQuery();
 
   const { content: events, page: pageInfo } = data || { content: [], page: {} };
 
@@ -58,8 +66,7 @@ const AdminEvents = () => {
   const openModal = (
     event: Event,
     target: HTMLElement,
-    actionStatus: 'APPROVED' | 'CANCELLED' | '',
-    requestId?: string
+    actionStatus: 'APPROVED' | 'CANCELLED' | ''
   ) => {
     if (event) {
       setCurrEvent(event);
@@ -80,16 +87,23 @@ const AdminEvents = () => {
 
   const changeStatusEvent = async () => {
     if (currEvent?.hasUpdateRequest) {
-      await acceptEditEvent({
-        id: currEvent?.id || '',
-        requestId,
-      });
+      if (action === 'APPROVED') {
+        await acceptEditEvent({
+          id: currEvent?.id || '',
+          requestId: newEvent?.id || '',
+        });
+      } else if (action === 'CANCELLED') {
+        await rejectEditEvent({
+          id: currEvent?.id || '',
+          requestId: newEvent?.id || '',
+        });
+      }
     }
 
     if (currEvent?.hasCancelRequest) {
       await acceptDeleteEvent({
         id: currEvent?.id || '',
-        requestId,
+        requestId: reason?.id || '',
       });
     }
 
@@ -113,16 +127,23 @@ const AdminEvents = () => {
   const startCountPage = totalEvents === 0 ? 0 : 9 * (page - 1) + 1;
   const endCountPage = page * 9 > (totalEvents || 0) ? totalEvents : page * 9;
 
-  const handleOpenModal = (
-    status: 'APPROVED' | 'CANCELLED',
-    requestId?: string
-  ) => {
+  useEffect(() => {
+    if (currEvent?.hasUpdateRequest) {
+      getEditedEvents(currEvent?.id || '');
+    }
+
+    if (currEvent?.hasCancelRequest) {
+      getReason(currEvent?.id || '');
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [currEvent?.id]);
+
+  const handleOpenModal = (status: 'APPROVED' | 'CANCELLED') => {
     setConfirmationModal(true);
     setAction(status);
-    setRequestId(requestId || '');
   };
 
-  if (fetchingEvents || fetchingCount) {
+  if (fetchingEvents || fetchingCount || newEventLoading || reasonLoading) {
     return <Spinner />;
   }
 
