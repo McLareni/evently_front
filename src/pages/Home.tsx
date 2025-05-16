@@ -1,4 +1,9 @@
-import { useLazyGetAllEventsQueryWithTrigger } from '@/hooks/query/useLazyGetAllEventsQueryWithTrigger';
+import { useEffect, useState } from 'react';
+
+import {
+  useLazyGetAllEventsQuery,
+} from '@/redux/events/operations';
+
 import { useScrollToTop } from '@/hooks/useScrollToTop';
 
 import { AllEvents } from '@/components/allEvents/AllEvents';
@@ -12,8 +17,25 @@ import { ShowAllButton } from '@/components/ui/ShowAllButton';
 import Spinner from '@/components/ui/Spinner';
 
 const Home: React.FC = () => {
-  const { events, isLoading } = useLazyGetAllEventsQueryWithTrigger({});
+  const [getEvents, { isFetching }] = useLazyGetAllEventsQuery();
+  const [events, setEvents] = useState<Event[]>([]);
+
   useScrollToTop();
+
+  useEffect(() => {
+    const fetchEvents = async () => {
+      const response = await getEvents({ page: 0, size: 21 });
+
+      setEvents(prevEvents => [...prevEvents, ...(response.data || [])]);
+
+      if (response.status === 'uninitialized') {
+        await fetchEvents();
+      }
+    };
+
+    fetchEvents();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
 
   const shownEvents = 16;
   const notTopEvents = events
@@ -21,7 +43,7 @@ const Home: React.FC = () => {
     .slice(0, shownEvents);
   const topEvents = events?.filter(event => event.category === 'TOP_EVENTS');
 
-  if (isLoading) return <Spinner />;
+  if (isFetching) return <Spinner />;
 
   return (
     <Main className="flex flex-col gap-16 z-10">
