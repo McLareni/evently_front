@@ -2,6 +2,7 @@ import { Suspense } from 'react';
 import { Outlet, useLocation } from 'react-router-dom';
 
 import { useResetAllFiltersAfterRouting } from '@/hooks/filters/useResetAllFiltersAfterRouting';
+import { useScreenWidth } from '@/hooks/useScreenWidth';
 
 import { Footer } from '../footer/footer';
 import { Header } from '../header/Header';
@@ -12,6 +13,7 @@ export const Layout = () => {
   useResetAllFiltersAfterRouting();
 
   const route = useLocation().pathname;
+  const width = useScreenWidth();
 
   const showLines = () => {
     return route === '/' ||
@@ -28,13 +30,13 @@ export const Layout = () => {
       <Header />
       <main
         className={`pt-[88px] ${linesShown ? 'lg:pt-[140px]' : 'lg:pt-[108px]'}
-        relative flex-grow w-[1440px]`}
+        relative flex-grow lg:w-[1440px] w-full`}
       >
         {linesShown && <LayoutHorizontalLines />}
         <Suspense fallback={<div>Loading...</div>}>
           <Outlet />
         </Suspense>
-        <MainLines />
+        {width >= 1024 && <MainLines />}
       </main>
       <Footer />
     </>

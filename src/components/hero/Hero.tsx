@@ -2,12 +2,14 @@ import { useRef, useState } from 'react';
 import Slider from 'react-slick';
 
 import { slides } from '@/assets/heroSlides/slides';
+import { useScreenWidth } from '@/hooks/useScreenWidth';
 
 import { Dots } from './Dots';
 import { PrevNextBtn } from './PrevNextBtn';
 
 export const Hero: React.FC = () => {
   const [currentSlide, setCurrentSlide] = useState(0);
+  const width = useScreenWidth();
 
   const sliderRef = useRef<Slider | null>(null);
 
@@ -38,26 +40,30 @@ export const Hero: React.FC = () => {
   };
 
   return (
-    <div className="w-full px-[41px]">
-      <Slider ref={sliderRef} {...settings}>
-        {slides.map(item => (
-          <div key={item.id} className="aspect-[1356/420]">
-            <img
-              src={item.url}
-              alt={item.title}
-              className="w-full h-full object-cover"
-            />
-          </div>
-        ))}
-      </Slider>
+    <div className="w-full lg:px-[41px] px-4">
+      <div className="lg:w-full w-[100%-32px] mx-auto overflow-hidden">
+        <Slider ref={sliderRef} {...settings}>
+          {slides.map(item => (
+            <div key={item.id} className="aspect-[1356/420]">
+              <img
+                src={item.url}
+                alt={item.title}
+                className="w-full h-full object-cover"
+              />
+            </div>
+          ))}
+        </Slider>
+      </div>
       <div className="flex items-center justify-center gap-[8px]">
-        <PrevNextBtn onClick={setPrevSlide} />
+        {width >= 1024 && <PrevNextBtn onClick={setPrevSlide} />}
         <Dots
           slides={slides}
           currentSlide={currentSlide}
           setSlideByDot={setSlideByDot}
         />
-        <PrevNextBtn onClick={setNextSlide} className="rotate-180" />
+        {width >= 1024 && (
+          <PrevNextBtn onClick={setNextSlide} className="rotate-180" />
+        )}
       </div>
     </div>
   );

@@ -15,7 +15,7 @@ export const Dots = <T,>({
   setSlideByDot,
 }: DotsProps<T>) => {
   return (
-    <div className="flex items-center gap-[8px]">
+    <div className="flex items-center gap-[8px] h-12">
       {slides.map(slide => (
         <button
           key={nanoid()}

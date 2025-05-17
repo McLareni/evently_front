@@ -47,7 +47,7 @@ const Home: React.FC = () => {
 
   return (
     <Main className="flex flex-col gap-16 z-10">
-      <Hero />
+      <Hero/>
       <>
         <TopEvents filteredEvents={topEvents} />
         {notTopEvents && (

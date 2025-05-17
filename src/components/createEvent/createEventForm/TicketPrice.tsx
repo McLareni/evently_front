@@ -202,10 +202,9 @@ const TicketPrice: React.FC<TicketPriceProps> = ({
               rules={{
                 validate: {
                   isValid: value =>
-                    unlimitedTickets || +(value || 0) > 0 || 'Невірний формат',
+                    unlimitedTickets || +value > 0 || 'Невірний формат',
                 },
               }}
-              disabled={event?.soldTickets !== '0'}
               render={({ field }) => (
                 <div
                   className={`w-[240px] h-[48px] p-[2px] ${unlimitedTickets ? 'bg-[#D0D5D8]' : 'bg-createEventInputBorder'}  rounded-[10px]`}
@@ -214,6 +213,7 @@ const TicketPrice: React.FC<TicketPriceProps> = ({
                     id="numberOfTickets"
                     {...field}
                     type="number"
+                    min={1}
                     className={clsx(
                       `outline-none pl-[49px] w-full h-full p-4 rounded-[8px] [appearance:textfield] [&::-webkit-outer-spin-button]:appearance-none 
                 [&::-webkit-inner-spin-button]:appearance-none`,
