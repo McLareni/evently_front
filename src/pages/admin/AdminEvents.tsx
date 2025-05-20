@@ -26,7 +26,7 @@ const AdminEvents = () => {
   const [modalIsOpen, setModalIsOpen] = useState<boolean>(false);
   const [currEvent, setCurrEvent] = useState<Event>();
   const [confirmationModal, setConfirmationModal] = useState(false);
-  const [filterStatus, setFilterStatus] = useState<FilterStatus>('');
+  const [filterStatus, setFilterStatus] = useState<FilterStatus>('PENDING');
   const [action, setAction] = useState<'APPROVED' | 'CANCELLED'>('APPROVED');
   const [requestId, setRequestId] = useState<string>('');
 

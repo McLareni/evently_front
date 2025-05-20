@@ -1,8 +1,6 @@
 import { useEffect, useState } from 'react';
 
-import {
-  useLazyGetAllEventsQuery,
-} from '@/redux/events/operations';
+import { useLazyGetAllEventsQuery } from '@/redux/events/operations';
 
 import { useScrollToTop } from '@/hooks/useScrollToTop';
 
@@ -26,7 +24,7 @@ const Home: React.FC = () => {
     const fetchEvents = async () => {
       const response = await getEvents({ page: 0, size: 21 });
 
-      setEvents(prevEvents => [...prevEvents, ...(response.data || [])]);
+      setEvents([...(response.data || [])]);
 
       if (response.status === 'uninitialized') {
         await fetchEvents();
@@ -46,12 +44,12 @@ const Home: React.FC = () => {
   if (isFetching) return <Spinner />;
 
   return (
-    <Main className="flex flex-col gap-16 z-10">
-      <Hero/>
+    <Main className="flex flex-col lg:gap-16 gap-0 z-10">
+      <Hero />
       <>
         <TopEvents filteredEvents={topEvents} />
         {notTopEvents && (
-          <Container>
+          <Container className='w-fit'>
             <AllEvents events={notTopEvents} title="Усі події" />
           </Container>
         )}

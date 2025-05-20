@@ -8,6 +8,7 @@ import { Footer } from '../footer/footer';
 import { Header } from '../header/Header';
 import { MainLines } from '../main/MainLines';
 import { LayoutHorizontalLines } from './LayoutHorizontalLines';
+import { MobileFooter } from '../footer/MobileFooter';
 
 export const Layout = () => {
   useResetAllFiltersAfterRouting();
@@ -38,7 +39,7 @@ export const Layout = () => {
         </Suspense>
         {width >= 1024 && <MainLines />}
       </main>
-      <Footer />
+      {width >= 1024 ? <Footer /> : <MobileFooter/>}
     </>
   );
 };

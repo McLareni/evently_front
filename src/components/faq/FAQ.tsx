@@ -35,9 +35,11 @@ export const FAQ: React.FC = () => {
   };
 
   return (
-    <Container className="flex ml-[40px] mt-[64px] pb-[50px]">
-      <h1 className="w-[89px] leading-[94.85px] text-[64px] mr-[20px] ">FAQ</h1>
-      <div className="space-y-4 ml-[136px] w-[872px]">
+    <Container className="flex lg:flex-row flex-col lg:ml-[40px] lg:mt-[64px] lg:pb-[50px] pb-[32px]">
+      <h1 className="w-[89px] lg:leading-[94.85px] leading-normal text-[28px] lg:text-[64px] lg:mr-[20px] ">
+        FAQ
+      </h1>
+      <div className="space-y-4 lg:ml-[136px] lg:w-[872px] mt-4 lg:mt-0">
         {items.map((item, index) => (
           <div key={index}>
             <div className="overflow-hidden rounded-[20px] bg-gradient-to-br from-[#E9E6FF] to-[#D5FEFF]">
@@ -46,7 +48,7 @@ export const FAQ: React.FC = () => {
                 onClick={() => toggleIndex(index)}
                 aria-expanded={openIndex === index}
               >
-                <h2 className='font-medium'>{item.title}</h2>
+                <h2 className="font-medium">{item.title}</h2>
                 <BiChevronDown
                   className={`w-6 h-6 transition-transform duration-200 ease-in-out ${
                     openIndex === index ? 'transform rotate-180' : ''
