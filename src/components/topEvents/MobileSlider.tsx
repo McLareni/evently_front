@@ -16,15 +16,6 @@ export const MobileSlider: React.FC<IProps> = ({ events }) => {
   const width = useScreenWidth();
 
   const countEventOnSlide = Math.max(1, width / 220);
-  const slides: Event[][] = [];
-
-  if (events && events.length > 0) {
-    for (let i = 0; i < events.length; i += countEventOnSlide) {
-      slides.push(events.slice(i, i + countEventOnSlide));
-    }
-  }
-
-  console.log(events);
 
   const sliderRef = useRef<Slider | null>(null);
 
@@ -63,7 +54,7 @@ export const MobileSlider: React.FC<IProps> = ({ events }) => {
       </div>
       <div className="flex items-center justify-center gap-[8px]">
         <Dots
-          slides={slides}
+          slides={events?.slice(0, events.length + 2 - countEventOnSlide) || []}
           currentSlide={currentSlide}
           setSlideByDot={setSlideByDot}
         />

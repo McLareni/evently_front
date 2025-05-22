@@ -1,6 +1,9 @@
 import { useEffect, useState } from 'react';
 
-import { useLazyGetAllEventsQuery } from '@/redux/events/operations';
+import {
+  useLazyGetAllEventsFilteredQuery,
+  useLazyGetAllEventsQuery,
+} from '@/redux/events/operations';
 
 import { useScrollToTop } from '@/hooks/useScrollToTop';
 
@@ -16,18 +19,31 @@ import Spinner from '@/components/ui/Spinner';
 
 const Home: React.FC = () => {
   const [getEvents, { isFetching }] = useLazyGetAllEventsQuery();
+  const [getTopEvents, { isFetching: isFetchingTopEvents }] =
+    useLazyGetAllEventsFilteredQuery();
   const [events, setEvents] = useState<Event[]>([]);
+  const [topEvents, setTopEvents] = useState<Event[]>([]);
 
   useScrollToTop();
 
   useEffect(() => {
     const fetchEvents = async () => {
       const response = await getEvents({ page: 0, size: 21 });
+      const topEventsResponse = await getTopEvents({
+        page: 0,
+        size: 10,
+        filter: { isPopular: true },
+      });
 
       setEvents([...(response.data || [])]);
+      setTopEvents([...(topEventsResponse.data || [])]);
+
+      if (topEventsResponse.status === 'uninitialized') {
+        await getTopEvents({ page: 0, size: 10, filter: { isPopular: true } });
+      }
 
       if (response.status === 'uninitialized') {
-        await fetchEvents();
+        await getEvents({ page: 0, size: 21 });
       }
     };
 
@@ -39,9 +55,8 @@ const Home: React.FC = () => {
   const notTopEvents = events
     ?.filter(item => item.category !== 'TOP_EVENTS')
     .slice(0, shownEvents);
-  const topEvents = events?.filter(event => event.category === 'TOP_EVENTS');
 
-  if (isFetching) return <Spinner />;
+  if (isFetching || isFetchingTopEvents) return <Spinner />;
 
   return (
     <Main className="flex flex-col lg:gap-16 gap-0 z-10">
@@ -49,7 +64,7 @@ const Home: React.FC = () => {
       <>
         <TopEvents filteredEvents={topEvents} />
         {notTopEvents && (
-          <Container className='w-fit'>
+          <Container className="w-fit">
             <AllEvents events={notTopEvents} title="Усі події" />
           </Container>
         )}
