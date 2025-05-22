@@ -45,7 +45,7 @@ const ModalDecision: React.FC<IProps> = ({ event, openModal }) => {
     }
   }, [event?.id]);
 
-  const images = currVersionEvent?.images.length
+  const images = currVersionEvent?.images?.length
     ? [...currVersionEvent.images.map(img => img.url)]
     : [currVersionEvent?.photoUrl || ''];
 

@@ -24,7 +24,7 @@ export const SharedBtn: React.FC<SharedBtnProps> = ({
       type={type}
       disabled={disabled}
       className={clsx(
-        `rounded-tl-[71px] font-normal text-xl focus:outline-none rounded-tr-lg rounded-br-[71px] rounded-bl-lg
+        `rounded-tl-[71px] font-normal ${className?.includes('text-') ? className : "text-xl"} focus:outline-none rounded-tr-lg rounded-br-[71px] rounded-bl-lg
          py-2 px-4 ${className?.includes('h') ? className : 'h-[60px]'} ${className}`,
 
         {

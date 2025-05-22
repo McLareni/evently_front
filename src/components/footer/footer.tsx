@@ -15,8 +15,10 @@ export const Footer: React.FC = () => {
       <FooterLines />
       <MainLines />
       <div className="pr-[175px] flex flex-col gap-[43px] ">
-        <MainLogo className='!h-[68px] !w-[62px]' letters='!w-[10px]'/>
-        <a href="tel:+380995745676" className='text-sm hover:font-bold'>+380(99) 574 56 76</a>
+        <MainLogo className="!h-[68px] !w-[62px]" letters="!w-[10px]" />
+        <a href="tel:+380995745676" className="text-sm hover:font-bold">
+          +380(99) 574 56 76
+        </a>
       </div>
       <nav className="pr-[193px]">
         <Link to="/all_events" className="block pb-4 hover:font-bold text-sm">
@@ -25,7 +27,10 @@ export const Footer: React.FC = () => {
         <Link to="/about" className="block pb-4 hover:font-bold text-sm">
           Про нас
         </Link>
-        <Link to="/organizers" className="block pb-4 hover:font-bold text-sm w-[110px]">
+        <Link
+          to="/organizers"
+          className="block pb-4 hover:font-bold text-sm w-[110px]"
+        >
           Організаторам
         </Link>
         <Link to="/office" className="block pb-4 hover:font-bold text-sm">
@@ -33,10 +38,16 @@ export const Footer: React.FC = () => {
         </Link>
       </nav>
       <nav className="pr-[190px]">
-        <Link to="/OfferAgreement" className="block pb-4 hover:font-bold text-sm">
+        <Link
+          to="/OfferAgreement"
+          className="block pb-4 hover:font-bold text-sm"
+        >
           Договір-оферта
         </Link>
-        <Link to="/PrivacyPolicy" className="block pb-4 hover:font-bold w-[225px] text-sm">
+        <Link
+          to="/PrivacyPolicy"
+          className="block pb-4 hover:font-bold w-[225px] text-sm"
+        >
           Політика конфіденційності
         </Link>
         <Link
@@ -47,9 +58,7 @@ export const Footer: React.FC = () => {
         </Link>
       </nav>
       <div>
-        <p className='cursor-default text-sm'>
-          Ми у соц. мережах
-        </p>
+        <p className="cursor-default text-sm">Ми у соц. мережах</p>
         <div className="flex mt-4">
           <FaInstagram className={iconsStyles} />
           <FiFacebook className={iconsStyles} />

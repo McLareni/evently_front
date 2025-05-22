@@ -1,38 +1,37 @@
 import { useRef, useState } from 'react';
 import Slider from 'react-slick';
 
-import { slides } from '@/assets/heroSlides/slides';
 import { useScreenWidth } from '@/hooks/useScreenWidth';
+import { nanoid } from '@reduxjs/toolkit';
 
-import { Dots } from './Dots';
-import { PrevNextBtn } from './PrevNextBtn';
+import { Dots } from '../hero/Dots';
+import { EventCard } from '../ui';
 
-export const Hero: React.FC = () => {
+interface IProps {
+  events?: Event[];
+}
+
+export const MobileSlider: React.FC<IProps> = ({ events }) => {
   const [currentSlide, setCurrentSlide] = useState(0);
   const width = useScreenWidth();
+
+  const countEventOnSlide = Math.max(1, width / 220);
 
   const sliderRef = useRef<Slider | null>(null);
 
   const settings = {
-    infinite: true,
+    infinite: false,
     speed: 2000,
-    slidesToShow: 1,
+    slidesToShow: countEventOnSlide,
     slidesToScroll: 1,
-    autoplay: true,
+    slidesPerRow: 1,
     arrows: false,
-    autoplaySpeed: 10000,
     pauseOnHover: true,
     beforeChange: (_oldIndex: number, newIndex: number) => {
-      setCurrentSlide(newIndex);
+      console.log('newIndex', newIndex);
+
+      setCurrentSlide(Math.ceil(newIndex));
     },
-  };
-
-  const setNextSlide = () => {
-    sliderRef.current?.slickNext();
-  };
-
-  const setPrevSlide = () => {
-    sliderRef.current?.slickPrev();
   };
 
   const setSlideByDot = (index: number) => {
@@ -43,27 +42,22 @@ export const Hero: React.FC = () => {
     <div className="w-full lg:px-[41px] px-4">
       <div className="lg:w-full w-[100%-32px] mx-auto overflow-hidden">
         <Slider ref={sliderRef} {...settings}>
-          {slides.map(item => (
-            <div key={item.id} className="aspect-[1356/420]">
-              <img
-                src={item.url}
-                alt={item.title}
-                className="w-full h-full object-cover"
-              />
+          {events?.map(event => (
+            <div
+              key={nanoid()}
+              className="!flex !flex-row gap-4 !w-[200px] h-[310px]"
+            >
+              <EventCard key={event.id} event={event} top />
             </div>
           ))}
         </Slider>
       </div>
       <div className="flex items-center justify-center gap-[8px]">
-        {width >= 1024 && <PrevNextBtn onClick={setPrevSlide} />}
         <Dots
-          slides={slides}
+          slides={events?.slice(0, events.length + 2 - countEventOnSlide) || []}
           currentSlide={currentSlide}
           setSlideByDot={setSlideByDot}
         />
-        {width >= 1024 && (
-          <PrevNextBtn onClick={setNextSlide} className="rotate-180" />
-        )}
       </div>
     </div>
   );

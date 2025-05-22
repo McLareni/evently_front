@@ -8,7 +8,10 @@ interface ListEventsProps {
 
 export const ListEvents: React.FC<ListEventsProps> = ({ events }) => {
   return (
-    <div className={`flex flex-wrap justify-start gap-6`}>
+    <div
+      className={`lg:flex lg:flex-wrap lg:justify-start lg:gap-6 
+        grid grid-cols-[repeat(auto-fit,_minmax(175px,_1fr))] justify-items-center gap-4`}
+    >
       {events.map(event => (
         <EventCard key={nanoid()} event={event} />
       ))}
