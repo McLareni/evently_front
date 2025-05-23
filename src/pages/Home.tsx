@@ -2,11 +2,9 @@ import { useEffect, useState } from 'react';
 
 import {
   useLazyGetAllEventsFilteredQuery,
-  useLazyGetAllEventsQuery,
 } from '@/redux/events/operations';
 
 import { useScrollToTop } from '@/hooks/useScrollToTop';
-import { get } from 'http';
 
 import { AllEvents } from '@/components/allEvents/AllEvents';
 import { Container } from '@/components/container/Container';
@@ -60,6 +58,7 @@ const Home: React.FC = () => {
     };
 
     fetchEvents();
+  // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   const shownEvents = 16;
