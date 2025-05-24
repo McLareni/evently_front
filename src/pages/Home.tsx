@@ -2,7 +2,6 @@ import { useEffect, useState } from 'react';
 
 import {
   useLazyGetAllEventsFilteredQuery,
-  useLazyGetAllEventsQuery,
 } from '@/redux/events/operations';
 
 import { useScrollToTop } from '@/hooks/useScrollToTop';
@@ -18,8 +17,7 @@ import { ShowAllButton } from '@/components/ui/ShowAllButton';
 import Spinner from '@/components/ui/Spinner';
 
 const Home: React.FC = () => {
-  const [getEvents, { isFetching }] = useLazyGetAllEventsQuery();
-  const [getTopEvents, { isFetching: isFetchingTopEvents }] =
+  const [getTopEventsFn, { isLoading, isFetching }] =
     useLazyGetAllEventsFilteredQuery();
   const [events, setEvents] = useState<Event[]>([]);
   const [topEvents, setTopEvents] = useState<Event[]>([]);
@@ -28,27 +26,39 @@ const Home: React.FC = () => {
 
   useEffect(() => {
     const fetchEvents = async () => {
-      const response = await getEvents({ page: 0, size: 21 });
-      const topEventsResponse = await getTopEvents({
-        page: 0,
-        size: 10,
-        filter: { isPopular: true },
-      });
+      const getEvents = async () => {
+        const response = await getTopEventsFn({
+          page: 0,
+          size: 21,
+          filter: {},
+        });
+        setEvents([...(response.data || [])]);
 
-      setEvents([...(response.data || [])]);
-      setTopEvents([...(topEventsResponse.data || [])]);
+        if (response.status === 'uninitialized') {
+          await getEvents();
+        }
+      };
 
-      if (topEventsResponse.status === 'uninitialized') {
-        await getTopEvents({ page: 0, size: 10, filter: { isPopular: true } });
-      }
+      const getTopEvents = async () => {
+        const topEventsResponse = await getTopEventsFn({
+          page: 0,
+          size: 10,
+          filter: { isPopular: true },
+        });
 
-      if (response.status === 'uninitialized') {
-        await getEvents({ page: 0, size: 21 });
-      }
+        setTopEvents([...(topEventsResponse.data || [])]);
+
+        if (topEventsResponse.status === 'uninitialized') {
+          await getTopEvents();
+        }
+      };
+
+      getEvents();
+      getTopEvents();
     };
 
     fetchEvents();
-    // eslint-disable-next-line react-hooks/exhaustive-deps
+  // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   const shownEvents = 16;
@@ -56,7 +66,7 @@ const Home: React.FC = () => {
     ?.filter(item => item.category !== 'TOP_EVENTS')
     .slice(0, shownEvents);
 
-  if (isFetching || isFetchingTopEvents) return <Spinner />;
+  if (isLoading || isFetching) return <Spinner />;
 
   return (
     <Main className="flex flex-col lg:gap-16 gap-0 z-10">
