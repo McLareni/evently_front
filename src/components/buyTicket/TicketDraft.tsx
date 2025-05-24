@@ -97,6 +97,7 @@ export const TicketDraft: React.FC<TicketDraftProps> = ({
             clientAddress: 'clientAddress',
             clientCity: 'clientCity',
             clientEmail: res.clientEmail,
+            serviceUrl: res.serviceUrl,
             defaultPaymentSystem: res.defaultPaymentSystem,
             merchantSignature: res.merchantSignature,
           };
