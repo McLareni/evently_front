@@ -101,20 +101,17 @@ export const SharedInput: React.FC<SharedInputProps> = ({
         autoFocus={autofocus}
         maxLength={maxLength}
         {...register(id, { ...validation, onBlur: handleBlur })}
-        className={clsx(
-          `flex-grow w-full font-medium h-[60px] text-base bg-background placeholder:text-darkGray
+        className={`flex-grow w-full font-medium h-[60px] text-base bg-background placeholder:text-darkGray
            rounded-[5px] lg:rounded-[20px] px-5 py-6 focus:outline-none transition-all duration-200 ease-in-out
-            outline-none`,
-          {
-            'border-transparent': !errors[id] && !hasValue,
-            'border border-error text-error':
-              (isSubmitted || (hasValue && onBlur && isBlured)) && errors[id],
-            'border border-success':
-              (isSubmitted || (onBlur && hasValue && isBlured)) &&
-              !errors[id] &&
-              hasValue,
-          }
-        )}
+            outline-none border ${
+              (isSubmitted || (hasValue && onBlur && isBlured)) && errors[id]
+                ? 'border-error text-error'
+                : (isSubmitted || (onBlur && hasValue && isBlured)) &&
+                    !errors[id] &&
+                    hasValue
+                  ? 'border-success'
+                  : 'border-lightPurple lg:border-transparent'
+            }`}
       />
       {['password', 'confirmPassword'].includes(id) && (
         <span

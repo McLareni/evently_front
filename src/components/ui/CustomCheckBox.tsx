@@ -24,7 +24,9 @@ export const CustomCheckbox: React.FC<CustomCheckboxProps> = ({
   };
 
   return (
-    <label className="flex items-center cursor-pointer">
+    <label
+      className={`flex-row-reverse lg:flex-row flex gap-2 items-center cursor-pointer`}
+    >
       <input
         type="checkbox"
         checked={checked}
@@ -32,11 +34,12 @@ export const CustomCheckbox: React.FC<CustomCheckboxProps> = ({
         className="appearance-none"
       />
       <div
-        className={` h-5 w-5 flex items-center justify-center bg-white ${className}`}
+        className={`h-5 w-5 flex items-center justify-center border border-buttonPurple
+          lg:border-transparent rounded-sm bg-white ${className}`}
       >
-        {isChecked && <MdDone className="text-black w-6 h-6 " />}{' '}
+        {isChecked && <MdDone className="text-buttonPurple w-6 h-6 " />}
       </div>
-      <span className="ml-2">{label}</span>
+      <span>{label}</span>
     </label>
   );
 };

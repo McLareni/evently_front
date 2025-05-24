@@ -204,8 +204,7 @@ export const Login: React.FC<LoginProps> = ({
             <button
               type="button"
               onClick={() => setStatusAuth('register_email')}
-              className={`text-black underline
-                `}
+              className={`text-buttonPurple font-bold`}
             >
               Створити
             </button>
