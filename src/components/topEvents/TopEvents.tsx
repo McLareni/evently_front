@@ -1,12 +1,15 @@
 import { useRef } from 'react';
 import Slider, { Settings } from 'react-slick';
 
+import { useScreenWidth } from '@/hooks/useScreenWidth';
 import { nanoid } from '@reduxjs/toolkit';
+import clsx from 'clsx';
 import 'slick-carousel/slick/slick-theme.css';
 import 'slick-carousel/slick/slick.css';
 
 import { Container } from '../container/Container';
 import { EventCard } from '../ui';
+import { MobileSlider } from './MobileSlider';
 import { MySliderBtn } from './MySliderBtn';
 
 interface TopEventsProps {
@@ -15,6 +18,7 @@ interface TopEventsProps {
 
 export const TopEvents: React.FC<TopEventsProps> = ({ filteredEvents }) => {
   const sliderRef = useRef<Slider | null>(null);
+  const width = useScreenWidth();
 
   const settings: Settings = {
     pauseOnHover: true,
@@ -53,16 +57,26 @@ export const TopEvents: React.FC<TopEventsProps> = ({ filteredEvents }) => {
   return (
     <div>
       <Container>
-        <h1 className="mb-[32px]">Топ подій</h1>
+        <h1
+          className={clsx('lg:mb-[32px] mb-4', {
+            'text-[28px] leading-normal': width < 1024,
+          })}
+        >
+          {width >= 1024 ? 'Топ подій' : 'Нові події'}
+        </h1>
       </Container>
-      <div className="pl-[60px] position-relative">
-        <Slider ref={sliderRef} {...settings}>
-          {filteredEvents?.map(item => (
-            <div key={nanoid()}>
-              <EventCard event={item} top />
-            </div>
-          ))}
-        </Slider>
+      <div className="lg:pl-[60px] pl-[16px] relative">
+        {width < 1024 ? (
+          <MobileSlider events={filteredEvents} />
+        ) : (
+          <Slider ref={sliderRef} {...settings}>
+            {filteredEvents?.map(item => (
+              <div key={nanoid()}>
+                <EventCard event={item} top />
+              </div>
+            ))}
+          </Slider>
+        )}
       </div>
     </div>
   );

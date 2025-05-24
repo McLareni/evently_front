@@ -5,6 +5,8 @@ import { MdDone } from 'react-icons/md';
 import { RxCross2 } from 'react-icons/rx';
 import { Link } from 'react-router-dom';
 
+import { useDeleteMyEventMutation } from '@/redux/events/operations';
+
 import { formatDateToDayMonth } from '@/helpers/filters/formatDateToDayMonth';
 import clsx from 'clsx';
 
@@ -37,7 +39,7 @@ const status: Record<
     svg: (
       <AiOutlineExclamation className="w-6 h-6 fill-[#F4E544] border-2 rounded-full border-[#F4E544]" />
     ),
-  }
+  },
 };
 
 interface IProps {
@@ -51,16 +53,17 @@ const EventRow: React.FC<IProps> = ({ event, popUpIsShow, openPopUp }) => {
   const [deletePopUp, setDeletePopUp] = useState(false);
   const [confirmationDeletePopUp, setConfirmationDeletePopUp] = useState(false);
 
+  const [deleteMyEvent] = useDeleteMyEventMutation();
+
   const dateString = formatDateToDayMonth(event.date.day);
   const day = dateString.split(' ')[0];
   const month = dateString.split(' ')[1].slice(0, 3).toUpperCase();
 
-  // fix
-  const isSoldTicket = true;
-
   const handleDeleteEvent = () => {
     setDeletePopUp(true);
   };
+
+  console.log(event.soldTickets);
 
   return (
     <>
@@ -143,7 +146,7 @@ const EventRow: React.FC<IProps> = ({ event, popUpIsShow, openPopUp }) => {
               Скасувати подію?
             </h2>
             <h3 className="text-xl font-normal font-lato mb-6">
-              {isSoldTicket ? (
+              {event.soldTickets ? (
                 <>
                   Це може вплинути на довіру <br /> користувачів. Усі кошти з
                   продажу <br />
@@ -162,7 +165,11 @@ const EventRow: React.FC<IProps> = ({ event, popUpIsShow, openPopUp }) => {
                 className="w-[120px] h-[38px] leading-[0px]"
                 primary
                 onClick={() => {
-                  setConfirmationDeletePopUp(true);
+                  console.log('soldTickets', event.soldTickets);
+
+                  return event.soldTickets === '0' || event.soldTickets === null
+                    ? deleteMyEvent({ idEvent: event.id })
+                    : setConfirmationDeletePopUp(true);
                 }}
               >
                 Так

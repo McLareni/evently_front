@@ -111,10 +111,7 @@ const CreateEventForm: React.FC<CreateEventFormProps> = ({
       setValue('numberOfTickets', event.numberOfTickets);
       setValue('unlimitedTickets', event.unlimitedTickets);
       setValue('aboutOrganizer', event.aboutOrganizer || '');
-      setValue(
-        'phoneNumber',
-        event.phoneNumber || formatPhoneToMask(phoneNumber)
-      );
+      setValue('phoneNumber', formatPhoneToMask(phoneNumber));
 
       trigger('phoneNumber');
 
