@@ -13,9 +13,6 @@ export const Dots = <T,>({
   currentSlide,
   setSlideByDot,
 }: DotsProps<T>) => {
-  console.log(slides);
-  console.log(currentSlide);
-
   return (
     <div className="flex items-center gap-[8px] h-12">
       {slides.map(slide => (
