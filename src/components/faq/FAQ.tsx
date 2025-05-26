@@ -48,7 +48,9 @@ export const FAQ: React.FC = () => {
                 onClick={() => toggleIndex(index)}
                 aria-expanded={openIndex === index}
               >
-                <h2 className="font-medium">{item.title}</h2>
+                <h2 className="lg:font-medium lg:text-2xl lg:mr-0 mr-4 text-base font-normal">
+                  {item.title}
+                </h2>
                 <BiChevronDown
                   className={`w-6 h-6 transition-transform duration-200 ease-in-out ${
                     openIndex === index ? 'transform rotate-180' : ''

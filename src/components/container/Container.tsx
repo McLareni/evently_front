@@ -8,7 +8,7 @@ export const Container: React.FC<ContainerProps> = ({
   className,
 }) => {
   return (
-    <div className={`w-full pl-[16px] pr-[10px] lg:px-[60px] ${className}`}>
+    <div className={`w-full pl-[14px] pr-[10px] lg:px-[60px] ${className}`}>
       {children}
     </div>
   );
