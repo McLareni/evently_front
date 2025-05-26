@@ -99,7 +99,7 @@ export const Auth: React.FC<AuthProps> = ({
         lg:bg-lightPurple border-collapse lg:border border-gray lg:rounded-[20px]
         h-full`}
     >
-      <div className={`flex flex-col mt-12 mb-4 mx-[57px]`}>
+      <div className={`flex flex-col pt-12 pb-4 px-[16px] lg:px-[57px]`}>
         <p
           className="lg:hidden font-oswald text-[36px] inline-block text-center"
           style={{
