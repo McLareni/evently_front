@@ -146,6 +146,7 @@ export const UserNavigation: React.FC<UserNavigationProps> = ({
         <AuthMobileModal
           isOpen={isModalOpen}
           onClose={() => setIsModalOpen(false)}
+          hiddenHeader
         >
           <Auth
             onCloseModal={() => setIsModalOpen(false)}
