@@ -1,58 +1,63 @@
-import { useRef, useState } from 'react';
-import Slider from 'react-slick';
+import { useState } from 'react';
 
 import { slides } from '@/assets/heroSlides/slides';
 import { useScreenWidth } from '@/hooks/useScreenWidth';
+import { Autoplay } from 'swiper/modules';
+import { Swiper, SwiperSlide } from 'swiper/react';
+import type { Swiper as SwiperType } from 'swiper/types';
 
 import { Dots } from './Dots';
 import { PrevNextBtn } from './PrevNextBtn';
 
 export const Hero: React.FC = () => {
   const [currentSlide, setCurrentSlide] = useState(0);
+  const [swiperInstance, setSwiperInstance] = useState<SwiperType | null>(null);
   const width = useScreenWidth();
 
-  const sliderRef = useRef<Slider | null>(null);
-
-  const settings = {
-    infinite: true,
-    speed: 2000,
-    slidesToShow: 1,
-    slidesToScroll: 1,
-    autoplay: true,
-    arrows: false,
-    autoplaySpeed: 10000,
-    pauseOnHover: true,
-    beforeChange: (_oldIndex: number, newIndex: number) => {
-      setCurrentSlide(newIndex);
-    },
+  const setSlideByDot = (index: number) => {
+    swiperInstance?.slideTo(index);
+    setCurrentSlide(index);
   };
 
   const setNextSlide = () => {
-    sliderRef.current?.slickNext();
+    swiperInstance?.slideNext();
   };
 
   const setPrevSlide = () => {
-    sliderRef.current?.slickPrev();
-  };
-
-  const setSlideByDot = (index: number) => {
-    sliderRef.current?.slickGoTo(index);
+    swiperInstance?.slidePrev();
   };
 
   return (
-    <div className="w-full lg:px-[41px] px-4">
-      <div className="lg:w-full w-[100%-32px] mx-auto overflow-hidden">
-        <Slider ref={sliderRef} {...settings}>
+    <div className="w-full lg:px-[41px]">
+      <div className="lg:w-full mx-auto overflow-hidden">
+        <Swiper
+          modules={[Autoplay]}
+          loop={true}
+          speed={2000}
+          slidesPerView={1}
+          autoplay={{
+            delay: 10000,
+            pauseOnMouseEnter: true,
+            disableOnInteraction: false,
+          }}
+          onSwiper={setSwiperInstance}
+          onSlideChange={swiper => {
+            setCurrentSlide(swiper.activeIndex);
+          }}
+        >
           {slides.map(item => (
-            <div key={item.id} className="aspect-[1356/420]">
+            <SwiperSlide
+              key={item.id}
+              className="lg:aspect-[1356/420] h-[237px]"
+            >
               <img
                 src={item.url}
                 alt={item.title}
                 className="w-full h-full object-cover"
               />
-            </div>
+            </SwiperSlide>
           ))}
-        </Slider>
+        </Swiper>
       </div>
       <div className="flex items-center justify-center gap-[8px]">
         {width >= 1024 && <PrevNextBtn onClick={setPrevSlide} />}

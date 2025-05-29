@@ -1,8 +1,7 @@
 import { useEffect, useRef, useState } from 'react';
 import { AiOutlineClose, AiOutlineHeart } from 'react-icons/ai';
-import { BiMenuAltRight } from 'react-icons/bi';
 import { BsSearch } from 'react-icons/bs';
-import { CgProfile } from 'react-icons/cg';
+import { CgMenuRightAlt, CgProfile } from 'react-icons/cg';
 import { HiOutlineLocationMarker } from 'react-icons/hi';
 import { RxCross2 } from 'react-icons/rx';
 import { useLocation } from 'react-router';
@@ -138,7 +137,7 @@ export const UserNavigation: React.FC<UserNavigationProps> = ({
       />
       <IconButton
         className="lg:hidden"
-        Icon={isBurgerOpen ? AiOutlineClose : BiMenuAltRight}
+        Icon={isBurgerOpen ? AiOutlineClose : CgMenuRightAlt}
         onClick={toggleBurgerMenu}
         aria-label="burger"
       />

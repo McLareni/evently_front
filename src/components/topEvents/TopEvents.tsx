@@ -62,10 +62,10 @@ export const TopEvents: React.FC<TopEventsProps> = ({ filteredEvents }) => {
             'text-[28px] leading-normal': width < 1024,
           })}
         >
-          {width >= 1024 ? 'Топ подій' : 'Нові події'}
+          Нові події
         </h1>
       </Container>
-      <div className="lg:pl-[60px] pl-[16px] relative">
+      <div className="lg:pl-[60px] lg:pr-0 px-4  relative">
         {width < 1024 ? (
           <MobileSlider events={filteredEvents} />
         ) : (
