@@ -16,7 +16,7 @@ interface TicketDraftProps {
   setCurrentActionHandler: (action: number) => void;
   currentAction: number;
   ticketCount: number;
-  price: number | undefined;
+  price: number;
   info: CustomerInfo | null;
   priceWithDiscount: number;
   discountValue: number;
@@ -161,17 +161,19 @@ export const TicketDraft: React.FC<TicketDraftProps> = ({
             <p className="mb-[16px]">
               {ticketCount} {formattedTicket}
             </p>
-            <div className="relative">
-              <p className="mb-[16px]">Збір за послуги</p>
-              <PaymentInfo className="-right-2" />
-            </div>
+            {price > 0 && (
+              <div className="relative">
+                <p className="mb-[16px]">Збір за послуги</p>
+                <PaymentInfo className="-right-2" />
+              </div>
+            )}
             {discountValue > 0 && <p className="mb-[16px]">Промокод</p>}
             <p>Сума</p>
           </div>
           <div>
             <div>
               <p className="mb-[16px]">{price} грн</p>
-              <p className="mb-[16px]">{SERVICE} грн</p>
+              {price > 0 && <p className="mb-[16px]">{price * SERVICE} грн</p>}
               {discountValue > 0 && (
                 <p className="mb-[16px]">-{discountValue} грн</p>
               )}

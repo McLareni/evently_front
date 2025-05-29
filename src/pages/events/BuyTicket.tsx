@@ -17,7 +17,7 @@ import Spinner from '@/components/ui/Spinner';
 
 import { TicketDraft } from '../../components/buyTicket/TicketDraft';
 
-export const SERVICE = 45;
+export const SERVICE = 0.05; //5%
 
 const BuyTicket: React.FC = () => {
   const [currentAction, setCurrentAction] = useState(1);
@@ -94,11 +94,11 @@ const BuyTicket: React.FC = () => {
       const discountUah = Math.ceil(((price * discount) / 100) * 100) / 100;
       setDiscountValue(discountUah);
 
-      const finalSum = price - discountUah + SERVICE;
+      const finalSum = price - discountUah + price * SERVICE;
       setPriceWithDiscount(finalSum);
     } else {
       setDiscountValue(0);
-      setPriceWithDiscount(price + SERVICE);
+      setPriceWithDiscount(price + price * SERVICE);
     }
   }, [discount, price]);
 
