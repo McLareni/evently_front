@@ -29,7 +29,7 @@ export const Hero: React.FC = () => {
 
   return (
     <div className="w-full lg:px-[41px]">
-      <div className="lg:w-full mx-auto overflow-hidden">
+      <div className="overflow-hidden">
         <Swiper
           modules={[Autoplay]}
           loop={true}
@@ -46,10 +46,7 @@ export const Hero: React.FC = () => {
           }}
         >
           {slides.map(item => (
-            <SwiperSlide
-              key={item.id}
-              className="lg:aspect-[1356/420] h-[237px]"
-            >
+            <SwiperSlide key={item.id} className="lg:h-[420px] h-[237px]">
               <img
                 src={item.url}
                 alt={item.title}
