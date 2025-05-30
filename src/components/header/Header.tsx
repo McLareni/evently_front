@@ -7,12 +7,14 @@ import { useAppSelector } from '@/redux/hooks';
 import { Container } from '../container/Container';
 import { SharedBtn } from '../ui';
 import { MainLogo } from '../ui/Logo';
+import CityPicker from './CityPicker';
 import { Navigation } from './Navigation';
 import { UserNavigation } from './UserNavigation';
 import { VerticalLines } from './VerticalLines';
 
 export const Header: React.FC = () => {
   const [isModalOpen, setIsModalOpen] = useState(false);
+  const [cityPickerIsOpen, setCityPickerIsOpen] = useState(false);
 
   const isLoggedIn = useAppSelector(selectIsLoggedIn);
 
@@ -37,6 +39,7 @@ export const Header: React.FC = () => {
               handleLinkClick={handleLinkClick}
               isModalOpen={isModalOpen}
               setIsModalOpen={setIsModalOpen}
+              openCityPicker={() => setCityPickerIsOpen(true)}
             />
 
             <div
@@ -54,6 +57,12 @@ export const Header: React.FC = () => {
           </div>
         </header>
       </Container>
+
+      <CityPicker
+        isOpen={cityPickerIsOpen}
+        close={() => setCityPickerIsOpen(false)}
+      />
+
       <VerticalLines />
     </div>
   );
