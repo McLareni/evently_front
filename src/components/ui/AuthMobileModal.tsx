@@ -53,7 +53,7 @@ export const AuthMobileModal: React.FC<ModalProps> = ({
 
   return createPortal(
     <div
-      className={`fixed inset-0 z-20 h-full ${!hiddenHeader ? 'pt-[74px]' : ''}`}
+      className={`fixed inset-0 z-20 h-full ${!hiddenHeader ? 'pt-[72px]' : ''}`}
       aria-modal="true"
       role="dialog"
       onClick={onClose}

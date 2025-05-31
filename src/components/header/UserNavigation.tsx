@@ -1,8 +1,7 @@
 import { useEffect, useRef, useState } from 'react';
 import { AiOutlineClose, AiOutlineHeart } from 'react-icons/ai';
-import { BiMenuAltRight } from 'react-icons/bi';
 import { BsSearch } from 'react-icons/bs';
-import { CgProfile } from 'react-icons/cg';
+import { CgMenuRightAlt, CgProfile } from 'react-icons/cg';
 import { HiOutlineLocationMarker } from 'react-icons/hi';
 import { RxCross2 } from 'react-icons/rx';
 import { useLocation } from 'react-router';
@@ -17,19 +16,21 @@ import { Auth } from '../auth';
 import { Modal } from '../ui';
 import { AuthMobileModal } from '../ui/AuthMobileModal';
 import { IconButton } from '../ui/IconButton';
-import { MobileBurgerMenu } from './MobileBurgerMenu';
+import { MobileBurgerMenu } from './burgerMenu/MobileBurgerMenu';
 
 interface UserNavigationProps {
   // eslint-disable-next-line no-unused-vars
   handleLinkClick: (link: string) => void;
   isModalOpen: boolean;
   setIsModalOpen: React.Dispatch<React.SetStateAction<boolean>>;
+  openCityPicker: () => void;
 }
 
 export const UserNavigation: React.FC<UserNavigationProps> = ({
   handleLinkClick,
   isModalOpen,
   setIsModalOpen,
+  openCityPicker,
 }) => {
   const [isInputVisible, setIsInputVisible] = useState(false);
   const [isEmailConfirmed, setIsEmailConfirmed] = useState(false);
@@ -114,7 +115,7 @@ export const UserNavigation: React.FC<UserNavigationProps> = ({
       <IconButton
         className="lg:hidden"
         Icon={HiOutlineLocationMarker}
-        onClick={() => console.log('1')}
+        onClick={openCityPicker}
         aria-label="geolocation"
       />
 
@@ -138,7 +139,7 @@ export const UserNavigation: React.FC<UserNavigationProps> = ({
       />
       <IconButton
         className="lg:hidden"
-        Icon={isBurgerOpen ? AiOutlineClose : BiMenuAltRight}
+        Icon={isBurgerOpen ? AiOutlineClose : CgMenuRightAlt}
         onClick={toggleBurgerMenu}
         aria-label="burger"
       />

@@ -1,6 +1,7 @@
 import { ButtonHTMLAttributes } from 'react';
 
 import { nanoid } from '@reduxjs/toolkit';
+
 interface DotsProps<T> extends ButtonHTMLAttributes<HTMLButtonElement> {
   slides: T[];
   currentSlide: number;
@@ -14,7 +15,7 @@ export const Dots = <T,>({
   setSlideByDot,
 }: DotsProps<T>) => {
   return (
-    <div className="flex items-center gap-[8px] h-12">
+    <div className="flex items-center gap-[8px] lg:h-12 h-auto lg:mt-0 mt-3">
       {slides.map(slide => (
         <button
           key={nanoid()}
