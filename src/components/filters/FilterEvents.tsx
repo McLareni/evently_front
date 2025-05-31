@@ -38,6 +38,7 @@ interface FilterEventsProps {
   resetFilters: () => void;
   addDateFilter: (filter: string) => void;
   addPriceFilter: (filter: number) => void;
+  toggleFilterShown: () => void;
 }
 
 export const FilterEvents: React.FC<FilterEventsProps> = ({
@@ -46,6 +47,7 @@ export const FilterEvents: React.FC<FilterEventsProps> = ({
   resetFilters,
   addDateFilter,
   addPriceFilter,
+  toggleFilterShown,
 }) => {
   const dispatch = useAppDispatch();
 
@@ -142,7 +144,10 @@ export const FilterEvents: React.FC<FilterEventsProps> = ({
           </button>
           <button
             className="h-[50px] flex justify-center items-center flex-1 focus:outline-none bg-filter-btn-gradient rounded-br-[19px] text-background"
-            onClick={filterEvents}
+            onClick={() => {
+              filterEvents();
+              toggleFilterShown();
+            }}
           >
             Застосувати
           </button>

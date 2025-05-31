@@ -38,7 +38,10 @@ const AllEventsPage: React.FC = () => {
   const [page, setPage] = useState(0);
   const [mapIsHidden, setMapIsHidden] = useState(true);
   const [filterShown, setFilterShown] = useState(false);
-  console.log(filterShown);
+
+  const toggleFilterShown = () => {
+    setFilterShown(!filterShown);
+  };
 
   const [filterEvent, { isLoading, isFetching }] =
     useLazyGetAllEventsFilteredQuery();
@@ -189,6 +192,7 @@ const AllEventsPage: React.FC = () => {
             resetFilters={resetFilters}
             addDateFilter={addDateFilter}
             addPriceFilter={addPriceFilter}
+            toggleFilterShown={toggleFilterShown}
           />
         )}
         {events && events?.length > 0 ? (
@@ -203,7 +207,7 @@ const AllEventsPage: React.FC = () => {
               <div className="relative flex items-center justify-between px-[16px] py-[12px]">
                 <p className="text-[28px] font-oswald">Усі події</p>
                 <button
-                  onClick={() => setFilterShown(!filterShown)}
+                  onClick={toggleFilterShown}
                   className={`w-[48px] h-[48px] bg-lightPurple rounded-[20px]
                   flex justify-center items-center focus:outline-none`}
                 >
@@ -211,7 +215,7 @@ const AllEventsPage: React.FC = () => {
                 </button>
                 <AuthMobileModal
                   isOpen={filterShown}
-                  onClose={() => setFilterShown(!filterShown)}
+                  onClose={toggleFilterShown}
                   paddingTop={144}
                 >
                   <FilterEvents
@@ -220,6 +224,7 @@ const AllEventsPage: React.FC = () => {
                     resetFilters={resetFilters}
                     addDateFilter={addDateFilter}
                     addPriceFilter={addPriceFilter}
+                    toggleFilterShown={toggleFilterShown}
                   />
                 </AuthMobileModal>
               </div>
