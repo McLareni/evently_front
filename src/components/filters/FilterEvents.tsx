@@ -90,7 +90,7 @@ export const FilterEvents: React.FC<FilterEventsProps> = ({
 
           <div className="px-[18px]">
             <h2 className="mb-[16px]">Коли</h2>
-            <div className="pl-[18px]">
+            <div className="lg:pl-[18px]">
               {width > 1024 && (
                 <ul className="flex flex-col gap-[16px] mb-[18px]">
                   {eventDate.map(option => (
@@ -119,21 +119,24 @@ export const FilterEvents: React.FC<FilterEventsProps> = ({
                       <span>Обрати дату</span>
                       <BiChevronDown />
                     </button>
+                    <DateRange isShownCalendar={isShownCalendar} />
                   </>
                 ) : (
-                  <div className="flex justify-center gap-[12px] py-[12px] px-[20px]">
-                    {eventDate.map(option => (
-                      <button
-                        className="flex items-center border-buttonPurple border-[1px] px-[12px] py-[8px] rounded-[8px]"
-                        key={nanoid()}
-                        onClick={() => addDateFilter(option.label)}
-                      >
-                        {option.label}
-                      </button>
-                    ))}
+                  <div>
+                    <div className="flex justify-center gap-[12px] py-[12px] px-[20px]">
+                      {eventDate.map(option => (
+                        <button
+                          className="flex items-center border-buttonPurple border-[1px] px-[12px] py-[8px] rounded-[8px]"
+                          key={nanoid()}
+                          onClick={() => addDateFilter(option.label)}
+                        >
+                          {option.label}
+                        </button>
+                      ))}
+                    </div>
+                    <DateRange isShownCalendar={true} />
                   </div>
                 )}
-                <DateRange isShownCalendar={true} />
               </div>
             </div>
           </div>
