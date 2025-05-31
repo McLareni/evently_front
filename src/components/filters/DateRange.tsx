@@ -28,6 +28,7 @@ export function DateRange({ isShownCalendar }: DateRangeProps) {
 
   return (
     <div
+      className="border-t-buttonPurple border-t-[1px]"
       style={{
         height: isShownCalendar ? 'auto' : '0',
       }}
