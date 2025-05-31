@@ -1,3 +1,4 @@
+/* eslint-disable no-unused-vars */
 import { BiChevronDown } from 'react-icons/bi';
 
 import { setIsCalendarShown } from '@/redux/filters/filtersSlice';
@@ -32,13 +33,10 @@ const EventTypes: Record<string, string> = {
 };
 
 interface FilterEventsProps {
-  // eslint-disable-next-line no-unused-vars
   addTypeFilter: (filter: string) => void;
   filterEvents: () => void;
   resetFilters: () => void;
-  // eslint-disable-next-line no-unused-vars
   addDateFilter: (filter: string) => void;
-  // eslint-disable-next-line no-unused-vars
   addPriceFilter: (filter: number) => void;
 }
 
@@ -61,10 +59,11 @@ export const FilterEvents: React.FC<FilterEventsProps> = ({
   };
 
   return (
-    <div className="pl-[60px] relative">
+    <div className="lg:pl-[60px] relative">
       <div
-        className="sticky top-[140px] max-h-[calc(100vh-200px)] w-[312px] border-buttonPurple border-[1px]
-      rounded-[20px] flex flex-col gap-[24px] pt-[18px] pr-[5px]"
+        className={`sticky top-[140px] max-h-[calc(100vh-144px)]
+          lg:max-h-[calc(100vh-200px)] lg:w-[312px] border-buttonPurple border-[1px]
+          rounded-[20px] flex flex-col gap-[24px] pt-[18px] lg:pr-[5px]`}
       >
         <div className="overflow-y-scroll overscroll-contain">
           <div className="px-[18px]">
@@ -134,7 +133,7 @@ export const FilterEvents: React.FC<FilterEventsProps> = ({
           </div>
         </div>
 
-        <div className="border-t-buttonPurple border-t-[1px] flex mr-[-5px]">
+        <div className="border-t-buttonPurple border-t-[1px] flex lg:mr-[-5px]">
           <button
             className="h-[50px] flex justify-center items-center flex-1 focus:outline-none border-r-buttonPurple border-r-[1px]"
             onClick={resetFilters}
