@@ -1,5 +1,4 @@
 import { useGetEventDateFilter } from './useGetEventDateFilter';
-import { useGetEventDatesRangeFilter } from './useGetEventDatesRangeFilter';
 import { useGetEventPriceFilter } from './useGetEventPriceFilter';
 import { useGetEventTypeFilter } from './useGetEventTypeFilter';
 import { useGetFilteredEventsByDate } from './useGetFilteredEventsByDate';
@@ -12,7 +11,6 @@ interface useFilterProps {
 export function useFilter({ events }: useFilterProps) {
   const { addTypeFilter } = useGetEventTypeFilter();
   const { addDateFilter } = useGetEventDateFilter();
-  const { rangeDatesArray } = useGetEventDatesRangeFilter();
   const { addPriceFilter, selectedPrices } = useGetEventPriceFilter();
   const { filteredEventsByType } = useGetFilteredEventsByType({
     events,
@@ -22,7 +20,6 @@ export function useFilter({ events }: useFilterProps) {
   });
   const { filteredEventsByRange } = useGetFilteredEventsByRange({
     filteredEventsByType,
-    rangeDatesArray,
   });
 
   return {

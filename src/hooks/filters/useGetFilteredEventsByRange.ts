@@ -1,21 +1,23 @@
 import { useEffect, useState } from 'react';
 
-import { getIsCalendarShown } from '@/redux/filters/selectors';
+import {
+  getIsCalendarShown,
+  getRangeDatesArray,
+} from '@/redux/filters/selectors';
 import { useAppSelector } from '@/redux/hooks';
 
 interface useGetFilteredEventsByRangeProps {
   filteredEventsByType: Event[];
-  rangeDatesArray: string[];
 }
 
 export function useGetFilteredEventsByRange({
   filteredEventsByType,
-  rangeDatesArray,
 }: useGetFilteredEventsByRangeProps) {
   const [filteredEventsByRange, setFilteredEventsByRange] = useState<Event[]>(
     []
   );
 
+  const rangeDatesArray = useAppSelector(getRangeDatesArray);
   const isShownCalendar = useAppSelector(getIsCalendarShown);
 
   const getDateOnly = (date: string) => {
