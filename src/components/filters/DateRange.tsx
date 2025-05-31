@@ -27,18 +27,17 @@ export function DateRange({ isShownCalendar }: DateRangeProps) {
   }, [dispatch, isShownCalendar, range]);
 
   return (
-    <div
-      className="border-t-buttonPurple border-t-[1px]"
-      style={{
-        height: isShownCalendar ? 'auto' : '0',
-      }}
-    >
-      <Calendar
-        type="range"
-        setRange={setRange}
-        range={range}
-        daySize={width >= 1024 ? 'desktop' : 'mobile'}
-      />
-    </div>
+    <>
+      {isShownCalendar && (
+        <div className="border-t-buttonPurple border-t-[1px]">
+          <Calendar
+            type="range"
+            setRange={setRange}
+            range={range}
+            daySize={width >= 1024 ? 'desktop' : 'mobile'}
+          />
+        </div>
+      )}
+    </>
   );
 }
