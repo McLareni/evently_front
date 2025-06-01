@@ -12,7 +12,7 @@ export const AllEvents: React.FC<AllEventsProps> = ({ events, title }) => {
   const width = useScreenWidth();
 
   return (
-    <div className={`flex flex-col gap-8`}>
+    <div className={`flex flex-col lg:gap-8 gap-4`}>
       {title && (
         <h1
           className={clsx({

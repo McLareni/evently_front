@@ -133,9 +133,10 @@ export const EventCard: React.FC<EventCardProps> = ({
     <div
       onClick={e => handleOnClick(e)}
       id={`${eventId}`}
-      className={`group relative flex overflow-hidden items-start rounded-[20px] shadow-eventCardShadow lg:w-[312px] lg:h-[514px] w-[171px] h-[309px] ${
-        top ? 'mb-[10px]' : ''
-      }${isAdmin && 'hover:cursor-pointer'}`}
+      className={`group relative flex overflow-hidden items-start rounded-[20px] shadow-eventCardShadow 
+        lg:w-[312px] lg:h-[514px] h-[309px] lg:aspect-auto ${
+          top ? 'mb-[10px]' : ''
+        }${isAdmin && 'hover:cursor-pointer'}`}
     >
       {images[0] && images[0].url && (
         <img src={images[0].url} alt={title} width={'100%'} />
@@ -176,7 +177,7 @@ export const EventCard: React.FC<EventCardProps> = ({
         <div className="flex justify-between w-full">
           <div
             className={`flex items-center justify-center lg:h-[33px] h-[20px] rounded-[20px]
-                 border-[2px] border-borderColor bg-bg-gradient`}
+                 border lg:border-[2px] border-borderColor bg-bg-gradient`}
           >
             <p
               className={`font-normal text-nowrap lg:text-base text-xs text-textDark lg:px-4 px-3`}
