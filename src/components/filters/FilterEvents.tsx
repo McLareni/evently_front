@@ -1,3 +1,4 @@
+/* eslint-disable no-unused-vars */
 import { BiChevronDown } from 'react-icons/bi';
 
 import { setIsCalendarShown } from '@/redux/filters/filtersSlice';
@@ -14,6 +15,7 @@ import {
   eventPrice,
   eventTypes,
 } from '@/assets/staticData/statickData';
+import { useScreenWidth } from '@/hooks/useScreenWidth';
 import { nanoid } from '@reduxjs/toolkit';
 
 import { Checkbox } from '../ui/CheckBox';
@@ -32,14 +34,12 @@ const EventTypes: Record<string, string> = {
 };
 
 interface FilterEventsProps {
-  // eslint-disable-next-line no-unused-vars
   addTypeFilter: (filter: string) => void;
   filterEvents: () => void;
   resetFilters: () => void;
-  // eslint-disable-next-line no-unused-vars
   addDateFilter: (filter: string) => void;
-  // eslint-disable-next-line no-unused-vars
   addPriceFilter: (filter: number) => void;
+  toggleFilterShown: () => void;
 }
 
 export const FilterEvents: React.FC<FilterEventsProps> = ({
@@ -48,6 +48,7 @@ export const FilterEvents: React.FC<FilterEventsProps> = ({
   resetFilters,
   addDateFilter,
   addPriceFilter,
+  toggleFilterShown,
 }) => {
   const dispatch = useAppDispatch();
 
@@ -56,15 +57,18 @@ export const FilterEvents: React.FC<FilterEventsProps> = ({
   const selectedDates = useAppSelector(getSelectedDates);
   const selectedPrices = useAppSelector(getSelectedPrices);
 
+  const width = useScreenWidth();
+
   const toggleCalendar = () => {
     dispatch(setIsCalendarShown(!isShownCalendar));
   };
 
   return (
-    <div className="pl-[60px] relative">
+    <div className="lg:pl-[60px] relative">
       <div
-        className="sticky top-[140px] max-h-[calc(100vh-200px)] w-[312px] border-buttonPurple border-[1px]
-      rounded-[20px] flex flex-col gap-[24px] pt-[18px] pr-[5px]"
+        className={`sticky top-[140px] max-h-[calc(100vh-144px)]
+          lg:max-h-[calc(100vh-200px)] lg:w-[312px] border-buttonPurple border-[1px]
+          rounded-[20px] flex flex-col gap-[24px] pt-[18px] lg:pr-[5px]`}
       >
         <div className="overflow-y-scroll overscroll-contain">
           <div className="px-[18px]">
@@ -86,32 +90,53 @@ export const FilterEvents: React.FC<FilterEventsProps> = ({
 
           <div className="px-[18px]">
             <h2 className="mb-[16px]">Коли</h2>
-            <div className="pl-[18px]">
-              <ul className="flex flex-col gap-[16px] mb-[18px]">
-                {eventDate.map(option => (
-                  <li key={nanoid()} className="flex gap-4">
-                    <Checkbox
-                      name="when"
-                      value={option.value}
-                      onChange={() => addDateFilter(option.label)}
-                      checked={selectedDates.includes(option.label)}
-                      label={option.label}
-                    />
-                  </li>
-                ))}
-              </ul>
+            <div className="lg:pl-[18px]">
+              {width > 1024 && (
+                <ul className="flex flex-col gap-[16px] mb-[18px]">
+                  {eventDate.map(option => (
+                    <li key={nanoid()} className="flex gap-4">
+                      <Checkbox
+                        name="when"
+                        value={option.value}
+                        onChange={() => addDateFilter(option.label)}
+                        checked={selectedDates.includes(option.label)}
+                        label={option.label}
+                      />
+                    </li>
+                  ))}
+                </ul>
+              )}
               <div
                 className="border-[1px] border-buttonPurple rounded-[10px] overflow-hidden 
-            w-[245px] mb-[18px]"
+            lg:w-[245px] mb-[18px]"
               >
-                <button
-                  className="flex justify-between items-center w-full h-[34px] px-[12px] focus:outline-none"
-                  onClick={toggleCalendar}
-                >
-                  <span>Обрати дату</span>
-                  <BiChevronDown />
-                </button>
-                <DateRange isShownCalendar={isShownCalendar} />
+                {width >= 1024 ? (
+                  <>
+                    <button
+                      className="flex justify-between items-center w-full h-[34px] px-[12px] focus:outline-none"
+                      onClick={toggleCalendar}
+                    >
+                      <span>Обрати дату</span>
+                      <BiChevronDown />
+                    </button>
+                    <DateRange isShownCalendar={isShownCalendar} />
+                  </>
+                ) : (
+                  <div>
+                    <div className="flex justify-center gap-[12px] py-[12px] px-[20px]">
+                      {eventDate.map(option => (
+                        <button
+                          className="flex items-center border-buttonPurple border-[1px] px-[12px] py-[8px] rounded-[8px]"
+                          key={nanoid()}
+                          onClick={() => addDateFilter(option.label)}
+                        >
+                          {option.label}
+                        </button>
+                      ))}
+                    </div>
+                    <DateRange isShownCalendar={true} />
+                  </div>
+                )}
               </div>
             </div>
           </div>
@@ -134,7 +159,7 @@ export const FilterEvents: React.FC<FilterEventsProps> = ({
           </div>
         </div>
 
-        <div className="border-t-buttonPurple border-t-[1px] flex mr-[-5px]">
+        <div className="border-t-buttonPurple border-t-[1px] flex lg:mr-[-5px]">
           <button
             className="h-[50px] flex justify-center items-center flex-1 focus:outline-none border-r-buttonPurple border-r-[1px]"
             onClick={resetFilters}
@@ -143,7 +168,10 @@ export const FilterEvents: React.FC<FilterEventsProps> = ({
           </button>
           <button
             className="h-[50px] flex justify-center items-center flex-1 focus:outline-none bg-filter-btn-gradient rounded-br-[19px] text-background"
-            onClick={filterEvents}
+            onClick={() => {
+              filterEvents();
+              toggleFilterShown();
+            }}
           >
             Застосувати
           </button>
