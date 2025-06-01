@@ -55,7 +55,7 @@ const TableEvent = () => {
       filterEvents();
     }
 
-    if ((response?.data?.length || 0) < 9) {
+    if ((response?.data?.length || 0) < 5) {
       setIsFullList(true);
     }
 
@@ -69,9 +69,7 @@ const TableEvent = () => {
       setPage(prev => prev + 1);
       setEvents(prevEvents => [...prevEvents, ...(response.data || [])]);
 
-      if ((response?.data?.length || 0) < 9) {
-        console.log('Full list');
-
+      if ((response?.data?.length || 0) < 5) {
         setIsFullList(true);
       }
     };
