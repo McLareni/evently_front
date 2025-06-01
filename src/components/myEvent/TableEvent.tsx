@@ -55,6 +55,10 @@ const TableEvent = () => {
       filterEvents();
     }
 
+    if ((response?.data?.length || 0) < 9) {
+      setIsFullList(true);
+    }
+
     setEvents(response.data || []);
   };
 
