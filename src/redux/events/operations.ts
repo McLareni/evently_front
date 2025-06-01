@@ -129,8 +129,8 @@ export const EventsApi = createApi({
       keepUnusedDataFor: 60,
     }),
 
-    getAllMyEvents: builder.query<Event[], string>({
-      query: id => `events/user/${id}`,
+    getAllMyEvents: builder.query<Event[], { id: string; page: number }>({
+      query: ({ id, page }) => `events/user/${id}?page=${page}&size=${5}`,
       transformResponse: (result: { content: Event[] }) =>
         result?.content ?? [],
       providesTags: result =>
