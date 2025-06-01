@@ -81,7 +81,7 @@ const TableEvent = () => {
     filterEvents();
   };
 
-  if (isFetching || isLoading) {
+  if (isLoading) {
     return <Spinner />;
   }
 
