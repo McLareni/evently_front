@@ -5,6 +5,8 @@ import { selectIsLoggedIn, selectUser } from '@/redux/auth/selectors';
 import { useLazyGetEventByIdQuery } from '@/redux/events/operations';
 import { useAppSelector } from '@/redux/hooks';
 
+import { useMediaQuery } from '@/hooks/useMediaQuery';
+
 import { Action1 } from '@/components/buyTicket/Action1';
 import { Action2 } from '@/components/buyTicket/Action2';
 import { Action2CheckEmail } from '@/components/buyTicket/Action2CheckEmail';
@@ -36,10 +38,10 @@ const BuyTicket: React.FC = () => {
 
   const [trigger, { data: event, isLoading }] = useLazyGetEventByIdQuery();
 
-  console.log(isLoading);
-
   const isLoggedIn = useAppSelector(selectIsLoggedIn);
   const { email } = useAppSelector(selectUser);
+
+  const isMobile = useMediaQuery('(max-width: 1024px)');
 
   const setNewUserEmailHandler = (email: string) => {
     setNewUserEmail(email);
@@ -138,17 +140,19 @@ const BuyTicket: React.FC = () => {
             {currentAction === 2 && !isLoggedIn && isEmailExists === false && (
               <Action2NewUser newUserEmail={newUserEmail} />
             )}
-            <TicketDraft
-              event={event}
-              setCurrentActionHandler={setCurrentActionHandler}
-              currentAction={currentAction}
-              ticketCount={ticketCount}
-              price={price}
-              info={info}
-              priceWithDiscount={priceWithDiscount}
-              discountValue={discountValue}
-              isFormValid={isFormValid}
-            />
+            {!isMobile && (
+              <TicketDraft
+                event={event}
+                setCurrentActionHandler={setCurrentActionHandler}
+                currentAction={currentAction}
+                ticketCount={ticketCount}
+                price={price}
+                info={info}
+                priceWithDiscount={priceWithDiscount}
+                discountValue={discountValue}
+                isFormValid={isFormValid}
+              />
+            )}
           </div>
         )}
         {currentAction === 3 && <Action3 event={event} />}

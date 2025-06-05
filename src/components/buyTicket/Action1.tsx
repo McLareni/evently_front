@@ -4,6 +4,7 @@ import { AiOutlineMinusCircle, AiOutlinePlusCircle } from 'react-icons/ai';
 import { ImPriceTag } from 'react-icons/im';
 import { RxCrossCircled } from 'react-icons/rx';
 
+import { useMediaQuery } from '@/hooks/useMediaQuery';
 import { checkPromoCode } from '@/utils/eventsHttp';
 
 import Spinner from '../ui/Spinner';
@@ -32,6 +33,8 @@ export const Action1: React.FC<Action1Props> = ({
   const [ticketCount, setTicketCount] = useState(1);
   const [promoCode, setPromoCode] = useState('');
   const [isLoading, setIsLoading] = useState(false);
+
+  const isMobile = useMediaQuery('(max-width: 1024px)');
 
   const increment = () => {
     setTicketCount(ticketCount + 1);
@@ -74,7 +77,10 @@ export const Action1: React.FC<Action1Props> = ({
   return (
     <div>
       {isLoading && <Spinner />}
-      <div className="bg-[url('/images/ticket/ticket-info.svg')] bg-cover bg-center w-[860px] h-[250px] px-[64px] py-[36px] flex flex-col justify-between mb-[45px]">
+      <div
+        className={`${isMobile ? "bg-[url('/images/ticket/ticket-info-mobile.svg')]" : "bg-[url('/images/ticket/ticket-info.svg')]"}
+        bg-cover bg-center lg:w-[860px] lg:h-[250px] px-[64px] py-[36px] flex flex-col justify-between mb-[45px]`}
+      >
         <div className="flex items-center justify-between">
           <p className="text-[36px]">Вхідний квиток</p>
           <div className="flex gap-[16px]">
