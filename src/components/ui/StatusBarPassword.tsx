@@ -15,7 +15,9 @@ export const StatusBarPassword: React.FC<StatusBarPasswordProps> = ({
   className,
 }) => {
   return (
-    <ul className={`flex w-full text-xs justify-between ${className}`}>
+    <ul
+      className={`grid grid-cols-2 grid-rows-2 lg:flex w-full text-xs justify-between ${className}`}
+    >
       <li className={``}>
         <SharedItemStatusBar
           text="Мінімум 8 символів"

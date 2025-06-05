@@ -61,7 +61,7 @@ export const PasswordRenovationSendEmail: React.FC = () => {
 
   return (
     <div className={`flex flex-col h-full gap-8`}>
-      <h1 className="text-[32px] lg:text-[64px] text-center lg:text-left">
+      <h1 className="leading-[1] text-[32px] lg:text-[64px] text-center lg:text-left">
         Відновлення паролю
       </h1>
       {isEmailSent ? (
@@ -72,7 +72,7 @@ export const PasswordRenovationSendEmail: React.FC = () => {
       ) : (
         <>
           {' '}
-          <p className="text-start text-xl lg:w-[500px]">
+          <p className="text-center lg:text-start text-xl lg:w-[500px]">
             Введіть адресу електронної пошти, до якої привʼязаний ваш обліковий
             запис.
           </p>

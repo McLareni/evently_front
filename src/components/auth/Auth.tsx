@@ -80,8 +80,6 @@ export const Auth: React.FC<AuthProps> = ({
       try {
         const result = await dispatch(registerUser(userData as RegisterUser));
 
-        // console.log('RESULT_REGISTER_>>>', result);
-
         if (result.payload.status === 'error') throw new Error();
 
         toast.success(`Вітаю! ${result.meta.arg.name}. Реєстрація успішна!`);
@@ -100,20 +98,23 @@ export const Auth: React.FC<AuthProps> = ({
         h-full`}
     >
       <div className={`flex flex-col pt-12 pb-4 px-[16px] lg:px-[57px]`}>
-        <p
-          className="mb-[16px] lg:hidden font-oswald text-[36px] inline-block text-center"
-          style={{
-            background:
-              'linear-gradient(98.01deg, #12C2E9 2.11%, #C471ED 75.16%)',
-            WebkitBackgroundClip: 'text',
-            backgroundClip: 'text',
-            color: 'transparent',
-          }}
-        >
-          Тут починається твоя
-          <br />
-          історія з BookMyEvent!
-        </p>
+        {statusAuth !== 'password_renovation_on_input' &&
+          statusAuth !== 'password_renovation' && (
+            <p
+              className="mb-[16px] lg:hidden font-oswald text-[36px] inline-block text-center"
+              style={{
+                background:
+                  'linear-gradient(98.01deg, #12C2E9 2.11%, #C471ED 75.16%)',
+                WebkitBackgroundClip: 'text',
+                backgroundClip: 'text',
+                color: 'transparent',
+              }}
+            >
+              Тут починається твоя
+              <br />
+              історія з BookMyEvent!
+            </p>
+          )}
         {statusAuth === 'login' && (
           <Login
             onCloseModal={handleCloseModal}

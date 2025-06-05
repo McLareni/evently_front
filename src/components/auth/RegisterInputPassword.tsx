@@ -77,11 +77,15 @@ export const RegisterInputPassword: React.FC<RegisterInputPasswordProps> = ({
 
   return (
     <>
-      <h1 className={`mb-8`}>Створити акаунт</h1>
+      <h1
+        className={`leading-[1] text-[32px] lg:text-[64px] mb-[46px] text-center lg:text-left`}
+      >
+        Створити акаунт
+      </h1>
       <div className={`flex flex-col h-full justify-between`}>
         <form
           onSubmit={handleSubmit(onSubmit)}
-          className="flex flex-col rounded-lg gap-10 lg:w-[500px] mb-8 lg:mb-0"
+          className="flex flex-col rounded-lg gap-6 lg:gap-10 lg:w-[500px] mb-8 lg:mb-0"
         >
           <div className="relative">
             <SharedInput
