@@ -101,7 +101,7 @@ export const Auth: React.FC<AuthProps> = ({
     >
       <div className={`flex flex-col pt-12 pb-4 px-[16px] lg:px-[57px]`}>
         <p
-          className="lg:hidden font-oswald text-[36px] inline-block text-center"
+          className="mb-[16px] lg:hidden font-oswald text-[36px] inline-block text-center"
           style={{
             background:
               'linear-gradient(98.01deg, #12C2E9 2.11%, #C471ED 75.16%)',
