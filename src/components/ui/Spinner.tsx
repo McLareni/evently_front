@@ -7,8 +7,6 @@ interface IProps {
 }
 
 const Spinner: React.FC<IProps> = ({ rounded = false }) => {
-  console.log('spinner');
-
   return (
     <div
       className={clsx(

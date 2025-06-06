@@ -39,8 +39,6 @@ const HeroSection: React.FC<IProps> = ({ idEvent, event }) => {
   const user = useAppSelector(selectUser);
   const { count: countLike, getLike } = useGetCountLikeEvent(idEvent || '');
 
-  console.log(event);
-
   const toggleIsLiked = async () => {
     if (!isLiked) {
       const addLiked = async () => {

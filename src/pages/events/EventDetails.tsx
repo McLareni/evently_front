@@ -1,4 +1,4 @@
-import { useEffect } from 'react';
+import { useEffect, useState } from 'react';
 import { FiFlag } from 'react-icons/fi';
 import { useParams } from 'react-router';
 
@@ -34,17 +34,23 @@ const EventTypes: Record<string, string> = {
 const EventDetails = () => {
   const { idEvent } = useParams();
   const [trigger, { data: event, isLoading }] = useLazyGetEventByIdQuery();
-  const [refreshTopEvents, { data: topEvents }] =
-    useLazyGetAllEventsFilteredQuery();
-  const { data: similarEvents } = useGetAllEventsFilteredQuery({
+  const [
+    refreshTopEvents,
+    { data: topEvents, isFetching: isFetchingTopEvent },
+  ] = useLazyGetAllEventsFilteredQuery();
+  const { data: similarEvents, isFetching } = useGetAllEventsFilteredQuery({
     page: 0,
     size: 4,
     filter: {
       eventTypes: [EventTypes[event?.type || '']],
     },
   });
-  const [userEventstrigger, { data: userEvents }] = useLazyGetAllMyEventsQuery();
+  const [
+    userEventstrigger,
+    { data: userEvents, isFetching: isFetchingUserEvents },
+  ] = useLazyGetAllMyEventsQuery();
 
+  const [cacheOrganizer, setCacheOrganizer] = useState<User>();
   const userId = event && event.organizers && event.organizers.id;
 
   const filteredUserEvents =
@@ -59,6 +65,15 @@ const EventDetails = () => {
       if (response.status === 'uninitialized') {
         fetchEvent();
       }
+
+      setCacheOrganizer(response.data?.organizers);
+    }
+
+    if (idEvent) fetchEvent();
+  }, [idEvent, trigger]);
+
+  useEffect(() => {
+    async function fetchTopEvent() {
       const responseTopEvents = await refreshTopEvents({
         page: 0,
         size: 3,
@@ -77,22 +92,35 @@ const EventDetails = () => {
       }
     }
 
-    if (idEvent) fetchEvent();
-  }, [idEvent, trigger]);
+    const interval = setInterval(() => {
+      if (idEvent) fetchTopEvent();
+    }, 10000);
+
+    return () => clearInterval(interval);
+  }, []);
 
   useEffect(() => {
     if (userId) {
-      userEventstrigger(userId);
+      userEventstrigger({ id: userId, page: 0 });
     }
   }, [userId, userEventstrigger]);
 
-  if (isLoading) {
+  const isLoadingList = [
+    isLoading,
+    isFetchingTopEvent,
+    isFetchingUserEvents,
+    isFetching,
+  ];
+
+  if (isLoadingList.some(Boolean)) {
     return <Spinner />;
   }
 
   if (!event) {
     return <p>Подія не знайдена</p>;
   }
+
+  console.log('event', event);
 
   return (
     <main className="px-12 pb-10">
@@ -112,9 +140,9 @@ const EventDetails = () => {
               </p>
             </div>
             <AboutUser
-              organizer={event.organizers}
+              organizer={cacheOrganizer || ({} as User)}
               rating={event.rating}
-              aboutUser={event?.aboutOrganizer || ''}
+              aboutUser={event.aboutOrganizer || ''}
             />
             {event.eventFormat === 'OFFLINE' && (
               <div>

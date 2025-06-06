@@ -4,6 +4,7 @@ import { SubmitHandler, useForm } from 'react-hook-form';
 import { useDeleteMyEventMutation } from '@/redux/events/operations';
 
 import { Modal, SharedBtn } from '../ui';
+import Spinner from '../ui/Spinner';
 
 interface IProps {
   popUpIsShow: boolean;
@@ -29,7 +30,7 @@ const ConfirmationDeletePopUp: React.FC<IProps> = ({
 
   console.log(placeholder);
 
-  const [deleteMyEvent] = useDeleteMyEventMutation();
+  const [deleteMyEvent, { isLoading }] = useDeleteMyEventMutation();
 
   const onSubmit: SubmitHandler<{
     phoneNumber: string;
@@ -52,6 +53,10 @@ const ConfirmationDeletePopUp: React.FC<IProps> = ({
       setValue('description', placeholder.reason || '');
     }
   }, [placeholder, setValue]);
+
+  if (isLoading) {
+    return <Spinner />;
+  }
 
   return (
     <Modal isOpen={popUpIsShow} hiddenCross onClose={onClose}>

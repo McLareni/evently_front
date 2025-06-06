@@ -9,7 +9,7 @@ export const Organizers: React.FC = () => {
 
   return (
     <div
-      className="mt-[50px] flex flex-col lg:flex-row max-w-[1358px] w-full lg:py-[18px] lg:rounded-[20px] lg:ml-[41px] 
+      className="lg:mt-[50px] flex flex-col lg:flex-row max-w-[1358px] w-full lg:py-[18px] lg:rounded-[20px] lg:ml-[41px] 
                     lg:mr-[43px] bg-gradient-to-br from-[#E9E6FF] to-[#D5FEFF] lg:px-[43px] p-4"
     >
       <div className="lg:pr-[54px]">
