@@ -28,8 +28,6 @@ const ConfirmationDeletePopUp: React.FC<IProps> = ({
     },
   });
 
-  console.log(placeholder);
-
   const [deleteMyEvent, { isLoading }] = useDeleteMyEventMutation();
 
   const onSubmit: SubmitHandler<{

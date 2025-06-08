@@ -5,8 +5,6 @@ import { MdDone } from 'react-icons/md';
 import { RxCross2 } from 'react-icons/rx';
 import { Link } from 'react-router-dom';
 
-import { useDeleteMyEventMutation } from '@/redux/events/operations';
-
 import { formatDateToDayMonth } from '@/helpers/filters/formatDateToDayMonth';
 import clsx from 'clsx';
 
@@ -47,13 +45,18 @@ interface IProps {
   popUpIsShow: boolean;
   // eslint-disable-next-line no-unused-vars
   openPopUp: (id: string) => void;
+  // eslint-disable-next-line no-unused-vars
+  deleteEvent: (id: string) => void;
 }
 
-const EventRow: React.FC<IProps> = ({ event, popUpIsShow, openPopUp }) => {
+const EventRow: React.FC<IProps> = ({
+  event,
+  popUpIsShow,
+  openPopUp,
+  deleteEvent,
+}) => {
   const [deletePopUp, setDeletePopUp] = useState(false);
   const [confirmationDeletePopUp, setConfirmationDeletePopUp] = useState(false);
-
-  const [deleteMyEvent] = useDeleteMyEventMutation();
 
   const dateString = formatDateToDayMonth(event.date.day);
   const day = dateString.split(' ')[0];
@@ -62,8 +65,6 @@ const EventRow: React.FC<IProps> = ({ event, popUpIsShow, openPopUp }) => {
   const handleDeleteEvent = () => {
     setDeletePopUp(true);
   };
-
-  console.log(event.soldTickets);
 
   return (
     <>
@@ -164,12 +165,13 @@ const EventRow: React.FC<IProps> = ({ event, popUpIsShow, openPopUp }) => {
                 type="button"
                 className="w-[120px] h-[38px] leading-[0px]"
                 primary
-                onClick={() => {
-                  console.log('soldTickets', event.soldTickets);
-
-                  return event.soldTickets === '0' || event.soldTickets === null
-                    ? deleteMyEvent({ idEvent: event.id })
-                    : setConfirmationDeletePopUp(true);
+                onClick={async () => {
+                  if (event.soldTickets === '0' || event.soldTickets === null) {
+                    await deleteEvent(event.id);
+                    setDeletePopUp(false);
+                  } else {
+                    setConfirmationDeletePopUp(true);
+                  }
                 }}
               >
                 Так
