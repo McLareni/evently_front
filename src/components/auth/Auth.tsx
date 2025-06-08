@@ -41,7 +41,7 @@ export const Auth: React.FC<AuthProps> = ({
     | 'confirm_email'
     | 'password_renovation'
     | 'password_renovation_on_input'
-  >('password_renovation_on_input');
+  >('login');
 
   const dispatch = useAppDispatch();
 
