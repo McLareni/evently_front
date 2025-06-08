@@ -112,7 +112,7 @@ export const PasswordRenovationSendEmail: React.FC = () => {
                 onClick={() => setIsSubmitted(true)}
                 // disabled={}
                 primary
-                className="w-[364px] mx-auto mt-8"
+                className="lg:w-[364px] lg:mx-auto mt-8"
               >
                 Продовжити
               </SharedBtn>

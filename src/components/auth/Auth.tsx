@@ -41,7 +41,7 @@ export const Auth: React.FC<AuthProps> = ({
     | 'confirm_email'
     | 'password_renovation'
     | 'password_renovation_on_input'
-  >('login');
+  >('password_renovation_on_input');
 
   const dispatch = useAppDispatch();
 
@@ -99,7 +99,8 @@ export const Auth: React.FC<AuthProps> = ({
     >
       <div className={`flex flex-col pt-12 pb-4 px-[16px] lg:px-[57px]`}>
         {statusAuth !== 'password_renovation_on_input' &&
-          statusAuth !== 'password_renovation' && (
+          statusAuth !== 'password_renovation' &&
+          statusAuth !== 'confirm_email' && (
             <p
               className="mb-[16px] lg:hidden font-oswald text-[36px] inline-block text-center"
               style={{

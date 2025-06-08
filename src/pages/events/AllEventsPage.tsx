@@ -198,10 +198,12 @@ const AllEventsPage: React.FC = () => {
         {events && events?.length > 0 ? (
           <div className="flex flex-col">
             {!mapIsHidden && (
-              <GoogleMap
-                events={events || []}
-                userLocation={{ latitude: 50.43749, longitude: 30.514977 }}
-              />
+              <div className="mx-auto mb-8 pr-16">
+                <GoogleMap
+                  events={events || []}
+                  userLocation={{ latitude: 50.43749, longitude: 30.514977 }}
+                />
+              </div>
             )}
             {width < 1024 && (
               <div className="relative flex items-center justify-between px-[16px] py-[12px]">

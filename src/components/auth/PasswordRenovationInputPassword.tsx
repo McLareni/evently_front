@@ -162,7 +162,7 @@ export const PasswordRenovationInputPassword: React.FC<
             type="submit"
             onClick={() => setIsSubmitted(true)}
             primary
-            className={`w-[364px] mt-10 ml-auto mr-auto`}
+            className={`lg:w-[364px] mt-10 lg:mx-auto`}
           >
             Відновити пароль{' '}
           </SharedBtn>

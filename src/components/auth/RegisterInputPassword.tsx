@@ -112,7 +112,9 @@ export const RegisterInputPassword: React.FC<RegisterInputPasswordProps> = ({
                 />
               ))}
           </div>
-          <div className="relative">
+          <div
+            className={`relative ${errors.password?.message ? 'mb-4' : ''} lg:mb-0`}
+          >
             <SharedInput
               onInput={(value: string) => {
                 setOnInputPassword(value);
@@ -168,7 +170,7 @@ export const RegisterInputPassword: React.FC<RegisterInputPasswordProps> = ({
             type="submit"
             onClick={() => setIsSubmitted(true)}
             primary
-            className={`w-[364px] mt-10 ml-auto mr-auto`}
+            className={`lg:w-[364px] mt-10 lg:mx-auto`}
             disabled={!isValid}
           >
             Створити акаунт

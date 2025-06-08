@@ -216,7 +216,7 @@ export const Login: React.FC<LoginProps> = ({
           type="submit"
           onClick={() => setIsSubmitted(true)}
           primary
-          className={`w-[364px] mx-auto mt-[20px] lg:mt-[40px]`}
+          className={`lg:w-[364px] lg:mx-auto mt-[20px] lg:mt-[40px]`}
         >
           Увійти
         </SharedBtn>
