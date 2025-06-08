@@ -55,6 +55,8 @@ export const TicketDraft: React.FC<TicketDraftProps> = ({
 
   const formattedTicket = formatTicket();
 
+  const priceWithService = (price * SERVICE).toFixed(2);
+
   const sendEventData = async () => {
     setIsLoading(true);
     try {
@@ -173,9 +175,7 @@ export const TicketDraft: React.FC<TicketDraftProps> = ({
           <div>
             <div>
               <p className="mb-[16px]">{price} грн</p>
-              {price > 0 && (
-                <p className="mb-[16px]">{(price * SERVICE).toFixed(2)} грн</p>
-              )}
+              {price > 0 && <p className="mb-[16px]">{priceWithService} грн</p>}
               {discountValue > 0 && (
                 <p className="mb-[16px]">-{discountValue} грн</p>
               )}
