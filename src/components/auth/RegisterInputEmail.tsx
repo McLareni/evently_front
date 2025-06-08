@@ -79,7 +79,7 @@ export const RegisterInputEmail: React.FC<RegisterInputEmailProps> = ({
 
   return (
     <>
-      <h1 className="text-[32px] lg:text-[64px] mb-8 text-center lg:text-left">
+      <h1 className="leading-[1] text-[32px] lg:text-[64px] mb-8 text-center lg:text-left">
         Створити акаунт
       </h1>
       <div className={`flex flex-col h-full justify-between`}>
@@ -118,7 +118,7 @@ export const RegisterInputEmail: React.FC<RegisterInputEmailProps> = ({
             type="submit"
             onClick={() => setIsSubmitted(true)}
             primary
-            className="mt-10 w-[364px] mx-auto"
+            className="mt-10 lg:w-[364px] lg:mx-auto"
           >
             Створити акаунт
           </SharedBtn>

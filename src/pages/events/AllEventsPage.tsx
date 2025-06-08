@@ -195,53 +195,57 @@ const AllEventsPage: React.FC = () => {
             toggleFilterShown={toggleFilterShown}
           />
         )}
-        {events && events?.length > 0 ? (
-          <div className="flex flex-col">
-            {!mapIsHidden && (
-              <GoogleMap
-                events={events || []}
-                userLocation={{ latitude: 50.43749, longitude: 30.514977 }}
-              />
-            )}
-            {width < 1024 && (
-              <div className="relative flex items-center justify-between px-[16px] py-[12px]">
-                <p className="text-[28px] font-oswald">Усі події</p>
-                <button
-                  onClick={toggleFilterShown}
-                  className={`w-[48px] h-[48px] bg-lightPurple rounded-[20px]
+        {width < 1024 && (
+          <div className="relative flex items-center justify-between px-[16px] py-[12px]">
+            <p className="text-[28px] font-oswald">Усі події</p>
+            <button
+              onClick={toggleFilterShown}
+              className={`w-[48px] h-[48px] bg-lightPurple rounded-[20px]
                   flex justify-center items-center focus:outline-none`}
-                >
-                  <GiSettingsKnobs size={24} />
-                </button>
-                <AuthMobileModal
-                  isOpen={filterShown}
-                  onClose={toggleFilterShown}
-                  paddingTop={144}
-                >
-                  <FilterEvents
-                    filterEvents={filterEvents}
-                    addTypeFilter={addTypeFilter}
-                    resetFilters={resetFilters}
-                    addDateFilter={addDateFilter}
-                    addPriceFilter={addPriceFilter}
-                    toggleFilterShown={toggleFilterShown}
-                  />
-                </AuthMobileModal>
-              </div>
-            )}
-            <AllEvents events={events || []} title={false} />
-            {inView && !isFullList && (
-              <div>
-                <SmallSpinner />
-              </div>
-            )}
-            <div ref={ref} id="inView"></div>
+            >
+              <GiSettingsKnobs size={24} />
+            </button>
+            <AuthMobileModal
+              isOpen={filterShown}
+              onClose={toggleFilterShown}
+              paddingTop={144}
+            >
+              <FilterEvents
+                filterEvents={filterEvents}
+                addTypeFilter={addTypeFilter}
+                resetFilters={resetFilters}
+                addDateFilter={addDateFilter}
+                addPriceFilter={addPriceFilter}
+                toggleFilterShown={toggleFilterShown}
+              />
+            </AuthMobileModal>
           </div>
-        ) : (
-          <span className="text-[64px] font-oswald text-buttonPurple">
-            Нічого не знайдено
-          </span>
         )}
+        <div className="mx-4 lg:mx-0">
+          {events && events?.length > 0 ? (
+            <div className="flex flex-col">
+              {!mapIsHidden && (
+                <div className="mx-auto mb-8 pr-16">
+                  <GoogleMap
+                    events={events || []}
+                    userLocation={{ latitude: 50.43749, longitude: 30.514977 }}
+                  />
+                </div>
+              )}
+              <AllEvents events={events || []} title={false} />
+              {inView && !isFullList && (
+                <div>
+                  <SmallSpinner />
+                </div>
+              )}
+              <div ref={ref} id="inView"></div>
+            </div>
+          ) : (
+            <span className="block text-[32px] lg:text-[64px] text-center font-oswald text-buttonPurple">
+              Нічого не знайдено
+            </span>
+          )}
+        </div>
       </div>
     </Main>
   );

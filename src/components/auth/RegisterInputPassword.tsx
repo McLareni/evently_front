@@ -77,11 +77,15 @@ export const RegisterInputPassword: React.FC<RegisterInputPasswordProps> = ({
 
   return (
     <>
-      <h1 className={`mb-8`}>Створити акаунт</h1>
+      <h1
+        className={`leading-[1] text-[32px] lg:text-[64px] mb-[46px] text-center lg:text-left`}
+      >
+        Створити акаунт
+      </h1>
       <div className={`flex flex-col h-full justify-between`}>
         <form
           onSubmit={handleSubmit(onSubmit)}
-          className="flex flex-col rounded-lg gap-10 lg:w-[500px] mb-8 lg:mb-0"
+          className="flex flex-col rounded-lg gap-6 lg:gap-10 lg:w-[500px] mb-8 lg:mb-0"
         >
           <div className="relative">
             <SharedInput
@@ -108,7 +112,9 @@ export const RegisterInputPassword: React.FC<RegisterInputPasswordProps> = ({
                 />
               ))}
           </div>
-          <div className="relative">
+          <div
+            className={`relative ${errors.password?.message ? 'mb-4' : ''} lg:mb-0`}
+          >
             <SharedInput
               onInput={(value: string) => {
                 setOnInputPassword(value);
@@ -164,7 +170,7 @@ export const RegisterInputPassword: React.FC<RegisterInputPasswordProps> = ({
             type="submit"
             onClick={() => setIsSubmitted(true)}
             primary
-            className={`w-[364px] mt-10 ml-auto mr-auto`}
+            className={`lg:w-[364px] mt-10 lg:mx-auto`}
             disabled={!isValid}
           >
             Створити акаунт
