@@ -1,9 +1,9 @@
 
 
 import WhyWeImg from "../../../public/images/WhyWe_businesspeople-meeting-office-working.svg"
-import { PiSmiley }  from "react-icons/pi"
-import { GiSettingsKnobs } from "react-icons/gi"
-import { GiProgression } from "react-icons/gi"
+import { GiScales } from "react-icons/gi"
+import { BiSolidLock } from "react-icons/bi"
+import { BsFillPeopleFill } from "react-icons/bs"
 
 
 const WhyWe = () => {
@@ -17,24 +17,24 @@ const WhyWe = () => {
                 <img src={WhyWeImg} alt="" className="mr-[64px]" />
                 <div>
                     <div className="flex border-b-2 mb-6 pb-6">
-                        <PiSmiley className="w-12 h-12 mr-7"/>
+                        <GiScales className="w-12 h-12 mr-7"/>
                         <div className="w-[533px]">
-                           <h2 className="pb-6">Простота і доступність</h2> 
-                           <p>Наша платформа інтуїтивно зрозуміла та не потребує спеціальних навичок. Будь-хто може швидко створити та налаштувати свій захід, зосередившись на ідеях, а не на технічних нюансах.</p>
+                           <h2 className="pb-4">Безпека та довіра</h2> 
+                           <p>Ми офіційна українська ФОП-компанія. Тому твої кошти під захистом, а дохід надходить напряму.</p>
                         </div>
                     </div>
                     <div className="flex border-b-2 mb-6 pb-6">
-                        <GiSettingsKnobs className="w-12 h-12 mr-7"/>
+                        <BsFillPeopleFill className="w-12 h-12 mr-7"/>
                         <div className="w-[533px]">
-                           <h2 className="pb-6">Гнучкі можливості налаштування</h2> 
-                           <p>Ви отримуєте повний контроль над оформленням та функціоналом заходу. Платформа дозволяє адаптувати кожен аспект під індивідуальні потреби – від дизайну сторінки до інтеграції з соціальними мережами.</p>
+                           <h2 className="pb-4">Підтримка організаторів</h2> 
+                           <p>Ми не кидаємо тебе наодинці з платформою. Служба підримки на зв&apos;язку 24/7, вирішуємо питання швидко і по-людськи.</p>
                         </div>
                     </div>
                     <div className="flex">
-                        <GiProgression className="w-12 h-12 mr-7"/>
+                        <BiSolidLock className="w-12 h-12 mr-7"/>
                         <div className="w-[533px]">
-                           <h2 className="pb-6">Розширені інструменти просування</h2> 
-                           <p>Завдяки вбудованим маркетинговим інструментам і можливостям інтеграції з популярними соцмережами, ви можете легко привернути аудиторію та підвищити видимість заходу, що сприяє його успіху.</p>
+                           <h2 className="pb-4">Захист від шахраїв</h2> 
+                           <p>Ми перевіряємо організаторів та події для безпеки відвідувачів.</p>
                         </div>
                     </div>
                     
