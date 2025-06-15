@@ -134,7 +134,7 @@ export const EventCard: React.FC<EventCardProps> = ({
       onClick={e => handleOnClick(e)}
       id={`${eventId}`}
       className={`group relative flex overflow-hidden items-start rounded-[20px] shadow-eventCardShadow 
-        lg:w-[312px] lg:h-[514px] h-[309px] lg:aspect-auto ${
+        lg:w-[312px] min-w-[171px] lg:h-[514px] h-[309px] lg:aspect-auto ${
           top ? 'mb-[10px]' : ''
         }${isAdmin && 'hover:cursor-pointer'}`}
     >
@@ -176,7 +176,7 @@ export const EventCard: React.FC<EventCardProps> = ({
       >
         <div className="flex justify-between w-full">
           <div
-            className={`flex items-center justify-center lg:h-[33px] h-[20px] rounded-[20px]
+            className={`flex items-center justify-center lg:h-[33px] h-[22px] rounded-[20px]
                  border lg:border-[2px] border-borderColor bg-bg-gradient`}
           >
             <p

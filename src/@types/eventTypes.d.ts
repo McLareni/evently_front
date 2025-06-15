@@ -52,7 +52,7 @@ interface EventDTO {
     latitude: string;
     longitude: string;
   };
-  organizers: User[];
+  organizers: User;
   eventUrl: string;
   eventStatus: 'PENDING' | 'APPROVED' | 'CANCELLED';
   deleted: boolean;

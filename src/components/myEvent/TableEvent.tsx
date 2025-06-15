@@ -3,7 +3,10 @@ import { useInView } from 'react-intersection-observer';
 import { Link } from 'react-router-dom';
 
 import { selectUser } from '@/redux/auth/selectors';
-import { useLazyGetAllMyEventsQuery } from '@/redux/events/operations';
+import {
+  useDeleteMyEventMutation,
+  useLazyGetAllMyEventsQuery,
+} from '@/redux/events/operations';
 import { useAppSelector } from '@/redux/hooks';
 
 import clsx from 'clsx';
@@ -21,6 +24,8 @@ const TableEvent = () => {
   const [page, setPage] = useState(0);
   const { id } = useAppSelector(selectUser);
   const [getEvents, { isFetching, isLoading }] = useLazyGetAllMyEventsQuery();
+  const [deleteMyEvent, { isLoading: isLoadingDeleteEvent }] =
+    useDeleteMyEventMutation();
 
   const handleOpenPopUp = (id?: string) => {
     setIdPopUp(id);
@@ -32,6 +37,13 @@ const TableEvent = () => {
     }
 
     handleOpenPopUp(undefined);
+  };
+
+  const handleDeleteEvent = async (id: string) => {
+    await deleteMyEvent({ idEvent: id });
+    console.log(events, id);
+
+    setEvents(prev => prev.filter(event => event.id !== id));
   };
 
   useEffect(() => {
@@ -54,6 +66,8 @@ const TableEvent = () => {
     if (response.status === 'uninitialized') {
       filterEvents();
     }
+
+    console.log(response);
 
     if ((response?.data?.length || 0) < 5) {
       setIsFullList(true);
@@ -83,7 +97,7 @@ const TableEvent = () => {
     filterEvents();
   };
 
-  if (isLoading) {
+  if (isLoading || isLoadingDeleteEvent) {
     return <Spinner />;
   }
 
@@ -123,6 +137,7 @@ const TableEvent = () => {
                 event={event}
                 popUpIsShow={event.id === idPopUp}
                 openPopUp={handleOpenPopUp}
+                deleteEvent={handleDeleteEvent}
               />
             </tr>
           ))}

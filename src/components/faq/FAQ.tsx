@@ -48,7 +48,7 @@ export const FAQ: React.FC = () => {
                 onClick={() => toggleIndex(index)}
                 aria-expanded={openIndex === index}
               >
-                <h2 className="lg:font-medium lg:text-2xl lg:mr-0 mr-4 text-base font-normal">
+                <h2 className="lg:font-medium lg:text-2xl lg:mr-0 mr-4 text-xl font-normal">
                   {item.title}
                 </h2>
                 <BiChevronDown
@@ -67,7 +67,7 @@ export const FAQ: React.FC = () => {
                 }}
                 className="transition-[height] duration-300 ease-in-out"
               >
-                <div className="lg:pb-9 pb-3 px-6 text-gray-600 lg:text-base text-xs">
+                <div className="lg:pb-9 pb-3 px-6 text-gray-600 lg:text-base text-sm">
                   {item.content}
                 </div>
               </div>
