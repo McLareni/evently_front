@@ -126,7 +126,8 @@ export const FilterEvents: React.FC<FilterEventsProps> = ({
                     <div className="flex justify-center gap-[12px] py-[12px] px-[20px]">
                       {eventDate.map(option => (
                         <button
-                          className="flex items-center border-buttonPurple border-[1px] px-[12px] py-[8px] rounded-[8px]"
+                          className={`${selectedDates.includes(option.label) ? 'bg-lightPurple' : ''}
+                          flex items-center border-buttonPurple border-[1px] px-[12px] py-[8px] rounded-[8px]`}
                           key={nanoid()}
                           onClick={() => addDateFilter(option.label)}
                         >
