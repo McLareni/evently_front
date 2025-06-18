@@ -222,11 +222,11 @@ const AllEventsPage: React.FC = () => {
             </AuthMobileModal>
           </div>
         )}
-        <div className="mx-4 lg:mx-0">
+        <div className="mx-4 lg:mx-0 lg:w-full">
           {events && events?.length > 0 ? (
             <div className="flex flex-col">
               {!mapIsHidden && (
-                <div className="mx-auto mb-8 pr-16">
+                <div className="mb-8 pr-16 lg:flex lg:justify-center">
                   <GoogleMap
                     events={events || []}
                     userLocation={{ latitude: 50.43749, longitude: 30.514977 }}
