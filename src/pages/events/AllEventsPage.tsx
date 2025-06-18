@@ -206,8 +206,8 @@ const AllEventsPage: React.FC = () => {
               <GiSettingsKnobs size={24} />
             </button>
             <AuthMobileModal
+              hiddenCross={true}
               isOpen={filterShown}
-              onClose={toggleFilterShown}
               paddingTop={144}
             >
               <FilterEvents
@@ -217,6 +217,7 @@ const AllEventsPage: React.FC = () => {
                 addDateFilter={addDateFilter}
                 addPriceFilter={addPriceFilter}
                 toggleFilterShown={toggleFilterShown}
+                onClose={toggleFilterShown}
               />
             </AuthMobileModal>
           </div>

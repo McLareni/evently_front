@@ -2,6 +2,7 @@
 import { useState } from 'react';
 import { AiOutlineMinus, AiOutlinePlus } from 'react-icons/ai';
 import { BiChevronDown } from 'react-icons/bi';
+import { RxCross2 } from 'react-icons/rx';
 
 import { setIsCalendarShown } from '@/redux/filters/filtersSlice';
 import {
@@ -42,6 +43,7 @@ interface FilterEventsProps {
   addDateFilter: (filter: string) => void;
   addPriceFilter: (filter: number) => void;
   toggleFilterShown: () => void;
+  onClose?: () => void;
 }
 
 export const FilterEvents: React.FC<FilterEventsProps> = ({
@@ -51,6 +53,7 @@ export const FilterEvents: React.FC<FilterEventsProps> = ({
   addDateFilter,
   addPriceFilter,
   toggleFilterShown,
+  onClose,
 }) => {
   const [isShownType, setIsShownType] = useState(true);
   const [isShownDay, setIsShownDay] = useState(true);
@@ -78,7 +81,18 @@ export const FilterEvents: React.FC<FilterEventsProps> = ({
       >
         <div className="overflow-y-scroll overscroll-contain">
           <div className="px-[18px]">
-            {width < 1024 && <h2 className="mb-[16px]">Фільтр</h2>}
+            {width < 1024 && (
+              <div className="mb-[16px] flex items-center justify-between">
+                <h2>Фільтр</h2>
+                <button
+                  onClick={onClose}
+                  className="w-[32px] flex items-center justify-center focus:outline-none"
+                  aria-label="Close Modal"
+                >
+                  <RxCross2 size={24} />
+                </button>
+              </div>
+            )}
             <div className="mb-[16px] flex items-center justify-between">
               <h2>Тип події</h2>
               {width < 1024 && (
