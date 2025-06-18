@@ -1,4 +1,6 @@
 /* eslint-disable no-unused-vars */
+import { useState } from 'react';
+import { AiOutlineMinus, AiOutlinePlus } from 'react-icons/ai';
 import { BiChevronDown } from 'react-icons/bi';
 
 import { setIsCalendarShown } from '@/redux/filters/filtersSlice';
@@ -50,6 +52,8 @@ export const FilterEvents: React.FC<FilterEventsProps> = ({
   addPriceFilter,
   toggleFilterShown,
 }) => {
+  const [isShownType, setIsShownType] = useState(true);
+
   const dispatch = useAppDispatch();
 
   const isShownCalendar = useAppSelector(getIsCalendarShown);
@@ -72,8 +76,27 @@ export const FilterEvents: React.FC<FilterEventsProps> = ({
       >
         <div className="overflow-y-scroll overscroll-contain">
           <div className="px-[18px]">
-            <h2 className="mb-[16px]">Тип події</h2>
-            <ul className="flex flex-col gap-[16px] pl-[18px]">
+            {width < 1024 && <h2 className="mb-[16px]">Фільтр</h2>}
+            <div className="mb-[16px] flex items-center justify-between">
+              <h2>Тип події</h2>
+              {width < 1024 && (
+                <button
+                  onClick={() => {
+                    setIsShownType(!isShownType);
+                  }}
+                  className="w-[32px] flex items-center justify-center focus:outline-none"
+                >
+                  {isShownType ? (
+                    <AiOutlineMinus size={24} />
+                  ) : (
+                    <AiOutlinePlus size={24} />
+                  )}
+                </button>
+              )}
+            </div>
+            <ul
+              className={`flex flex-col gap-[16px] pl-[18px] ${isShownType ? '' : 'h-0 overflow-hidden'}`}
+            >
               {eventTypes.map(option => (
                 <li key={nanoid()} className="flex gap-4">
                   <Checkbox
