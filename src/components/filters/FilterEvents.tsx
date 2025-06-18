@@ -53,6 +53,8 @@ export const FilterEvents: React.FC<FilterEventsProps> = ({
   toggleFilterShown,
 }) => {
   const [isShownType, setIsShownType] = useState(true);
+  const [isShownDay, setIsShownDay] = useState(true);
+  const [isShownPrice, setIsShownPrice] = useState(true);
 
   const dispatch = useAppDispatch();
 
@@ -112,7 +114,23 @@ export const FilterEvents: React.FC<FilterEventsProps> = ({
           </div>
 
           <div className="px-[18px]">
-            <h2 className="mb-[16px]">Коли</h2>
+            <div className="w-full mb-[16px] flex items-center justify-between">
+              <h2>Коли</h2>
+              {width < 1024 && (
+                <button
+                  onClick={() => {
+                    setIsShownDay(!isShownDay);
+                  }}
+                  className="w-[32px] flex items-center justify-center focus:outline-none"
+                >
+                  {isShownDay ? (
+                    <AiOutlineMinus size={24} />
+                  ) : (
+                    <AiOutlinePlus size={24} />
+                  )}
+                </button>
+              )}
+            </div>
             <div className="lg:pl-[18px]">
               {width > 1024 && (
                 <ul className="flex flex-col gap-[16px] mb-[18px]">
@@ -130,8 +148,8 @@ export const FilterEvents: React.FC<FilterEventsProps> = ({
                 </ul>
               )}
               <div
-                className="border-[1px] border-buttonPurple rounded-[10px] overflow-hidden 
-            lg:w-[245px] mb-[18px]"
+                className={`${isShownDay ? 'border-[1px] mb-[18px]' : 'h-0 overflow-hidden'}  border-buttonPurple rounded-[10px] overflow-hidden 
+            lg:w-[245px]`}
               >
                 {width >= 1024 ? (
                   <>
@@ -166,8 +184,27 @@ export const FilterEvents: React.FC<FilterEventsProps> = ({
           </div>
 
           <div className="px-[18px]">
-            <h2 className="mb-[16px]">Ціна</h2>
-            <ul className="flex flex-col gap-[16px] pl-[18px]">
+            <div className="w-full mb-[16px] flex items-center justify-between">
+              <h2>Ціна</h2>
+              {width < 1024 && (
+                <button
+                  onClick={() => {
+                    setIsShownPrice(!isShownPrice);
+                  }}
+                  className="w-[32px] flex items-center justify-center focus:outline-none"
+                >
+                  {isShownPrice ? (
+                    <AiOutlineMinus size={24} />
+                  ) : (
+                    <AiOutlinePlus size={24} />
+                  )}
+                </button>
+              )}
+            </div>
+
+            <ul
+              className={`${isShownPrice ? '' : 'h-0 overflow-hidden'} flex flex-col gap-[16px] pl-[18px]`}
+            >
               {eventPrice.map(option => (
                 <li key={nanoid()} className="flex gap-4">
                   <Checkbox
