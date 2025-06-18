@@ -226,7 +226,7 @@ const AllEventsPage: React.FC = () => {
           {events && events?.length > 0 ? (
             <div className="flex flex-col">
               {!mapIsHidden && (
-                <div className="mb-8 pr-16 lg:flex lg:justify-center">
+                <div className="mb-8 lg:pr-16 lg:flex lg:justify-center">
                   <GoogleMap
                     events={events || []}
                     userLocation={{ latitude: 50.43749, longitude: 30.514977 }}
