@@ -18,7 +18,7 @@ import {
   eventPrice,
   eventTypes,
 } from '@/assets/staticData/statickData';
-import { useScreenWidth } from '@/hooks/useScreenWidth';
+import { useMediaVariables } from '@/hooks/query/useMediaVariables';
 import { nanoid } from '@reduxjs/toolkit';
 
 import { Checkbox } from '../ui/CheckBox';
@@ -61,12 +61,12 @@ export const FilterEvents: React.FC<FilterEventsProps> = ({
 
   const dispatch = useAppDispatch();
 
+  const { isDesktop, isMobile } = useMediaVariables();
+
   const isShownCalendar = useAppSelector(getIsCalendarShown);
   const selectedTypes = useAppSelector(getSelectedTypes);
   const selectedDates = useAppSelector(getSelectedDates);
   const selectedPrices = useAppSelector(getSelectedPrices);
-
-  const width = useScreenWidth();
 
   const toggleCalendar = () => {
     dispatch(setIsCalendarShown(!isShownCalendar));
@@ -81,7 +81,7 @@ export const FilterEvents: React.FC<FilterEventsProps> = ({
       >
         <div className="overflow-y-scroll overscroll-contain">
           <div className="px-[18px]">
-            {width < 1024 && (
+            {isMobile && (
               <div className="mb-[16px] flex items-center justify-between">
                 <h2>Фільтр</h2>
                 <button
@@ -95,7 +95,7 @@ export const FilterEvents: React.FC<FilterEventsProps> = ({
             )}
             <div className="mb-[16px] flex items-center justify-between">
               <h2>Тип події</h2>
-              {width < 1024 && (
+              {isMobile && (
                 <button
                   onClick={() => {
                     setIsShownType(!isShownType);
@@ -130,7 +130,7 @@ export const FilterEvents: React.FC<FilterEventsProps> = ({
           <div className="px-[18px]">
             <div className="w-full mb-[16px] flex items-center justify-between">
               <h2>Коли</h2>
-              {width < 1024 && (
+              {isMobile && (
                 <button
                   onClick={() => {
                     setIsShownDay(!isShownDay);
@@ -146,7 +146,7 @@ export const FilterEvents: React.FC<FilterEventsProps> = ({
               )}
             </div>
             <div className="lg:pl-[18px]">
-              {width > 1024 && (
+              {isDesktop && (
                 <ul className="flex flex-col gap-[16px] mb-[18px]">
                   {eventDate.map(option => (
                     <li key={nanoid()} className="flex gap-4">
@@ -165,7 +165,7 @@ export const FilterEvents: React.FC<FilterEventsProps> = ({
                 className={`${isShownDay ? 'border-[1px] mb-[18px]' : 'h-0 overflow-hidden'}  border-buttonPurple rounded-[10px] overflow-hidden 
             lg:w-[245px]`}
               >
-                {width >= 1024 ? (
+                {isDesktop ? (
                   <>
                     <button
                       className="flex justify-between items-center w-full h-[34px] px-[12px] focus:outline-none"
@@ -200,7 +200,7 @@ export const FilterEvents: React.FC<FilterEventsProps> = ({
           <div className="px-[18px]">
             <div className="w-full mb-[16px] flex items-center justify-between">
               <h2>Ціна</h2>
-              {width < 1024 && (
+              {isMobile && (
                 <button
                   onClick={() => {
                     setIsShownPrice(!isShownPrice);
