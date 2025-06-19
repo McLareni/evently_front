@@ -234,15 +234,20 @@ export const FilterEvents: React.FC<FilterEventsProps> = ({
           </div>
         </div>
 
-        <div className="border-t-buttonPurple border-t-[1px] flex lg:mr-[-5px]">
+        <div
+          className={`px-[24px] pb-[24px] lg:p-0 lg:border-t-buttonPurple lg:border-t-[1px]
+            flex gap-[24px] lg:gap-0 lg:mr-[-5px]`}
+        >
           <button
-            className="h-[50px] flex justify-center items-center flex-1 focus:outline-none border-r-buttonPurple border-r-[1px]"
+            className={`border-buttonPurple border-[1px] rounded-[15px] lg:rounded-none h-[50px]
+              flex justify-center items-center flex-1 focus:outline-none border-r-buttonPurple
+              border-r-[1px] lg:border-l-0 lg:border-b-0 lg:border-t-0`}
             onClick={resetFilters}
           >
             Відмінити
           </button>
           <button
-            className="h-[50px] flex justify-center items-center flex-1 focus:outline-none bg-filter-btn-gradient rounded-br-[19px] text-background"
+            className="h-[50px] flex justify-center rounded-[15px] lg:rounded-none items-center flex-1 focus:outline-none bg-filter-btn-gradient lg:rounded-br-[19px] text-background"
             onClick={() => {
               filterEvents();
               toggleFilterShown();
