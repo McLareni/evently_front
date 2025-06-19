@@ -1,5 +1,8 @@
 /* eslint-disable no-unused-vars */
+import { useState } from 'react';
+import { AiOutlineMinus, AiOutlinePlus } from 'react-icons/ai';
 import { BiChevronDown } from 'react-icons/bi';
+import { RxCross2 } from 'react-icons/rx';
 
 import { setIsCalendarShown } from '@/redux/filters/filtersSlice';
 import {
@@ -15,7 +18,7 @@ import {
   eventPrice,
   eventTypes,
 } from '@/assets/staticData/statickData';
-import { useScreenWidth } from '@/hooks/useScreenWidth';
+import { useMediaVariables } from '@/hooks/query/useMediaVariables';
 import { nanoid } from '@reduxjs/toolkit';
 
 import { Checkbox } from '../ui/CheckBox';
@@ -40,6 +43,7 @@ interface FilterEventsProps {
   addDateFilter: (filter: string) => void;
   addPriceFilter: (filter: number) => void;
   toggleFilterShown: () => void;
+  onClose?: () => void;
 }
 
 export const FilterEvents: React.FC<FilterEventsProps> = ({
@@ -49,15 +53,20 @@ export const FilterEvents: React.FC<FilterEventsProps> = ({
   addDateFilter,
   addPriceFilter,
   toggleFilterShown,
+  onClose,
 }) => {
+  const [isShownType, setIsShownType] = useState(true);
+  const [isShownDay, setIsShownDay] = useState(true);
+  const [isShownPrice, setIsShownPrice] = useState(true);
+
   const dispatch = useAppDispatch();
+
+  const { isDesktop, isMobile } = useMediaVariables();
 
   const isShownCalendar = useAppSelector(getIsCalendarShown);
   const selectedTypes = useAppSelector(getSelectedTypes);
   const selectedDates = useAppSelector(getSelectedDates);
   const selectedPrices = useAppSelector(getSelectedPrices);
-
-  const width = useScreenWidth();
 
   const toggleCalendar = () => {
     dispatch(setIsCalendarShown(!isShownCalendar));
@@ -72,8 +81,38 @@ export const FilterEvents: React.FC<FilterEventsProps> = ({
       >
         <div className="overflow-y-scroll overscroll-contain">
           <div className="px-[18px]">
-            <h2 className="mb-[16px]">Тип події</h2>
-            <ul className="flex flex-col gap-[16px] pl-[18px]">
+            {isMobile && (
+              <div className="mb-[16px] flex items-center justify-between">
+                <h2>Фільтр</h2>
+                <button
+                  onClick={onClose}
+                  className="w-[32px] flex items-center justify-center focus:outline-none"
+                  aria-label="Close Modal"
+                >
+                  <RxCross2 size={24} />
+                </button>
+              </div>
+            )}
+            <div className="mb-[16px] flex items-center justify-between">
+              <h2>Тип події</h2>
+              {isMobile && (
+                <button
+                  onClick={() => {
+                    setIsShownType(!isShownType);
+                  }}
+                  className="w-[32px] flex items-center justify-center focus:outline-none"
+                >
+                  {isShownType ? (
+                    <AiOutlineMinus size={24} />
+                  ) : (
+                    <AiOutlinePlus size={24} />
+                  )}
+                </button>
+              )}
+            </div>
+            <ul
+              className={`flex flex-col gap-[16px] pl-[18px] ${isShownType ? '' : 'h-0 overflow-hidden'}`}
+            >
               {eventTypes.map(option => (
                 <li key={nanoid()} className="flex gap-4">
                   <Checkbox
@@ -89,9 +128,25 @@ export const FilterEvents: React.FC<FilterEventsProps> = ({
           </div>
 
           <div className="px-[18px]">
-            <h2 className="mb-[16px]">Коли</h2>
+            <div className="w-full mb-[16px] flex items-center justify-between">
+              <h2>Коли</h2>
+              {isMobile && (
+                <button
+                  onClick={() => {
+                    setIsShownDay(!isShownDay);
+                  }}
+                  className="w-[32px] flex items-center justify-center focus:outline-none"
+                >
+                  {isShownDay ? (
+                    <AiOutlineMinus size={24} />
+                  ) : (
+                    <AiOutlinePlus size={24} />
+                  )}
+                </button>
+              )}
+            </div>
             <div className="lg:pl-[18px]">
-              {width > 1024 && (
+              {isDesktop && (
                 <ul className="flex flex-col gap-[16px] mb-[18px]">
                   {eventDate.map(option => (
                     <li key={nanoid()} className="flex gap-4">
@@ -107,10 +162,10 @@ export const FilterEvents: React.FC<FilterEventsProps> = ({
                 </ul>
               )}
               <div
-                className="border-[1px] border-buttonPurple rounded-[10px] overflow-hidden 
-            lg:w-[245px] mb-[18px]"
+                className={`${isShownDay ? 'border-[1px] mb-[18px]' : 'h-0 overflow-hidden'}  border-buttonPurple rounded-[10px] overflow-hidden 
+            lg:w-[245px]`}
               >
-                {width >= 1024 ? (
+                {isDesktop ? (
                   <>
                     <button
                       className="flex justify-between items-center w-full h-[34px] px-[12px] focus:outline-none"
@@ -126,7 +181,8 @@ export const FilterEvents: React.FC<FilterEventsProps> = ({
                     <div className="flex justify-center gap-[12px] py-[12px] px-[20px]">
                       {eventDate.map(option => (
                         <button
-                          className="flex items-center border-buttonPurple border-[1px] px-[12px] py-[8px] rounded-[8px]"
+                          className={`${selectedDates.includes(option.label) ? 'bg-lightPurple' : ''}
+                          flex items-center border-buttonPurple border-[1px] px-[12px] py-[8px] rounded-[8px]`}
                           key={nanoid()}
                           onClick={() => addDateFilter(option.label)}
                         >
@@ -142,8 +198,27 @@ export const FilterEvents: React.FC<FilterEventsProps> = ({
           </div>
 
           <div className="px-[18px]">
-            <h2 className="mb-[16px]">Ціна</h2>
-            <ul className="flex flex-col gap-[16px] pl-[18px]">
+            <div className="w-full mb-[16px] flex items-center justify-between">
+              <h2>Ціна</h2>
+              {isMobile && (
+                <button
+                  onClick={() => {
+                    setIsShownPrice(!isShownPrice);
+                  }}
+                  className="w-[32px] flex items-center justify-center focus:outline-none"
+                >
+                  {isShownPrice ? (
+                    <AiOutlineMinus size={24} />
+                  ) : (
+                    <AiOutlinePlus size={24} />
+                  )}
+                </button>
+              )}
+            </div>
+
+            <ul
+              className={`${isShownPrice ? '' : 'h-0 overflow-hidden'} flex flex-col gap-[16px] pl-[18px]`}
+            >
               {eventPrice.map(option => (
                 <li key={nanoid()} className="flex gap-4">
                   <Checkbox
@@ -159,15 +234,20 @@ export const FilterEvents: React.FC<FilterEventsProps> = ({
           </div>
         </div>
 
-        <div className="border-t-buttonPurple border-t-[1px] flex lg:mr-[-5px]">
+        <div
+          className={`px-[24px] pb-[24px] lg:p-0 lg:border-t-buttonPurple lg:border-t-[1px]
+            flex gap-[24px] lg:gap-0 lg:mr-[-5px]`}
+        >
           <button
-            className="h-[50px] flex justify-center items-center flex-1 focus:outline-none border-r-buttonPurple border-r-[1px]"
+            className={`border-buttonPurple border-[1px] rounded-[15px] lg:rounded-none h-[50px]
+              flex justify-center items-center flex-1 focus:outline-none border-r-buttonPurple
+              border-r-[1px] lg:border-l-0 lg:border-b-0 lg:border-t-0`}
             onClick={resetFilters}
           >
             Відмінити
           </button>
           <button
-            className="h-[50px] flex justify-center items-center flex-1 focus:outline-none bg-filter-btn-gradient rounded-br-[19px] text-background"
+            className="h-[50px] flex justify-center rounded-[15px] lg:rounded-none items-center flex-1 focus:outline-none bg-filter-btn-gradient lg:rounded-br-[19px] text-background"
             onClick={() => {
               filterEvents();
               toggleFilterShown();

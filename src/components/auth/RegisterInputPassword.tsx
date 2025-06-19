@@ -92,7 +92,7 @@ export const RegisterInputPassword: React.FC<RegisterInputPasswordProps> = ({
               id="name"
               autofocus
               defaultValue={name}
-              placeholder="Ім'я"
+              placeholder="Ваше ім'я"
               autocomplete="on"
               type="text"
               isSubmitted={isSubmitted}
@@ -119,7 +119,7 @@ export const RegisterInputPassword: React.FC<RegisterInputPasswordProps> = ({
               onInput={(value: string) => {
                 setOnInputPassword(value);
               }}
-              placeholder="Пароль"
+              placeholder="Введіть пароль"
               id="password"
               autocomplete="on"
               type="password"
