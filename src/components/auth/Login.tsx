@@ -146,14 +146,14 @@ export const Login: React.FC<LoginProps> = ({
             />
             {((isSubmitted || isBluredNameInput === 'email') &&
               errors.email?.message) ||
-              (emailLoginError && (
-                <SharedItemStatusBar
-                  valid={false}
-                  text={`${errors.email?.message ?? errorMessage}`}
-                  sizeIcon={`w-6 h-6`}
-                  className={`absolute mt-[4px]`}
-                />
-              ))}
+            emailLoginError ? (
+              <SharedItemStatusBar
+                valid={false}
+                text={errors.email?.message ?? errorMessage}
+                sizeIcon="w-6 h-6"
+                className="absolute mt-[4px]"
+              />
+            ) : null}
           </div>
           <div className={`relative`}>
             <SharedInput
@@ -170,14 +170,14 @@ export const Login: React.FC<LoginProps> = ({
             />
             {((isSubmitted || isBluredNameInput === 'password') &&
               errors.password?.message) ||
-              (passwordLoginError && (
-                <SharedItemStatusBar
-                  valid={false}
-                  text={`${errors.password?.message ?? errorMessage}`}
-                  sizeIcon={`w-6 h-6`}
-                  className={`absolute mt-[4px]`}
-                />
-              ))}
+            passwordLoginError ? (
+              <SharedItemStatusBar
+                valid={false}
+                text={errors.password?.message ?? errorMessage}
+                sizeIcon="w-6 h-6"
+                className="absolute mt-[4px]"
+              />
+            ) : null}
             <button
               type="button"
               onClick={() => setStatusAuth('password_renovation')}
