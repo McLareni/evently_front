@@ -68,7 +68,8 @@ export const GoogleMap = ({ events, userLocation }: EventGoogleMapProps) => {
     <Map
       mapId={'1'}
       style={{
-        width: '826px',
+        width: '100%',
+        maxWidth: '826px',
         height: '600px',
         borderRadius: '20px',
         overflow: 'hidden',

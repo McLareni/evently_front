@@ -1,8 +1,6 @@
 import { useEffect, useState } from 'react';
 
-import {
-  useLazyGetAllEventsFilteredQuery,
-} from '@/redux/events/operations';
+import { useLazyGetAllEventsFilteredQuery } from '@/redux/events/operations';
 
 import { useScrollToTop } from '@/hooks/useScrollToTop';
 
@@ -58,7 +56,7 @@ const Home: React.FC = () => {
     };
 
     fetchEvents();
-  // eslint-disable-next-line react-hooks/exhaustive-deps
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   const shownEvents = 16;
@@ -69,7 +67,7 @@ const Home: React.FC = () => {
   if (isLoading || isFetching) return <Spinner />;
 
   return (
-    <Main className="flex flex-col lg:gap-16 gap-0 z-10">
+    <Main className="flex flex-col lg:gap-16 gap-6 z-10">
       <Hero />
       <>
         <TopEvents filteredEvents={topEvents} />

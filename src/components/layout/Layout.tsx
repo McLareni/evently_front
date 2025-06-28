@@ -4,11 +4,11 @@ import { Outlet, useLocation } from 'react-router-dom';
 import { useResetAllFiltersAfterRouting } from '@/hooks/filters/useResetAllFiltersAfterRouting';
 import { useScreenWidth } from '@/hooks/useScreenWidth';
 
+import { MobileFooter } from '../footer/MobileFooter';
 import { Footer } from '../footer/footer';
 import { Header } from '../header/Header';
 import { MainLines } from '../main/MainLines';
 import { LayoutHorizontalLines } from './LayoutHorizontalLines';
-import { MobileFooter } from '../footer/MobileFooter';
 
 export const Layout = () => {
   useResetAllFiltersAfterRouting();
@@ -30,7 +30,7 @@ export const Layout = () => {
     <>
       <Header />
       <main
-        className={`pt-[88px] ${linesShown ? 'lg:pt-[140px]' : 'lg:pt-[108px]'}
+        className={`pt-[72px] ${linesShown ? 'lg:pt-[140px]' : 'lg:pt-[108px]'}
         relative flex-grow lg:w-[1440px] w-full`}
       >
         {linesShown && <LayoutHorizontalLines />}
@@ -39,7 +39,7 @@ export const Layout = () => {
         </Suspense>
         {width >= 1024 && <MainLines />}
       </main>
-      {width >= 1024 ? <Footer /> : <MobileFooter/>}
+      {width >= 1024 ? <Footer /> : <MobileFooter />}
     </>
   );
 };

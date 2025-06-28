@@ -119,79 +119,81 @@ export const Login: React.FC<LoginProps> = ({
 
   return (
     <>
-      <h1 className="text-[32px] lg:text-[64px] mb-6 text-center lg:text-left">
+      <h1 className="leading-[1] text-[32px] lg:text-[64px] mb-[46px] text-center lg:text-left">
         Увійти в акаунт
       </h1>
       <form
         onSubmit={handleSubmit(onSubmit)}
-        className="flex flex-col lg:rounded-lg gap-10 lg:w-[500px] pb-4 lg:p-0"
+        className="flex flex-col lg:rounded-lg lg:w-[500px] pb-4 lg:p-0"
       >
-        <div className={`relative`}>
-          <SharedInput
-            id="email"
-            autofocus
-            onInput={() => {
-              setEmailLoginError(false);
-              setPasswordLoginError(false);
-            }}
-            onBlur={e => handleBlur(e)}
-            autocomplete="email"
-            placeholder="Введіть email"
-            type="email"
-            isSubmitted={isSubmitted}
-            register={register}
-            validation={{ required: true, validate: validateEmail }}
-            errors={errors}
-          />
-          {((isSubmitted || isBluredNameInput === 'email') &&
-            errors.email?.message) ||
-            (emailLoginError && (
+        <div className="flex flex-col gap-6 lg:gap-10">
+          <div className={`relative`}>
+            <SharedInput
+              id="email"
+              autofocus
+              onInput={() => {
+                setEmailLoginError(false);
+                setPasswordLoginError(false);
+              }}
+              onBlur={e => handleBlur(e)}
+              autocomplete="email"
+              placeholder="Введіть email"
+              type="email"
+              isSubmitted={isSubmitted}
+              register={register}
+              validation={{ required: true, validate: validateEmail }}
+              errors={errors}
+            />
+            {((isSubmitted || isBluredNameInput === 'email') &&
+              errors.email?.message) ||
+            emailLoginError ? (
               <SharedItemStatusBar
                 valid={false}
-                text={`${errors.email?.message ?? errorMessage}`}
-                sizeIcon={`w-6 h-6`}
-                className={`absolute mt-[4px]`}
+                text={errors.email?.message ?? errorMessage}
+                sizeIcon="w-6 h-6"
+                className="absolute mt-[4px]"
               />
-            ))}
-        </div>
-        <div className={`relative`}>
-          <SharedInput
-            id="password"
-            autocomplete="current-password"
-            placeholder="Введіть пароль"
-            type="password"
-            isSubmitted={isSubmitted}
-            onInput={() => setPasswordLoginError(false)}
-            onBlur={e => handleBlur(e)}
-            register={register}
-            validation={{ required: true, validate: validatePassword }}
-            errors={errors}
-          />
-          {((isSubmitted || isBluredNameInput === 'password') &&
-            errors.password?.message) ||
-            (passwordLoginError && (
+            ) : null}
+          </div>
+          <div className={`relative`}>
+            <SharedInput
+              id="password"
+              autocomplete="current-password"
+              placeholder="Введіть пароль"
+              type="password"
+              isSubmitted={isSubmitted}
+              onInput={() => setPasswordLoginError(false)}
+              onBlur={e => handleBlur(e)}
+              register={register}
+              validation={{ required: true, validate: validatePassword }}
+              errors={errors}
+            />
+            {((isSubmitted || isBluredNameInput === 'password') &&
+              errors.password?.message) ||
+            passwordLoginError ? (
               <SharedItemStatusBar
                 valid={false}
-                text={`${errors.password?.message ?? errorMessage}`}
-                sizeIcon={`w-6 h-6`}
-                className={`absolute mt-[4px]`}
+                text={errors.password?.message ?? errorMessage}
+                sizeIcon="w-6 h-6"
+                className="absolute mt-[4px]"
               />
-            ))}
-          <button
-            type="button"
-            onClick={() => setStatusAuth('password_renovation')}
-            className={` absolute border-b border-textColor text-xs font-normal flex w-22 top-16 right-0`}
-          >
-            Забули пароль?
-          </button>
+            ) : null}
+            <button
+              type="button"
+              onClick={() => setStatusAuth('password_renovation')}
+              className={` absolute border-b border-textColor text-[12px] font-normal flex w-22 top-16 right-0`}
+            >
+              Забули пароль?
+            </button>
+          </div>
         </div>
-        <span className="text-base ml-auto mr-auto">або</span>
+        <span className="text-base ml-auto mr-auto my-6">або</span>
         <div
           className={`flex gap-2.5 items-center justify-center h-[70px] bg-bgColor lg:rounded-[20px]`}
         >
           <GoogleLoginButton onCloseModal={onCloseModal} />
         </div>
-        <div className={`flex justify-between items-start w-full -mt-8`}>
+        <div className={`flex justify-between items-start w-full`}>
           <CustomCheckbox
             checked={userData.rememberMe}
             onChange={handleRememberMeChange}
@@ -199,7 +201,7 @@ export const Login: React.FC<LoginProps> = ({
             className={``}
           />
 
-          <div className={`flex flex-col lg:flex-row items-end gap-2`}>
+          <div className={`flex flex-col lg:flex-row items-end lg:gap-2`}>
             <span className={`text-black `}> У вас немає акаунту?</span>
             <button
               type="button"
@@ -214,7 +216,7 @@ export const Login: React.FC<LoginProps> = ({
           type="submit"
           onClick={() => setIsSubmitted(true)}
           primary
-          className={`w-[364px] mx-auto`}
+          className={`lg:w-[364px] lg:mx-auto mt-[20px] lg:mt-[40px]`}
         >
           Увійти
         </SharedBtn>

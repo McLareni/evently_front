@@ -133,17 +133,21 @@ export const EventCard: React.FC<EventCardProps> = ({
     <div
       onClick={e => handleOnClick(e)}
       id={`${eventId}`}
-      className={`group relative flex overflow-hidden items-start rounded-[20px] shadow-eventCardShadow lg:w-[312px] lg:h-[514px] w-[174px] h-[309px] ${
-        top ? 'mb-[10px]' : ''
-      }${isAdmin && 'hover:cursor-pointer'}`}
+      className={`group relative flex overflow-hidden items-start rounded-[20px] shadow-eventCardShadow 
+        lg:w-[312px] min-w-[171px] lg:h-[514px] h-[309px] lg:aspect-auto ${
+          top ? 'mb-[10px]' : ''
+        }${isAdmin && 'hover:cursor-pointer'}`}
     >
       {images[0] && images[0].url && (
         <img src={images[0].url} alt={title} width={'100%'} />
       )}
       <div className={`flex absolute justify-between lg:p-6 p-3 w-full`}>
         {category === 'TOP_EVENTS' && event.eventStatus === 'APPROVED' && (
-          <div className="flex justify-center items-center w-[58px] h-[33px] bg-badge-gradient rounded-[20px]">
-            <span className="text-background">ТОП</span>
+          <div
+            className="flex justify-center items-center lg:w-[58px] w-[50px] lg:h-[33px] h-[22px] 
+          bg-badge-gradient rounded-[20px] lg:text-base text-xs"
+          >
+            <span className="text-background">New</span>
           </div>
         )}
         {!isAdmin && !isEventCreated && (
@@ -154,7 +158,9 @@ export const EventCard: React.FC<EventCardProps> = ({
             className={`focus:outline-none ml-auto bg-background lg:w-[32px] lg:h-[32px] w-6 h-6 flex items-center justify-center rounded-full opacity-60`}
           >
             {isLiked ? (
-              <PiHeartFill className={`lg:w-6 lg:h-6 h-[18px] w-[18px] text-borderColor`} />
+              <PiHeartFill
+                className={`lg:w-6 lg:h-6 h-[18px] w-[18px] text-borderColor`}
+              />
             ) : (
               <PiHeartLight className="lg:w-6 lg:h-6 h-[18px] w-[18px] text-borderColor" />
             )}
@@ -170,11 +176,11 @@ export const EventCard: React.FC<EventCardProps> = ({
       >
         <div className="flex justify-between w-full">
           <div
-            className={`flex items-center justify-center lg:h-[33px] h-[20px] rounded-[20px]
-                 border-[2px] border-borderColor bg-bg-gradient`}
+            className={`flex items-center justify-center lg:h-[33px] h-[22px] rounded-[20px]
+                 border lg:border-[2px] border-borderColor bg-bg-gradient`}
           >
             <p
-              className={`font-normal lg:text-md text-xs text-textDark lg:px-4 px-3`}
+              className={`font-normal text-nowrap lg:text-base text-xs text-textDark lg:px-4 px-3`}
             >
               {type}
             </p>
@@ -209,22 +215,31 @@ export const EventCard: React.FC<EventCardProps> = ({
         <ul
           className={`flex flex-col lg:gap-[18px] gap-2 font-normal text-md text-textDark justify-between w-full`}
         >
-          <li className="flex items-center lg:gap-[18px] gap-2">
-            <AiOutlineCalendar size={isMobile ? '16px' : '24px'} />
+          <li className="flex items-center lg:gap-[18px] gap-2 text-nowrap">
+            <AiOutlineCalendar
+              size={isMobile ? '16px' : '24px'}
+              className={`${isMobile ? 'min-w-4' : 'min-w-6'}`}
+            />
             <p className="lg:text-base text-sm leading-none lg:leading-normal">{`${formattedDate}, ${date?.time}`}</p>
           </li>
-          <li className="flex items-center lg:gap-[18px] gap-2">
-            <GrLocation size={isMobile ? '16px' : '24px'} />
+          <li className="flex items-center lg:gap-[18px] gap-2  min-h-[28px]">
+            <GrLocation
+              size={isMobile ? '16px' : '24px'}
+              className={`${isMobile ? 'min-w-4' : 'min-w-6'}`}
+            />
             {eventUrl ? (
               <p className="lg:text-base text-sm">Онлайн</p>
             ) : (
-              <p className="lg:text-base text-sm leading-none lg:leading-normal">
+              <p className="lg:text-base text-sm leading-none lg:leading-normal line-clamp-2">
                 {slicedStreet()}
               </p>
             )}
           </li>
           <li className="flex items-center lg:gap-[18px] gap-2">
-            <FaRegMoneyBillAlt size={isMobile ? '16px' : '24px'} />
+            <FaRegMoneyBillAlt
+              size={isMobile ? '16px' : '24px'}
+              className={`${isMobile ? 'min-w-4' : 'min-w-6'}`}
+            />
             {price === 0 ? (
               <p className="text-error lg:text-base text-sm">Безкоштовно</p>
             ) : (

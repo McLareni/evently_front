@@ -7,7 +7,6 @@ import { sendNewPassword } from '@/api/sendNewPassword';
 import { statusPassword, validatePassword } from '@/utils';
 
 import {
-  PrivacyAgreement,
   SharedBtn,
   SharedInput,
   SharedItemStatusBar,
@@ -97,12 +96,16 @@ export const PasswordRenovationInputPassword: React.FC<
   };
 
   return (
-    <div className={`flex flex-col h-full justify-between`}>
-      <h1 className={`mb-8`}>Відновлення паролю</h1>
+    <div className={`flex flex-col gap-8 h-full justify-between`}>
+      <h1
+        className={`leading-[1] text-[32px] lg:text-[64px] text-center lg:text-left`}
+      >
+        Відновлення паролю
+      </h1>
       <div className={`flex flex-col h-full justify-between`}>
         <form
           onSubmit={handleSubmit(onSubmit)}
-          className="flex flex-col rounded-lg gap-6 w-[500px]"
+          className="flex flex-col rounded-lg gap-6 lg:w-[500px]"
         >
           <div className="relative">
             <SharedInput
@@ -124,7 +127,7 @@ export const PasswordRenovationInputPassword: React.FC<
             {errors.password?.message && (
               <StatusBarPassword
                 requiredPassword={requiredPassword}
-                className="absolute mt-[4px]"
+                className="lg:absolute mt-[4px]"
               />
             )}
           </div>
@@ -159,12 +162,11 @@ export const PasswordRenovationInputPassword: React.FC<
             type="submit"
             onClick={() => setIsSubmitted(true)}
             primary
-            className={`w-[364px] mt-10 ml-auto mr-auto`}
+            className={`lg:w-[364px] mt-10 lg:mx-auto`}
           >
             Відновити пароль{' '}
           </SharedBtn>
         </form>
-        <PrivacyAgreement />
       </div>
       {isLoading && <Spinner rounded />}
     </div>

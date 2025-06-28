@@ -10,6 +10,7 @@ interface ModalProps {
   onClose?: () => void;
   hiddenCross?: boolean;
   hiddenHeader?: boolean;
+  paddingTop?: number;
 }
 
 export const AuthMobileModal: React.FC<ModalProps> = ({
@@ -18,6 +19,7 @@ export const AuthMobileModal: React.FC<ModalProps> = ({
   onClose,
   hiddenCross,
   hiddenHeader = false,
+  paddingTop = 62,
 }) => {
   const [isOpenModal, setIsOpenModal] = useState(false);
 
@@ -53,7 +55,8 @@ export const AuthMobileModal: React.FC<ModalProps> = ({
 
   return createPortal(
     <div
-      className={`fixed inset-0 z-20 h-full ${!hiddenHeader ? 'pt-[74px]' : ''}`}
+      className="fixed left-0 right-0 bottom-0 z-20 h-full"
+      style={{ top: hiddenHeader ? 0 : paddingTop }}
       aria-modal="true"
       role="dialog"
       onClick={onClose}

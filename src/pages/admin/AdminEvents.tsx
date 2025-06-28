@@ -36,9 +36,12 @@ const AdminEvents = () => {
   });
   const { data: countStatusEvents, isFetching: fetchingCount } =
     useGetCountStatusEventsQuery();
-  const [changeStatusEventFn] = useChangeEventStatusMutation();
-  const [acceptEditEvent] = useAcceptEditEventMutation();
-  const [rejectEditEvent] = useRejectEdirtEventMutation();
+  const [changeStatusEventFn, { isLoading: isLoadingChangeEvent }] =
+    useChangeEventStatusMutation();
+  const [acceptEditEvent, { isLoading: isLoadingAcceptEdit }] =
+    useAcceptEditEventMutation();
+  const [rejectEditEvent, { isLoading: isLoadingRejectEdit }] =
+    useRejectEdirtEventMutation();
   const [acceptDeleteEvent] = useAcceptDeleteEventMutation();
   const [getEditedEvents, { data: newEvent, isLoading: newEventLoading }] =
     useLazyGetEditedEventQuery();
@@ -143,7 +146,17 @@ const AdminEvents = () => {
     setAction(status);
   };
 
-  if (fetchingEvents || fetchingCount || newEventLoading || reasonLoading) {
+  const loadingStates = [
+    fetchingEvents,
+    fetchingCount,
+    newEventLoading,
+    reasonLoading,
+    isLoadingAcceptEdit,
+    isLoadingChangeEvent,
+    isLoadingRejectEdit,
+  ];
+
+  if (loadingStates.some(Boolean)) {
     return <Spinner />;
   }
 

@@ -44,11 +44,11 @@ export const FAQ: React.FC = () => {
           <div key={index}>
             <div className="overflow-hidden rounded-[20px] bg-gradient-to-br from-[#E9E6FF] to-[#D5FEFF]">
               <button
-                className="w-full flex justify-between items-center p-6 text-left text-lg font-medium text-gray-800 focus:outline-none"
+                className="w-full flex justify-between items-center lg:p-6 px-6 py-3 text-left text-lg font-medium text-gray-800 focus:outline-none"
                 onClick={() => toggleIndex(index)}
                 aria-expanded={openIndex === index}
               >
-                <h2 className="lg:font-medium lg:text-2xl lg:mr-0 mr-4 text-base font-normal">
+                <h2 className="lg:font-medium lg:text-2xl lg:mr-0 mr-4 text-xl font-normal">
                   {item.title}
                 </h2>
                 <BiChevronDown
@@ -67,7 +67,7 @@ export const FAQ: React.FC = () => {
                 }}
                 className="transition-[height] duration-300 ease-in-out"
               >
-                <div className="pb-9 px-6 text-gray-600 text-base">
+                <div className="lg:pb-9 pb-3 px-6 text-gray-600 lg:text-base text-sm">
                   {item.content}
                 </div>
               </div>

@@ -1,20 +1,11 @@
 import { PayloadAction, createSlice } from '@reduxjs/toolkit';
 
-export interface Range {
-  start: string | undefined;
-  end: string | undefined;
-}
-
 const initialState = {
   selectedTypes: [] as string[],
   selectedDates: [] as string[],
   rangeDatesArray: [] as string[],
   selectedPrices: [] as number[],
   isCalendarShown: false,
-  range: {
-    start: undefined,
-    end: undefined,
-  } as unknown as Range,
   filteredEventsId: [] as string[],
   firstRender: true,
   userCoordinates: null as null | Coordinates,
@@ -40,14 +31,6 @@ const filtersSlice = createSlice({
     setIsCalendarShown(state, action: PayloadAction<boolean>) {
       state.isCalendarShown = action.payload;
     },
-    setDateRange(state, action: PayloadAction<Range>) {
-      state.range.start = action.payload.start;
-      state.range.end = action.payload.end;
-    },
-    clearDateRange(state) {
-      state.range.start = undefined;
-      state.range.end = undefined;
-    },
     setFilteredEventsId(state, action: PayloadAction<string[]>) {
       state.filteredEventsId = action.payload;
     },
@@ -57,8 +40,6 @@ const filtersSlice = createSlice({
       state.rangeDatesArray = [];
       state.selectedPrices = [];
       state.isCalendarShown = false;
-      state.range.start = undefined;
-      state.range.end = undefined;
       state.filteredEventsId = [];
       state.firstRender = true;
       state.userCoordinates = null;
@@ -69,8 +50,6 @@ const filtersSlice = createSlice({
       state.rangeDatesArray = [];
       state.selectedPrices = [];
       state.isCalendarShown = false;
-      state.range.start = undefined;
-      state.range.end = undefined;
       state.filteredEventsId = [];
     },
     setFirstRender(state, action: PayloadAction<boolean>) {
@@ -98,8 +77,6 @@ export const {
   addSelectedPrices,
   addSelectedTypes,
   setIsCalendarShown,
-  setDateRange,
-  clearDateRange,
   setFilteredEventsId,
   resetAllFilters,
   setOneFilterType,

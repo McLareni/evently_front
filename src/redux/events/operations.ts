@@ -122,15 +122,11 @@ export const EventsApi = createApi({
       query: id => `events/${id}`,
       providesTags: (result, error, id) =>
         result ? [{ type: 'Events', id: id.toString() }] : [],
-      transformResponse: (response: Event) => {
-        console.log('API Response:', response);
-        return response;
-      },
-      keepUnusedDataFor: 60,
+      keepUnusedDataFor: 600,
     }),
 
-    getAllMyEvents: builder.query<Event[], string>({
-      query: id => `events/user/${id}`,
+    getAllMyEvents: builder.query<Event[], { id: string; page: number }>({
+      query: ({ id, page }) => `events/user/${id}?page=${page}&size=${5}`,
       transformResponse: (result: { content: Event[] }) =>
         result?.content ?? [],
       providesTags: result =>
@@ -186,26 +182,6 @@ export const EventsApi = createApi({
             ]
           : [{ type: 'LikedEvents', id: 'LIST' }],
     }),
-
-    // getUserEvents: builder.query<Event[], string>({
-    //   query: userId => `events/user/${userId}`,
-
-    //   transformResponse: (response: { content: Event[] }) => {
-    //     console.log(response);
-
-    //     return response.content;
-    //   },
-    //   providesTags: result =>
-    //     result
-    //       ? [
-    //           ...result.map(({ id }) => ({
-    //             type: 'UserEventsList' as const,
-    //             id,
-    //           })),
-    //           { type: 'UserEventsList', id: 'LIST' },
-    //         ]
-    //       : [{ type: 'UserEventsList', id: 'LIST' }],
-    // }),
 
     addLikedEvent: builder.mutation<
       Event,

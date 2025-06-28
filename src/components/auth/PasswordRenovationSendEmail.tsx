@@ -45,7 +45,7 @@ export const PasswordRenovationSendEmail: React.FC = () => {
           setIsEmailSent(true);
         }
         if (status === 404) {
-          setErrorMessage('Такий email не існує');
+          setErrorMessage('Акаунт з таким імейлом не знайдено');
         }
         if (status === 401) {
           setErrorMessage('Цей email не підтверджено');
@@ -61,7 +61,7 @@ export const PasswordRenovationSendEmail: React.FC = () => {
 
   return (
     <div className={`flex flex-col h-full gap-8`}>
-      <h1 className="text-[32px] lg:text-[64px] text-center lg:text-left">
+      <h1 className="leading-[1] text-[32px] lg:text-[64px] text-center lg:text-left">
         Відновлення паролю
       </h1>
       {isEmailSent ? (
@@ -72,9 +72,9 @@ export const PasswordRenovationSendEmail: React.FC = () => {
       ) : (
         <>
           {' '}
-          <p className="text-start text-xl lg:w-[500px]">
+          <p className="text-center lg:text-start text-xl lg:w-[500px]">
             Введіть адресу електронної пошти, до якої привʼязаний ваш обліковий
-            запис.
+            запис
           </p>
           <div className={`flex flex-col h-full`}>
             <form
@@ -112,7 +112,7 @@ export const PasswordRenovationSendEmail: React.FC = () => {
                 onClick={() => setIsSubmitted(true)}
                 // disabled={}
                 primary
-                className="w-[364px] mx-auto mt-8"
+                className="lg:w-[364px] lg:mx-auto mt-8"
               >
                 Продовжити
               </SharedBtn>
