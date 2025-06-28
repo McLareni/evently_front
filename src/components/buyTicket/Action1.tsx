@@ -82,7 +82,7 @@ export const Action1: React.FC<Action1Props> = ({
         bg-cover bg-center lg:w-[860px] lg:h-[250px] px-[64px] py-[36px] flex flex-col justify-between mb-[45px]`}
       >
         <div className="flex items-center justify-between">
-          <p className="text-[36px]">Вхідний квиток</p>
+          <p className="text-[16px] lg:text-[36px]">Вхідний квиток</p>
           <div className="flex gap-[16px]">
             <button
               onClick={decrement}
@@ -90,7 +90,7 @@ export const Action1: React.FC<Action1Props> = ({
             >
               <AiOutlineMinusCircle size={36} />
             </button>
-            <span className="text-[48px]">{ticketCount}</span>
+            <span className="text-[28px] lg:text-[48px]">{ticketCount}</span>
             <button
               onClick={increment}
               className="focus:outline-none text-buttonPurple"
@@ -100,8 +100,8 @@ export const Action1: React.FC<Action1Props> = ({
           </div>
         </div>
         <div className="flex gap-[24px] items-center">
-          <ImPriceTag size={38} />
-          <span className="text-[48px]">
+          <ImPriceTag className="w-[24px] h-[24px] lg:w-[38px] lg:h-[38px]" />
+          <span className="text-[16px] lg:text-[48px]">
             {price !== 0 ? `${price} грн` : 'Безкоштовно'}
           </span>
         </div>

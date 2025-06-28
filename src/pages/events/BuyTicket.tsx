@@ -5,7 +5,7 @@ import { selectIsLoggedIn, selectUser } from '@/redux/auth/selectors';
 import { useLazyGetEventByIdQuery } from '@/redux/events/operations';
 import { useAppSelector } from '@/redux/hooks';
 
-import { useMediaQuery } from '@/hooks/useMediaQuery';
+import { useMediaVariables } from '@/hooks/query/useMediaVariables';
 
 import { Action1 } from '@/components/buyTicket/Action1';
 import { Action2 } from '@/components/buyTicket/Action2';
@@ -14,6 +14,7 @@ import { Action2NewUser } from '@/components/buyTicket/Action2NewUser';
 import { Action2UserExists } from '@/components/buyTicket/Action2UserExists';
 import { Action3 } from '@/components/buyTicket/Action3';
 import { BuyTicketTabs } from '@/components/buyTicket/BuyTicketTabs';
+import { MobileTicketInfo } from '@/components/buyTicket/MobileTicketInfo';
 import { Container } from '@/components/container/Container';
 import Spinner from '@/components/ui/Spinner';
 
@@ -41,7 +42,7 @@ const BuyTicket: React.FC = () => {
   const isLoggedIn = useAppSelector(selectIsLoggedIn);
   const { email } = useAppSelector(selectUser);
 
-  const isMobile = useMediaQuery('(max-width: 1024px)');
+  const { isMobile } = useMediaVariables();
 
   const setNewUserEmailHandler = (email: string) => {
     setNewUserEmail(email);
@@ -108,9 +109,10 @@ const BuyTicket: React.FC = () => {
     <div className="font-oswald leading-none pb-[55px]">
       {isLoading && <Spinner />}
       <Container>
-        <BuyTicketTabs currentAction={currentAction} />
+        {!isMobile && <BuyTicketTabs currentAction={currentAction} />}
+        {isMobile && event && <MobileTicketInfo event={event} />}
         {(currentAction === 1 || currentAction === 2) && (
-          <div className="flex gap-[80px]">
+          <div className="lg:flex lg:gap-[80px]">
             {currentAction === 1 && (
               <Action1
                 event={event}
