@@ -8,7 +8,6 @@ import {
   useAddLikedEventMutation,
   useDeleteLikedEventMutation,
   useGetAllEventsFilteredQuery,
-  useLazyGetAllEventsFilteredQuery,
   useLazyGetAllMyEventsQuery,
   useLazyGetEventByIdQuery,
 } from '@/redux/events/operations';
@@ -25,8 +24,8 @@ import HeroSection from '@/components/eventDetails/HeroSection';
 import ImageSlider from '@/components/eventDetails/ImageSlider';
 import MainInfo from '@/components/eventDetails/MainInfo';
 import SectionLayout from '@/components/eventDetails/Mobile/SectionLayout';
+import RandomTopEvents from '@/components/eventDetails/RandomTopEvents';
 import { MobileSlider } from '@/components/topEvents/MobileSlider';
-import { EventCard } from '@/components/ui';
 import { GoogleMap } from '@/components/ui/GoogleMap';
 import ShortEventList from '@/components/ui/ShortEventList';
 import { ShowAllButton } from '@/components/ui/ShowAllButton';
@@ -51,10 +50,6 @@ const EventDetails = () => {
   const user = useAppSelector(selectUser);
   const { isDesktop, isMobile } = useMediaVariables();
   const [trigger, { data: event, isLoading }] = useLazyGetEventByIdQuery();
-  const [
-    refreshTopEvents,
-    { data: topEvents, isFetching: isFetchingTopEvent },
-  ] = useLazyGetAllEventsFilteredQuery();
   const { data: similarEvents, isFetching } = useGetAllEventsFilteredQuery({
     page: 0,
     size: 4,
@@ -137,46 +132,13 @@ const EventDetails = () => {
     getLike();
   };
 
-  // fix top events
-  // useEffect(() => {
-  //   async function fetchTopEvent() {
-  //     const responseTopEvents = await refreshTopEvents({
-  //       page: 0,
-  //       size: 3,
-  //       filter: {
-  //         isPopular: true,
-  //       },
-  //     });
-  //     if (responseTopEvents.status === 'uninitialized') {
-  //       refreshTopEvents({
-  //         page: 0,
-  //         size: 3,
-  //         filter: {
-  //           isPopular: true,
-  //         },
-  //       });
-  //     }
-  //   }
-
-  //   const interval = setInterval(() => {
-  //     if (idEvent) fetchTopEvent();
-  //   }, 10000);
-
-  //   return () => clearInterval(interval);
-  // }, []);
-
   useEffect(() => {
     if (userId) {
       userEventstrigger({ id: userId, page: 0 });
     }
   }, [userId, userEventstrigger]);
 
-  const isLoadingList = [
-    isLoading,
-    isFetchingTopEvent,
-    isFetchingUserEvents,
-    isFetching,
-  ];
+  const isLoadingList = [isLoading, isFetchingUserEvents, isFetching];
 
   if (isLoadingList.some(Boolean)) {
     return <Spinner />;
@@ -286,13 +248,7 @@ const EventDetails = () => {
               Поскаржитись на подію <FiFlag className="w-6 h-6 stroke-error" />
             </button>
           </div>
-          {isDesktop && (
-            <div className="w-[344px] border-2 rounded-[20px] border-buttonPurple p-4 flex flex-col gap-8">
-              {topEvents?.map(event => (
-                <EventCard key={event.id} event={event} />
-              ))}
-            </div>
-          )}
+          {isDesktop && <RandomTopEvents idEvent={idEvent || ''} />}
         </div>
         <div>
           {isDesktop && <CreateBtnSection />}
