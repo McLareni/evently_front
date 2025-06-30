@@ -216,12 +216,14 @@ export const MobileBurgerMenu: FC<MobileBurgerMenuProps> = ({
               url="/about_us"
             />
 
-            <BurgerNav
-              toggleBurgerMenu={toggleBurgerMenu}
-              Icon={IoExitOutline}
-              text="Вихід"
-              clickHandler={() => setModalLogout(true)}
-            />
+            {isLoggedIn && (
+              <BurgerNav
+                toggleBurgerMenu={toggleBurgerMenu}
+                Icon={IoExitOutline}
+                text="Вихід"
+                clickHandler={() => setModalLogout(true)}
+              />
+            )}
           </>
         )}
       </div>
