@@ -217,15 +217,16 @@ const ModalDecision: React.FC<IProps> = ({ event, openModal }) => {
             <EditNavigate loadNewEvent={handleLoadNewVersion} />
           )}
           <div className="flex justify-around gap-[100px] mt-8 absolute bottom-0 left-[50%] translate-x-[-50%]">
-            {(event?.eventStatus !== 'CANCELLED' || event.hasUpdateRequest) && (
-              <button
-                onClick={() => openModal('CANCELLED')}
-                className="flex gap-2 justify-center items-center w-[180px] h-12 border border-buttonPurple bg-background rounded-[10px] focus:outline-0 hover:shadow-shadowSecondaryBtn"
-              >
-                <RxCross2 className="h-6 w-6" />
-                Відхилити
-              </button>
-            )}
+            {(event?.eventStatus !== 'CANCELLED' || event.hasUpdateRequest) &&
+              event?.hasCancelRequest && (
+                <button
+                  onClick={() => openModal('CANCELLED')}
+                  className="flex gap-2 justify-center items-center w-[180px] h-12 border border-buttonPurple bg-background rounded-[10px] focus:outline-0 hover:shadow-shadowSecondaryBtn"
+                >
+                  <RxCross2 className="h-6 w-6" />
+                  Відхилити
+                </button>
+              )}
             {event?.eventStatus !== 'APPROVED' && (
               <button
                 onClick={() => openModal('APPROVED')}
