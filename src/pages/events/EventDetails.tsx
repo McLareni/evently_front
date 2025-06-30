@@ -8,7 +8,6 @@ import {
   useAddLikedEventMutation,
   useDeleteLikedEventMutation,
   useGetAllEventsFilteredQuery,
-  useLazyGetAllMyEventsQuery,
   useLazyGetEventByIdQuery,
 } from '@/redux/events/operations';
 import { useAppSelector } from '@/redux/hooks';
@@ -57,10 +56,6 @@ const EventDetails = () => {
       eventTypes: [EventTypes[event?.type || '']],
     },
   });
-  const [
-    userEventstrigger,
-    { data: userEvents, isFetching: isFetchingUserEvents },
-  ] = useLazyGetAllMyEventsQuery();
 
   const [isLiked, setIsLiked] = useState(false);
   const { count: countLike, getLike } = useGetCountLikeEvent(idEvent || '');
@@ -69,15 +64,6 @@ const EventDetails = () => {
 
   const [isShortDesc, setIsShortDesc] = useState(true);
   const [cacheOrganizer, setCacheOrganizer] = useState<User>();
-  const userId = event && event.organizers && event.organizers.id;
-
-  const filteredUserEvents =
-    userEvents &&
-    userEvents.filter(
-      ({ eventStatus, id }) => eventStatus === 'APPROVED' && id !== idEvent
-    );
-
-  
 
   useEffect(() => {
     async function fetchEvent() {
@@ -134,13 +120,7 @@ const EventDetails = () => {
     getLike();
   };
 
-  useEffect(() => {
-    if (userId) {
-      userEventstrigger({ id: userId, page: 0 });
-    }
-  }, [userId, userEventstrigger]);
-
-  const isLoadingList = [isLoading, isFetchingUserEvents, isFetching];
+  const isLoadingList = [isLoading, isFetching];
 
   if (isLoadingList.some(Boolean)) {
     return <Spinner />;
@@ -231,10 +211,10 @@ const EventDetails = () => {
             )}
             {event.eventFormat === 'OFFLINE' && (
               <div>
-                <h2 className="text-5xl text-textDark mt-12 mb-[50px]">
+                <h2 className="lg:text-5xl text-[32px] text-textDark lg:mt-12 mt-6 mb-2 lg:mb-[50px]">
                   Адреса події
                 </h2>
-                <p className="mb-8 text-[20px] text-textDark">
+                <p className="lg:mb-8 mb-2 lg:text-[20px] text-sm text-textDark">
                   {event.location.city}, {event.location.street}
                 </p>
                 <div className="rounded-[20px] overflow-hidden">
@@ -267,23 +247,6 @@ const EventDetails = () => {
               <ShowAllButton />
             </div>
           )}
-          {filteredUserEvents &&
-            filteredUserEvents.length > 0 &&
-            (isDesktop ? (
-              <ShortEventList
-                title="Більше подій від цього організатора"
-                events={filteredUserEvents}
-                seeMoreButton={<ShowAllButton style={{ margin: 0 }} />}
-              />
-            ) : (
-              <div className="flex flex-col gap-4 mb-4">
-                <h2 className="text-[32px] text-textDark mt-6">
-                  Більше подій від цього організатора
-                </h2>
-                <MobileSlider events={filteredUserEvents} />
-                <ShowAllButton />
-              </div>
-            ))}
         </div>
       </div>
     </main>
