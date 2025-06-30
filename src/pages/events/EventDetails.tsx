@@ -77,6 +77,8 @@ const EventDetails = () => {
       ({ eventStatus, id }) => eventStatus === 'APPROVED' && id !== idEvent
     );
 
+  
+
   useEffect(() => {
     async function fetchEvent() {
       const response = await trigger(idEvent || '');

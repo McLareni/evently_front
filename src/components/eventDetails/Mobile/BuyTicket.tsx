@@ -10,7 +10,7 @@ const BuyTicket: React.FC<IProps> = ({ price, format }) => {
   return (
     <div className="fixed bottom-4 z-50 rounded-[71px_8px] border border-buttonPurple flex flex-row items-center w-[calc(100%-32px)] bg-white">
       <p className="flex-1 text-center text-base font-bold text-textDark font-lato">
-        {price}
+        {price} грн
       </p>
       <Link to={`buy_ticket`} className="flex-1">
         <button
