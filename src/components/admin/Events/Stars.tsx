@@ -27,13 +27,13 @@ const Stars: React.FC<IProps> = ({ rating }) => {
         return (
           <li key={index}>
             {star === 'half' ? (
-              <div className="relative h-6 w-6">
-                <IoStarSharp className="absolute inset-0 h-6 w-6 fill-darkGray" />
-                <IoStarSharp className="absolute inset-0 h-6 w-6 fill-[#F4E544] clip-half" />
+              <div className="relative lg:h-6 lg:w-6 w-4 h-4">
+                <IoStarSharp className="absolute inset-0 lg:h-6 lg:w-6 w-4 h-4 fill-darkGray" />
+                <IoStarSharp className="absolute inset-0 lg:h-6 lg:w-6 w-4 h-4 fill-[#F4E544] clip-half" />
               </div>
             ) : (
               <IoStarSharp
-                className={clsx('h-6 w-6', {
+                className={clsx('lg:h-6 lg:w-6 w-4 h-4', {
                   'fill-[#F4E544]': star === 'full',
                   'fill-darkGray': star === 'none',
                 })}

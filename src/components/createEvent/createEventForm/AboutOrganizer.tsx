@@ -136,7 +136,7 @@ const AboutOrganizer: React.FC<AboutOrganizerProps> = ({
                     height={90}
                   />
                   <p className="leading-[1.5] text-[12px] absolute left-6 top-[6px]">
-                    Ваш номер бачать лише
+                    Ваш номер бачить лише
                     <br />
                     адміністратор для зв’язку
                     <br />
