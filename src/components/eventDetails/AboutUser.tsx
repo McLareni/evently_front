@@ -1,5 +1,4 @@
 import React, { useState } from 'react';
-import { useNavigate } from 'react-router';
 
 import userPlaceholder from '../../../public/images/user-placeholder.png';
 import Stars from '../admin/Events/Stars';
@@ -13,7 +12,6 @@ interface IProps {
 
 const AboutUser: React.FC<IProps> = ({ organizer, rating, aboutUser }) => {
   const [isShortAboutUser, setIsShortAboutUser] = useState(true);
-  const navigate = useNavigate();
 
   const isFullText = aboutUser.length < 100;
   const shortAboutUser = aboutUser?.slice(0, 100);
@@ -23,7 +21,7 @@ const AboutUser: React.FC<IProps> = ({ organizer, rating, aboutUser }) => {
       <h2 className="lg:text-5xl text-[32px] leading-normal text-textDark lg:mt-12 lg:mb-8 mb-2">
         Про організатора
       </h2>
-      <div className="flex">
+      <div className="flex items-center">
         <img
           src={
             organizer?.avatarImage?.url
@@ -33,10 +31,9 @@ const AboutUser: React.FC<IProps> = ({ organizer, rating, aboutUser }) => {
           alt=""
           className="lg:h-[100px] lg:w-[100px] w-8 h-8 rounded-full object-cover lg:mr-6 mr-4"
         />
-        <div>
+        <div className='flex flex-col lg:gap-2'>
           <h2
-            className="text-textDark font-lato lg:text-2xl text-sm lg:my-2 lg:underline hover:cursor-pointer"
-            onClick={() => navigate(`/user/${organizer.id}`)}
+            className="text-textDark font-lato lg:text-2xl text-sm lg:underline"
           >
             {organizer?.name}
           </h2>

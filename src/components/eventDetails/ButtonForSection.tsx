@@ -18,7 +18,7 @@ const ButtonForSection: React.FC<ButtonForSectionProps> = ({
   return (
     <button
       onClick={onClick}
-      className={`${isDesktop ? 'flex gap-2 underline text-base' : 'text-xs rounded-[10px] border border-buttonPurple px-2 py-[7px]'} focus:outline-none mt-2 `}
+      className={`${isDesktop ? 'flex gap-2 underline text-base' : 'text-xs rounded-[10px] border border-buttonPurple px-5 py-[7px]'} focus:outline-none mt-2 `}
       type="button"
     >
       {children}

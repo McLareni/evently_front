@@ -12,9 +12,9 @@ import { useAppSelector } from '@/redux/hooks';
 
 import { useGetCountLikeEvent } from '@/hooks/query/useGetCountLikeEvent';
 import { useGetLikedEventsWithSkip } from '@/hooks/query/useGetLikedEventsWithSkip';
-import clsx from 'clsx';
 
 import { PopupShareEvent } from '../ui/PopupShareEvent';
+import EventTags from './EventTags';
 import ImageSlider from './ImageSlider';
 import MainInfo from './MainInfo';
 
@@ -103,26 +103,8 @@ const HeroSection: React.FC<IProps> = ({ idEvent, event }) => {
           <h1 className="text-[36px] text-textDark mb-4 pr-12 line-clamp-2">
             {event?.title}
           </h1>
-          <div className="font-normal text-[20px] text-textDark flex gap-4 mb-10">
-            <div
-              className={`flex items-center justify-center h-10 rounded-[20px]
-                       border-[2px] border-borderColor bg-[#E9E6FF]`}
-            >
-              <p className="px-4 py-2.5">{event?.type}</p>
-            </div>
-            <div
-              className={clsx(
-                `flex items-center justify-center h-10 rounded-[20px]`,
-                event?.eventUrl
-                  ? 'bg-buttonPurple text-background'
-                  : 'bg-lightPurple border border-buttonPurple'
-              )}
-            >
-              <p className="px-4 py-2.5">
-                {event?.eventUrl ? 'Онлайн' : 'Офлайн'}
-              </p>
-            </div>
-          </div>
+          <EventTags type={event?.type} eventUrl={event?.eventUrl} />
+
           <MainInfo event={event} />
           <Link to={`buy_ticket`}>
             <button

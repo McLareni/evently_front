@@ -13,8 +13,8 @@ const CityPicker: React.FC<IProps> = ({ isOpen, close }) => {
 
   return (
     <div
-      className={`absolute top-[62px] transition-all duration-150 flex flex-col w-full bg-hoverCard border-buttonPurple
-        overflow-hidden ${isOpen ? 'h-[263px] p-4  border-t' : 'h-0 p-0 border-t-0'}`}
+      className={`absolute top-[73px] transition-all duration-150 flex flex-col w-full bg-hoverCard
+        overflow-hidden ${isOpen ? 'h-[263px] p-4' : 'h-0 p-0'}`}
     >
       <div className="relative text-center mb-[9px]">
         <h2 className="text-xl leading-[30px]">Оберіть місто</h2>

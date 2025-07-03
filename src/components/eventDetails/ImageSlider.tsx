@@ -98,7 +98,8 @@ const ImageSlider: React.FC<IProps> = ({
           type="button"
           onClick={toggleIsLiked}
           aria-label="like button"
-          className={`focus:outline-none bg-filter-btn-gradient px-4 py-[7px] text-background text-base rounded-[20px] flex gap-[10px] absolute left-[calc(50%+60px)] lg:top-[35px] top-4 z-20`}
+          className={`animate-my-bounce focus:outline-none bg-filter-btn-gradient px-4 py-[7px] text-background text-base rounded-[20px] flex gap-[10px] 
+            absolute left-[calc(50%+110px)] lg:left-[calc(50%+100px)] lg:top-[50px] top-[50px] z-20`}
         >
           {isLiked ? (
             <PiHeartFill className={`w-6 h-6 fill-background`} />
