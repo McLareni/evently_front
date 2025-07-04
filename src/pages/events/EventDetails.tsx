@@ -19,6 +19,7 @@ import AboutUser from '@/components/eventDetails/AboutUser';
 import BackgroundStars from '@/components/eventDetails/BackgroundStars';
 import ButtonForSection from '@/components/eventDetails/ButtonForSection';
 import CreateBtnSection from '@/components/eventDetails/CreateBtnSection';
+import EventTags from '@/components/eventDetails/EventTags';
 import HeroSection from '@/components/eventDetails/HeroSection';
 import ImageSlider from '@/components/eventDetails/ImageSlider';
 import MainInfo from '@/components/eventDetails/MainInfo';
@@ -199,6 +200,7 @@ const EventDetails = () => {
               <div className="flex flex-col gap-6">
                 <SectionLayout>
                   <>
+                    <EventTags type={event.type} eventUrl={event?.eventUrl} />
                     <h2 className="text-[32px] text-textDark mb-[18px]">
                       {event.title}
                     </h2>

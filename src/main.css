@@ -195,6 +195,10 @@ a {
     bounce 3s linear infinite forwards;
 }
 
+.animate-my-bounce {
+  animation: bounceTag 3s linear infinite forwards;
+}
+
 .animate-opacity-delay {
   animation:
     opacity 0.5s ease forwards,
@@ -219,6 +223,18 @@ a {
   }
   100% {
     transform: translate(-50%, -49%);
+  }
+}
+
+@keyframes bounceTag {
+  0% {
+    transform: translate(-50%, -22%);
+  }
+  50% {
+    transform: translate(-50%, -65%);
+  }
+  100% {
+    transform: translate(-50%, -22%);
   }
 }
 
