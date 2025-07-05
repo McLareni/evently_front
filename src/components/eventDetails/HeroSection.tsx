@@ -1,11 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import {
-  AiOutlineCalendar,
-  AiOutlineClockCircle,
-  AiOutlineShareAlt,
-} from 'react-icons/ai';
-import { FaRegMoneyBillAlt } from 'react-icons/fa';
-import { GrLocation } from 'react-icons/gr';
+import { AiOutlineShareAlt } from 'react-icons/ai';
 import { Link } from 'react-router-dom';
 import { toast } from 'react-toastify';
 
@@ -16,13 +10,13 @@ import {
 } from '@/redux/events/operations';
 import { useAppSelector } from '@/redux/hooks';
 
-import { formatDateToDayMonth } from '@/helpers/filters/formatDateToDayMonth';
 import { useGetCountLikeEvent } from '@/hooks/query/useGetCountLikeEvent';
 import { useGetLikedEventsWithSkip } from '@/hooks/query/useGetLikedEventsWithSkip';
-import clsx from 'clsx';
 
 import { PopupShareEvent } from '../ui/PopupShareEvent';
+import EventTags from './EventTags';
 import ImageSlider from './ImageSlider';
+import MainInfo from './MainInfo';
 
 interface IProps {
   idEvent: string;
@@ -109,65 +103,13 @@ const HeroSection: React.FC<IProps> = ({ idEvent, event }) => {
           <h1 className="text-[36px] text-textDark mb-4 pr-12 line-clamp-2">
             {event?.title}
           </h1>
-          <div className="font-normal text-[20px] text-textDark flex gap-4 mb-10">
-            <div
-              className={`flex items-center justify-center h-10 rounded-[20px]
-                       border-[2px] border-borderColor bg-[#E9E6FF]`}
-            >
-              <p className="px-4 py-2.5">{event?.type}</p>
-            </div>
-            <div
-              className={clsx(
-                `flex items-center justify-center h-10 rounded-[20px]`,
-                event?.eventUrl
-                  ? 'bg-buttonPurple text-background'
-                  : 'bg-lightPurple border border-buttonPurple'
-              )}
-            >
-              <p className="px-4 py-2.5">
-                {event?.eventUrl ? 'Онлайн' : 'Офлайн'}
-              </p>
-            </div>
-          </div>
-          <div className="flex flex-col gap-4">
-            <p className="font-lato text-xl font-normal text-textDart flex gap-6">
-              <span>
-                <AiOutlineCalendar className="w-6 h-6" />
-              </span>
-              {formatDateToDayMonth(event?.date.day)}
-            </p>
-            <p className="font-lato text-xl font-normal text-textDart flex gap-6">
-              <span>
-                <AiOutlineClockCircle className="w-6 h-6" />
-              </span>
-              {event?.date.time} - {event?.date.endTime || 'Do'}
-            </p>
-            {event?.eventUrl ? (
-              <p className="font-lato text-xl font-normal text-textDart flex gap-6">
-                <span>
-                  <GrLocation className="w-6 h-6" />
-                </span>
-                Онлайн подія
-              </p>
-            ) : (
-              <p className="font-lato text-xl font-normal text-textDart flex gap-6">
-                <span>
-                  <GrLocation className="w-6 h-6" />
-                </span>
-                {`${event?.location.city} ${event?.location.street}`}
-              </p>
-            )}
-            <p className="font-lato text-2xl font-normal text-textDart flex gap-6 items-center">
-              <span>
-                <FaRegMoneyBillAlt className="w-6 h-6" />
-              </span>
-              {event?.price > 0 ? event?.price + ' ₴' : 'Безкоштовно'}
-            </p>
-          </div>
+          <EventTags type={event?.type} eventUrl={event?.eventUrl} />
+
+          <MainInfo event={event} />
           <Link to={`buy_ticket`}>
             <button
               type="button"
-              className={`bg-gradient-to-r from-[#9B8FF3] to-[#38F6F9] w-[421px] h-12 rounded-[71px_8px] text-background text-2xl
+              className={`bg-dark-gradient w-[421px] h-12 rounded-[71px_8px] text-background text-2xl
                 mt-[55px] hover:shadow-shadowPrimaryBtn focus:outline-none active:shadow-primaryBtnActive`}
             >
               {event.price === 0 && event.eventFormat === 'ONLINE'

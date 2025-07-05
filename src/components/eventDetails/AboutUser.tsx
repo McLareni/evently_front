@@ -1,9 +1,8 @@
 import React, { useState } from 'react';
-import { BiChevronDown } from 'react-icons/bi';
-import { useNavigate } from 'react-router';
 
 import userPlaceholder from '../../../public/images/user-placeholder.png';
 import Stars from '../admin/Events/Stars';
+import ButtonForSection from './ButtonForSection';
 
 interface IProps {
   organizer: User;
@@ -13,14 +12,16 @@ interface IProps {
 
 const AboutUser: React.FC<IProps> = ({ organizer, rating, aboutUser }) => {
   const [isShortAboutUser, setIsShortAboutUser] = useState(true);
-  const navigate = useNavigate();
 
+  const isFullText = aboutUser.length < 100;
   const shortAboutUser = aboutUser?.slice(0, 100);
 
   return (
     <div>
-      <h2 className="text-5xl text-textDark mt-12 mb-8">Про організатора</h2>
-      <div className="flex">
+      <h2 className="lg:text-5xl text-[32px] leading-normal text-textDark lg:mt-12 lg:mb-8 mb-2">
+        Про організатора
+      </h2>
+      <div className="flex items-center">
         <img
           src={
             organizer?.avatarImage?.url
@@ -28,16 +29,15 @@ const AboutUser: React.FC<IProps> = ({ organizer, rating, aboutUser }) => {
               : userPlaceholder
           }
           alt=""
-          className="h-[100px] w-[100px] rounded-full object-cover mr-6"
+          className="lg:h-[100px] lg:w-[100px] w-8 h-8 rounded-full object-cover lg:mr-6 mr-4"
         />
-        <div>
+        <div className='flex flex-col lg:gap-2'>
           <h2
-            className="text-textDark font-lato text-2xl my-2 underline hover:cursor-pointer"
-            onClick={() => navigate(`/user/${organizer.id}`)}
+            className="text-textDark font-lato lg:text-2xl text-sm lg:underline"
           >
             {organizer?.name}
           </h2>
-          <div className="flex">
+          <div className="flex text-textDark lg:text-base text-xs">
             <span className="mr-2">
               <Stars rating={rating || 0} />
             </span>
@@ -46,25 +46,18 @@ const AboutUser: React.FC<IProps> = ({ organizer, rating, aboutUser }) => {
         </div>
       </div>
       {aboutUser && (
-        <p className="text-[18px] leading-[27px] text-textDark mt-8">
-          {isShortAboutUser ? `${shortAboutUser}...` : aboutUser}
-          {isShortAboutUser ? (
-            <button
-              onClick={() => setIsShortAboutUser(false)}
-              className="flex gap-2 underline text-base focus:outline-none mt-2"
-            >
-              Читати більше
-              <BiChevronDown className="w-6 h-6" />
-            </button>
-          ) : (
-            <button
-              onClick={() => setIsShortAboutUser(true)}
-              className="flex gap-2 underline text-base focus:outline-none mt-2"
-            >
-              Приховати
-              <BiChevronDown className="w-6 h-6" />
-            </button>
-          )}
+        <p className="lg:text-[18px] text-sm lg:leading-[27px] leading-normal text-textDark lg:mt-8 mt-2">
+          {isShortAboutUser && !isFullText ? `${shortAboutUser}...` : aboutUser}
+          {!isFullText &&
+            (isShortAboutUser ? (
+              <ButtonForSection onClick={() => setIsShortAboutUser(false)}>
+                Читати більше
+              </ButtonForSection>
+            ) : (
+              <ButtonForSection onClick={() => setIsShortAboutUser(true)}>
+                Приховати
+              </ButtonForSection>
+            ))}
         </p>
       )}
     </div>

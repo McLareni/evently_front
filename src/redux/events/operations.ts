@@ -229,6 +229,11 @@ export const EventsApi = createApi({
         }
       },
     }),
+
+    // get Random Top Events
+    getRandomTopEvents: builder.query<Event[], void>({
+      query: () => `/events/top?size=3`,
+    }),
   }),
 });
 
@@ -245,4 +250,5 @@ export const {
   useGetAllEventsFilteredQuery,
   useLazyGetEventByIdQuery,
   useDeleteMyEventMutation,
+  useLazyGetRandomTopEventsQuery,
 } = EventsApi;
