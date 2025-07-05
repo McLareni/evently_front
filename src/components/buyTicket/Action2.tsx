@@ -82,7 +82,7 @@ export const Action2: FC<Action2Props> = ({ setInfoHandler, setFormValid }) => {
     <form className="font-lato flex flex-col border-[2px] border-buttonPurple rounded-[10px] p-[24px] mb-auto gap-[20px]">
       {isLoading && <Spinner />}
       <h2 className="font-medium mb-4">Контактна інформація</h2>
-      <div className="flex gap-[52px] mb-[8px]">
+      <div className="flex flex-col lg:flex-row gap-[52px] mb-[8px]">
         <BuyTicketInput
           {...register('name', {
             validate: validateName,
@@ -111,7 +111,7 @@ export const Action2: FC<Action2Props> = ({ setInfoHandler, setFormValid }) => {
         />
       </div>
 
-      <div className="flex gap-[52px] mb-[8px]">
+      <div className="flex flex-col lg:flex-row  gap-[52px] mb-[8px]">
         <Controller
           name="phoneNumber"
           control={control}

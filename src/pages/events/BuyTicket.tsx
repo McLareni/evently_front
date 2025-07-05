@@ -5,6 +5,7 @@ import { selectIsLoggedIn, selectUser } from '@/redux/auth/selectors';
 import { useLazyGetEventByIdQuery } from '@/redux/events/operations';
 import { useAppSelector } from '@/redux/hooks';
 
+import { useSendEventData } from '@/hooks/buyTicket/useSendEventData';
 import { useMediaVariables } from '@/hooks/query/useMediaVariables';
 
 import { Action1 } from '@/components/buyTicket/Action1';
@@ -16,6 +17,7 @@ import { Action3 } from '@/components/buyTicket/Action3';
 import { BuyTicketTabs } from '@/components/buyTicket/BuyTicketTabs';
 import { MobileTicketInfo } from '@/components/buyTicket/MobileTicketInfo';
 import { Container } from '@/components/container/Container';
+import { SharedBtn } from '@/components/ui';
 import Spinner from '@/components/ui/Spinner';
 
 import { TicketDraft } from '../../components/buyTicket/TicketDraft';
@@ -38,6 +40,14 @@ const BuyTicket: React.FC = () => {
   const { idEvent } = useParams();
 
   const [trigger, { data: event, isLoading }] = useLazyGetEventByIdQuery();
+
+  const { sendEventData, isLoading: sendDataLoading } = useSendEventData({
+    event,
+    info,
+    price,
+    priceWithDiscount,
+    ticketCount,
+  });
 
   const isLoggedIn = useAppSelector(selectIsLoggedIn);
   const { email } = useAppSelector(selectUser);
@@ -149,14 +159,36 @@ const BuyTicket: React.FC = () => {
                 currentAction={currentAction}
                 ticketCount={ticketCount}
                 price={price}
-                info={info}
                 priceWithDiscount={priceWithDiscount}
                 discountValue={discountValue}
                 isFormValid={isFormValid}
+                sendEventData={sendEventData}
+                isLoading={sendDataLoading}
               />
             )}
           </div>
         )}
+        {isMobile &&
+          (currentAction === 1 ? (
+            <SharedBtn
+              onClick={() => setCurrentActionHandler(2)}
+              type="button"
+              primary
+              className="mt-auto mx-auto bg-gradient-to-r from-[#9B8FF3] to-[#38F6F9] w-[230px] h-[48px]"
+            >
+              Продовжити
+            </SharedBtn>
+          ) : (
+            <SharedBtn
+              onClick={sendEventData}
+              type="button"
+              primary
+              disabled={!isFormValid}
+              className="mt-auto mx-auto bg-gradient-to-r from-[#9B8FF3] to-[#38F6F9] w-[230px] h-[48px]"
+            >
+              Оплатити
+            </SharedBtn>
+          ))}
         {currentAction === 3 && <Action3 event={event} />}
       </Container>
     </div>
