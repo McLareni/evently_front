@@ -160,8 +160,8 @@ export const Action2: FC<Action2Props> = ({ setInfoHandler, setFormValid }) => {
           checked={agreement}
           onChange={checkAgreement}
         />
-        <div className="h-5 w-5 flex items-center justify-center border-[1px] border-buttonPurple">
-          {agreement && <MdDone className="text-buttonPurple w-6 h-6" />}
+        <div className="h-5 min-w-5 flex items-center justify-center border-[1px] border-buttonPurple">
+          {agreement && <MdDone className="text-buttonPurple w-5 h-5" />}
         </div>
         <span className="ml-2">
           Я згоден(а) отримувати рекламну інформацію на мою пошту
@@ -171,7 +171,7 @@ export const Action2: FC<Action2Props> = ({ setInfoHandler, setFormValid }) => {
       <div className="flex items-center">
         <div
           className={`flex justify-center items-center border-buttonPurple border-2 rounded-full
-            w-[24px] h-[24px] text-buttonPurple`}
+            min-w-[24px] h-[24px] text-buttonPurple`}
         >
           <AiOutlineExclamation size={14} />
         </div>

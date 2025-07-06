@@ -79,7 +79,7 @@ export const Action1: React.FC<Action1Props> = ({
       {isLoading && <Spinner />}
       <div
         className={`${isMobile ? "bg-[url('/images/ticket/ticket-info-mobile.svg')]" : "bg-[url('/images/ticket/ticket-info.svg')]"}
-        bg-cover bg-center lg:w-[860px] lg:h-[250px] px-[64px] py-[36px] flex flex-col justify-between mb-[45px]`}
+        bg-[length:100%_100%] h-[120px] bg-no-repeat bg-fill w-full bg-center lg:w-[860px] lg:h-[250px] px-[32px] lg:px-[64px] py-[16px] lg:py-[36px] flex flex-col justify-between mb-[45px]`}
       >
         <div className="flex items-center justify-between">
           <p className="text-[16px] lg:text-[36px]">Вхідний квиток</p>
@@ -88,19 +88,19 @@ export const Action1: React.FC<Action1Props> = ({
               onClick={decrement}
               className="focus:outline-none text-buttonPurple"
             >
-              <AiOutlineMinusCircle size={36} />
+              <AiOutlineMinusCircle className="w-[24px] h-[24px] lg:w-[36px] lg:h-[36px]" />
             </button>
             <span className="text-[28px] lg:text-[48px]">{ticketCount}</span>
             <button
               onClick={increment}
               className="focus:outline-none text-buttonPurple"
             >
-              <AiOutlinePlusCircle size={36} />
+              <AiOutlinePlusCircle className="w-[24px] h-[24px] lg:w-[36px] lg:h-[36px]" />
             </button>
           </div>
         </div>
         <div className="flex gap-[24px] items-center">
-          <ImPriceTag className="w-[24px] h-[24px] lg:w-[38px] lg:h-[38px]" />
+          <ImPriceTag className="w-[16px] h-[16px] lg:w-[38px] lg:h-[38px]" />
           <span className="text-[16px] lg:text-[48px]">
             {price !== 0 ? `${price} грн` : 'Безкоштовно'}
           </span>
