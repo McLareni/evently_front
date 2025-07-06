@@ -45,8 +45,7 @@ export const BuyTicketInput = forwardRef<HTMLInputElement, BuyTicketInputProps>(
 
     return (
       <fieldset
-        // style={{ width: `${width}px` }}
-        className={`relative font-lato, relative`}
+        className={`relative font-lato, relative w-full lg:w-[${width}px]`}
       >
         <div className="relative">
           <input

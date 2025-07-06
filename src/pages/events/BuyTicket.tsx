@@ -168,27 +168,27 @@ const BuyTicket: React.FC = () => {
             )}
           </div>
         )}
-        {isMobile &&
-          (currentAction === 1 ? (
-            <SharedBtn
-              onClick={() => setCurrentActionHandler(2)}
-              type="button"
-              primary
-              className="mt-auto mx-auto bg-gradient-to-r from-[#9B8FF3] to-[#38F6F9] w-[230px] h-[48px]"
-            >
-              Продовжити
-            </SharedBtn>
-          ) : (
-            <SharedBtn
-              onClick={sendEventData}
-              type="button"
-              primary
-              disabled={!isFormValid}
-              className="mt-auto mx-auto bg-gradient-to-r from-[#9B8FF3] to-[#38F6F9] w-[230px] h-[48px]"
-            >
-              Оплатити
-            </SharedBtn>
-          ))}
+        {isMobile && currentAction === 1 && (
+          <SharedBtn
+            onClick={() => setCurrentActionHandler(2)}
+            type="button"
+            primary
+            className="mt-auto mx-auto bg-gradient-to-r from-[#9B8FF3] to-[#38F6F9] w-[230px] h-[48px]"
+          >
+            Продовжити
+          </SharedBtn>
+        )}
+        {isMobile && currentAction === 2 && isLoggedIn && (
+          <SharedBtn
+            onClick={sendEventData}
+            type="button"
+            primary
+            disabled={!isFormValid}
+            className="mt-auto mx-auto bg-gradient-to-r from-[#9B8FF3] to-[#38F6F9] w-[230px] h-[48px]"
+          >
+            Оплатити
+          </SharedBtn>
+        )}
         {currentAction === 3 && <Action3 event={event} />}
       </Container>
     </div>
