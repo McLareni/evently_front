@@ -5,6 +5,9 @@ import { selectIsLoggedIn, selectUser } from '@/redux/auth/selectors';
 import { useLazyGetEventByIdQuery } from '@/redux/events/operations';
 import { useAppSelector } from '@/redux/hooks';
 
+import { useSendEventData } from '@/hooks/buyTicket/useSendEventData';
+import { useMediaVariables } from '@/hooks/query/useMediaVariables';
+
 import { Action1 } from '@/components/buyTicket/Action1';
 import { Action2 } from '@/components/buyTicket/Action2';
 import { Action2CheckEmail } from '@/components/buyTicket/Action2CheckEmail';
@@ -12,6 +15,8 @@ import { Action2NewUser } from '@/components/buyTicket/Action2NewUser';
 import { Action2UserExists } from '@/components/buyTicket/Action2UserExists';
 import { Action3 } from '@/components/buyTicket/Action3';
 import { BuyTicketTabs } from '@/components/buyTicket/BuyTicketTabs';
+import { MobileTicketInfo } from '@/components/buyTicket/MobileTicketInfo';
+import { TicketDraftMobile } from '@/components/buyTicket/TicketDraftMobile';
 import { Container } from '@/components/container/Container';
 import Spinner from '@/components/ui/Spinner';
 
@@ -36,10 +41,18 @@ const BuyTicket: React.FC = () => {
 
   const [trigger, { data: event, isLoading }] = useLazyGetEventByIdQuery();
 
-  console.log(isLoading);
+  const { sendEventData, isLoading: sendDataLoading } = useSendEventData({
+    event,
+    info,
+    price,
+    priceWithDiscount,
+    ticketCount,
+  });
 
   const isLoggedIn = useAppSelector(selectIsLoggedIn);
   const { email } = useAppSelector(selectUser);
+
+  const { isMobile } = useMediaVariables();
 
   const setNewUserEmailHandler = (email: string) => {
     setNewUserEmail(email);
@@ -103,12 +116,13 @@ const BuyTicket: React.FC = () => {
   }, [discount, price]);
 
   return (
-    <div className="font-oswald leading-none pb-[55px]">
+    <div className="font-oswald leading-none pb-[55px] h-full">
       {isLoading && <Spinner />}
-      <Container>
-        <BuyTicketTabs currentAction={currentAction} />
+      <Container className="h-full flex flex-col">
+        {!isMobile && <BuyTicketTabs currentAction={currentAction} />}
+        {isMobile && event && <MobileTicketInfo event={event} />}
         {(currentAction === 1 || currentAction === 2) && (
-          <div className="flex gap-[80px]">
+          <div className="lg:flex lg:gap-[80px]">
             {currentAction === 1 && (
               <Action1
                 event={event}
@@ -138,19 +152,36 @@ const BuyTicket: React.FC = () => {
             {currentAction === 2 && !isLoggedIn && isEmailExists === false && (
               <Action2NewUser newUserEmail={newUserEmail} />
             )}
-            <TicketDraft
-              event={event}
-              setCurrentActionHandler={setCurrentActionHandler}
-              currentAction={currentAction}
-              ticketCount={ticketCount}
-              price={price}
-              info={info}
-              priceWithDiscount={priceWithDiscount}
-              discountValue={discountValue}
-              isFormValid={isFormValid}
-            />
+            {!isMobile && (
+              <TicketDraft
+                event={event}
+                setCurrentActionHandler={setCurrentActionHandler}
+                currentAction={currentAction}
+                ticketCount={ticketCount}
+                price={price}
+                priceWithDiscount={priceWithDiscount}
+                discountValue={discountValue}
+                isFormValid={isFormValid}
+                sendEventData={sendEventData}
+                isLoading={sendDataLoading}
+              />
+            )}
           </div>
         )}
+        {isMobile && (
+          <TicketDraftMobile
+            setCurrentActionHandler={setCurrentActionHandler}
+            currentAction={currentAction}
+            ticketCount={ticketCount}
+            price={price}
+            priceWithDiscount={priceWithDiscount}
+            discountValue={discountValue}
+            isFormValid={isFormValid}
+            sendEventData={sendEventData}
+            isLoading={sendDataLoading}
+          />
+        )}
+
         {currentAction === 3 && <Action3 event={event} />}
       </Container>
     </div>
