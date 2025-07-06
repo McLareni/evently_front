@@ -16,8 +16,8 @@ import { Action2UserExists } from '@/components/buyTicket/Action2UserExists';
 import { Action3 } from '@/components/buyTicket/Action3';
 import { BuyTicketTabs } from '@/components/buyTicket/BuyTicketTabs';
 import { MobileTicketInfo } from '@/components/buyTicket/MobileTicketInfo';
+import { TicketDraftMobile } from '@/components/buyTicket/TicketDraftMobile';
 import { Container } from '@/components/container/Container';
-import { SharedBtn } from '@/components/ui';
 import Spinner from '@/components/ui/Spinner';
 
 import { TicketDraft } from '../../components/buyTicket/TicketDraft';
@@ -116,9 +116,9 @@ const BuyTicket: React.FC = () => {
   }, [discount, price]);
 
   return (
-    <div className="font-oswald leading-none pb-[55px]">
+    <div className="font-oswald leading-none pb-[55px] h-full">
       {isLoading && <Spinner />}
-      <Container>
+      <Container className="h-full flex flex-col">
         {!isMobile && <BuyTicketTabs currentAction={currentAction} />}
         {isMobile && event && <MobileTicketInfo event={event} />}
         {(currentAction === 1 || currentAction === 2) && (
@@ -168,27 +168,20 @@ const BuyTicket: React.FC = () => {
             )}
           </div>
         )}
-        {isMobile && currentAction === 1 && (
-          <SharedBtn
-            onClick={() => setCurrentActionHandler(2)}
-            type="button"
-            primary
-            className="mt-auto mx-auto bg-gradient-to-r from-[#9B8FF3] to-[#38F6F9] w-[230px] h-[48px]"
-          >
-            Продовжити
-          </SharedBtn>
+        {isMobile && (
+          <TicketDraftMobile
+            setCurrentActionHandler={setCurrentActionHandler}
+            currentAction={currentAction}
+            ticketCount={ticketCount}
+            price={price}
+            priceWithDiscount={priceWithDiscount}
+            discountValue={discountValue}
+            isFormValid={isFormValid}
+            sendEventData={sendEventData}
+            isLoading={sendDataLoading}
+          />
         )}
-        {isMobile && currentAction === 2 && isLoggedIn && (
-          <SharedBtn
-            onClick={sendEventData}
-            type="button"
-            primary
-            disabled={!isFormValid}
-            className="mt-auto mx-auto bg-gradient-to-r from-[#9B8FF3] to-[#38F6F9] w-[230px] h-[48px]"
-          >
-            Оплатити
-          </SharedBtn>
-        )}
+
         {currentAction === 3 && <Action3 event={event} />}
       </Container>
     </div>
