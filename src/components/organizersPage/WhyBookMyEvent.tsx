@@ -18,7 +18,7 @@ const WhyBookMyEvent = () => {
                     </div>
                     <img src={arrow} alt="" className="mr-4 h-[229px] mt-[170px]"/>
                     <div className="w-[450px] mr-[14px]">
-                        <p className="pb-8 text-transparent bg-clip-text bg-gradient-to-r from-[#12C2E9] to-[#C471ED] text-[32px]">Усе безкоштовно – без прихованих комісій</p>
+                        <p className="pb-8 text-transparent bg-clip-text bg-gradient-to-r from-[#12C2E9] to-[#C471ED] text-[32px]">Все прозоро - без прихованих комісій</p>
                         <img src={eventPhoto} alt="" className="m-auto"/>
                     </div>
                     <img src={arrow} alt="" className="mr-4 h-[229px] mt-[170px]" />
