@@ -58,7 +58,6 @@ const CreateEventForm: React.FC<CreateEventFormProps> = ({
     null,
   ]);
   const [agreement, setAgreement] = useState(false);
-  const [activeSection, setActiveSection] = useState('');
 
   const {
     control,
@@ -244,8 +243,6 @@ const CreateEventForm: React.FC<CreateEventFormProps> = ({
     setValue('organizers.id', user.id);
   }, [setValue, user]);
 
-  console.log(activeSection);
-
   return (
     <>
       <form onSubmit={handleSubmit(onSubmit)}>
@@ -261,8 +258,6 @@ const CreateEventForm: React.FC<CreateEventFormProps> = ({
           setValue={setValue}
           watch={watch}
           errors={errors}
-          isActive={activeSection === 'aboutEvent'}
-          changeActiveSection={section => setActiveSection(section)}
         />
         <DateAndPlace
           control={control}

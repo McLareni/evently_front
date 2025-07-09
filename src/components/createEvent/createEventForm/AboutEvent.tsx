@@ -6,16 +6,10 @@ import {
   UseFormSetValue,
   UseFormWatch,
 } from 'react-hook-form';
-import {
-  AiFillCheckCircle,
-  AiOutlineMinus,
-  AiOutlinePlus,
-} from 'react-icons/ai';
+import { AiFillCheckCircle } from 'react-icons/ai';
 import { BiSmile } from 'react-icons/bi';
 
 import { categories } from '@/assets/staticData/statickData';
-import { useMediaVariables } from '@/hooks/query/useMediaVariables';
-import clsx from 'clsx';
 import Picker, { EmojiClickData } from 'emoji-picker-react';
 
 type AboutEventProps = {
@@ -23,9 +17,6 @@ type AboutEventProps = {
   setValue: UseFormSetValue<CreateEventFormValues>;
   watch: UseFormWatch<CreateEventFormValues>;
   errors: FieldErrors<CreateEventFormValues>;
-  isActive: boolean;
-  // eslint-disable-next-line no-unused-vars
-  changeActiveSection: (section: string) => void;
 };
 
 const MAX_DESCRIPTION_LENGTH = 400;
@@ -35,11 +26,8 @@ const AboutEvent: React.FC<AboutEventProps> = ({
   setValue,
   watch,
   errors,
-  isActive,
-  changeActiveSection,
 }) => {
   const [showPicker, setShowPicker] = useState(false);
-  const { isDesktop, isMobile } = useMediaVariables();
 
   const onEmojiClick = (emojiObject: EmojiClickData) => {
     if (description.length < MAX_DESCRIPTION_LENGTH - 1) {
@@ -58,29 +46,7 @@ const AboutEvent: React.FC<AboutEventProps> = ({
   const selectedCategory = watch('eventTypeName');
 
   return (
-    <div
-      onClick={() =>
-        isMobile && !isActive ? changeActiveSection('aboutEvent') : () => {}
-      }
-      className={clsx(
-        'relative w-[760px] rounded-[20px] border-2 border-buttonPurple flex flex-col py-10 px-10 mb-8 overflow-hidden',
-        isActive || isDesktop ? 'h-auto' : 'h-[56px]'
-      )}
-    >
-      {isMobile && (
-        <div className="flex justify-between">
-          <h2 className="font-bold text-base font-lato text-textDark">
-            Написати заголовок
-          </h2>
-          <button type="button" onClick={() => changeActiveSection('')}>
-            {isActive ? (
-              <AiOutlineMinus className="w-6 h-6 fill-textDark" />
-            ) : (
-              <AiOutlinePlus className="w-6 h-6 fill-textDark" />
-            )}
-          </button>
-        </div>
-      )}
+    <div className="relative w-[760px] rounded-[20px] border-2 border-buttonPurple flex flex-col py-10 px-10 mb-8">
       {!errors.title && !errors.description && title && description && (
         <AiFillCheckCircle
           size={40}
