@@ -46,7 +46,7 @@ export const GoogleMapsInput = ({
       placeholder={placeholder}
       name="place"
       ref={inputRef}
-      className={`p-4 rounded-[8px] ${className}`}
+      className={`p-4 ${className}`}
     />
   );
 };

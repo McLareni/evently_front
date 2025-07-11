@@ -1,4 +1,4 @@
-import { useEffect } from 'react';
+import { useEffect, useState } from 'react';
 import {
   Control,
   Controller,
@@ -12,7 +12,10 @@ import { FaRegMoneyBillAlt } from 'react-icons/fa';
 import { HiOutlineTicket } from 'react-icons/hi';
 import { MdDone } from 'react-icons/md';
 
+import { useMediaVariables } from '@/hooks/query/useMediaVariables';
 import clsx from 'clsx';
+
+import MobileSectionHeader from './MobileSectionHeader';
 
 type TicketPriceProps = {
   control: Control<CreateEventFormValues>;
@@ -38,6 +41,9 @@ const TicketPrice: React.FC<TicketPriceProps> = ({
   const ticketPrice = watch('ticketPrice');
   const numberOfTickets = watch('numberOfTickets');
 
+  const { isMobile, isDesktop } = useMediaVariables();
+  const [sectionIsOpen, setSectionIsOpen] = useState<boolean>(false);
+
   const ticketsHasBeenSold = event?.soldTickets !== '0';
 
   useEffect(() => {
@@ -58,7 +64,22 @@ const TicketPrice: React.FC<TicketPriceProps> = ({
   }, [clearErrors, freeTickets, unlimitedTickets, setValue]);
 
   return (
-    <div className="relative max-w-[760px] rounded-[20px] border-2 border-buttonPurple flex flex-col py-8 pl-8 mb-8">
+    <div
+      onClick={() =>
+        isMobile && !sectionIsOpen ? setSectionIsOpen(true) : () => {}
+      }
+      className={clsx(
+        'relative lg:w-[760px] w-full rounded-[20px] lg:border-2 border border-buttonPurple flex flex-col p-3 lg:py-8 lg:px-8 lg:mb-8 mb-4 overflow-hidden',
+        sectionIsOpen || isDesktop ? 'h-auto' : 'h-[56px]'
+      )}
+    >
+      {isMobile && (
+        <MobileSectionHeader
+          text="Вартість"
+          isActive={sectionIsOpen}
+          changeActiveSection={() => setSectionIsOpen(false)}
+        />
+      )}
       {isEdit && ticketsHasBeenSold && (
         <div className="flex gap-2 mb-[10px]">
           <AiOutlineExclamation className="rounded-full border border-error fill-error w-6 h-6" />
@@ -89,19 +110,23 @@ const TicketPrice: React.FC<TicketPriceProps> = ({
             style={{ position: 'absolute', right: '8px', top: '8px' }}
           />
         )}
-      <span className="pb-4 text-2xl">
-        Вартість квитків<span className="star">*</span>
-      </span>
-      <div className="pb-6">
+      {isDesktop && (
+        <span className="pb-4 text-2xl">
+          Вартість квитків<span className="star">*</span>
+        </span>
+      )}
+      <div className="lg:pb-6 pb-3">
         {(!isEdit ||
           (isEdit && (event?.soldTickets === '0' || freeTickets))) && (
           <button
             type="button"
             className={`${
-              freeTickets
-                ? 'bg-lightPurple text-gray-700'
-                : 'bg-buttonPurple text-white'
-            } focus:outline-none font-normal text-xl rounded-[20px] mr-4 py-[12.5px] px-[18px]`}
+              !freeTickets
+                ? 'bg-gradient-to-r from-[#12C2E9] to-[#C471ED] text-[white]'
+                : 'bg-gradient-to-r from-[#E9E6FF] to-[#D5FEFF]'
+            } hover:from-[#12C2E9] hover:to-[#C471ED] transition ease-in-out duration-300 focus:outline-none 
+            font-normal lg:text-xl text-base lg:rounded-[20px] rounded-[15px] border-[1px] border-borderColor mr-4 l
+            g:py-[9px] py-0 lg:px-[18px] px-4 lg:h-12 h-[36px]`}
             onClick={() => {
               setValue('freeTickets', false);
             }}
@@ -116,9 +141,11 @@ const TicketPrice: React.FC<TicketPriceProps> = ({
             type="button"
             className={`${
               freeTickets
-                ? 'bg-buttonPurple text-white'
-                : 'bg-lightPurple text-gray-700'
-            } focus:outline-none font-normal text-xl rounded-[20px] mr-4 py-[12.5px] px-[18px]`}
+                ? 'bg-gradient-to-r from-[#12C2E9] to-[#C471ED] text-[white]'
+                : 'bg-gradient-to-r from-[#E9E6FF] to-[#D5FEFF]'
+            } hover:from-[#12C2E9] hover:to-[#C471ED] transition ease-in-out duration-300 focus:outline-none 
+            font-normal lg:text-xl text-base lg:rounded-[20px] rounded-[15px] border-[1px] border-borderColor mr-4 
+            lg:py-[9px] py-0 lg:px-[18px] px-4 lg:h-12 h-[36px]`}
             onClick={() => {
               setValue('freeTickets', true);
             }}
@@ -128,9 +155,9 @@ const TicketPrice: React.FC<TicketPriceProps> = ({
           </button>
         )}
       </div>
-      <div className="flex gap-[16px]">
-        <div className="flex flex-col">
-          <label htmlFor="ticketPrice" className="mb-3">
+      <div className="flex lg:gap-[16px] gap-[14px] flex-wrap">
+        <div className="flex flex-col flex-1">
+          <label htmlFor="ticketPrice" className="lg:mb-3 mb-[6px]">
             Ціна
           </label>
           <div className="relative">
@@ -152,14 +179,14 @@ const TicketPrice: React.FC<TicketPriceProps> = ({
               }}
               render={({ field }) => (
                 <div
-                  className={`w-[240px] h-[48px] p-[2px] ${freeTickets ? 'bg-[#D0D5D8]' : 'bg-createEventInputBorder'}  rounded-[10px]`}
+                  className={`lg:w-[240px] w-[159px] h-[48px] p-[2px] ${freeTickets ? 'bg-[#D0D5D8]' : 'bg-createEventInputBorder'}  lg:rounded-[10px] rounded-[7px]`}
                 >
                   <input
                     {...field}
                     id="ticketPrice"
                     type="number"
                     className={clsx(
-                      `outline-none pl-[49px] w-full h-full p-4 rounded-[8px] [appearance:textfield]
+                      `outline-none pl-[49px] w-full h-full p-4 lg:rounded-[8px] rounded-[5px] [appearance:textfield]
                     [&::-webkit-outer-spin-button]:appearance-none [&::-webkit-inner-spin-button]:appearance-none`,
                       {
                         'text-uploadBtnBg':
@@ -174,9 +201,9 @@ const TicketPrice: React.FC<TicketPriceProps> = ({
                 </div>
               )}
             />
-            <div className="h-[20px]">
+            <div className="lg:h-[20px] h-[14px]">
               {errors.ticketPrice && (
-                <p className="text-red-500 text-sm">
+                <p className="text-red-500 lg:text-sm text-xs">
                   {errors.ticketPrice.message}
                 </p>
               )}
@@ -184,8 +211,8 @@ const TicketPrice: React.FC<TicketPriceProps> = ({
           </div>
         </div>
 
-        <div className="flex flex-col">
-          <label htmlFor="numberOfTickets" className="mb-3">
+        <div className="flex flex-col flex-1">
+          <label htmlFor="numberOfTickets" className="lg:mb-3 mb-[6px]">
             Кількість квитків
           </label>
           <div className="relative">
@@ -207,7 +234,7 @@ const TicketPrice: React.FC<TicketPriceProps> = ({
               }}
               render={({ field }) => (
                 <div
-                  className={`w-[240px] h-[48px] p-[2px] ${unlimitedTickets ? 'bg-[#D0D5D8]' : 'bg-createEventInputBorder'}  rounded-[10px]`}
+                  className={`lg:w-[240px] w-[158px] h-[48px] p-[2px] ${unlimitedTickets ? 'bg-[#D0D5D8]' : 'bg-createEventInputBorder'} lg:rounded-[10px] rounded-[7px]`}
                 >
                   <input
                     id="numberOfTickets"
@@ -215,7 +242,7 @@ const TicketPrice: React.FC<TicketPriceProps> = ({
                     type="number"
                     min={1}
                     className={clsx(
-                      `outline-none pl-[49px] w-full h-full p-4 rounded-[8px] [appearance:textfield] [&::-webkit-outer-spin-button]:appearance-none 
+                      `outline-none pl-[49px] w-full h-full p-4 lg:rounded-[8px] rounded-[5px] [appearance:textfield] [&::-webkit-outer-spin-button]:appearance-none 
                 [&::-webkit-inner-spin-button]:appearance-none`,
                       {
                         'text-uploadBtnBg':
@@ -228,9 +255,9 @@ const TicketPrice: React.FC<TicketPriceProps> = ({
                 </div>
               )}
             />
-            <div className="h-[20px]">
+            <div className="lg:h-[20px] h-[14px]">
               {errors.numberOfTickets && (
-                <p className="text-red-500 text-sm">
+                <p className="text-red-500 lg:text-sm text-xs">
                   {errors.numberOfTickets.message}
                 </p>
               )}
@@ -238,7 +265,7 @@ const TicketPrice: React.FC<TicketPriceProps> = ({
           </div>
         </div>
 
-        <div className="self-end mb-[32px]">
+        <div className="self-end lg:mb-[32px] mb-0 flex-1">
           <Controller
             name="unlimitedTickets"
             control={control}
@@ -252,7 +279,7 @@ const TicketPrice: React.FC<TicketPriceProps> = ({
                   onChange={e => field.onChange(e.target.checked)}
                   disabled={isEdit && event?.soldTickets !== '0'}
                 />
-                <div className="h-5 w-5 flex items-center justify-center bg-lightPink rounded-[5px]">
+                <div className="lg:h-5 lg:w-5 w-6 h-6 flex items-center justify-center bg-lightPink rounded-[5px]">
                   {unlimitedTickets && (
                     <MdDone className="text-black w-6 h-6" />
                   )}

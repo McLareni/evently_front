@@ -58,7 +58,6 @@ const CreateEventForm: React.FC<CreateEventFormProps> = ({
     null,
   ]);
   const [agreement, setAgreement] = useState(false);
-  const [activeSection, setActiveSection] = useState('');
 
   const {
     control,
@@ -244,11 +243,9 @@ const CreateEventForm: React.FC<CreateEventFormProps> = ({
     setValue('organizers.id', user.id);
   }, [setValue, user]);
 
-  console.log(activeSection);
-
   return (
     <>
-      <form onSubmit={handleSubmit(onSubmit)}>
+      <form onSubmit={handleSubmit(onSubmit)} className="w-full">
         <PhotoCardList
           onPhotoChange={onPhotoChange}
           handleImageFileChange={handleImageFileChange}
@@ -256,13 +253,12 @@ const CreateEventForm: React.FC<CreateEventFormProps> = ({
           validateForm={validateForm}
           countOldPhotos={countOldPhotos}
         />
+
         <AboutEvent
           control={control}
           setValue={setValue}
           watch={watch}
           errors={errors}
-          isActive={activeSection === 'aboutEvent'}
-          changeActiveSection={section => setActiveSection(section)}
         />
         <DateAndPlace
           control={control}
@@ -294,7 +290,7 @@ const CreateEventForm: React.FC<CreateEventFormProps> = ({
             disabled={!isValid || !validateForm || !agreement}
             type="submit"
             primary
-            className="mt-8 bg-gradient-to-r from-[#9B8FF3] to-[#38F6F9] w-[230px] h-[48px]"
+            className="lg:mt-8 mt-6 bg-gradient-to-r from-[#9B8FF3] to-[#38F6F9] w-[230px] h-[48px]"
           >
             {isEdit ? 'Зберегти зміни' : 'Створити подію'}
           </SharedBtn>

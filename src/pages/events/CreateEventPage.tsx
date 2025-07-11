@@ -1,5 +1,7 @@
 import { useState } from 'react';
 
+import { useMediaVariables } from '@/hooks/query/useMediaVariables';
+
 import { Container } from '@/components/container/Container';
 import CreateEventCard from '@/components/createEvent/CreateEventCard';
 import CreateEventForm from '@/components/createEvent/createEventForm/CreateEventForm';
@@ -17,6 +19,7 @@ export interface FormaDataForCard {
 
 const CreateEventPage: React.FC = () => {
   const [photos, setPhotos] = useState<(string | null)[]>([null, null, null]);
+  const { isMobile } = useMediaVariables();
   const [eventInfoData, setEventInfoData] = useState<FormaDataForCard>({
     title: '',
     eventTypeName: '',
@@ -66,16 +69,20 @@ const CreateEventPage: React.FC = () => {
 
   return (
     <>
-      <Container className="flex flex-col gap-16 pb-16">
-        <div>
-          <h1 className=" content-center text-center bg-[url('/images/heroForCreatEventForm.svg')]  w-[1320px] h-[223px]">
-            <span className="bg-gradient-to-r from-[#12C2E9] to-[#C471ED] bg-clip-text text-transparent">
-              Твій івент - твоя історія!
-            </span>
-          </h1>
-        </div>
+      <Container className="flex flex-col gap-16 lg:pb-16 p-4">
+        {!isMobile && (
+          <div>
+            <h1 className=" content-center text-center bg-[url('/images/heroForCreatEventForm.svg')]  w-[1320px] h-[223px]">
+              <span className="bg-gradient-to-r from-[#12C2E9] to-[#C471ED] bg-clip-text text-transparent">
+                Твій івент - твоя історія!
+              </span>
+            </h1>
+          </div>
+        )}
         <div className="flex gap-6">
-          <CreateEventCard photo={photos[0]} eventInfoData={eventInfoData} />
+          {!isMobile && (
+            <CreateEventCard photo={photos[0]} eventInfoData={eventInfoData} />
+          )}
           <CreateEventForm
             photos={photos}
             onPhotoChange={handlePhotoChange}
