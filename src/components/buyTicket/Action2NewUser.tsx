@@ -111,7 +111,7 @@ export const Action2NewUser: FC<Action2NewUserProps> = ({ newUserEmail }) => {
         </p>
       </div>
 
-      <div className="flex gap-[24px] mb-[32px]">
+      <div className="flex flex-col lg:flex-row gap-[24px] mb-[32px]">
         <BuyTicketInput
           {...register('name', {
             required: true,
@@ -142,7 +142,7 @@ export const Action2NewUser: FC<Action2NewUserProps> = ({ newUserEmail }) => {
         />
       </div>
 
-      <div className="flex gap-[24px] mb-[32px]">
+      <div className="flex flex-col lg:flex-row gap-[24px] mb-[32px]">
         <Controller
           name="phoneNumber"
           control={control}
@@ -188,8 +188,8 @@ export const Action2NewUser: FC<Action2NewUserProps> = ({ newUserEmail }) => {
         />
       </div>
 
-      <div className="relative w-[500px]">
-        <div className="flex flex-col gap-[32px] w-[380px]">
+      <div className="relative lg:w-[500px]">
+        <div className="flex flex-col gap-[32px] lg:w-[380px]">
           <div>
             <BuyTicketInput
               {...register('password', {
@@ -237,7 +237,7 @@ export const Action2NewUser: FC<Action2NewUserProps> = ({ newUserEmail }) => {
           <p className="text-center">або</p>
           <button
             type="button"
-            className={`mb-[8px] w-[380px] h-[64px] border-[2px] rounded-[10px]
+            className={`mb-[8px] lg:w-[380px] h-[64px] border-[2px] rounded-[10px]
                           px-[24px] outline-none bg-background text-[20px] border-buttonPurple
                           flex justify-center items-center gap-2`}
           >

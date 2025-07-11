@@ -4,6 +4,7 @@ import { AiOutlineMinusCircle, AiOutlinePlusCircle } from 'react-icons/ai';
 import { ImPriceTag } from 'react-icons/im';
 import { RxCrossCircled } from 'react-icons/rx';
 
+import { useMediaQuery } from '@/hooks/useMediaQuery';
 import { checkPromoCode } from '@/utils/eventsHttp';
 
 import Spinner from '../ui/Spinner';
@@ -32,6 +33,8 @@ export const Action1: React.FC<Action1Props> = ({
   const [ticketCount, setTicketCount] = useState(1);
   const [promoCode, setPromoCode] = useState('');
   const [isLoading, setIsLoading] = useState(false);
+
+  const isMobile = useMediaQuery('(max-width: 1024px)');
 
   const increment = () => {
     setTicketCount(ticketCount + 1);
@@ -74,28 +77,31 @@ export const Action1: React.FC<Action1Props> = ({
   return (
     <div>
       {isLoading && <Spinner />}
-      <div className="bg-[url('/images/ticket/ticket-info.svg')] bg-cover bg-center w-[860px] h-[250px] px-[64px] py-[36px] flex flex-col justify-between mb-[45px]">
+      <div
+        className={`${isMobile ? "bg-[url('/images/ticket/ticket-info-mobile.svg')]" : "bg-[url('/images/ticket/ticket-info.svg')]"}
+        bg-[length:100%_100%] h-[120px] bg-no-repeat bg-fill w-full bg-center lg:w-[860px] lg:h-[250px] px-[32px] lg:px-[64px] py-[16px] lg:py-[36px] flex flex-col justify-between mb-[45px]`}
+      >
         <div className="flex items-center justify-between">
-          <p className="text-[36px]">Вхідний квиток</p>
+          <p className="text-[16px] lg:text-[36px]">Вхідний квиток</p>
           <div className="flex gap-[16px]">
             <button
               onClick={decrement}
               className="focus:outline-none text-buttonPurple"
             >
-              <AiOutlineMinusCircle size={36} />
+              <AiOutlineMinusCircle className="w-[24px] h-[24px] lg:w-[36px] lg:h-[36px]" />
             </button>
-            <span className="text-[48px]">{ticketCount}</span>
+            <span className="text-[28px] lg:text-[48px]">{ticketCount}</span>
             <button
               onClick={increment}
               className="focus:outline-none text-buttonPurple"
             >
-              <AiOutlinePlusCircle size={36} />
+              <AiOutlinePlusCircle className="w-[24px] h-[24px] lg:w-[36px] lg:h-[36px]" />
             </button>
           </div>
         </div>
         <div className="flex gap-[24px] items-center">
-          <ImPriceTag size={38} />
-          <span className="text-[48px]">
+          <ImPriceTag className="w-[16px] h-[16px] lg:w-[38px] lg:h-[38px]" />
+          <span className="text-[16px] lg:text-[48px]">
             {price !== 0 ? `${price} грн` : 'Безкоштовно'}
           </span>
         </div>

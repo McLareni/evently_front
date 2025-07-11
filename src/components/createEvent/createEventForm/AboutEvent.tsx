@@ -10,8 +10,6 @@ import { AiFillCheckCircle } from 'react-icons/ai';
 import { BiSmile } from 'react-icons/bi';
 
 import { categories } from '@/assets/staticData/statickData';
-import { useMediaVariables } from '@/hooks/query/useMediaVariables';
-import clsx from 'clsx';
 import Picker, { EmojiClickData } from 'emoji-picker-react';
 
 import MobileSectionHeader from './MobileSectionHeader';

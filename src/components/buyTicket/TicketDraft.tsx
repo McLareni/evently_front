@@ -1,10 +1,6 @@
 /* eslint-disable no-unused-vars */
-import { useState } from 'react';
-
 import { formatDateToDayMonth } from '@/helpers/filters/formatDateToDayMonth';
-import { formatPhoneNumberFromMask } from '@/helpers/userForm/formatFromMask';
 import { SERVICE } from '@/pages/events/BuyTicket';
-import { buyTicket } from '@/utils/eventsHttp';
 
 import { SharedBtn } from '@/components/ui';
 
@@ -17,10 +13,11 @@ interface TicketDraftProps {
   currentAction: number;
   ticketCount: number;
   price: number;
-  info: CustomerInfo | null;
   priceWithDiscount: number;
   discountValue: number;
   isFormValid: boolean;
+  sendEventData: () => Promise<void>;
+  isLoading: boolean;
 }
 
 export const TicketDraft: React.FC<TicketDraftProps> = ({
@@ -29,13 +26,12 @@ export const TicketDraft: React.FC<TicketDraftProps> = ({
   currentAction,
   ticketCount,
   price,
-  info,
   priceWithDiscount,
   discountValue,
   isFormValid,
+  sendEventData,
+  isLoading,
 }) => {
-  const [isLoading, setIsLoading] = useState(false);
-
   const formatTicket = () => {
     const countString = ticketCount.toString();
     const lastChar = countString.charAt(countString.length - 1);
@@ -56,72 +52,6 @@ export const TicketDraft: React.FC<TicketDraftProps> = ({
   const formattedTicket = formatTicket();
 
   const priceWithService = (price * SERVICE).toFixed(2);
-
-  const sendEventData = async () => {
-    setIsLoading(true);
-    try {
-      if (info && event && price) {
-        const eventData = {
-          product: {
-            productName: event.title,
-            productPrice: event.price.toString(),
-            productCount: ticketCount.toString(),
-            amount: priceWithDiscount.toString(),
-          },
-          userId: info.userId,
-          clientFirstName: info.clientFirstName,
-          clientLastName: info.clientLastName,
-          clientPhone: formatPhoneNumberFromMask(info.clientPhone),
-          clientEmail: info.clientEmail,
-        };
-
-        const res = await buyTicket({ data: eventData, eventId: event.id });
-
-        if (res) {
-          const form = document.createElement('form');
-          form.method = 'POST';
-          form.action = 'https://secure.wayforpay.com/pay';
-
-          const fields: Record<string, string> = {
-            merchantAccount: res.merchantAccount,
-            merchantAuthType: res.merchantAuthType,
-            merchantDomainName: res.merchantDomainName,
-            orderReference: res.orderReference,
-            orderDate: res.orderDate,
-            amount: res.amount,
-            currency: res.currency,
-            orderTimeout: res.orderTimeout,
-            productName: res.product.productName,
-            productPrice: res.product.productPrice,
-            productCount: res.product.productCount,
-            clientFirstName: res.clientFirstName,
-            clientLastName: res.clientLastName,
-            clientAddress: 'clientAddress',
-            clientCity: 'clientCity',
-            clientEmail: res.clientEmail,
-            serviceUrl: res.serviceUrl,
-            defaultPaymentSystem: res.defaultPaymentSystem,
-            merchantSignature: res.merchantSignature,
-          };
-
-          for (const key in fields) {
-            const input = document.createElement('input');
-            input.type = 'hidden';
-            input.name = key;
-            input.value = fields[key];
-            form.appendChild(input);
-          }
-
-          document.body.appendChild(form);
-          form.submit();
-        }
-      }
-    } catch (e) {
-      console.log(e);
-    } finally {
-      setIsLoading(false);
-    }
-  };
 
   return (
     <div className="font-lato text-[16px] bg-[url('/images/ticket/ticket-background.svg')] bg-cover bg-center min-w-[378px] h-[584px] flex flex-col px-[10px] pb-[54px]">

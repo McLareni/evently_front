@@ -54,7 +54,16 @@ export const Action2UserExists: FC = () => {
     >
       {isLoading && <Spinner />}
       <h2 className="font-medium mb-4">Контактна інформація</h2>
-      <div className="flex gap-[52px] mb-[8px]">
+      <div className="flex flex-col lg:flex-row-reverse gap-[52px] mb-[8px]">
+        <div
+          className={`bg-lightPurple lg:w-[380px] h-[64px] border-[2px] rounded-[10px]
+              px-[24px] outline-none bg-background text-[20px] border-buttonPurple`}
+        >
+          <p className={`text-sm`}>
+            Користувач із цією електронною адресою вже зареєстрований на нашому
+            сайті. Щоб увійти, введіть свій пароль.
+          </p>
+        </div>
         <Controller
           name="email"
           control={control}
@@ -74,19 +83,9 @@ export const Action2UserExists: FC = () => {
             validate: validateEmail,
           }}
         />
-
-        <div
-          className={`bg-lightPurple w-[380px] h-[64px] border-[2px] rounded-[10px]
-            px-[24px] outline-none bg-background text-[20px] border-buttonPurple`}
-        >
-          <p className={`text-sm`}>
-            Користувач із цією електронною адресою вже зареєстрований на нашому
-            сайті. Щоб увійти, введіть свій пароль.
-          </p>
-        </div>
       </div>
 
-      <div className="w-[380px]">
+      <div className="lg:w-[380px]">
         <BuyTicketInput
           {...register('password', {
             required: true,
@@ -107,7 +106,7 @@ export const Action2UserExists: FC = () => {
         <p className="my-[24px] text-center">або</p>
         <button
           type="button"
-          className={`mb-[32px] w-[380px] h-[64px] border-[2px] rounded-[10px]
+          className={`mb-[32px] w-full lg:w-[380px] h-[64px] border-[2px] rounded-[10px]
             px-[24px] outline-none bg-background text-[20px] border-buttonPurple
             flex justify-center items-center gap-2`}
         >
