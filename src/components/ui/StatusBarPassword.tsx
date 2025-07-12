@@ -35,7 +35,7 @@ export const StatusBarPassword: React.FC<StatusBarPasswordProps> = ({
       </li>
       <li className={``}>
         <SharedItemStatusBar
-          text="Спеціальний символ"
+          text="Спец. символ (@$!%*?&.)"
           valid={requiredPassword.hasSpecialChar}
         />
       </li>

@@ -1,5 +1,6 @@
 import { FC, useEffect, useState } from 'react';
 import { Controller, SubmitHandler, useForm } from 'react-hook-form';
+import { AiOutlineExclamationCircle } from 'react-icons/ai';
 import { FcGoogle } from 'react-icons/fc';
 import { toast } from 'react-toastify';
 
@@ -101,14 +102,12 @@ export const Action2NewUser: FC<Action2NewUserProps> = ({ newUserEmail }) => {
       onSubmit={handleSubmit(onSubmit)}
     >
       {isLoading && <Spinner />}
+      <h2 className="font-medium mb-6">Контактна інформація</h2>
       <div
-        className={`mb-[36px] bg-lightPurple w-[380px] h-[64px] border-[2px] rounded-[10px]
-            px-[24px] outline-none bg-background text-[20px] border-buttonPurple`}
+        className={`flex mb-6 items-center gap-2 lg:w-[380px] text-[20px] border-buttonPurple`}
       >
-        <p className={`text-sm`}>
-          Користувач із цією електронною поштою ще не зареєстрований на нашому
-          веб-сайті. Зареєструйтеся для участі.
-        </p>
+        <AiOutlineExclamationCircle color="#9B8FF3" />
+        <p className={`text-sm`}>Користувач не знайдений. Створіть акаунт.</p>
       </div>
 
       <div className="flex flex-col lg:flex-row gap-[24px] mb-[32px]">

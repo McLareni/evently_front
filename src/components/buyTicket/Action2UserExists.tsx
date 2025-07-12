@@ -1,5 +1,6 @@
 import { FC, useState } from 'react';
 import { Controller, SubmitHandler, useForm } from 'react-hook-form';
+import { AiOutlineExclamationCircle } from 'react-icons/ai';
 import { FcGoogle } from 'react-icons/fc';
 import { toast } from 'react-toastify';
 
@@ -53,17 +54,16 @@ export const Action2UserExists: FC = () => {
       className="font-lato flex flex-col border-[2px] border-buttonPurple rounded-[10px] p-[24px] mb-auto gap-[20px]"
     >
       {isLoading && <Spinner />}
-      <h2 className="font-medium mb-4">Контактна інформація</h2>
-      <div className="flex flex-col lg:flex-row-reverse gap-[52px] mb-[8px]">
-        <div
-          className={`bg-lightPurple lg:w-[380px] h-[64px] border-[2px] rounded-[10px]
-              px-[24px] outline-none bg-background text-[20px] border-buttonPurple`}
-        >
-          <p className={`text-sm`}>
-            Користувач із цією електронною адресою вже зареєстрований на нашому
-            сайті. Щоб увійти, введіть свій пароль.
-          </p>
-        </div>
+      <h2 className="font-medium">Контактна інформація</h2>
+      <div
+        className={`flex mb-2 items-center gap-2 lg:w-[380px] text-[20px] border-buttonPurple`}
+      >
+        <AiOutlineExclamationCircle color="#9B8FF3" />
+        <p className={`text-sm`}>
+          Користувач вже зареєстрований. Введіть свій пароль.
+        </p>
+      </div>
+      <div className="flex flex-col lg:w-[860px] gap-[52px] mb-[8px]">
         <Controller
           name="email"
           control={control}
