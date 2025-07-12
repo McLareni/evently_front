@@ -123,7 +123,7 @@ const PhotoCard: React.FC<PhotoCardProps> = ({
         )}
 
         {photo && isHovered && !isOldPhoto && (
-          <div className="absolute flex gap-[24px] top-2 right-2 text-gray-700 z-20 top-[50%] left-[50%] translate-x-[-50%] translate-y-[-50%]">
+          <div className="absolute flex gap-[24px] text-gray-700 z-20 top-[50%] left-[50%] translate-x-[-50%] translate-y-[-50%]">
             <GoPencil className="h-6 w-6 z-10" onClick={handleEditPhoto} />
             <BiTrash
               className="h-6 w-6 text-error"

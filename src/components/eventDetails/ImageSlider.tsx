@@ -1,6 +1,7 @@
 import React, { useEffect, useRef, useState } from 'react';
 import { PiHeartFill, PiHeartLight } from 'react-icons/pi';
 
+import { useMediaVariables } from '@/hooks/query/useMediaVariables';
 import clsx from 'clsx';
 
 import { Dots } from '../hero/Dots';
@@ -20,6 +21,7 @@ const ImageSlider: React.FC<IProps> = ({
 }) => {
   const [sliderImage, setSliderImage] = useState(images);
   const [activeSlide, setActiveSlide] = useState(0);
+  const { isMobile } = useMediaVariables();
 
   const intervalRef = useRef<number | null>(null);
 
@@ -89,8 +91,6 @@ const ImageSlider: React.FC<IProps> = ({
     startInterval();
   };
 
-  console.log(activeSlide);
-
   return (
     <>
       <div className="lg:flex-1 lg:relative">
@@ -130,7 +130,7 @@ const ImageSlider: React.FC<IProps> = ({
           />
         ))}
       </div>
-      {sliderImage.length > 1 && (
+      {sliderImage.length > 1 && isMobile && (
         <div className="w-fit mx-auto absolute bottom-0 left-1/2 -translate-x-1/2">
           <Dots
             slides={images}

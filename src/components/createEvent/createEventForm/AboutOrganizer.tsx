@@ -14,8 +14,12 @@ import { selectUser } from '@/redux/auth/selectors';
 import { useAppSelector } from '@/redux/hooks';
 
 import { formatPhoneToMask } from '@/helpers/userForm/formatToMask';
+import { useMediaVariables } from '@/hooks/query/useMediaVariables';
 import { useMask } from '@react-input/mask';
+import clsx from 'clsx';
 import Picker, { EmojiClickData } from 'emoji-picker-react';
+
+import MobileSectionHeader from './MobileSectionHeader';
 
 type AboutOrganizerProps = {
   control: Control<CreateEventFormValues>;
@@ -38,6 +42,8 @@ const AboutOrganizer: React.FC<AboutOrganizerProps> = ({
 }) => {
   const [showPicker, setShowPicker] = useState(false);
   const [shownTooltip, setShownTooltip] = useState(false);
+  const { isDesktop, isMobile } = useMediaVariables();
+  const [sectionIsOpen, setSectionIsOpen] = useState<boolean>(false);
 
   const showTooltip = () => {
     setShownTooltip(true);
@@ -71,7 +77,22 @@ const AboutOrganizer: React.FC<AboutOrganizerProps> = ({
   }, [setValue, user.phoneNumber]);
 
   return (
-    <div className="relative w-[760px] rounded-[20px] border-2 border-buttonPurple flex flex-col py-10 px-10">
+    <div
+      onClick={() =>
+        isMobile && !sectionIsOpen ? setSectionIsOpen(true) : () => {}
+      }
+      className={clsx(
+        'relative lg:w-[760px] w-full rounded-[20px] lg:border-2 border border-buttonPurple flex flex-col p-3 lg:py-10 lg:px-10 overflow-hidden',
+        sectionIsOpen || isDesktop ? 'h-auto' : 'h-[56px]'
+      )}
+    >
+      {isMobile && (
+        <MobileSectionHeader
+          text="Про організатора"
+          isActive={sectionIsOpen}
+          changeActiveSection={() => setSectionIsOpen(false)}
+        />
+      )}
       {!errors.phoneNumber && phoneNumber && agreement && (
         <AiFillCheckCircle
           size={40}
@@ -80,9 +101,17 @@ const AboutOrganizer: React.FC<AboutOrganizerProps> = ({
         />
       )}
       <div className="flex flex-col relative">
-        <label htmlFor="aboutOrganizer" className="pb-4 text-2xl">
+        <label
+          htmlFor="aboutOrganizer"
+          className="lg:pb-4 pb-0 lg:text-2xl text-base"
+        >
           Про організатора
         </label>
+        {isMobile && (
+          <p className="text-sm text-textGray my-[6px]">
+            Додай кілька слів про себе – це підвищить довіру.
+          </p>
+        )}
         <Controller
           name="aboutOrganizer"
           control={control}
@@ -90,18 +119,24 @@ const AboutOrganizer: React.FC<AboutOrganizerProps> = ({
             <div className="relative w-full p-[2px] h-[120px] bg-createEventInputBorder rounded-[10px]">
               <textarea
                 {...field}
-                className="focus:outline-none w-full h-full p-4 rounded-[8px] resize-none"
+                className="focus:outline-none w-full h-full lg:p-4 px-2 py-3 rounded-[8px] resize-none"
                 maxLength={MAX_DESCRIPTION_LENGTH}
                 id="aboutOrganizer"
-                placeholder="Розкажи про себе"
+                placeholder={
+                  !isMobile
+                    ? 'Додай кілька слів про себе – це підвищить довіру.'
+                    : ''
+                }
               ></textarea>
-              <button
-                className="absolute right-[16px] bottom-[16px] focus:outline-none"
-                type="button"
-                onClick={() => setShowPicker(val => !val)}
-              >
-                <BiSmile size={24} />
-              </button>
+              {isDesktop && (
+                <button
+                  className="absolute right-[16px] bottom-[16px] focus:outline-none"
+                  type="button"
+                  onClick={() => setShowPicker(val => !val)}
+                >
+                  <BiSmile size={24} />
+                </button>
+              )}
             </div>
           )}
         />
@@ -113,19 +148,21 @@ const AboutOrganizer: React.FC<AboutOrganizerProps> = ({
         <Picker style={{ width: '100%' }} onEmojiClick={onEmojiClick} />
       )}
 
-      <div className="flex flex-col pb-2">
-        <div className="pb-3 text-2xl flex relative">
+      <div className="flex flex-col lg:pb-2 pb-0">
+        <div className="lg:pb-3 pb-0 text-2xl flex relative">
           <label htmlFor="phoneNumber" className="flex items-center gap-4">
-            <span className="text-[24px]">
+            <span className="lg:pb-4 pb-0 lg:text-2xl text-base">
               Номер телефону<span className="star">*</span>
             </span>
-            <div
-              onMouseEnter={showTooltip}
-              onMouseLeave={hideTooltip}
-              className="flex justify-center items-center border-[#ff0f00] border-2 rounded-full w-[24px] h-[24px]"
-            >
-              <AiOutlineExclamation color="#ff0f00" size={14} />
-            </div>
+            {isDesktop && (
+              <div
+                onMouseEnter={showTooltip}
+                onMouseLeave={hideTooltip}
+                className="flex justify-center items-center border-[#ff0f00] border-2 rounded-full w-[24px] h-[24px]"
+              >
+                <AiOutlineExclamation color="#ff0f00" size={14} />
+              </div>
+            )}
 
             {shownTooltip && (
               <div className="absolute left-[250px]">
@@ -147,6 +184,11 @@ const AboutOrganizer: React.FC<AboutOrganizerProps> = ({
             )}
           </label>
         </div>
+        {isMobile && (
+          <p className="text-sm text-textGray my-[6px]">
+            Ваш номер бачить лише адміністратор для звʼязку за потреби
+          </p>
+        )}
         <Controller
           name="phoneNumber"
           control={control}
@@ -181,12 +223,14 @@ const AboutOrganizer: React.FC<AboutOrganizerProps> = ({
         />
         <div className="h-[20px]">
           {errors.phoneNumber && (
-            <p className="text-red-500 text-sm">{errors.phoneNumber.message}</p>
+            <p className="text-red-500 lg:text-sm text-xs">
+              {errors.phoneNumber.message}
+            </p>
           )}
         </div>
       </div>
 
-      <label className="flex items-center cursor-pointer mb-[12px]">
+      <label className="flex items-center cursor-pointer mb-[12px] lg:text-base text-sm">
         <input
           id="unlimitedTickets"
           type="checkbox"
@@ -194,7 +238,7 @@ const AboutOrganizer: React.FC<AboutOrganizerProps> = ({
           checked={agreement}
           onChange={checkAgreement}
         />
-        <div className="h-5 w-5 flex items-center justify-center bg-lightPink rounded-[5px]">
+        <div className="min-h-5 min-w-5 flex items-center justify-center bg-lightPink rounded-[5px]">
           {agreement && <MdDone className="text-black w-6 h-6" />}
         </div>
         <span className="ml-2">
@@ -206,8 +250,8 @@ const AboutOrganizer: React.FC<AboutOrganizerProps> = ({
             rel="noopener noreferrer"
           >
             Політикою конфіденційності
-          </a>
-          {' '}та{' '}
+          </a>{' '}
+          та{' '}
           <a
             className="underline text-buttonPurple"
             href="/Правила.pdf"
