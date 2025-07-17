@@ -47,7 +47,14 @@ const OrganizersPage = () => {
                 <Tips/>
                 <WhyWe/>
                 <Reviews data={data}/>
-                <FAQ/>
+                <div className="flex flex-col">
+                    <h1 className="w-[89px] lg:leading-[94.85px] leading-normal text-[28px] lg:text-[64px] lg:mr-[20px] mb-8">
+                        FAQ
+                    </h1>
+                    <div className="flex justify-center">
+                        <FAQ hideTitle={true} noTopMargin={true} noContainerTopMargin={true} />
+                    </div>
+                </div>
             </Container>
         </>
     )

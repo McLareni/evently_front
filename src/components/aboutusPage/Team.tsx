@@ -14,7 +14,7 @@ const Team = () => {
         <div className='mb-16'>
             <h1 className='pb-8'>Команда</h1>
             <div className='text-xl text-center'>
-                <div className='flex justify-center items-center gap-32 '>
+                <div className='flex justify-center items-center gap-32 ml-[-10px]'>
                     <div className='w-60 flex justify-center items-center flex-col '>
                         <img src={Vyacheslav} alt="" className='pb-2' />
                         <p className='pb-2 text-transparent bg-clip-text bg-gradient-to-r from-[#12C2E9] to-[#C471ED]'>В'ячеслав</p>
