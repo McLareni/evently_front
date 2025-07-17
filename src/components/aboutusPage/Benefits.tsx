@@ -3,6 +3,7 @@
 const Benefits = () => {
     return (
         <div className="mb-16">
+          <h1 className='pb-8'>Що ви отримуєте з нами?</h1>
             <div className="flex border-b-2 pb-6 mb-6 items-center">
               <h1 className="text-transparent bg-clip-text bg-gradient-to-r from-[#9B8FF3] to-[#38F6F9] mr-[69px]">01</h1>
               <h4 className="w-[382px] mr-[50px] text-4xl">Доставка квитків</h4>

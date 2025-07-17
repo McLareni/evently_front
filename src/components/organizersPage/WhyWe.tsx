@@ -10,7 +10,7 @@ const WhyWe = () => {
     return (
     <>
         <div className="mb-16">
-            <h1>
+            <h1 className="pb-[32px]">
                 Чому ми?
             </h1>
             <div className="flex">

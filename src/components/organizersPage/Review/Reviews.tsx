@@ -17,7 +17,7 @@ const Reviews: React.FC<ReviewsProps> = ({data}) => {
         pauseOnHover: true,
         slidesToShow: 3.15,
         slidesToScroll: 3,
-        speed: 2000,
+        speed: 1000,
         infinite: false,
         prevArrow: <MySliderBtn />,
         nextArrow: <MySliderBtn next />,
@@ -49,7 +49,7 @@ const Reviews: React.FC<ReviewsProps> = ({data}) => {
     return (
         <>
             <div className='mb-16'>
-                <h1>Відгуки</h1>
+                <h1 className='!mb-8'>Відгуки</h1>
                 <div>
                     <Slider {...settings}>
                       {data?.map(item => (

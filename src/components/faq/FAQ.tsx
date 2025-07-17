@@ -3,7 +3,13 @@ import { BiChevronDown } from 'react-icons/bi';
 
 import { Container } from '../container/Container';
 
-export const FAQ: React.FC = () => {
+interface FAQProps {
+  hideTitle?: boolean;
+  noTopMargin?: boolean;
+  noContainerTopMargin?: boolean;
+}
+
+export const FAQ: React.FC<FAQProps> = ({ hideTitle = false, noTopMargin = false, noContainerTopMargin = false }) => {
   const [openIndex, setOpenIndex] = useState<number | null>(null);
   const contentRefs = useRef<(HTMLDivElement | null)[]>([]);
 
@@ -35,11 +41,13 @@ export const FAQ: React.FC = () => {
   };
 
   return (
-    <Container className="flex lg:flex-row flex-col lg:ml-[40px] lg:mt-[64px] lg:pb-[50px] pb-[32px]">
-      <h1 className="w-[89px] lg:leading-[94.85px] leading-normal text-[28px] lg:text-[64px] lg:mr-[20px] ">
-        FAQ
-      </h1>
-      <div className="space-y-4 lg:ml-[136px] lg:w-[872px] mt-4 lg:mt-0">
+    <Container className={`flex lg:flex-row flex-col lg:ml-[40px] ${noContainerTopMargin ? '' : 'lg:mt-[64px]'} lg:pb-[50px] pb-[32px]`}>
+      {!hideTitle && (
+        <h1 className="w-[89px] lg:leading-[94.85px] leading-normal text-[28px] lg:text-[64px] lg:mr-[20px] ">
+          FAQ
+        </h1>
+      )}
+      <div className={`space-y-4 lg:ml-[136px] lg:w-[872px] ${noTopMargin ? '' : 'mt-4 lg:mt-0'}`}>
         {items.map((item, index) => (
           <div key={index}>
             <div className="overflow-hidden rounded-[20px] bg-gradient-to-br from-[#E9E6FF] to-[#D5FEFF]">

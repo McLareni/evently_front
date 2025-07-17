@@ -6,7 +6,7 @@ const Tips = () => {
     return (
         <>
         <div className="mb-16">
-            <h1 className="mb-8">Поради</h1>  
+            <h1 className="!mb-8">Поради</h1>  
             <div className="flex border-b-2 pb-6 items-center">
               <h1 className="text-transparent bg-clip-text bg-gradient-to-r from-[#9B8FF3] to-[#38F6F9] mr-[69px]">01</h1>
               <h4 className="w-[477px] mr-[69px] text-4xl">Створюйте привабливий опис події</h4>

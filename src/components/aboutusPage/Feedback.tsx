@@ -22,7 +22,7 @@ const Feedback = () => {
     }
 
     return (
-        <div className="mx-[108px] mb-24 relative">
+        <div className="mx-[108px] mb-[64px] relative">
             <div className="inset-0 bg-bg-gradient rounded-[20px]">
             <div className="flex flex-col justify-center items-center h-[687px] inset-0 bg-backgroundImage rounded-[20px]">
                 <h4 className="text-4xl text-center w-[541px] pb-8">
@@ -34,14 +34,14 @@ const Feedback = () => {
                         type="text" 
                         value={email}
                         onChange={(e) => setEmail(e.target.value)}
-                        className="mb-4 w-[830px] h-16 py-5 pl-6 rounded-[20px] border-2 border-buttonPurple focus:outline-none transition-all duration-200 ease-in-out outline-none" 
+                        className="mb-4 w-[830px] h-16 py-5 pl-6 rounded-[10px] border-2 border-buttonPurple focus:outline-none transition-all duration-200 ease-in-out outline-none" 
                         placeholder="Введіть ваш email"
                     />
                     <div className="flex flex-col items-center">
                         <textarea
                             value={message}
                             onChange={(e) => setMessage(e.target.value)}
-                            className="px-6 py-5 min-w-[830px] min-h-[245px] rounded-[20px] border-2 border-buttonPurple focus:outline-none transition-all duration-200 ease-in-out"
+                            className="px-6 py-5 min-w-[830px] min-h-[245px] rounded-[10px] border-2 border-buttonPurple focus:outline-none transition-all duration-200 ease-in-out"
                             placeholder="Опишіть проблему або додайте фото"
                         />
                         <SharedBtn 

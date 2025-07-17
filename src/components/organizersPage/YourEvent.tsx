@@ -44,10 +44,10 @@ const YourEvent = () => {
     <>
       <div className="flex mb-16">
         <div className="max-w-[563px] mr-[109px] pt-[162px]">
-          <h1 className="pb-6 text-transparent bg-clip-text bg-gradient-to-r from-[#12C2E9] to-[#C471ED]">
+          <h1 className="mb-8 pb-6 text-transparent bg-clip-text bg-gradient-to-r from-[#12C2E9] to-[#C471ED]">
             Твій івент — твої можливості
           </h1>
-          <p className="pb-6 text-xl"></p>
+          <p className="pb-8 text-2xl">Збирай гостей, продавай квитки, отримуй прибуток</p>
           <SharedBtn
             type="button"
             primary
