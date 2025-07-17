@@ -51,13 +51,17 @@ const AboutEvent: React.FC<AboutEventProps> = ({
   const description = watch('description');
   const selectedCategory = watch('eventTypeName');
 
+  const isValidDate = !!(
+    !errors.title &&
+    !errors.description &&
+    title &&
+    description
+  );
+
   return (
     <div
-      onClick={() =>
-        isMobile && !sectionIsOpen ? setSectionIsOpen(true) : () => {}
-      }
       className={clsx(
-        'relative lg:w-[760px] w-full rounded-[20px] lg:border-2 border border-buttonPurple flex flex-col p-3 lg:py-10 lg:px-10 lg:mb-8 mb-4 overflow-hidden',
+        'relative lg:w-[760px] w-full rounded-[20px] lg:border-2 border border-buttonPurple flex flex-col justify-normal p-3 lg:py-10 lg:px-10 lg:mb-8 mb-4 overflow-hidden',
         sectionIsOpen || isDesktop ? 'h-auto' : 'h-[56px]'
       )}
     >
@@ -65,10 +69,11 @@ const AboutEvent: React.FC<AboutEventProps> = ({
         <MobileSectionHeader
           text="Написати заголовок"
           isActive={sectionIsOpen}
-          changeActiveSection={() => setSectionIsOpen(false)}
+          changeActiveSection={() => setSectionIsOpen(prev => !prev)}
+          dataIsValid={isValidDate}
         />
       )}
-      {!errors.title && !errors.description && title && description && (
+      {isValidDate && isDesktop && (
         <AiFillCheckCircle
           size={40}
           color="#3BE660"
