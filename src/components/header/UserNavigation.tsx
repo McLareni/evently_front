@@ -85,7 +85,7 @@ export const UserNavigation: React.FC<UserNavigationProps> = ({
   }, [location]);
 
   return (
-    <div className="flex gap-6 items-center mb-[10px] lg:m-0">
+    <div className="flex gap-6 items-center lg:m-0">
       <button
         onClick={toggleInput}
         className="focus:outline-none"

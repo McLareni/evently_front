@@ -4,7 +4,8 @@ interface SharedBtnProps {
   type: 'button' | 'submit' | 'reset';
   children?: React.ReactNode;
   disabled?: boolean;
-  onClick?: () => void;
+  // eslint-disable-next-line no-unused-vars, @typescript-eslint/no-explicit-any
+  onClick?: (() => void) | ((e: any) => void);
   className?: string;
   secondary?: boolean;
   primary?: boolean;

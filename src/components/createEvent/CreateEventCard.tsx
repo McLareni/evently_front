@@ -46,8 +46,8 @@ const CreateEventCard: React.FC<CardProps> = ({
   return (
     <>
       <div
-        className=" sticky group relative flex overflow-hidden items-start rounded-[20px] 
-      shadow-eventCardShadow max-h-[514px] max-w-[312px] w-[312px] h-[514px] top-[150px] mr-[135px] "
+        className="sticky group flex overflow-hidden items-start rounded-[20px] 
+      shadow-eventCardShadow max-h-[514px] min-w-[312px] w-[312px] h-[514px] top-[150px] mr-[135px] "
       >
         {photo ? (
           <img className="" src={photo} width={'100%'} alt="Example Card" />

@@ -63,6 +63,13 @@ const TicketPrice: React.FC<TicketPriceProps> = ({
     }
   }, [clearErrors, freeTickets, unlimitedTickets, setValue]);
 
+  const dataIsValid = !!(
+    !errors.ticketPrice &&
+    !errors.numberOfTickets &&
+    (freeTickets || ticketPrice) &&
+    (unlimitedTickets || numberOfTickets)
+  );
+
   return (
     <div
       onClick={() =>
@@ -78,6 +85,7 @@ const TicketPrice: React.FC<TicketPriceProps> = ({
           text="Вартість"
           isActive={sectionIsOpen}
           changeActiveSection={() => setSectionIsOpen(false)}
+          dataIsValid={dataIsValid}
         />
       )}
       {isEdit && ticketsHasBeenSold && (
@@ -100,16 +108,13 @@ const TicketPrice: React.FC<TicketPriceProps> = ({
             </h3>
           </div>
         )}
-      {!errors.ticketPrice &&
-        !errors.numberOfTickets &&
-        (freeTickets || ticketPrice) &&
-        (unlimitedTickets || numberOfTickets) && (
-          <AiFillCheckCircle
-            size={40}
-            color="#3BE660"
-            style={{ position: 'absolute', right: '8px', top: '8px' }}
-          />
-        )}
+      {dataIsValid && isDesktop && (
+        <AiFillCheckCircle
+          size={40}
+          color="#3BE660"
+          style={{ position: 'absolute', right: '8px', top: '8px' }}
+        />
+      )}
       {isDesktop && (
         <span className="pb-4 text-2xl">
           Вартість квитків<span className="star">*</span>

@@ -7,7 +7,9 @@ import { imageTypes } from '@/assets/staticData/statickData';
 import MobileModalPicker from './MobileModalPicker';
 
 interface IProps {
+  // eslint-disable-next-line no-unused-vars
   onPhotoChange: (id: number, photo: string | null) => void;
+  // eslint-disable-next-line no-unused-vars
   handleImageFileChange: (id: number, image: File[]) => void;
   photos?: (string | null)[];
 }
