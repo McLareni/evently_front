@@ -76,6 +76,8 @@ const AboutOrganizer: React.FC<AboutOrganizerProps> = ({
     }
   }, [setValue, user.phoneNumber]);
 
+  const dataIsValid = !!(!errors.phoneNumber && phoneNumber && agreement);
+
   return (
     <div
       onClick={() =>
@@ -91,9 +93,10 @@ const AboutOrganizer: React.FC<AboutOrganizerProps> = ({
           text="Про організатора"
           isActive={sectionIsOpen}
           changeActiveSection={() => setSectionIsOpen(false)}
+          dataIsValid={dataIsValid}
         />
       )}
-      {!errors.phoneNumber && phoneNumber && agreement && (
+      {dataIsValid && isDesktop && (
         <AiFillCheckCircle
           size={40}
           color="#3BE660"
