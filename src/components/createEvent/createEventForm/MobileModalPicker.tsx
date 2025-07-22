@@ -125,7 +125,7 @@ const MobileModalPicker: React.FC<IProps> = ({
         </div>
       ) : (
         <>
-          <div className="relative h-[540px] w-[358px] rounded-[5px] overflow-hidden">
+          <div className="relative h-[540px] w-full rounded-[5px] overflow-hidden">
             {photos[activeImage] ? (
               <img
                 src={photos[activeImage] as string}

@@ -82,7 +82,7 @@ const TicketPrice: React.FC<TicketPriceProps> = ({
     >
       {isMobile && (
         <MobileSectionHeader
-          text="Вартість"
+          text="Вартість квитка"
           isActive={sectionIsOpen}
           changeActiveSection={() => setSectionIsOpen(false)}
           dataIsValid={dataIsValid}
