@@ -29,11 +29,11 @@ export const MainLogo: React.FC<LogoProps> = ({ className, letters }) => {
         <div className="absolute flex space-x-2 top-[63%] left-[51%] transform -translate-x-1/2 -translate-y-1/2">
           <img
             src={logoLetter}
-            className={`${letters} lg:w-[14px] w-[10px] group-hover:-translate-y-2 transition-transform duration-300`}
+            className={`${letters} lg:w-[14px] w-[8px] group-hover:-translate-y-2 transition-transform duration-300`}
           />
           <img
             src={logoLetter}
-            className={`${letters} lg:w-[14px] w-[10px] group-hover:-translate-y-2 transition-transform duration-300`}
+            className={`${letters} lg:w-[14px] w-[8x] group-hover:-translate-y-2 transition-transform duration-300`}
           />
         </div>
       </div>
