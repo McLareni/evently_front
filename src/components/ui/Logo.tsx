@@ -33,7 +33,7 @@ export const MainLogo: React.FC<LogoProps> = ({ className, letters }) => {
           />
           <img
             src={logoLetter}
-            className={`${letters} lg:w-[14px] w-[8x] group-hover:-translate-y-2 transition-transform duration-300`}
+            className={`${letters} lg:w-[14px] w-[8px] group-hover:-translate-y-2 transition-transform duration-300`}
           />
         </div>
       </div>
