@@ -279,7 +279,7 @@ const TicketPrice: React.FC<TicketPriceProps> = ({
                 <input
                   id="unlimitedTickets"
                   type="checkbox"
-                  className="appearance-none"
+                  className="appearance-none absolute opacity-0 pointer-events-none"
                   checked={field.value}
                   onChange={e => field.onChange(e.target.checked)}
                   disabled={isEdit && event?.soldTickets !== '0'}
