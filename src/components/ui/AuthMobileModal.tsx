@@ -19,7 +19,7 @@ export const AuthMobileModal: React.FC<ModalProps> = ({
   onClose,
   hiddenCross,
   hiddenHeader = false,
-  paddingTop = 62,
+  paddingTop = 72,
 }) => {
   const [isOpenModal, setIsOpenModal] = useState(false);
 
