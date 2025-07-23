@@ -28,7 +28,7 @@ export const Hero: React.FC = () => {
   };
 
   return (
-    <div className="w-full lg:px-[41px]">
+    <div className="w-full px-4 lg:px-[41px]">
       <div className="overflow-hidden">
         <Swiper
           modules={[Autoplay]}

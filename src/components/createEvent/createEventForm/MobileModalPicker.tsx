@@ -82,7 +82,8 @@ const MobileModalPicker: React.FC<IProps> = ({
     }
   };
 
-  const handleCloseCropper = () => {
+  const handeReturn = (e: any) => {
+    handleRemovePhoto(e);
     setMode('view');
   };
 
@@ -104,7 +105,6 @@ const MobileModalPicker: React.FC<IProps> = ({
             zoomable={false}
           />
           <div className="mt-8 flex flex-col gap-6">
-            {' '}
             <SharedBtn
               onClick={handleSaveCroppedImage}
               type="button"
@@ -114,7 +114,7 @@ const MobileModalPicker: React.FC<IProps> = ({
               Зберегти
             </SharedBtn>
             <SharedBtn
-              onClick={handleCloseCropper}
+              onClick={e => handeReturn(e)}
               type="button"
               secondary
               className="w-full h-12 text-center block"
@@ -125,7 +125,7 @@ const MobileModalPicker: React.FC<IProps> = ({
         </div>
       ) : (
         <>
-          <div className="relative h-[540px] w-[358px] rounded-[5px] overflow-hidden">
+          <div className="relative h-[540px] w-full rounded-[5px] overflow-hidden">
             {photos[activeImage] ? (
               <img
                 src={photos[activeImage] as string}
@@ -207,15 +207,7 @@ const MobileModalPicker: React.FC<IProps> = ({
               className="w-full h-12 text-center block"
               onClick={onClose}
             >
-              Зберегти
-            </SharedBtn>
-            <SharedBtn
-              type="button"
-              secondary
-              className="w-full h-12 text-center block"
-              onClick={onClose}
-            >
-              Назад
+              Продовжити
             </SharedBtn>
           </div>
         </>

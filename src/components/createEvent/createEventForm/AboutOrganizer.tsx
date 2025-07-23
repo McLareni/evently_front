@@ -76,6 +76,8 @@ const AboutOrganizer: React.FC<AboutOrganizerProps> = ({
     }
   }, [setValue, user.phoneNumber]);
 
+  const dataIsValid = !!(!errors.phoneNumber && phoneNumber && agreement);
+
   return (
     <div
       onClick={() =>
@@ -91,9 +93,10 @@ const AboutOrganizer: React.FC<AboutOrganizerProps> = ({
           text="Про організатора"
           isActive={sectionIsOpen}
           changeActiveSection={() => setSectionIsOpen(false)}
+          dataIsValid={dataIsValid}
         />
       )}
-      {!errors.phoneNumber && phoneNumber && agreement && (
+      {dataIsValid && isDesktop && (
         <AiFillCheckCircle
           size={40}
           color="#3BE660"
@@ -234,11 +237,11 @@ const AboutOrganizer: React.FC<AboutOrganizerProps> = ({
         <input
           id="unlimitedTickets"
           type="checkbox"
-          className="appearance-none"
+          className="appearance-none absolute opacity-0 pointer-events-none"
           checked={agreement}
           onChange={checkAgreement}
         />
-        <div className="min-h-5 min-w-5 flex items-center justify-center bg-lightPink rounded-[5px]">
+        <div className="min-h-6 min-w-6 h-6 w-6 flex items-center justify-center bg-lightPink rounded-[5px]">
           {agreement && <MdDone className="text-black w-6 h-6" />}
         </div>
         <span className="ml-2">

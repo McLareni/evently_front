@@ -46,7 +46,7 @@ const DateAndPlace = ({
   const [isCalendarShown, setIsCalendarShown] = useState(false);
   const [sectionIsOpen, setSectionIsOpen] = useState<boolean>(false);
 
-  const { isMobile } = useMediaVariables();
+  const { isMobile, isDesktop } = useMediaVariables();
 
   const date = watch('date');
   const { day, time, endTime } = date;
@@ -183,6 +183,14 @@ const DateAndPlace = ({
     }
   }, [currentTimeToNumber, dateDifference, setValue, startTimeToNumber]);
 
+  
+  const isValidDate = !!(
+    daySelected &&
+        startSelected &&
+        endSelected &&
+        validatedOnlineOffline
+  );
+
   return (
     <div
       onClick={() =>
@@ -198,6 +206,7 @@ const DateAndPlace = ({
           text="Дата та час"
           isActive={sectionIsOpen}
           changeActiveSection={() => setSectionIsOpen(false)}
+          dataIsValid={isValidDate}
         />
       )}
       {isEdit && (
@@ -208,10 +217,7 @@ const DateAndPlace = ({
           </h3>
         </div>
       )}
-      {daySelected &&
-        startSelected &&
-        endSelected &&
-        validatedOnlineOffline && (
+      {isValidDate && isDesktop && (
           <AiFillCheckCircle
             size={40}
             color="#3BE660"

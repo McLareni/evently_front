@@ -62,11 +62,10 @@ export const PhotoCardList = ({
         </div>
       )}
       {validateForm && (
-        <AiFillCheckCircle
-          size={40}
-          color="#3BE660"
-          style={{ position: 'absolute', right: '8px', top: '8px' }}
-        />
+        <>
+          <div className='bg-white absolute right-2 top-2 w-5 h-5 rounded-full'></div>
+          <AiFillCheckCircle className="absolute right-2 top-2 w-6 h-6 lg:w-10 lg:h-10 fill-success rounded-full" />
+        </>
       )}
     </div>
   );
