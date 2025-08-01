@@ -230,7 +230,7 @@ const DateAndPlace = ({
         </span>
       )}
       <div className="flex gap-4 flex-wrap lg:mb-[18px] mb-3">
-        <div className="flex-1 min-w-56 lg:min-w-[243px]">
+        <div className="flex-1 min-w-56 lg:min-w-[241px]">
           <span>Дата</span>
           {isMobile && <span className="star">*</span>}
           <div className="lg:w-[245px] w-full p-[2px] bg-createEventInputBorder lg:rounded-[10px] rounded-[7px] mt-3">

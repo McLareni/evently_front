@@ -24,7 +24,7 @@ export interface IFilter {
 
 export const EventsApi = createApi({
   reducerPath: 'events',
-  tagTypes: ['Events', 'LikedEvents', 'MyEvents', 'UserEventsList'],
+  tagTypes: ['Events', 'LikedEvents', 'MyEvents', 'UserEventsList', 'NewEvent'],
   baseQuery: fetchBaseQuery({
     baseUrl: URL,
     credentials: 'include',
@@ -81,14 +81,45 @@ export const EventsApi = createApi({
       Event[],
       { page?: number; size?: number; filter?: IFilter } | void
     >({
-      query: arg => ({
-        url: `events/filtered?page=${arg?.page ?? 0}&size=${arg?.size ?? 20}`,
-        method: 'POST',
-        body: arg?.filter,
-      }),
+      queryFn: async (
+        arg: { page?: number; size?: number; filter?: IFilter } | void,
+        api,
+        _extraOptions,
+        baseQuery
+      ) => {
+        const state = api.getState() as RootState;
+        const city = state.filter.city;
+
+        const url = `events/filtered?page=${arg?.page ?? 0}&size=${arg?.size ?? 20}`;
+        const body = {
+          ...arg?.filter,
+          cityName: city === 'Всі міста' ? '' : city,
+        };
+
+        const result = await baseQuery({ url, method: 'POST', body });
+
+        if (result.error) {
+          return { error: result.error };
+        }
+
+        let content = (result.data as { content?: Event[] })?.content ?? [];
+
+        if (content.length === 0) {
+          const body = {
+            ...arg?.filter,
+          };
+          const result = await baseQuery({ url, method: 'POST', body });
+
+          if (result.error) {
+            return { error: result.error };
+          }
+
+          content = (result.data as { content?: Event[] })?.content ?? [];
+        }
+
+        return { data: content };
+      },
       keepUnusedDataFor: 1000,
-      transformResponse: (result?: { content?: Event[] }) =>
-        result?.content ?? [],
       providesTags: result =>
         result
           ? [
@@ -102,8 +133,6 @@ export const EventsApi = createApi({
       async onQueryStarted(_, { dispatch, queryFulfilled }) {
         try {
           const { data } = await queryFulfilled;
-
-          console.log(data);
 
           if (data) {
             data.forEach(event => {
@@ -234,6 +263,37 @@ export const EventsApi = createApi({
     getRandomTopEvents: builder.query<Event[], void>({
       query: () => `/events/top?size=3`,
     }),
+
+    getNewEvents: builder.query<Event[], number>({
+      queryFn: async (size, api, _extraOptions, baseQuery) => {
+        const state = api.getState() as RootState;
+        const city = state.filter.city;
+        const url = `events/new?size=${size ?? 20}${city === 'Всі міста' ? '' : '&cityName=' + city}`;
+
+        const result = await baseQuery({ url, method: 'GET' });
+
+        if (result.error) {
+          return { error: result.error };
+        }
+
+        let content = result.data as Event[];
+
+        if (content.length === 0) {
+          const url = `events/new?size=${size ?? 20}`;
+          const result = await baseQuery({ url, method: 'GET' });
+
+          if (result.error) {
+            return { error: result.error };
+          }
+
+          content = result.data as Event[];
+        }
+
+        return { data: content };
+      },
+      keepUnusedDataFor: 1000,
+      providesTags: ['NewEvent'],
+    }),
   }),
 });
 
@@ -251,4 +311,6 @@ export const {
   useLazyGetEventByIdQuery,
   useDeleteMyEventMutation,
   useLazyGetRandomTopEventsQuery,
+  useLazyGetNewEventsQuery,
+  useGetNewEventsQuery,
 } = EventsApi;
