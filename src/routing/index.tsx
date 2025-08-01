@@ -97,12 +97,6 @@ const router = createBrowserRouter([
       // Header routes
       { path: 'popular', element: '' },
 
-      { path: 'Kyiv', element: '' },
-      { path: 'Odesa', element: '' },
-      { path: 'Lviv', element: '' },
-      { path: 'Kharkiv', element: '' },
-      { path: 'Dnipro', element: '' },
-
       // Footer routes
       { path: 'office', element: '' },
       { path: 'ReturnsAndPayment', element: '' },

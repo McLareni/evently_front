@@ -1,6 +1,7 @@
-import { useEffect, useState } from 'react';
-
-import { useLazyGetAllEventsFilteredQuery } from '@/redux/events/operations';
+import {
+  useGetAllEventsFilteredQuery,
+  useGetNewEventsQuery,
+} from '@/redux/events/operations';
 
 import { useScrollToTop } from '@/hooks/useScrollToTop';
 
@@ -15,62 +16,42 @@ import { ShowAllButton } from '@/components/ui/ShowAllButton';
 import Spinner from '@/components/ui/Spinner';
 
 const Home: React.FC = () => {
-  const [getTopEventsFn, { isLoading, isFetching }] =
-    useLazyGetAllEventsFilteredQuery();
-  const [events, setEvents] = useState<Event[]>([]);
-  const [topEvents, setTopEvents] = useState<Event[]>([]);
+  const {
+    data: newEvent,
+    isLoading: newEventIsLoading,
+    isFetching: newEventIsFetching,
+  } = useGetNewEventsQuery(10);
+  const {
+    isLoading,
+    isFetching,
+    data: events,
+  } = useGetAllEventsFilteredQuery({
+    page: 0,
+    size: 21,
+    filter: {},
+  });
 
   useScrollToTop();
-
-  useEffect(() => {
-    const fetchEvents = async () => {
-      const getEvents = async () => {
-        const response = await getTopEventsFn({
-          page: 0,
-          size: 21,
-          filter: {},
-        });
-        setEvents([...(response.data || [])]);
-
-        if (response.status === 'uninitialized') {
-          await getEvents();
-        }
-      };
-
-      const getTopEvents = async () => {
-        const topEventsResponse = await getTopEventsFn({
-          page: 0,
-          size: 10,
-          filter: { isPopular: true },
-        });
-
-        setTopEvents([...(topEventsResponse.data || [])]);
-
-        if (topEventsResponse.status === 'uninitialized') {
-          await getTopEvents();
-        }
-      };
-
-      getEvents();
-      getTopEvents();
-    };
-
-    fetchEvents();
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
 
   const shownEvents = 16;
   const notTopEvents = events
     ?.filter(item => item.category !== 'TOP_EVENTS')
     .slice(0, shownEvents);
 
-  if (isLoading || isFetching) return <Spinner />;
+  const loadingList = [
+    isLoading,
+    isFetching,
+    newEventIsFetching,
+    newEventIsLoading,
+  ];
+
+  if (loadingList.some(Boolean)) return <Spinner />;
 
   return (
     <Main className="flex flex-col lg:gap-16 gap-6 z-10">
       <Hero />
       <>
-        <TopEvents filteredEvents={topEvents} />
+        <TopEvents filteredEvents={newEvent} />
         {notTopEvents && (
           <Container className="w-fit">
             <AllEvents events={notTopEvents} title="Усі події" />

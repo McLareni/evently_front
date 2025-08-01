@@ -1,6 +1,8 @@
 import React, { useEffect } from 'react';
 
-import { useLazyGetRandomTopEventsQuery } from '@/redux/events/operations';
+import {
+  useGetNewEventsQuery,
+} from '@/redux/events/operations';
 
 import { EventCard } from '../ui';
 
@@ -9,32 +11,19 @@ interface IProps {
 }
 
 const RandomTopEvents: React.FC<IProps> = ({ idEvent }) => {
-  const [refreshTopEvents, { data: topEventsData }] =
-    useLazyGetRandomTopEventsQuery();
+  const { data: newEvent, refetch } = useGetNewEventsQuery(10);
 
   useEffect(() => {
-    async function fetchTopEvent() {
-      const responseTopEvents = await refreshTopEvents();
-
-      if (responseTopEvents.status === 'uninitialized') {
-        refreshTopEvents();
-      }
-    }
-
-    if (idEvent) {
-      fetchTopEvent();
-    }
-
     const interval = setInterval(() => {
-      if (idEvent) fetchTopEvent();
+      if (idEvent) refetch();
     }, 10000);
 
     return () => clearInterval(interval);
   }, [idEvent]);
 
   return (
-    <div className="w-[344px] border-2 rounded-[20px] border-buttonPurple p-4 flex flex-col gap-8">
-      {topEventsData?.map((event: Event) => (
+    <div className="w-[344px] h-fit border-2 rounded-[20px] border-buttonPurple p-4 flex flex-col gap-8">
+      {newEvent?.map((event: Event) => (
         <EventCard key={event.id} event={event} />
       ))}
     </div>
