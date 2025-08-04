@@ -10,16 +10,12 @@ const initialState = {
   firstRender: true,
   userCoordinates: null as null | Coordinates,
   isNearbyFromHeader: false,
-  city: '' as string,
 };
 
 const filtersSlice = createSlice({
   name: 'filter',
   initialState,
   reducers: {
-    setCity(state, action: PayloadAction<string>) {
-      state.city = action.payload;
-    },
     addSelectedTypes(state, action: PayloadAction<string[]>) {
       state.selectedTypes = action.payload;
     },
@@ -88,5 +84,4 @@ export const {
   setUserCoordinates,
   removeNearby,
   setIsNearbyFromHeader,
-  setCity,
 } = filtersSlice.actions;
