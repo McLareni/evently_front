@@ -1,6 +1,7 @@
 import React, { useEffect } from 'react';
 
-import { useLazyGetRandomTopEventsQuery } from '@/redux/events/operations';
+import { useGetNewEventsQuery } from '@/redux/events/operations';
+import { useAppSelector } from '@/redux/hooks';
 
 import { EventCard } from '../ui';
 
@@ -9,16 +10,12 @@ interface IProps {
 }
 
 const RandomTopEvents: React.FC<IProps> = ({ idEvent }) => {
-  const [refreshTopEvents, { data: topEventsData }] =
-    useLazyGetRandomTopEventsQuery();
+  const city = useAppSelector(state => state.filter.city);
+  const { data: newEvents, refetch } = useGetNewEventsQuery({ city, size: 4 });
 
   useEffect(() => {
     async function fetchTopEvent() {
-      const responseTopEvents = await refreshTopEvents();
-
-      if (responseTopEvents.status === 'uninitialized') {
-        refreshTopEvents();
-      }
+      refetch();
     }
 
     if (idEvent) {
@@ -34,7 +31,7 @@ const RandomTopEvents: React.FC<IProps> = ({ idEvent }) => {
 
   return (
     <div className="w-[344px] border-2 rounded-[20px] border-buttonPurple p-4 flex flex-col gap-8">
-      {topEventsData?.map((event: Event) => (
+      {newEvents?.map((event: Event) => (
         <EventCard key={event.id} event={event} />
       ))}
     </div>

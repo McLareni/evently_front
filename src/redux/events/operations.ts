@@ -24,7 +24,13 @@ export interface IFilter {
 
 export const EventsApi = createApi({
   reducerPath: 'events',
-  tagTypes: ['Events', 'LikedEvents', 'MyEvents', 'UserEventsList'],
+  tagTypes: [
+    'Events',
+    'LikedEvents',
+    'MyEvents',
+    'UserEventsList',
+    'NewEvents',
+  ],
   baseQuery: fetchBaseQuery({
     baseUrl: URL,
     credentials: 'include',
@@ -79,14 +85,21 @@ export const EventsApi = createApi({
 
     getAllEventsFiltered: builder.query<
       Event[],
-      { page?: number; size?: number; filter?: IFilter } | void
+      { page: number; size: number; filter: IFilter; city: string }
     >({
-      query: arg => ({
-        url: `events/filtered?page=${arg?.page ?? 0}&size=${arg?.size ?? 20}`,
-        method: 'POST',
-        body: arg?.filter,
-      }),
+      query: arg => {
+        const url = `events/filtered?page=${arg.page}&size=${arg.size}`;
+        return {
+          url,
+          method: 'POST',
+          body: {
+            ...(arg?.filter ?? {}),
+            cityName: !arg?.city || arg.city === 'Всі міста' ? '' : arg.city,
+          },
+        };
+      },
       keepUnusedDataFor: 1000,
+
       transformResponse: (result?: { content?: Event[] }) =>
         result?.content ?? [],
       providesTags: result =>
@@ -229,10 +242,13 @@ export const EventsApi = createApi({
         }
       },
     }),
+    getNewEvents: builder.query<Event[], { size: number; city?: string }>({
+      query: ({ size, city }) => {
+        const url = `events/new?size=${size ?? 20}${!city || city === 'Всі міста' ? '' : '&cityName=' + city}`;
 
-    // get Random Top Events
-    getRandomTopEvents: builder.query<Event[], void>({
-      query: () => `/events/top?size=3`,
+        return { url, method: 'GET' };
+      },
+      providesTags: [{ type: 'NewEvents', id: 'LIST' }],
     }),
   }),
 });
@@ -250,5 +266,6 @@ export const {
   useGetAllEventsFilteredQuery,
   useLazyGetEventByIdQuery,
   useDeleteMyEventMutation,
-  useLazyGetRandomTopEventsQuery,
+  useLazyGetNewEventsQuery,
+  useGetNewEventsQuery,
 } = EventsApi;

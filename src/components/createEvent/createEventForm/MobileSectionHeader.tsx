@@ -1,8 +1,6 @@
 import React from 'react';
 import {
   AiFillCheckCircle,
-  AiOutlineCheck,
-  AiOutlineCheckCircle,
   AiOutlineMinus,
   AiOutlinePlus,
 } from 'react-icons/ai';

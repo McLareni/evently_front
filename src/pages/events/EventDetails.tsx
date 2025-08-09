@@ -49,10 +49,12 @@ const EventDetails = () => {
   const { idEvent } = useParams();
   const user = useAppSelector(selectUser);
   const { isDesktop, isMobile } = useMediaVariables();
+  const city = useAppSelector(state => state.filter.city);
   const [trigger, { data: event, isLoading }] = useLazyGetEventByIdQuery();
   const { data: similarEvents, isFetching } = useGetAllEventsFilteredQuery({
     page: 0,
     size: 4,
+    city,
     filter: {
       eventTypes: [EventTypes[event?.type || '']],
     },
