@@ -32,6 +32,14 @@ export const TicketDraft: React.FC<TicketDraftProps> = ({
   sendEventData,
   isLoading,
 }) => {
+  const currentActionHandler = () => {
+    if (currentAction === 1) {
+      setCurrentActionHandler(2);
+    } else if (currentAction === 2 && price === 0) {
+      setCurrentActionHandler(3);
+    }
+  };
+
   const formatTicket = () => {
     const countString = ticketCount.toString();
     const lastChar = countString.charAt(countString.length - 1);
@@ -116,7 +124,7 @@ export const TicketDraft: React.FC<TicketDraftProps> = ({
       </div>
       {currentAction === 1 ? (
         <SharedBtn
-          onClick={() => setCurrentActionHandler(2)}
+          onClick={currentActionHandler}
           type="button"
           primary
           className="mt-auto mx-auto bg-gradient-to-r from-[#9B8FF3] to-[#38F6F9] w-[230px] h-[48px]"
@@ -125,7 +133,7 @@ export const TicketDraft: React.FC<TicketDraftProps> = ({
         </SharedBtn>
       ) : (
         <SharedBtn
-          onClick={sendEventData}
+          onClick={price === 0 ? currentActionHandler : sendEventData}
           type="button"
           primary
           disabled={!isFormValid}

@@ -1,6 +1,7 @@
 /* eslint-disable no-unused-vars */
-import { FC, useState } from 'react';
+import { FC, useEffect, useState } from 'react';
 import { BiChevronDown, BiChevronUp } from 'react-icons/bi';
+import { CgShoppingCart } from 'react-icons/cg';
 import { IoTicketOutline } from 'react-icons/io5';
 
 import { SERVICE } from '@/pages/events/BuyTicket';
@@ -33,6 +34,15 @@ export const TicketDraftMobile: FC<TicketDraftMobileProps> = ({
   isLoading,
 }) => {
   const [isOpen, setIsOpen] = useState(false);
+  const [timeLeft, setTimeLeft] = useState(15 * 60);
+
+  const currentActionHandler = () => {
+    if (currentAction === 1) {
+      setCurrentActionHandler(2);
+    } else if (currentAction === 2 && price === 0) {
+      setCurrentActionHandler(3);
+    }
+  };
 
   const toggleIsOpen = () => {
     setIsOpen(!isOpen);
@@ -59,11 +69,30 @@ export const TicketDraftMobile: FC<TicketDraftMobileProps> = ({
 
   const priceWithService = (price * SERVICE).toFixed(2);
 
+  const formatTime = (seconds: number) => {
+    const m = Math.floor(seconds / 60)
+      .toString()
+      .padStart(2, '0');
+    const s = (seconds % 60).toString().padStart(2, '0');
+    return `${m}:${s}`;
+  };
+
+  useEffect(() => {
+    if (timeLeft <= 0) return;
+
+    const interval = setInterval(() => {
+      setTimeLeft(prev => prev - 1);
+    }, 1000);
+
+    return () => clearInterval(interval);
+  }, [timeLeft]);
+
   return (
     <div className="mt-auto pt-4">
       <div
         className={`font-lato text-[16px] ${isOpen ? "bg-[url('/images/ticket/open.jpg')] h-[320px]" : "bg-[url('/images/ticket/closed.jpg')] h-[100px]"}
-      bg-[length:100%_100%] bg-fill bg-no-repeat bg-center flex flex-col px-[10px] pb-[12px] mb-[24px]`}
+      bg-[length:100%_100%] bg-fill bg-no-repeat bg-center flex flex-col px-[10px] pb-[12px] mb-[24px]
+      bg-[rgba(255,255,255,0.6)] bg-blend-overlay `}
       >
         {isLoading && <Spinner />}
         <button
@@ -74,15 +103,15 @@ export const TicketDraftMobile: FC<TicketDraftMobileProps> = ({
         </button>
         {isOpen && (
           <div className="pt-[60px] text-[20px]">
-            <div className="flex justify-center mb-[14px]">
+            <div className="flex justify-center gap-2 mb-[14px]">
               <IoTicketOutline />
-              <p>Квиток</p>
+              <p className="mb-[16px]">
+                {ticketCount} {formattedTicket}
+              </p>
             </div>
             <div className="flex gap-[32px] justify-center">
               <div>
-                <p className="mb-[16px]">
-                  {ticketCount} {formattedTicket}
-                </p>
+                <p className="mb-[16px]">Ціна</p>
                 {price > 0 && (
                   <div className="relative">
                     <p className="mb-[16px]">Збір за послуги</p>
@@ -93,28 +122,32 @@ export const TicketDraftMobile: FC<TicketDraftMobileProps> = ({
                 <p>Сума</p>
               </div>
               <div>
-                <p className="mb-[16px]">{price} грн</p>
+                <p className="mb-[16px]">{price / ticketCount} грн</p>
                 {price > 0 && (
                   <p className="mb-[16px]">{priceWithService} грн</p>
                 )}
                 {discountValue > 0 && (
                   <p className="mb-[16px]">-{discountValue} грн</p>
                 )}
-                <p className="font-bold">{priceWithDiscount} грн</p>
+                <p className="font-bold">{price} грн</p>
               </div>
             </div>
           </div>
         )}
-        <div className="mt-auto mx-auto">
-          <p>
-            Сума ({ticketCount} шт.): <span>{priceWithDiscount} грн.</span>
-          </p>
+        <div className="flex items-center justify-between mt-auto mb-2 px-8">
+          <div className="flex items-center gap-2">
+            <CgShoppingCart size={32} />
+            <p>
+              Сума ({ticketCount} шт.): <span>{priceWithDiscount} грн</span>
+            </p>
+          </div>
+          <p className="text-error">{formatTime(timeLeft)}</p>
         </div>
       </div>
       <div className="flex">
         {currentAction === 1 ? (
           <SharedBtn
-            onClick={() => setCurrentActionHandler(2)}
+            onClick={currentActionHandler}
             type="button"
             primary
             className="mt-auto mx-auto bg-gradient-to-r from-[#9B8FF3] to-[#38F6F9] w-[230px] h-[48px]"
@@ -123,7 +156,7 @@ export const TicketDraftMobile: FC<TicketDraftMobileProps> = ({
           </SharedBtn>
         ) : (
           <SharedBtn
-            onClick={sendEventData}
+            onClick={price === 0 ? currentActionHandler : sendEventData}
             type="button"
             primary
             disabled={!isFormValid}
