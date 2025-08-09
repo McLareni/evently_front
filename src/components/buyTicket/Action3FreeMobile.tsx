@@ -1,7 +1,11 @@
+import { useEffect } from 'react';
 import { CgSoftwareDownload } from 'react-icons/cg';
 import { Link } from 'react-router-dom';
 
+import { usePDF } from '@react-pdf/renderer';
+
 import { SharedBtn } from '../ui';
+import { PDF } from './TicketPDF';
 
 interface Action3FreeMobileProps {
   event: Event | undefined;
@@ -10,6 +14,16 @@ interface Action3FreeMobileProps {
 export const Action3FreeMobile: React.FC<Action3FreeMobileProps> = ({
   event,
 }) => {
+  const [instance, updateInstance] = usePDF({
+    document: undefined,
+  });
+
+  useEffect(() => {
+    if (event) {
+      updateInstance(<PDF event={event} />);
+    }
+  });
+
   return (
     <div className="flex flex-col gap-4 text-center">
       <h2>Ви придбали квиток!</h2>
@@ -19,10 +33,17 @@ export const Action3FreeMobile: React.FC<Action3FreeMobileProps> = ({
       bg-[length:100%_100%] bg-fill bg-no-repeat bg-center flex flex-col px-8 mt-auto`}
       >
         <p>Номер замовлення</p>
-        <div className="flex items-center">
-          <p>Скачати</p>
-          <CgSoftwareDownload size={24} />
-        </div>
+        {event && instance.url && (
+          <a
+            href={instance.url}
+            target="_blank"
+            rel="noreferrer"
+            className="flex items-center"
+          >
+            <span>Скачати</span>
+            <CgSoftwareDownload size={24} />
+          </a>
+        )}
       </div>
       <Link to="/my-event">
         <SharedBtn

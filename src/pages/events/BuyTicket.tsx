@@ -115,7 +115,6 @@ const BuyTicket: React.FC = () => {
       setPriceWithDiscount(price + price * SERVICE);
     }
   }, [discount, price]);
-  console.log(currentAction);
 
   return (
     <div className="font-oswald leading-none pb-[55px] h-full">
