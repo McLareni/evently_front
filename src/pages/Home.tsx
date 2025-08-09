@@ -7,7 +7,6 @@ import {
 } from '@/redux/events/operations';
 import { useAppSelector } from '@/redux/hooks';
 
-
 import { useScrollToTop } from '@/hooks/useScrollToTop';
 
 import { AllEvents } from '@/components/allEvents/AllEvents';
@@ -39,8 +38,6 @@ const Home: React.FC = () => {
       filter: {} as IFilter,
       city,
     };
-
-    let isMounted = true;
     const getEvents = async () => {
       setIsLoading(true);
       try {
@@ -49,22 +46,16 @@ const Home: React.FC = () => {
           fetchEvents(queryArgs).unwrap(),
         ]);
 
-        if (isMounted) {
-          setNewEvents(newEventsData);
-          setEvents(eventsData);
-        }
+        setNewEvents(newEventsData);
+        setEvents(eventsData);
       } catch (error) {
         console.error('Error loading events:', error);
       } finally {
-        if (isMounted) setIsLoading(false);
+        setIsLoading(false);
       }
     };
 
     getEvents();
-
-    return () => {
-      isMounted = false;
-    };
   }, [city, fetchNewEvents, fetchEvents]);
 
   const shownEvents = 16;
