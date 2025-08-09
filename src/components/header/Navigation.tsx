@@ -1,7 +1,7 @@
 import { NavLink } from 'react-router-dom';
 
 import { setOneFilterType } from '@/redux/filters/filtersSlice';
-import { useAppDispatch } from '@/redux/hooks';
+import { useAppDispatch, useAppSelector } from '@/redux/hooks';
 
 import { cityOptions, eventTypes } from '@/assets/staticData/statickData';
 
@@ -10,13 +10,14 @@ import { AllEventsSelect } from './AllEventsSelect';
 
 export const Navigation: React.FC = () => {
   const dispatch = useAppDispatch();
+  const defaultCity = useAppSelector(state => state.filter.city);
 
   const handleClick = () => {
     dispatch(setOneFilterType('POPULAR'));
   };
 
   return (
-    <div className="hidden lg:flex  mr-12 gap-8 items-center">
+    <div className="hidden lg:flex  mr-8 gap-8 items-center">
       <AllEventsSelect
         options={eventTypes}
         label="Події"
@@ -59,11 +60,12 @@ export const Navigation: React.FC = () => {
       </nav>
       <CustomSelect
         options={cityOptions}
+        selectedOptionProp={defaultCity}
         label="Київ"
         replaceLabelOnSelect
         className="w-[94px] hover:font-bold"
         dropdownWidth="168px"
-        buttonWidth="62px"
+        buttonWidth="86px"
       />
     </div>
   );
