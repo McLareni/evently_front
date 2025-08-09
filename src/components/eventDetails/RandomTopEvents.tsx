@@ -1,8 +1,7 @@
 import React, { useEffect } from 'react';
 
-import {
-  useGetNewEventsQuery,
-} from '@/redux/events/operations';
+import { useGetNewEventsQuery } from '@/redux/events/operations';
+import { useAppSelector } from '@/redux/hooks';
 
 import { EventCard } from '../ui';
 
@@ -11,7 +10,8 @@ interface IProps {
 }
 
 const RandomTopEvents: React.FC<IProps> = ({ idEvent }) => {
-  const { data: newEvent, refetch } = useGetNewEventsQuery(10);
+  const city = useAppSelector(state => state.filter.city);
+  const { data: newEvent, refetch } = useGetNewEventsQuery({ city, size: 4 });
 
   useEffect(() => {
     const interval = setInterval(() => {
