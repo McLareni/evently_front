@@ -7,6 +7,7 @@ import {
 } from '@/redux/events/operations';
 import { useAppSelector } from '@/redux/hooks';
 
+
 import { useScrollToTop } from '@/hooks/useScrollToTop';
 
 import { AllEvents } from '@/components/allEvents/AllEvents';
@@ -80,6 +81,7 @@ const Home: React.FC = () => {
       <Hero />
       <>
         <TopEvents filteredEvents={newEvents} />
+
         {notTopEvents && (
           <Container className="w-fit">
             <AllEvents events={notTopEvents} title="Усі події" />
