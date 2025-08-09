@@ -98,6 +98,8 @@ export const EventsApi = createApi({
           },
         };
       },
+      keepUnusedDataFor: 1000,
+
       transformResponse: (result?: { content?: Event[] }) =>
         result?.content ?? [],
       providesTags: result =>
@@ -113,6 +115,8 @@ export const EventsApi = createApi({
       async onQueryStarted(_, { dispatch, queryFulfilled }) {
         try {
           const { data } = await queryFulfilled;
+
+          console.log(data);
 
           if (data) {
             data.forEach(event => {
@@ -238,7 +242,6 @@ export const EventsApi = createApi({
         }
       },
     }),
-
     getNewEvents: builder.query<Event[], { size: number; city?: string }>({
       query: ({ size, city }) => {
         const url = `events/new?size=${size ?? 20}${!city || city === 'Всі міста' ? '' : '&cityName=' + city}`;

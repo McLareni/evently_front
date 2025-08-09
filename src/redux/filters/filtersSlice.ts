@@ -11,6 +11,7 @@ const initialState = {
   userCoordinates: null as null | Coordinates,
   isNearbyFromHeader: false,
   city: 'Всі міста' as string,
+
 };
 
 const filtersSlice = createSlice({
@@ -88,5 +89,4 @@ export const {
   setUserCoordinates,
   removeNearby,
   setIsNearbyFromHeader,
-  setCity,
 } = filtersSlice.actions;

@@ -38,7 +38,6 @@ const filterPersistConfig = {
     'filteredEventsId',
     'firstRender',
     'userCoordinates',
-    'city',
   ],
 };
 

@@ -161,7 +161,7 @@ const TicketPrice: React.FC<TicketPriceProps> = ({
         )}
       </div>
       <div className="flex lg:gap-[16px] gap-[14px] flex-wrap">
-        <div className="flex flex-col">
+        <div className="flex flex-col flex-1">
           <label htmlFor="ticketPrice" className="lg:mb-3 mb-[6px]">
             Ціна
           </label>
@@ -216,7 +216,7 @@ const TicketPrice: React.FC<TicketPriceProps> = ({
           </div>
         </div>
 
-        <div className="flex flex-col">
+        <div className="flex flex-col flex-1">
           <label htmlFor="numberOfTickets" className="lg:mb-3 mb-[6px]">
             Кількість квитків
           </label>
@@ -270,7 +270,7 @@ const TicketPrice: React.FC<TicketPriceProps> = ({
           </div>
         </div>
 
-        <div className="self-end mb-0 flex-1 min-w-[240px]">
+        <div className="self-end lg:mb-[32px] mb-0 flex-1">
           <Controller
             name="unlimitedTickets"
             control={control}
