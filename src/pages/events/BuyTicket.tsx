@@ -14,6 +14,7 @@ import { Action2CheckEmail } from '@/components/buyTicket/Action2CheckEmail';
 import { Action2NewUser } from '@/components/buyTicket/Action2NewUser';
 import { Action2UserExists } from '@/components/buyTicket/Action2UserExists';
 import { Action3 } from '@/components/buyTicket/Action3';
+import { Action3FreeMobile } from '@/components/buyTicket/Action3FreeMobile';
 import { BuyTicketTabs } from '@/components/buyTicket/BuyTicketTabs';
 import { MobileTicketInfo } from '@/components/buyTicket/MobileTicketInfo';
 import { TicketDraftMobile } from '@/components/buyTicket/TicketDraftMobile';
@@ -114,6 +115,7 @@ const BuyTicket: React.FC = () => {
       setPriceWithDiscount(price + price * SERVICE);
     }
   }, [discount, price]);
+  console.log(currentAction);
 
   return (
     <div className="font-oswald leading-none pb-[55px] h-full">
@@ -168,7 +170,7 @@ const BuyTicket: React.FC = () => {
             )}
           </div>
         )}
-        {isMobile && (
+        {isMobile && currentAction !== 3 && (
           <TicketDraftMobile
             setCurrentActionHandler={setCurrentActionHandler}
             currentAction={currentAction}
@@ -181,8 +183,8 @@ const BuyTicket: React.FC = () => {
             isLoading={sendDataLoading}
           />
         )}
-
-        {currentAction === 3 && <Action3 event={event} />}
+        {isMobile && currentAction === 3 && <Action3FreeMobile event={event} />}
+        {!isMobile && currentAction === 3 && <Action3 event={event} />}
       </Container>
     </div>
   );
