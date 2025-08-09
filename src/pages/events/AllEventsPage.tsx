@@ -31,6 +31,7 @@ const AllEventsPage: React.FC = () => {
   const dispatch = useAppDispatch();
 
   const firstRender = useAppSelector(getFirstRender);
+  const city = useAppSelector(state => state.filter.city);
 
   const filter = useAppSelector(state => state.filter);
   const [events, setEvents] = useState<Event[]>([]);
@@ -63,6 +64,7 @@ const AllEventsPage: React.FC = () => {
     return await filterEvent({
       page: pageN,
       size: size,
+      city,
       filter: {
         eventTypes: filter?.selectedTypes.filter(
           type =>
@@ -124,8 +126,6 @@ const AllEventsPage: React.FC = () => {
   };
 
   useEffect(() => {
-    console.log(filter.selectedTypes);
-
     if (filter.selectedTypes.length > 1) {
       return;
     }
@@ -133,6 +133,10 @@ const AllEventsPage: React.FC = () => {
     filterEvents();
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [coords]);
+
+  useEffect(() => {
+    filterEvents();
+  }, [city]);
 
   useEffect(() => {
     if (filter.selectedTypes.includes('UNDER_HOUSE') && !coords) {
@@ -166,6 +170,7 @@ const AllEventsPage: React.FC = () => {
     const response = await filterEvent({
       page: 0,
       size: size,
+      city,
       filter: {},
     });
     setEvents(response.data || []);

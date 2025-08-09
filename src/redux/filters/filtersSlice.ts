@@ -10,14 +10,14 @@ const initialState = {
   firstRender: true,
   userCoordinates: null as null | Coordinates,
   isNearbyFromHeader: false,
-  city: '' as string,
+  city: 'Всі міста' as string,
 };
 
 const filtersSlice = createSlice({
   name: 'filter',
   initialState,
   reducers: {
-    setCity(state, action: PayloadAction<string>) {
+    setCity: (state, action: PayloadAction<string>) => {
       state.city = action.payload;
     },
     addSelectedTypes(state, action: PayloadAction<string[]>) {

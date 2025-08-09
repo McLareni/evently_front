@@ -59,7 +59,9 @@ export function useGetFilteredEventsByType({
     }
     // other categories without top and nearby
     if (events && !topEventsFilter && !nearbyFilter) {
-      const filteredArray = events.filter(item =>
+      console.log(events);
+
+      const filteredArray = events?.filter(item =>
         selectedTypes.includes(item.type)
       );
       setFilteredEventsByType(filteredArray);
@@ -67,7 +69,7 @@ export function useGetFilteredEventsByType({
     }
     // other categories with nearby
     if (events && nearbyFilter && !topEventsFilter) {
-      const filteredArray = events.filter(event => {
+      const filteredArray = events?.filter(event => {
         if (!selectedTypes.includes(event.type)) {
           return false;
         }

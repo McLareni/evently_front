@@ -25,7 +25,7 @@ interface Event {
   tickets: number;
   price: number;
   type: string;
-  category: 'TOP_EVENTS' | 'POPULAR' | 'RECOMMENDED';
+  category: 'TOP_EVENTS' | 'POPULAR' | 'RECOMMENDED' | null;
 
   hasCancelRequest: boolean;
   hasUpdateRequest: boolean;

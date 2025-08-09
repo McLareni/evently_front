@@ -17,7 +17,6 @@ import { authReducer } from './auth/authSlice';
 import eventReducer from './events/eventSlice';
 import { EventsApi } from './events/operations';
 import { filterReducer } from './filters/filtersSlice';
-import listenerMiddleware from './middleware/listenerMiddleware';
 
 const authPersistConfig = {
   key: 'auth',
@@ -62,8 +61,7 @@ export const store = configureStore({
     })
       .concat(EventsApi.middleware)
       .concat(UserApi.middleware)
-      .concat(EventApi.middleware)
-      .concat(listenerMiddleware.middleware),
+      .concat(EventApi.middleware),
 });
 
 export type AppStore = typeof store;

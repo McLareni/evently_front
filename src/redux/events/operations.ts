@@ -24,7 +24,13 @@ export interface IFilter {
 
 export const EventsApi = createApi({
   reducerPath: 'events',
-  tagTypes: ['Events', 'LikedEvents', 'MyEvents', 'UserEventsList', 'NewEvent'],
+  tagTypes: [
+    'Events',
+    'LikedEvents',
+    'MyEvents',
+    'UserEventsList',
+    'NewEvents',
+  ],
   baseQuery: fetchBaseQuery({
     baseUrl: URL,
     credentials: 'include',
@@ -79,47 +85,21 @@ export const EventsApi = createApi({
 
     getAllEventsFiltered: builder.query<
       Event[],
-      { page?: number; size?: number; filter?: IFilter } | void
+      { page: number; size: number; filter: IFilter; city: string }
     >({
-      queryFn: async (
-        arg: { page?: number; size?: number; filter?: IFilter } | void,
-        api,
-        _extraOptions,
-        baseQuery
-      ) => {
-        const state = api.getState() as RootState;
-        const city = state.filter.city;
-
-        const url = `events/filtered?page=${arg?.page ?? 0}&size=${arg?.size ?? 20}`;
-        const body = {
-          ...arg?.filter,
-          cityName: city === 'Всі міста' ? '' : city,
+      query: arg => {
+        const url = `events/filtered?page=${arg.page}&size=${arg.size}`;
+        return {
+          url,
+          method: 'POST',
+          body: {
+            ...(arg?.filter ?? {}),
+            cityName: !arg?.city || arg.city === 'Всі міста' ? '' : arg.city,
+          },
         };
-
-        const result = await baseQuery({ url, method: 'POST', body });
-
-        if (result.error) {
-          return { error: result.error };
-        }
-
-        let content = (result.data as { content?: Event[] })?.content ?? [];
-
-        if (content.length === 0) {
-          const body = {
-            ...arg?.filter,
-          };
-          const result = await baseQuery({ url, method: 'POST', body });
-
-          if (result.error) {
-            return { error: result.error };
-          }
-
-          content = (result.data as { content?: Event[] })?.content ?? [];
-        }
-
-        return { data: content };
       },
-      keepUnusedDataFor: 1000,
+      transformResponse: (result?: { content?: Event[] }) =>
+        result?.content ?? [],
       providesTags: result =>
         result
           ? [
@@ -259,40 +239,13 @@ export const EventsApi = createApi({
       },
     }),
 
-    // get Random Top Events
-    getRandomTopEvents: builder.query<Event[], void>({
-      query: () => `/events/top?size=3`,
-    }),
+    getNewEvents: builder.query<Event[], { size: number; city?: string }>({
+      query: ({ size, city }) => {
+        const url = `events/new?size=${size ?? 20}${!city || city === 'Всі міста' ? '' : '&cityName=' + city}`;
 
-    getNewEvents: builder.query<Event[], number>({
-      queryFn: async (size, api, _extraOptions, baseQuery) => {
-        const state = api.getState() as RootState;
-        const city = state.filter.city;
-        const url = `events/new?size=${size ?? 20}${city === 'Всі міста' ? '' : '&cityName=' + city}`;
-
-        const result = await baseQuery({ url, method: 'GET' });
-
-        if (result.error) {
-          return { error: result.error };
-        }
-
-        let content = result.data as Event[];
-
-        if (content.length === 0) {
-          const url = `events/new?size=${size ?? 20}`;
-          const result = await baseQuery({ url, method: 'GET' });
-
-          if (result.error) {
-            return { error: result.error };
-          }
-
-          content = result.data as Event[];
-        }
-
-        return { data: content };
+        return { url, method: 'GET' };
       },
-      keepUnusedDataFor: 1000,
-      providesTags: ['NewEvent'],
+      providesTags: [{ type: 'NewEvents', id: 'LIST' }],
     }),
   }),
 });
@@ -310,7 +263,6 @@ export const {
   useGetAllEventsFilteredQuery,
   useLazyGetEventByIdQuery,
   useDeleteMyEventMutation,
-  useLazyGetRandomTopEventsQuery,
   useLazyGetNewEventsQuery,
   useGetNewEventsQuery,
 } = EventsApi;
