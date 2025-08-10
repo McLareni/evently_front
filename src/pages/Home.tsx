@@ -41,18 +41,25 @@ const Home: React.FC = () => {
     const getEvents = async () => {
       setIsLoading(true);
       try {
-        const [newEventsData, eventsData] = await Promise.all([
-          fetchNewEvents({ size: 10, city }).unwrap(),
-          fetchEvents(queryArgs).unwrap(),
+        const [newEvents, events] = await Promise.all([
+          fetchNewEvents({ size: 10, city }),
+          fetchEvents(queryArgs),
         ]);
 
-        setNewEvents(newEventsData);
-        setEvents(eventsData);
+        if (
+          newEvents.status === 'uninitialized' ||
+          events.status === 'uninitialized'
+        ) {
+          throw new Error('Failed to fetch events');
+        }
+
+        setNewEvents(newEvents.data || []);
+        setEvents(events.data || []);
       } catch (error) {
         console.error('Error loading events:', error);
-      } finally {
-        setIsLoading(false);
+        await getEvents();
       }
+      setIsLoading(false);
     };
 
     getEvents();
