@@ -74,7 +74,14 @@ export const MobileBurgerMenu: FC<MobileBurgerMenuProps> = ({
         <div className="">
           <h2
             className="text-base text-textDark font-lato cursor-pointer"
-            onClick={() => setIsModalOpen(true)}
+            onClick={() => {
+              if (isLoggedIn) {
+                navigate('/user_profile');
+                toggleBurgerMenu();
+              } else {
+                setIsModalOpen(true);
+              }
+            }}
           >
             {isLoggedIn ? name : 'Увійти'}
           </h2>
