@@ -7,10 +7,11 @@ import { selectToken, selectUser } from '@/redux/auth/selectors';
 import { useAppDispatch, useAppSelector } from '@/redux/hooks';
 
 import { imageTypes } from '@/assets/staticData/statickData';
+import { useMediaVariables } from '@/hooks/query/useMediaVariables';
 
 import Spinner from '../ui/Spinner';
 
-const labelStyles = `w-[150px] h-[150px] bg-uploadBtnBg rounded-full
+const labelStyles = `lg:w-[150px] lg:h-[150px] w-[112px] h-[112px] bg-uploadBtnBg rounded-full
 flex justify-center items-center cursor-pointer overflow-hidden`;
 
 const imageWrapper = `w-[24px] h-[24px] rounded-full flex justify-center
@@ -23,6 +24,7 @@ export const UploadButton: FC<UploadButtonProps> = ({ ...props }) => {
 
   const { avatarImage, id } = useAppSelector(selectUser);
   const token = useAppSelector(selectToken);
+  const { isDesktop } = useMediaVariables();
 
   const dispatch = useAppDispatch();
 
@@ -65,8 +67,8 @@ export const UploadButton: FC<UploadButtonProps> = ({ ...props }) => {
         ) : (
           <img
             src="/images/user-logo.jpg"
-            width={150}
-            height={150}
+            width={isDesktop ? 150 : 112}
+            height={isDesktop ? 150 : 112}
             alt="user logo"
           />
         )}
@@ -76,10 +78,10 @@ export const UploadButton: FC<UploadButtonProps> = ({ ...props }) => {
               onClick={deleteImage}
               className="w-[24px] h-[24px] flex justify-center items-center rounded-full"
             >
-              <BiTrash size={18} />
+              <BiTrash className="w-6 h-6" />
             </button>
           ) : (
-            <BiPencil size={18} />
+            <BiPencil className="w-6 h-6" />
           )}
         </div>
       </label>

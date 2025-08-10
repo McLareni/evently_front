@@ -10,7 +10,7 @@ import MobileProfileTabNavLink from '../header/burgerMenu/MobileProfileTabNavLin
 const MobileProfileTabLayout: React.FC = () => {
   return (
     <main>
-      <aside className="flex flex-row flex-nowrap gap-4 overflow-x-auto scrollbar-hide pt-5 border-b border-[#6B7280]">
+      <aside className="flex flex-row flex-nowrap gap-5 overflow-x-auto scrollbar-hide pt-5 px-4 border-b border-[#6B7280]">
         <MobileProfileTabNavLink
           to="/user_profile"
           text="Мій профіль"

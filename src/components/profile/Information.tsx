@@ -13,10 +13,10 @@ const Information = () => {
 
   return (
     <div>
-      <div className="h-[192px] bg-bg-gradient rounded-[20px] px-[32px] py-[21px] flex gap-[48px]">
+      <div className="lg:h-[192px] h-[150px] bg-bg-gradient rounded-[20px] lg:px-[32px] py-[21px] px-4 flex lg:gap-[48px] gap-[24px]">
         <CropUploadImage />
         <p
-          className="font-oswald text-[64px] inline-block"
+          className="font-oswald lg:text-[64px] text-[28px] inline-block"
           style={{
             background:
               'linear-gradient(98.01deg, #12C2E9 2.11%, #C471ED 75.16%)',
@@ -28,7 +28,7 @@ const Information = () => {
           Привіт, {isFakeName()}
         </p>
       </div>
-      <p className="my-[24px] font-oswald text-[24px] font-medium">
+      <p className="lg:my-[24px] my-4 font-oswald lg:text-[24px] text-xl lg:font-medium font-normal">
         Контактна інформація
       </p>
       <ProfileForm />
