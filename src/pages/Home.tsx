@@ -76,7 +76,7 @@ const Home: React.FC = () => {
     <Main className="flex flex-col lg:gap-16 gap-6 z-10">
       <Hero />
       <>
-        {city !== notTopEvents[0]?.location.city && (
+        {city !== notTopEvents[0]?.location.city && city !== 'Всі міста' && (
           <h2 className="px-[16px] lg:px-[60px] text-2xl lg:text-[40px] font-normal lg:font-medium text-buttonPurple">
             В твоєму місті не має подій, тому рекомендуємо
           </h2>
