@@ -1,8 +1,7 @@
 import { useEffect, useState } from 'react';
 
 import {
-  IFilter,
-  useLazyGetAllEventsFilteredQuery,
+  useLazyGetAllEventsQuery,
   useLazyGetNewEventsQuery,
 } from '@/redux/events/operations';
 import { useAppSelector } from '@/redux/hooks';
@@ -27,7 +26,7 @@ const Home: React.FC = () => {
   const [isLoading, setIsLoading] = useState<boolean>(false);
 
   const [fetchNewEvents] = useLazyGetNewEventsQuery();
-  const [fetchEvents] = useLazyGetAllEventsFilteredQuery();
+  const [fetchEvents] = useLazyGetAllEventsQuery();
 
   useScrollToTop();
 
@@ -35,7 +34,6 @@ const Home: React.FC = () => {
     const queryArgs = {
       page: 0,
       size: 21,
-      filter: {} as IFilter,
       city,
     };
     const getEvents = async () => {
@@ -78,6 +76,11 @@ const Home: React.FC = () => {
     <Main className="flex flex-col lg:gap-16 gap-6 z-10">
       <Hero />
       <>
+        {city !== notTopEvents[0]?.location.city && (
+          <h2 className="px-[16px] lg:px-[60px] text-2xl lg:text-[40px] font-normal lg:font-medium text-buttonPurple">
+            В твоєму місті не має подій, тому рекомендуємо
+          </h2>
+        )}
         <TopEvents filteredEvents={newEvents} />
 
         {notTopEvents && (

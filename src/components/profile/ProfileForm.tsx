@@ -206,7 +206,7 @@ export const ProfileForm: FC = () => {
       </div>
 
       <div className="flex flex-col lg:gap-[24px] gap-0 lg:mb-[8px] mb-0">
-        <p className="lg:my-[24px] my-4 font-oswald lg:text-[24px] text-xl lg:font-medium font-normal">
+        <p className="lg:mb-[24px] mb-4 font-oswald lg:text-[24px] text-xl lg:font-medium font-normal">
           Змінити пароль
         </p>
         <ProfileInput

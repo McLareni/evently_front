@@ -1,11 +1,21 @@
+import { useState } from 'react';
+
 import { selectUser } from '@/redux/auth/selectors';
 import { useAppSelector } from '@/redux/hooks';
 
+import { useMediaVariables } from '@/hooks/query/useMediaVariables';
+
+import WithdrawingMoneyPage from '@/components/profile/WithdrawingMoneyPage';
+
 import { CropUploadImage } from './CropUploadImage';
 import { ProfileForm } from './ProfileForm';
+import WithdrawingMoney from './WithdrawingMoney';
+import WithdrawingMoneyModal from './WithdrawingMoneyModal';
 
 const Information = () => {
   const { name } = useAppSelector(selectUser);
+  const [pageMoneyWithdraw, setPageMoneyWithdraw] = useState(false);
+  const { isMobile } = useMediaVariables();
 
   const isFakeName = () => {
     return name.length === 0 ? 'гість' : name;
@@ -28,7 +38,16 @@ const Information = () => {
           Привіт, {isFakeName()}
         </p>
       </div>
-      <p className="lg:my-[24px] my-4 font-oswald lg:text-[24px] text-xl lg:font-medium font-normal">
+      {pageMoneyWithdraw &&
+        (isMobile ? (
+          <WithdrawingMoneyPage closePage={() => setPageMoneyWithdraw(false)} />
+        ) : (
+          <WithdrawingMoneyModal
+            closePage={() => setPageMoneyWithdraw(false)}
+          />
+        ))}
+      <WithdrawingMoney openPage={() => setPageMoneyWithdraw(true)} />
+      <p className="lg:mb-[24px] mb-4 font-oswald lg:text-[24px] text-xl lg:font-medium font-normal">
         Контактна інформація
       </p>
       <ProfileForm />

@@ -35,7 +35,6 @@ export default {
         uploadBtnBg: '#ABAFB1',
         textGray: '#5A636C',
 
-
         // Other color
         success: '#3BE660',
         error: '#FF0F00',
