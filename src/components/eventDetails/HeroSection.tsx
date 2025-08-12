@@ -88,7 +88,7 @@ const HeroSection: React.FC<IProps> = ({ idEvent, event }) => {
     <div className="relative w-auto h-[562px] m-4">
       <div className="absolute inset-0 bg-eventDetails blur-md rounded-[20px]"></div>
       <div className="absolute inset-0 bg-background blur-md rounded-[20px] opacity-50"></div>
-      <div className="absolute inset-0 z-10 flex pl-6">
+      <div className="absolute inset-0 z-10 flex pl-6 pt-12">
         <ImageSlider
           toggleIsLiked={toggleIsLiked}
           countLike={+countLike}
@@ -100,7 +100,7 @@ const HeroSection: React.FC<IProps> = ({ idEvent, event }) => {
           }
         />
         <div className="flex-1 pl-24 relative">
-          <h1 className="text-[36px] text-textDark mb-4 pr-12 line-clamp-2">
+          <h1 className="text-[36px] leading-[50px] text-textDark mb-4 pr-12 line-clamp-2">
             {event?.title}
           </h1>
           <EventTags type={event?.type} eventUrl={event?.eventUrl} />
@@ -119,7 +119,7 @@ const HeroSection: React.FC<IProps> = ({ idEvent, event }) => {
           </Link>
           <button
             onClick={() => setPopupShare(true)}
-            className="focus:outline-0 absolute top-[56px] right-[26px]"
+            className="focus:outline-0 absolute top-[17px] right-[26px]"
           >
             <AiOutlineShareAlt className="w-6 h-6" />
           </button>
