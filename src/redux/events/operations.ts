@@ -46,10 +46,10 @@ export const EventsApi = createApi({
   endpoints: builder => ({
     getAllEvents: builder.query<
       Event[],
-      { page?: number; size?: number } | void
+      { page: number; size: number; city: string }
     >({
-      query: arg => ({
-        url: `events?page=${arg?.page ?? 0}&size=${arg?.size ?? 20}`,
+      query: ({ page, size, city }) => ({
+        url: `events?page=${page ?? 0}&size=${size ?? 20}${!city || city === 'Всі міста' ? '' : '&cityName=' + city}`,
       }),
       keepUnusedDataFor: 1000,
       transformResponse: (result?: { content?: Event[] }) =>

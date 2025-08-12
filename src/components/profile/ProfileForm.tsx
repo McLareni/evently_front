@@ -16,6 +16,7 @@ import {
   formatBirthDateToMask,
   formatPhoneToMask,
 } from '@/helpers/userForm/formatToMask';
+import { useMediaVariables } from '@/hooks/query/useMediaVariables';
 import { MAX_NAME_LENGTH, validateName } from '@/utils/validateName';
 import { useMask } from '@react-input/mask';
 
@@ -28,6 +29,7 @@ export const ProfileForm: FC = () => {
     useAppSelector(selectUser);
   const isLoading = useAppSelector(selectIsLoading);
 
+  const { isMobile } = useMediaVariables();
   const dispatch = useAppDispatch();
 
   const defaultValues: UserInfo = {
@@ -85,7 +87,7 @@ export const ProfileForm: FC = () => {
   return (
     <form className="flex flex-col" onSubmit={handleSubmit(onSubmit)}>
       {isLoading && <Spinner />}
-      <div className="flex gap-[24px] mb-[8px]">
+      <div className="flex lg:gap-[24px] gap-0 lg:mb-[8px] mb-0 flex-wrap lg:flex-nowrap">
         <ProfileInput
           {...register('name', {
             required: true,
@@ -97,6 +99,7 @@ export const ProfileForm: FC = () => {
           htmlFor="name"
           type="text"
           label="Ім'я"
+          width={isMobile ? 'min(100%, 100%)' : undefined}
           error={errors?.name?.message}
         />
 
@@ -114,11 +117,12 @@ export const ProfileForm: FC = () => {
           htmlFor="surname"
           type="text"
           label="Прізвище"
+          width={isMobile ? 'min(100%, 100%)' : undefined}
           error={errors?.surname?.message}
         />
       </div>
 
-      <div className="flex gap-[24px] mb-[8px]">
+      <div className="flex lg:gap-[24px] gap-0 lg:mb-[8px] mb-0 flex-wrap lg:flex-nowrap">
         <Controller
           name="birthdayDate"
           control={control}
@@ -131,6 +135,7 @@ export const ProfileForm: FC = () => {
               htmlFor="birthday"
               type="numeric"
               label="Дата народження"
+              width={isMobile ? 'min(100%, 100%)' : undefined}
               error={errors?.birthdayDate?.message}
             />
           )}
@@ -177,6 +182,7 @@ export const ProfileForm: FC = () => {
               htmlFor="phoneNumber"
               type="tel"
               label="Номер телефону"
+              width={isMobile ? 'min(100%, 100%)' : undefined}
               error={errors?.phoneNumber?.message}
             />
           )}
@@ -199,8 +205,8 @@ export const ProfileForm: FC = () => {
         />
       </div>
 
-      <div className="flex flex-col gap-[8px] mb-[8px]">
-        <p className="mb-[32px] font-oswald text-[24px] font-medium">
+      <div className="flex flex-col lg:gap-[24px] gap-0 lg:mb-[8px] mb-0">
+        <p className="lg:mb-[24px] mb-4 font-oswald lg:text-[24px] text-xl lg:font-medium font-normal">
           Змінити пароль
         </p>
         <ProfileInput
@@ -244,8 +250,12 @@ export const ProfileForm: FC = () => {
         />
       </div>
 
-      <Button type="submit" disabled={!isValid}>
-        Зберегти
+      <Button
+        type="submit"
+        disabled={!isValid}
+        width={isMobile ? '100%' : undefined}
+      >
+        Зберегти зміни
       </Button>
     </form>
   );

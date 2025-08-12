@@ -18,6 +18,7 @@ import EditEventPage from '@/pages/events/EditEventPage';
 import EventDetails from '@/pages/events/EventDetails';
 import Favourite from '@/pages/user/Favourite';
 import MyEvent from '@/pages/user/MyEvent';
+import MyTicket from '@/pages/user/MyTicket';
 import Profile from '@/pages/user/Profile';
 
 import { Layout } from '@/components/layout/Layout';
@@ -71,6 +72,7 @@ const router = createBrowserRouter([
           { path: 'user_profile', element: <Profile /> },
           { path: 'favourite', element: <Favourite /> },
           { path: 'my-event', element: <MyEvent /> },
+          { path: 'my-tickets', element: <MyTicket /> },
           {
             path: 'admin',
             element: <AdminRouter />,

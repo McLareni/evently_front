@@ -1,11 +1,21 @@
+import { useState } from 'react';
+
 import { selectUser } from '@/redux/auth/selectors';
 import { useAppSelector } from '@/redux/hooks';
 
+import { useMediaVariables } from '@/hooks/query/useMediaVariables';
+
+import WithdrawingMoneyPage from '@/components/profile/WithdrawingMoneyPage';
+
 import { CropUploadImage } from './CropUploadImage';
 import { ProfileForm } from './ProfileForm';
+import WithdrawingMoney from './WithdrawingMoney';
+import WithdrawingMoneyModal from './WithdrawingMoneyModal';
 
 const Information = () => {
   const { name } = useAppSelector(selectUser);
+  const [pageMoneyWithdraw, setPageMoneyWithdraw] = useState(false);
+  const { isMobile } = useMediaVariables();
 
   const isFakeName = () => {
     return name.length === 0 ? 'гість' : name;
@@ -13,10 +23,10 @@ const Information = () => {
 
   return (
     <div>
-      <div className="h-[192px] bg-bg-gradient rounded-[20px] px-[32px] py-[21px] flex gap-[48px]">
+      <div className="lg:h-[192px] h-[150px] bg-bg-gradient rounded-[20px] lg:px-[32px] py-[21px] px-4 flex lg:gap-[48px] gap-[24px]">
         <CropUploadImage />
         <p
-          className="font-oswald text-[64px] inline-block"
+          className="font-oswald lg:text-[64px] text-[28px] inline-block"
           style={{
             background:
               'linear-gradient(98.01deg, #12C2E9 2.11%, #C471ED 75.16%)',
@@ -28,7 +38,16 @@ const Information = () => {
           Привіт, {isFakeName()}
         </p>
       </div>
-      <p className="my-[24px] font-oswald text-[24px] font-medium">
+      {pageMoneyWithdraw &&
+        (isMobile ? (
+          <WithdrawingMoneyPage closePage={() => setPageMoneyWithdraw(false)} />
+        ) : (
+          <WithdrawingMoneyModal
+            closePage={() => setPageMoneyWithdraw(false)}
+          />
+        ))}
+      <WithdrawingMoney openPage={() => setPageMoneyWithdraw(true)} />
+      <p className="lg:mb-[24px] mb-4 font-oswald lg:text-[24px] text-xl lg:font-medium font-normal">
         Контактна інформація
       </p>
       <ProfileForm />
