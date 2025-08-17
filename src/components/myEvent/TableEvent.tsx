@@ -9,11 +9,13 @@ import {
 } from '@/redux/events/operations';
 import { useAppSelector } from '@/redux/hooks';
 
+import { useMediaVariables } from '@/hooks/query/useMediaVariables';
 import clsx from 'clsx';
 
 import SmallSpinner from '../ui/SmallSpinner';
 import Spinner from '../ui/Spinner';
 import EventRow from './EventRow';
+import MobileList from './MobileList';
 import TableHead from './TableHead';
 
 const TableEvent = () => {
@@ -26,6 +28,7 @@ const TableEvent = () => {
   const [getEvents, { isFetching, isLoading }] = useLazyGetAllMyEventsQuery();
   const [deleteMyEvent, { isLoading: isLoadingDeleteEvent }] =
     useDeleteMyEventMutation();
+  const { isDesktop } = useMediaVariables();
 
   const handleOpenPopUp = (id?: string) => {
     setIdPopUp(id);
@@ -104,10 +107,10 @@ const TableEvent = () => {
   if (!events || !events.length) {
     return (
       <>
-        <h2 className="text-[48px] leading-normal font-oswald text-buttonPurple">
+        <h2 className="lg:text-[48px] text-[28px] leading-normal font-oswald text-buttonPurple">
           Ваш список подій поки що порожній.
         </h2>
-        <p className="text-[36px] font-oswald text-buttonPurple">
+        <p className="lg:text-[36px] text-[24px] font-oswald text-buttonPurple">
           Зробіть перший крок до успіху — створіть подію!
           <Link to="/create_event" className="hover:text-borderColor italic">
             [Створити подію]
@@ -119,30 +122,40 @@ const TableEvent = () => {
 
   return (
     <>
-      <table
-        onClick={e => handleClickTable(e.target as HTMLElement)}
-        className="w-full border-collapse"
-      >
-        <TableHead refresh={handleRefreshEvents} />
-        <tbody className="">
-          {events.map((event, index) => (
-            <tr
-              key={event.id}
-              className={clsx(
-                'h-[100px] items-end relative after:absolute after:bottom-0 after:left-0 after:h-[1px] after:w-full',
-                { 'after:bg-buttonPurple': index !== events.length - 1 }
-              )}
-            >
-              <EventRow
-                event={event}
-                popUpIsShow={event.id === idPopUp}
-                openPopUp={handleOpenPopUp}
-                deleteEvent={handleDeleteEvent}
-              />
-            </tr>
-          ))}
-        </tbody>
-      </table>
+      {isDesktop ? (
+        <table
+          onClick={e => handleClickTable(e.target as HTMLElement)}
+          className="w-full border-collapse"
+        >
+          <TableHead refresh={handleRefreshEvents} />
+          <tbody className="">
+            {events.map((event, index) => (
+              <tr
+                key={event.id}
+                className={clsx(
+                  'h-[100px] items-end relative after:absolute after:bottom-0 after:left-0 after:h-[1px] after:w-full',
+                  { 'after:bg-buttonPurple': index !== events.length - 1 }
+                )}
+              >
+                <EventRow
+                  event={event}
+                  popUpIsShow={event.id === idPopUp}
+                  openPopUp={handleOpenPopUp}
+                  deleteEvent={handleDeleteEvent}
+                />
+              </tr>
+            ))}
+          </tbody>
+        </table>
+      ) : (
+        <MobileList
+          events={events}
+          openPopUp={handleOpenPopUp}
+          popUpId={idPopUp}
+          deleteEvent={handleDeleteEvent}
+          clickOutside={handleClickTable}
+        />
+      )}
       {inView && !isFullList && (
         <div>
           <SmallSpinner />

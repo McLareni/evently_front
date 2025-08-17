@@ -72,13 +72,15 @@ export const PhotoCardList = ({
         </div>
       )}
       <div className="absolute right-2 top-2 flex gap-2">
-        <div>
-          <p className="text-sm text-background font-lato rounded-[15px] bg-buttonPurple px-2 p-0.5">
-            {getLenght()}
-            <span>/</span>3
-          </p>
-          <p />
-        </div>
+        {isMobile && (
+          <div>
+            <p className="text-sm text-background font-lato rounded-[15px] bg-buttonPurple px-2 p-0.5">
+              {getLenght()}
+              <span>/</span>3
+            </p>
+            <p />
+          </div>
+        )}
         {validateForm && (
           <div className="relative lg:w-10 w-6">
             <div className="bg-white absolute  w-5 h-5 rounded-full"></div>

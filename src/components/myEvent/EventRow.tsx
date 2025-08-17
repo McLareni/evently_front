@@ -8,8 +8,8 @@ import { Link } from 'react-router-dom';
 import { formatDateToDayMonth } from '@/helpers/filters/formatDateToDayMonth';
 import clsx from 'clsx';
 
-import { Modal, SharedBtn } from '../ui';
 import ConfirmationDeletePopUp from './ConfirmationDeletePopUp';
+import DeleteModal from './DeleteModal';
 import PopUp from './PopUp';
 
 const status: Record<
@@ -137,58 +137,13 @@ const EventRow: React.FC<IProps> = ({
         )}
       </td>
       {deletePopUp && (
-        <Modal
-          isOpen={deletePopUp}
-          hiddenCross
-          onClose={() => setDeletePopUp(false)}
-        >
-          <div className="py-6 px-[57px] text-center border border-buttonPurple rounded-[20px]">
-            <h2 className="text-xl font-bold font-lato mb-4">
-              Скасувати подію?
-            </h2>
-            <h3 className="text-xl font-normal font-lato mb-6">
-              {event.soldTickets ? (
-                <>
-                  Це може вплинути на довіру <br /> користувачів. Усі кошти з
-                  продажу <br />
-                  квитків буде повернено. Ти впевнений?
-                </>
-              ) : (
-                <>
-                  Це може вплинути на довіру <br /> користувачів, а також подія
-                  буде <br /> <b>видалена назавжди.</b> Ти впевнений?
-                </>
-              )}
-            </h3>
-            <div className="flex justify-around">
-              <SharedBtn
-                type="button"
-                className="w-[120px] h-[38px] leading-[0px]"
-                primary
-                onClick={async () => {
-                  if (event.soldTickets === '0' || event.soldTickets === null) {
-                    await deleteEvent(event.id);
-                    setDeletePopUp(false);
-                  } else {
-                    setConfirmationDeletePopUp(true);
-                  }
-                }}
-              >
-                Так
-              </SharedBtn>
-              <SharedBtn
-                type="button"
-                className="w-[120px] h-[38px] leading-[0px]"
-                secondary
-                onClick={() => {
-                  setDeletePopUp(false);
-                }}
-              >
-                Ні
-              </SharedBtn>
-            </div>
-          </div>
-        </Modal>
+        <DeleteModal
+          event={event}
+          deletePopUp={deletePopUp}
+          setDeletePopUp={setDeletePopUp}
+          setConfirmationDeletePopUp={setConfirmationDeletePopUp}
+          deleteEvent={deleteEvent}
+        />
       )}
       {confirmationDeletePopUp && (
         <ConfirmationDeletePopUp
