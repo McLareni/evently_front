@@ -57,7 +57,7 @@ const WithdrawingMoneyPage: React.FC<IProps> = ({ closePage }) => {
           </div>
 
           <div className="relative">
-            <p className="mb-3 text-base font-bold">Змінити пароль</p>
+            <p className="mb-3 text-base font-bold">Номер карти</p>
             <ProfileInput
               {...register('card', {
                 validate: {
@@ -139,17 +139,20 @@ const WithdrawingMoneyPage: React.FC<IProps> = ({ closePage }) => {
           </span>
         </label>
       </form>
-      <div className="flex flex-col items-center gap-[18px]">
-        <SharedBtn type="button" primary className="w-[230px] h-12">
-          Підтвердити
-        </SharedBtn>
-        <SharedBtn
-          type="button"
-          secondary
-          className="w-[230px] h-12"
+      <div className="rounded-[71px_8px] border border-buttonPurple flex flex-row items-center w-full h-12">
+        <p
+          className="flex-1 text-center text-xl font-normal text-textDark font-lato pl-5 cursor-pointer"
           onClick={closePage}
         >
           Скасувати
+        </p>
+        <SharedBtn
+          type="button"
+          primary
+          className={`min-w-[200px] flex-1 w-full h-12 rounded-[71px_8px] text-background text-xl
+                          `}
+        >
+          Підтвердити
         </SharedBtn>
       </div>
     </div>

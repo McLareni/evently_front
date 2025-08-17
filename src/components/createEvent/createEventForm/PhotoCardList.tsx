@@ -28,6 +28,16 @@ export const PhotoCardList = ({
 }: PhotoCardListProps) => {
   const { isMobile } = useMediaVariables();
 
+  const getLenght = () => {
+    let length = 0;
+    photos.forEach(photo => {
+      if (photo) {
+        length += 1;
+      }
+    });
+    return length;
+  };
+
   return (
     <div className="relative lg:w-[760px] w-full lg:h-[321px] h-[540px] lg:mb-8 mb-4 rounded-[20px] p-4 lg:p-0 border-buttonPurple lg:border-2 border">
       {isMobile ? (
@@ -61,12 +71,23 @@ export const PhotoCardList = ({
           ))}
         </div>
       )}
-      {validateForm && (
-        <>
-          <div className='bg-white absolute right-2 top-2 w-5 h-5 rounded-full'></div>
-          <AiFillCheckCircle className="absolute right-2 top-2 w-6 h-6 lg:w-10 lg:h-10 fill-success rounded-full" />
-        </>
-      )}
+      <div className="absolute right-2 top-2 flex gap-2">
+        {isMobile && (
+          <div>
+            <p className="text-sm text-background font-lato rounded-[15px] bg-buttonPurple px-2 p-0.5">
+              {getLenght()}
+              <span>/</span>3
+            </p>
+            <p />
+          </div>
+        )}
+        {validateForm && (
+          <div className="relative lg:w-10 w-6">
+            <div className="bg-white absolute  w-5 h-5 rounded-full"></div>
+            <AiFillCheckCircle className="absolute w-6 h-6 lg:w-10 lg:h-10 fill-success rounded-full" />
+          </div>
+        )}
+      </div>
     </div>
   );
 };

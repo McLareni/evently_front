@@ -6,7 +6,7 @@ import clsx from 'clsx';
 interface iProps {
   to: string;
   text: string;
-  Icon: React.ComponentType<any>;
+  Icon: React.ComponentType<React.SVGProps<SVGSVGElement>>;
 }
 
 const MobileProfileTabNavLink: React.FC<iProps> = ({ to, text, Icon }) => {
@@ -20,7 +20,9 @@ const MobileProfileTabNavLink: React.FC<iProps> = ({ to, text, Icon }) => {
       }
     >
       <Icon className="h-6 w-6" />
-      <h3 className='text-nowrap text-base text-textDark font-normal'>{text}</h3>
+      <h3 className="text-nowrap text-base text-textDark font-normal">
+        {text}
+      </h3>
     </NavLink>
   );
 };

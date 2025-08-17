@@ -26,14 +26,14 @@ export const PopupEventCreated = ({ event }: PopupEventCreatedProps) => {
   const { width, height } = getWindowDimensions();
 
   return createPortal(
-    <div className="fixed lg:top-0 top-[71px] bottom-0 left-0 p-0 lg:p-[24px] z-20 w-full h-full flex justify-center items-start bg-white bg-opacity-50 overflow-hidden lg:overflow-scroll">
+    <div className="fixed lg:top-0 top-[74px] bottom-0 left-0 p-0 lg:p-[24px] z-20 w-full h-full flex justify-center items-start bg-white bg-opacity-50 overflow-hidden lg:overflow-scroll">
       <Confetti
         width={width}
         height={height}
         gravity={0.2}
         numberOfPieces={300}
       />
-      <div className="lg:px-[116px] lg:py-[42px] px-4 bg-bg-gradient flex flex-col gap-8 lg:gap-[24px] items-center justify-center rounded-none lg:rounded-[20px] h-full">
+      <div className="lg:px-[116px] lg:py-[42px] px-4 bg-bg-gradient flex flex-col gap-8 lg:gap-[24px] items-center justify-center rounded-none lg:rounded-[20px] h-full w-full lg:w-auto">
         <p
           className="font-oswald text-[32px] lg:text-[64px] inline-block"
           style={{

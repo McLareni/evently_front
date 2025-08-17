@@ -203,7 +203,7 @@ const DateAndPlace = ({
     >
       {isMobile && (
         <MobileSectionHeader
-          text="Дата та час"
+          text="Час і місце проведення"
           isActive={sectionIsOpen}
           changeActiveSection={() => setSectionIsOpen(false)}
           dataIsValid={isValidDate}
@@ -311,7 +311,7 @@ const DateAndPlace = ({
               )}
               {startTimeSelect && (
                 <ul
-                  className="w-[210px] border-buttonPurple
+                  className="w-full border-buttonPurple
                 pl-[10px] pt-[12px] pr-[20px] h-[215px] overflow-auto bg-background"
                 >
                   {filteredStartTimeOptions.map(option => (
@@ -366,7 +366,7 @@ const DateAndPlace = ({
                 <div className="w-full h-[2px] bg-transparent" />
               )}
               {endTimeSelect && (
-                <ul className=" w-[210px] border-buttonPurple pl-[10px] pt-[10px] pr-[20px] h-[215px] overflow-auto bg-background">
+                <ul className=" w-full border-buttonPurple pl-[10px] pt-[10px] pr-[20px] h-[215px] overflow-auto bg-background">
                   {filteredEndTimeOptions.map(option => (
                     <li
                       onClick={() => {

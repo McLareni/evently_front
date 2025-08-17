@@ -59,7 +59,7 @@ const ConfirmationDeletePopUp: React.FC<IProps> = ({
   return (
     <Modal isOpen={popUpIsShow} hiddenCross onClose={onClose}>
       <form
-        className="w-[684px] p-6 flex flex-col gap-6"
+        className="lg:w-[684px] w-full p-6 flex flex-col gap-6"
         onSubmit={handleSubmit(onSubmit)}
       >
         <h2 className="text-xl font-bold font-lato mb-4 text-center">
@@ -91,7 +91,7 @@ const ConfirmationDeletePopUp: React.FC<IProps> = ({
           />
           <label
             htmlFor="phoneNumber"
-            className="absolute left-[16px] -top-4 bg-background px-1 text-xl"
+            className="absolute left-[16px] -top-4 bg-background px-1 lg:text-xl text-base"
           >
             Контактний телефон для зв’язку
           </label>
@@ -113,7 +113,7 @@ const ConfirmationDeletePopUp: React.FC<IProps> = ({
           />
           <label
             htmlFor="description"
-            className="absolute left-[16px] -top-4 bg-background px-1 text-xl"
+            className="absolute left-[16px] -top-4 bg-background px-1 lg:text-xl text-base"
           >
             Причина скасування
           </label>
