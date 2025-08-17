@@ -67,7 +67,7 @@ const AboutEvent: React.FC<AboutEventProps> = ({
     >
       {isMobile && (
         <MobileSectionHeader
-          text="Написати заголовок"
+          text="Назва події та опис"
           isActive={sectionIsOpen}
           changeActiveSection={() => setSectionIsOpen(prev => !prev)}
           dataIsValid={isValidDate}

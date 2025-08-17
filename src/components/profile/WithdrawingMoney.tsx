@@ -16,7 +16,7 @@ const WithdrawingMoney: React.FC<IProps> = ({ openPage }) => {
           Ваш баланс
         </p>
       )}
-      <div className="bg-[#ECF2F9] p-4 text-textDark rounded-[10px] flex flex-col gap-3 items-center">
+      <div className="bg-[#ECF2F9] p-4 text-textDark rounded-[5px] flex flex-col gap-3 items-center">
         <div className="w-full flex justify-between">
           <h2 className="text-2xl font-medium">Баланс</h2>
           <p className="text-base font-bold">7000₴</p>
@@ -27,7 +27,7 @@ const WithdrawingMoney: React.FC<IProps> = ({ openPage }) => {
         </div>
         <button
           onClick={openPage}
-          className="p-3 mt-3 bg-background border-2 border-buttonPurple rounded-[15px] text-xl leading-5"
+          className="px-3 py-2 mt-3 bg-background border-2 border-buttonPurple rounded-[15px] text-xl leading-5"
         >
           Вивести кошти
         </button>

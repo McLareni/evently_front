@@ -139,7 +139,11 @@ export const EventCard: React.FC<EventCardProps> = ({
         }${isAdmin && 'hover:cursor-pointer'}`}
     >
       {images[0] && images[0].url && (
-        <img src={images[0].url} alt={title} className="w-full lg:min-h-[312px] min-h-[170px]" />
+        <img
+          src={images[0].url}
+          alt={title}
+          className="w-full lg:min-h-[312px] min-h-[170px]"
+        />
       )}
       <div className={`flex absolute justify-between lg:p-6 p-3 w-full`}>
         {category === 'TOP_EVENTS' && event.eventStatus === 'APPROVED' && (

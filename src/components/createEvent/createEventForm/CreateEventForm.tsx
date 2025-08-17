@@ -296,10 +296,10 @@ const CreateEventForm: React.FC<CreateEventFormProps> = ({
           </SharedBtn>
         </div>
         {isLoading && <Spinner />}
-        {isSuccessPopupShown && popupEvent && (
-          <PopupEventCreated event={popupEvent} />
-        )}
       </form>
+      {isSuccessPopupShown && popupEvent && (
+        <PopupEventCreated event={popupEvent} />
+      )}
     </>
   );
 };

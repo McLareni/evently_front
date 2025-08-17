@@ -90,7 +90,7 @@ const AboutOrganizer: React.FC<AboutOrganizerProps> = ({
     >
       {isMobile && (
         <MobileSectionHeader
-          text="Про організатора"
+          text="Інформація про організатора"
           isActive={sectionIsOpen}
           changeActiveSection={() => setSectionIsOpen(false)}
           dataIsValid={dataIsValid}
