@@ -88,7 +88,7 @@ const TicketPrice: React.FC<TicketPriceProps> = ({
           dataIsValid={dataIsValid}
         />
       )}
-      {isEdit && ticketsHasBeenSold && (
+      {isEdit && ticketsHasBeenSold && sectionIsOpen && (
         <div className="flex gap-2 mb-[10px]">
           <AiOutlineExclamation className="rounded-full border border-error fill-error w-6 h-6" />
           <h3 className="text-error text-base font-normal font-lato">
@@ -161,11 +161,11 @@ const TicketPrice: React.FC<TicketPriceProps> = ({
         )}
       </div>
       <div className="flex lg:gap-[16px] gap-[14px] flex-wrap">
-        <div className="flex flex-col flex-1">
+        <div className="flex flex-col flex-1 max-w-[245px]">
           <label htmlFor="ticketPrice" className="lg:mb-3 mb-[6px]">
             Ціна
           </label>
-          <div className="relative">
+          <div className="relative w-full">
             <FaRegMoneyBillAlt
               color={freeTickets ? '#D0D5D8' : '#000000'}
               className={clsx(
@@ -184,7 +184,7 @@ const TicketPrice: React.FC<TicketPriceProps> = ({
               }}
               render={({ field }) => (
                 <div
-                  className={`lg:w-[240px] w-[159px] h-[48px] p-[2px] ${freeTickets ? 'bg-[#D0D5D8]' : 'bg-createEventInputBorder'}  lg:rounded-[10px] rounded-[7px]`}
+                  className={`lg:w-[245px] w-full h-[48px] p-[2px] ${freeTickets ? 'bg-[#D0D5D8]' : 'bg-createEventInputBorder'}  lg:rounded-[10px] rounded-[7px]`}
                 >
                   <input
                     {...field}
@@ -216,7 +216,7 @@ const TicketPrice: React.FC<TicketPriceProps> = ({
           </div>
         </div>
 
-        <div className="flex flex-col flex-1">
+        <div className="flex flex-col flex-1 max-w-[245px]">
           <label htmlFor="numberOfTickets" className="lg:mb-3 mb-[6px]">
             Кількість квитків
           </label>
@@ -239,7 +239,7 @@ const TicketPrice: React.FC<TicketPriceProps> = ({
               }}
               render={({ field }) => (
                 <div
-                  className={`lg:w-[240px] w-[158px] h-[48px] p-[2px] ${unlimitedTickets ? 'bg-[#D0D5D8]' : 'bg-createEventInputBorder'} lg:rounded-[10px] rounded-[7px]`}
+                  className={`lg:w-[245px] w-full h-[48px] p-[2px] ${unlimitedTickets ? 'bg-[#D0D5D8]' : 'bg-createEventInputBorder'} lg:rounded-[10px] rounded-[7px]`}
                 >
                   <input
                     id="numberOfTickets"
@@ -269,7 +269,8 @@ const TicketPrice: React.FC<TicketPriceProps> = ({
             </div>
           </div>
         </div>
-
+      </div>
+      <div>
         <div className="self-end lg:mb-[32px] mb-0 flex-1">
           <Controller
             name="unlimitedTickets"

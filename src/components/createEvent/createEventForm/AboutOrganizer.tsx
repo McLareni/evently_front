@@ -72,6 +72,8 @@ const AboutOrganizer: React.FC<AboutOrganizerProps> = ({
 
   useEffect(() => {
     if (user.phoneNumber) {
+      console.log('user.phoneNumber', user.phoneNumber);
+
       setValue('phoneNumber', formatPhoneToMask(user.phoneNumber));
     }
   }, [setValue, user.phoneNumber]);

@@ -49,6 +49,7 @@ const DateAndPlace = ({
   const { isMobile, isDesktop } = useMediaVariables();
 
   const date = watch('date');
+
   const { day, time, endTime } = date;
 
   const daySelected = day.length > 0;
@@ -183,12 +184,11 @@ const DateAndPlace = ({
     }
   }, [currentTimeToNumber, dateDifference, setValue, startTimeToNumber]);
 
-  
   const isValidDate = !!(
     daySelected &&
-        startSelected &&
-        endSelected &&
-        validatedOnlineOffline
+    startSelected &&
+    endSelected &&
+    validatedOnlineOffline
   );
 
   return (
@@ -201,15 +201,7 @@ const DateAndPlace = ({
         sectionIsOpen || !isMobile ? 'h-auto' : 'h-[56px]'
       )}
     >
-      {isMobile && (
-        <MobileSectionHeader
-          text="Час і місце проведення"
-          isActive={sectionIsOpen}
-          changeActiveSection={() => setSectionIsOpen(false)}
-          dataIsValid={isValidDate}
-        />
-      )}
-      {isEdit && (
+      {isEdit && sectionIsOpen && (
         <div className="flex gap-2 mb-[10px]">
           <AiOutlineExclamation className="rounded-full border border-error fill-error w-6 h-6" />
           <h3 className="text-error text-base font-normal font-lato">
@@ -218,22 +210,30 @@ const DateAndPlace = ({
         </div>
       )}
       {isValidDate && isDesktop && (
-          <AiFillCheckCircle
-            size={40}
-            color="#3BE660"
-            style={{ position: 'absolute', right: '8px', top: '8px' }}
-          />
-        )}
-      {!isMobile && (
+        <AiFillCheckCircle
+          size={40}
+          color="#3BE660"
+          style={{ position: 'absolute', right: '8px', top: '8px' }}
+        />
+      )}
+      {isMobile && (
+        <MobileSectionHeader
+          text="Час і місце проведення"
+          isActive={sectionIsOpen}
+          changeActiveSection={() => setSectionIsOpen(false)}
+          dataIsValid={isValidDate}
+        />
+      )}
+      {isDesktop && (
         <span className="lg:pb-4 pb-0 lg:text-2xl text-base">
           Дата та час<span className="star">*</span>
         </span>
       )}
-      <div className="flex gap-4 flex-wrap lg:mb-[18px] mb-3">
+      <div className="flex gap-4 flex-wrap lg:flex-nowrap lg:mb-[18px] mb-3">
         <div className="flex-1 min-w-56 lg:min-w-[243px]">
           <span>Дата</span>
           {isMobile && <span className="star">*</span>}
-          <div className="lg:w-[245px] w-full p-[2px] bg-createEventInputBorder lg:rounded-[10px] rounded-[7px] mt-3">
+          <div className="w-full p-[2px] bg-createEventInputBorder lg:rounded-[10px] rounded-[7px] mt-3">
             <div
               ref={dropdownDate}
               className="overflow-hidden lg:rounded-[8px] rounded-[5px]"
@@ -278,7 +278,7 @@ const DateAndPlace = ({
         <div className="flex-1 min-w-[157px] lg:min-w-[209px]">
           <span>Початок</span>
           {isMobile && <span className="star">*</span>}
-          <div className="lg:w-[210px] w-full p-[2px] bg-createEventInputBorder lg:rounded-[10px] rounded-[7px] mt-3">
+          <div className="w-full p-[2px] bg-createEventInputBorder lg:rounded-[10px] rounded-[7px] mt-3">
             <div
               ref={dropdownStartTime}
               className="lg:rounded-[8px] rounded-[5px] overflow-hidden w-full max-h-[230px]"
@@ -334,7 +334,7 @@ const DateAndPlace = ({
         <div className="flex-1 min-w-[157px] lg:min-w-[209px]">
           <span>Кінець</span>
           {isMobile && <span className="star">*</span>}
-          <div className="lg:w-[210px] w-full p-[2px] bg-createEventInputBorder lg:rounded-[10px] rounded-[7px] mt-3">
+          <div className="w-full p-[2px] bg-createEventInputBorder lg:rounded-[10px] rounded-[7px] mt-3">
             <div
               ref={dropdownEndTime}
               className="lg:rounded-[8px] rounded-[5px] overflow-hidden w-full max-h-[230px]"
