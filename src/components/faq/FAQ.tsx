@@ -60,7 +60,7 @@ export const FAQ: React.FC<FAQProps> = ({ hideTitle = false, noTopMargin = false
                   {item.title}
                 </h2>
                 <BiChevronDown
-                  className={`w-6 h-6 transition-transform duration-200 ease-in-out ${
+                  className={`min-w-6 min-h-6 transition-transform duration-200 ease-in-out ${
                     openIndex === index ? 'transform rotate-180' : ''
                   }`}
                 />
