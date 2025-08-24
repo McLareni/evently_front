@@ -75,7 +75,7 @@ export const FilterEvents: React.FC<FilterEventsProps> = ({
   return (
     <div className="lg:pl-[60px] relative">
       <div
-        className={`sticky top-[140px] max-h-[calc(100vh-144px)]
+        className={`sticky top-[140px] max-h-[calc(100svh-144px)]
           lg:max-h-[calc(100vh-200px)] lg:w-[312px] border-buttonPurple border-[1px]
           rounded-[20px] flex flex-col gap-[24px] pt-[18px] lg:pr-[5px]`}
       >
