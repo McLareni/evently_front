@@ -13,7 +13,7 @@ import { MobileSlider } from './MobileSlider';
 import { MySliderBtn } from './MySliderBtn';
 
 interface TopEventsProps {
-  filteredEvents?: Event[];
+  filteredEvents: Event[];
 }
 
 export const TopEvents: React.FC<TopEventsProps> = ({ filteredEvents }) => {
@@ -54,6 +54,11 @@ export const TopEvents: React.FC<TopEventsProps> = ({ filteredEvents }) => {
     ],
   };
 
+  const editedListEvents: Event[] = filteredEvents?.map(event => ({
+    ...event,
+    category: 'NEW_EVENTS',
+  }));
+
   return (
     <div>
       <Container>
@@ -67,10 +72,10 @@ export const TopEvents: React.FC<TopEventsProps> = ({ filteredEvents }) => {
       </Container>
       <div className="lg:pl-[60px] lg:pr-0 px-4  relative">
         {width < 1024 ? (
-          <MobileSlider events={filteredEvents} />
+          <MobileSlider events={editedListEvents} />
         ) : (
           <Slider ref={sliderRef} {...settings}>
-            {filteredEvents?.map(item => (
+            {editedListEvents?.map(item => (
               <div key={nanoid()}>
                 <EventCard event={item} top />
               </div>

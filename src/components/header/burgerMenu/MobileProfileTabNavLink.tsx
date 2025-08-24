@@ -14,15 +14,14 @@ const MobileProfileTabNavLink: React.FC<iProps> = ({ to, text, Icon }) => {
     <NavLink
       to={to}
       className={({ isActive }) =>
-        clsx(`flex flex-row gap-2 flex-nowrap py-1`, {
-          'border-b-2 border-buttonPurple': isActive,
+        clsx(`flex flex-row gap-2 flex-nowrap py-1 text-textDark`, {
+          'border-b-2 border-buttonPurple !text-buttonPurple fill-buttonPurple':
+            isActive,
         })
       }
     >
       <Icon className="h-6 w-6" />
-      <h3 className="text-nowrap text-base text-textDark font-normal">
-        {text}
-      </h3>
+      <h3 className="text-nowrap text-base font-normal">{text}</h3>
     </NavLink>
   );
 };

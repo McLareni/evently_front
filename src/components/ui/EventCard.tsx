@@ -146,7 +146,7 @@ export const EventCard: React.FC<EventCardProps> = ({
         />
       )}
       <div className={`flex absolute justify-between lg:p-6 p-3 w-full`}>
-        {category === 'TOP_EVENTS' && event.eventStatus === 'APPROVED' && (
+        {category === 'NEW_EVENTS' && event.eventStatus === 'APPROVED' && (
           <div
             className="flex justify-center items-center lg:w-[58px] w-[50px] lg:h-[33px] h-[22px] 
           bg-badge-gradient rounded-[20px] lg:text-base text-xs"
@@ -174,7 +174,7 @@ export const EventCard: React.FC<EventCardProps> = ({
       <div
         className={`absolute flex flex-col items-start gap-2 w-full lg:py-4 lg:px-5 p-3 lg:h-[365px] h-[190px]
           rounded-t-[20px] bg-hoverCard transition-all ease-in-out duration-300 lg:-bottom-[101px] bottom-0
-          ${!isMobile ? (category === 'TOP_EVENTS' && !isAdmin ? 'group-hover:-bottom-0' : 'group-hover:-bottom-10') : ''}
+          ${!isMobile ? (category === 'NEW_EVENTS' && !isAdmin ? 'group-hover:-bottom-0' : 'group-hover:-bottom-10') : ''}
           
           `}
       >

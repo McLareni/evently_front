@@ -9,7 +9,6 @@ import { Link } from 'react-router-dom';
 
 import { formatDateToDayMonth } from '@/helpers/filters/formatDateToDayMonth';
 import clsx from 'clsx';
-import { tr } from 'date-fns/locale';
 
 import ConfirmationDeletePopUp from './ConfirmationDeletePopUp';
 import DeleteModal from './DeleteModal';
