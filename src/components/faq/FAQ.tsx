@@ -41,7 +41,7 @@ export const FAQ: React.FC<FAQProps> = ({ hideTitle = false, noTopMargin = false
   };
 
   return (
-    <Container className={`flex lg:flex-row flex-col lg:ml-[40px] ${noContainerTopMargin ? '' : 'lg:mt-[64px]'} lg:pb-[50px] pb-[32px] px-0`}>
+    <Container className={`flex lg:flex-row flex-col lg:ml-[40px] ${noContainerTopMargin ? '' : 'lg:mt-[64px]'} lg:pb-[50px] pb-[32px] !px-0`}>
       {!hideTitle && (
         <h1 className="w-[89px] lg:leading-[94.85px] leading-normal text-[28px] lg:text-[64px] lg:mr-[20px] ">
           FAQ
