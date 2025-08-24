@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect, useRef } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { toast } from 'react-toastify';
 
@@ -8,8 +8,13 @@ interface IProps {
   deleteEvent: () => void;
 }
 
-const PopUp: React.FC<IProps> = ({ id, approved = false, deleteEvent }) => {
+const PopUp: React.FC<IProps> = ({
+  id,
+  approved = false,
+  deleteEvent,
+}) => {
   const navigate = useNavigate();
+  const [isOpen, setIsOpen] = React.useState(true);
 
   const copyLink = () => {
     navigator.clipboard.writeText(
@@ -34,7 +39,19 @@ const PopUp: React.FC<IProps> = ({ id, approved = false, deleteEvent }) => {
     }
   };
 
-  return (
+  const wrapperRef = useRef(null);
+
+  useEffect(() => {
+    const handleClickOutside = event => {
+      if (wrapperRef.current && !wrapperRef.current.contains(event.target)) {
+        setIsOpen(false);
+      }
+    };
+    document.addEventListener('mousedown', handleClickOutside);
+    return () => document.removeEventListener('mousedown', handleClickOutside);
+  }, []);
+
+  return isOpen ? (
     <div
       data-name="kebab"
       className="absolute lg:right-0 right-3 lg:top-12 top-4 z-10 w-[206px] bg-background border border-buttonPurple rounded-[10px] py-3 flex flex-col gap-1"
@@ -64,7 +81,7 @@ const PopUp: React.FC<IProps> = ({ id, approved = false, deleteEvent }) => {
         Скасувати
       </h2>
     </div>
-  );
+  ) : null;
 };
 
 export default PopUp;
