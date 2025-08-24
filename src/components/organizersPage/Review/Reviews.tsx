@@ -1,68 +1,81 @@
-import Slider, { Settings } from 'react-slick';
-import { nanoid } from '@reduxjs/toolkit';
+import { useState } from 'react';
+
+import { useMediaVariables } from '@/hooks/query/useMediaVariables';
 import { CardData } from '@/pages/OrganizersPage';
+import { nanoid } from '@reduxjs/toolkit';
+import clsx from 'clsx';
+import { Swiper, SwiperSlide } from 'swiper/react';
+import type { Swiper as SwiperType } from 'swiper/types';
 
-import { MySliderBtn } from '../../topEvents/MySliderBtn';
+import { PrevNextBtn } from '@/components/hero/PrevNextBtn';
+
 import CommentCard from './CommentCard';
-
-
 
 interface ReviewsProps {
   data: CardData[];
 }
 
+const Reviews: React.FC<ReviewsProps> = ({ data }) => {
+  const { isMobile } = useMediaVariables();
+  const [swiperInstance, setSwiperInstance] = useState<SwiperType | null>(null);
+  const [isBeginning, setIsBeginning] = useState(true);
+  const [isEnd, setIsEnd] = useState(false);
 
-const Reviews: React.FC<ReviewsProps> = ({data}) => {
-      const settings: Settings = {
-        pauseOnHover: true,
-        slidesToShow: 3.15,
-        slidesToScroll: 3,
-        speed: 1000,
-        infinite: false,
-        prevArrow: <MySliderBtn />,
-        nextArrow: <MySliderBtn next />,
-        arrows: true,
-        pauseOnFocus: true,
-        initialSlide: 0,
-        lazyLoad: 'ondemand',
-        responsive: [
-          {
-            breakpoint: 1024,
-            settings: {
-              arrows: false,
-              slidesToShow: 2,
-              slidesToScroll: 2,
-            },
-          },
-          {
-            breakpoint: 769,
-            settings: {
-              arrows: false,
-              centerMode: true,
-              centerPadding: '10%',
-              slidesToShow: 1,
-              slidesToScroll: 1,
-            },
-          },
-        ],
-      };
-    return (
-        <>
-            <div className='mb-16'>
-                <h1 className='!mb-8'>Відгуки</h1>
-                <div>
-                    <Slider {...settings}>
-                      {data?.map(item => (
-                        <div key={nanoid()}>
-                          <CommentCard item={item}/>
-                        </div>
-                      ))}
-                    </Slider>
-                </div>
-            </div>
-        </>
-    )
-}
+  const setNextSlide = () => {
+    swiperInstance?.slideNext();
+  };
 
+  const setPrevSlide = () => {
+    swiperInstance?.slidePrev();
+  };
 
-export default Reviews
+  return (
+    <>
+      <div className="mb-6 lg:mb-16 relative">
+        <h1 className="!mb-8 text-[28px] lg:text-[64px] leading-normal">
+          Відгуки
+        </h1>
+        <div className="absolute top-0 right-0 flex items-center justify-center gap-6">
+          <PrevNextBtn
+            onClick={setPrevSlide}
+            className={clsx(
+              'rounded-full',
+              isBeginning ? 'bg-lightGray' : 'bg-borderColor'
+            )}
+            disabled={isBeginning}
+            colorIcon="fill-background"
+          />
+
+          <PrevNextBtn
+            onClick={setNextSlide}
+            className={clsx(
+              'rounded-full rotate-180 fill-transparent',
+              isEnd ? 'bg-lightGray' : 'bg-borderColor'
+            )}
+            disabled={isEnd}
+            colorIcon="fill-background"
+          />
+        </div>
+
+        <Swiper
+          loop={false}
+          speed={1000}
+          slidesPerView={isMobile ? 1 : 3.15}
+          onSwiper={setSwiperInstance}
+          onSlideChange={swiper => {
+            setIsBeginning(swiper.isBeginning);
+            setIsEnd(swiper.isEnd);
+          }}
+        >
+          {data?.map(item => (
+            <SwiperSlide key={nanoid()} className="p-1">
+              <CommentCard item={item} />
+            </SwiperSlide>
+          ))}
+        </Swiper>
+      </div>
+    </>
+  );
+};
+
+export default Reviews;
