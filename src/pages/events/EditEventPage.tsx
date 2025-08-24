@@ -93,7 +93,7 @@ const EditEventPage: React.FC = () => {
 
   return (
     <>
-      <Container className="flex flex-col gap-16 pb-16">
+      <Container className="flex flex-col gap-16 lg:pb-16 p-4">
         {isDesktop && (
           <div>
             <h1 className=" content-center text-center bg-[url('/images/heroForCreatEventForm.svg')]  w-[1320px] h-[223px]">
