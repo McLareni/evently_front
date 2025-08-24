@@ -3,6 +3,8 @@ import { useNavigate, useParams } from 'react-router';
 
 import { useLazyGetEventByIdQuery } from '@/redux/events/operations';
 
+import { useMediaVariables } from '@/hooks/query/useMediaVariables';
+
 import { Container } from '@/components/container/Container';
 import CreateEventCard from '@/components/createEvent/CreateEventCard';
 import CreateEventForm from '@/components/createEvent/createEventForm/CreateEventForm';
@@ -13,6 +15,7 @@ import { FormaDataForCard } from './CreateEventPage';
 const EditEventPage: React.FC = () => {
   const { idEvent } = useParams();
   const navigate = useNavigate();
+  const { isDesktop } = useMediaVariables();
   const [loadEvent, { data: event }] = useLazyGetEventByIdQuery();
   const [photos, setPhotos] = useState<(string | null)[]>([null, null, null]);
   const [countOldPhotos, setCountOldPhotos] = useState<number>(0);
@@ -91,15 +94,19 @@ const EditEventPage: React.FC = () => {
   return (
     <>
       <Container className="flex flex-col gap-16 pb-16">
-        <div>
-          <h1 className=" content-center text-center bg-[url('/images/heroForCreatEventForm.svg')]  w-[1320px] h-[223px]">
-            <span className="bg-gradient-to-r from-[#12C2E9] to-[#C471ED] bg-clip-text text-transparent">
-              Твій івент - твоя історія!
-            </span>
-          </h1>
-        </div>
+        {isDesktop && (
+          <div>
+            <h1 className=" content-center text-center bg-[url('/images/heroForCreatEventForm.svg')]  w-[1320px] h-[223px]">
+              <span className="bg-gradient-to-r from-[#12C2E9] to-[#C471ED] bg-clip-text text-transparent">
+                Твій івент - твоя історія!
+              </span>
+            </h1>
+          </div>
+        )}
         <div className="flex gap-6">
-          <CreateEventCard photo={photos[0]} eventInfoData={eventInfoData} />
+          {isDesktop && (
+            <CreateEventCard photo={photos[0]} eventInfoData={eventInfoData} />
+          )}
           <CreateEventForm
             isEdit
             countOldPhotos={countOldPhotos}

@@ -28,7 +28,6 @@ export const OnlineOffline = ({
   trigger,
   isEdit = false,
 }: OnlineOfflineProps) => {
-
   const isOffline = watch('isOffline');
 
   const setOffline = () => {
@@ -185,7 +184,8 @@ export const OnlineOffline = ({
                   id="eventUrl"
                   placeholder="https://meet.google.com/..."
                   className={clsx(
-                    "outline-none w-full h-full lg:rounded-[8px] rounded-[5px] p-4 border-buttonPurple, {'text-uploadBtnBg bg-white': isEdit}"
+                    'outline-none w-full h-full lg:rounded-[8px] rounded-[5px] p-4 border-buttonPurple',
+                    { 'text-uploadBtnBg bg-white': isEdit }
                   )}
                   disabled={isEdit}
                   onChange={e => {
