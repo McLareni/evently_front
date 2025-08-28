@@ -4,9 +4,15 @@ import { useMediaVariables } from '@/hooks/query/useMediaVariables';
 
 interface IProps {
   openPage: () => void;
+  balance?: number;
+  withdrawn?: number;
 }
 
-const WithdrawingMoney: React.FC<IProps> = ({ openPage }) => {
+const WithdrawingMoney: React.FC<IProps> = ({
+  openPage,
+  balance = 0,
+  withdrawn = 0,
+}) => {
   const { isDesktop } = useMediaVariables();
 
   return (
@@ -19,11 +25,11 @@ const WithdrawingMoney: React.FC<IProps> = ({ openPage }) => {
       <div className="bg-[#ECF2F9] p-4 text-textDark rounded-[5px] flex flex-col gap-3 items-center">
         <div className="w-full flex justify-between">
           <h2 className="text-2xl font-medium">Баланс</h2>
-          <p className="text-base font-bold">7000₴</p>
+          <p className="text-base font-bold">{balance}₴</p>
         </div>
         <div className="w-full flex justify-between text-[#838789]">
           <h3 className="text-base">Виведено коштів</h3>
-          <p className="text-base font-normal">400₴</p>
+          <p className="text-base font-normal">{withdrawn}₴</p>
         </div>
         <button
           onClick={openPage}
