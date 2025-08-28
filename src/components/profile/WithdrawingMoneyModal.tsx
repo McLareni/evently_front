@@ -1,34 +1,57 @@
 import React, { useState } from 'react';
 import { useForm } from 'react-hook-form';
 import { MdDone } from 'react-icons/md';
+import { toast } from 'react-toastify';
+
+import { useCreateFundRequestMutation } from '@/redux/auth/authApi';
+import { selectUser } from '@/redux/auth/selectors';
+import { useAppSelector } from '@/redux/hooks';
 
 import { ProfileInput } from '@/components/profile/ProfileInput';
 import { Modal, SharedBtn } from '@/components/ui';
 
 interface IProps {
   closePage: () => void;
+  balance?: number;
 }
 
 interface IForm {
   sum?: number;
   card?: string;
+  agreement: boolean;
 }
 
-const WithdrawingMoneyModal: React.FC<IProps> = ({ closePage }) => {
+const WithdrawingMoneyModal: React.FC<IProps> = ({
+  closePage,
+  balance = 0,
+}) => {
   const [agreement, setAgreement] = useState(false);
+  const [createFundRequest] = useCreateFundRequestMutation();
+  const { id } = useAppSelector(selectUser);
 
   const {
     register,
     handleSubmit,
-    control,
-    getValues,
     formState: { errors, isValid },
   } = useForm<IForm>({
     mode: 'onChange',
     defaultValues: { sum: undefined, card: undefined },
   });
 
-  const onSubmit = (data: IForm) => {};
+  const onSubmit = async (data: IForm) => {
+    if (isValid) {
+      const response = await createFundRequest({
+        body: { cartNumber: data.card!, amount: data.sum! },
+        id,
+      });
+      if (response.data?.status !== 200) {
+        toast.error('Щось пішло не так, спробуйте ще раз');
+      } else {
+        closePage();
+        toast.success('Запит на виведення коштів відправлено');
+      }
+    }
+  };
 
   const checkAgreement = () => {
     setAgreement(!agreement);
@@ -54,6 +77,10 @@ const WithdrawingMoneyModal: React.FC<IProps> = ({ closePage }) => {
                 {...register('sum', {
                   validate: {
                     required: value => true,
+                    max: value =>
+                      (value && value <= balance) || 'Недостатньо коштів',
+                    min: value =>
+                      (value && value >= 100) || 'Мінімальна сума 100₴',
                   },
                 })}
                 placeholder="7000₴"
@@ -69,8 +96,10 @@ const WithdrawingMoneyModal: React.FC<IProps> = ({ closePage }) => {
               <p className="mb-3 text-base font-bold">Змінити пароль</p>
               <ProfileInput
                 {...register('card', {
-                  validate: {
-                    required: value => true,
+                  required: 'Номер картки обовʼязковий',
+                  pattern: {
+                    value: /^[0-9]{16}$/,
+                    message: 'Номер картки має складатися з 16 цифр',
                   },
                 })}
                 placeholder="**** **** **** **** "
@@ -149,7 +178,12 @@ const WithdrawingMoneyModal: React.FC<IProps> = ({ closePage }) => {
           </label>
         </form>
         <div className="flex flex-row items-center gap-[32px]">
-          <SharedBtn type="button" primary className="w-[230px] h-12">
+          <SharedBtn
+            onClick={handleSubmit(onSubmit)}
+            type="button"
+            primary
+            className="w-[230px] h-12"
+          >
             Підтвердити
           </SharedBtn>
           <SharedBtn

@@ -13,6 +13,7 @@ import storage from 'redux-persist/lib/storage';
 
 import { EventApi } from './admin/eventApi';
 import { UserApi } from './admin/userApi';
+import { AuthApi } from './auth/authApi';
 import { authReducer } from './auth/authSlice';
 import eventReducer from './events/eventSlice';
 import { EventsApi } from './events/operations';
@@ -49,6 +50,7 @@ const rootReducer = combineReducers({
   [EventsApi.reducerPath]: EventsApi.reducer,
   [UserApi.reducerPath]: UserApi.reducer,
   [EventApi.reducerPath]: EventApi.reducer,
+  [AuthApi.reducerPath]: AuthApi.reducer,
 });
 
 export const store = configureStore({
@@ -61,7 +63,8 @@ export const store = configureStore({
     })
       .concat(EventsApi.middleware)
       .concat(UserApi.middleware)
-      .concat(EventApi.middleware),
+      .concat(EventApi.middleware)
+      .concat(AuthApi.middleware),
 });
 
 export type AppStore = typeof store;

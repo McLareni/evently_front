@@ -1,5 +1,9 @@
 import { useState } from 'react';
 
+import {
+  useGetBalanceQuery,
+  useGetWithdrawBalanceQuery,
+} from '@/redux/auth/authApi';
 import { selectUser } from '@/redux/auth/selectors';
 import { useAppSelector } from '@/redux/hooks';
 
@@ -7,6 +11,7 @@ import { useMediaVariables } from '@/hooks/query/useMediaVariables';
 
 import WithdrawingMoneyPage from '@/components/profile/WithdrawingMoneyPage';
 
+import Spinner from '../ui/Spinner';
 import { CropUploadImage } from './CropUploadImage';
 import { ProfileForm } from './ProfileForm';
 import WithdrawingMoney from './WithdrawingMoney';
@@ -16,10 +21,18 @@ const Information = () => {
   const { name, email } = useAppSelector(selectUser);
   const [pageMoneyWithdraw, setPageMoneyWithdraw] = useState(false);
   const { isMobile } = useMediaVariables();
+  const { id } = useAppSelector(selectUser);
+  const { data: balance, isLoading: isLoadingBalance } = useGetBalanceQuery(id);
+  const { data: withdrawData, isLoading: isLoadingWithdraw } =
+    useGetWithdrawBalanceQuery(id);
 
   const isFakeName = () => {
     return name.length === 0 ? 'гість' : name;
   };
+
+  if (isLoadingBalance || isLoadingWithdraw) {
+    return <Spinner />;
+  }
 
   return (
     <div>
@@ -38,7 +51,9 @@ const Information = () => {
           >
             Привіт, {isFakeName()}
           </p>
-          <p className="text-sm text-textGray font-oswald w-full mt-3 truncate overflow-hidden">{email}</p>
+          <p className="text-sm text-textGray font-oswald w-full mt-3 truncate overflow-hidden">
+            {email}
+          </p>
         </div>
       </div>
       {pageMoneyWithdraw &&
@@ -49,7 +64,11 @@ const Information = () => {
             closePage={() => setPageMoneyWithdraw(false)}
           />
         ))}
-      <WithdrawingMoney openPage={() => setPageMoneyWithdraw(true)} />
+      <WithdrawingMoney
+        openPage={() => setPageMoneyWithdraw(true)}
+        balance={balance?.response}
+        withdrawn={withdrawData?.response}
+      />
       <p className="lg:mb-[24px] mb-4 font-oswald lg:text-[24px] text-xl lg:font-medium font-normal">
         Контактна інформація
       </p>
