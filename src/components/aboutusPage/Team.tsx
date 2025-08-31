@@ -68,7 +68,7 @@ const Team = () => {
         Команда
       </h1>
       {isMobile ? (
-        <div className="flex gap-[2px]">
+        <div className="flex gap-[2px] w-fit mx-auto">
           <div className="flex flex-col gap-4">
             <TeamMemberCard teamMember={TEAM.Vyacheslav} />
             <TeamMemberCard teamMember={TEAM.Denys} />

@@ -26,9 +26,11 @@ const DeleteModal: React.FC<IProps> = ({
       hiddenCross
       onClose={() => setDeletePopUp(false)}
     >
-      <div className="py-6 px-[57px] text-center border border-buttonPurple rounded-[20px]">
-        <h2 className="text-xl font-bold font-lato mb-4">Скасувати подію?</h2>
-        <h3 className="text-xl font-normal font-lato mb-6">
+      <div className="min-w-[340px] py-6 px-2.5 lg:px-[57px] text-center border border-buttonPurple rounded-[20px]">
+        <h2 className="text-base lg:text-xl font-bold font-lato mb-4">
+          Скасувати подію?
+        </h2>
+        <h3 className="text-sm lg:text-xl font-normal font-lato mb-6">
           {event.soldTickets ? (
             <>
               Це може вплинути на довіру <br /> користувачів. Усі кошти з
@@ -45,7 +47,7 @@ const DeleteModal: React.FC<IProps> = ({
         <div className="flex justify-around">
           <SharedBtn
             type="button"
-            className="w-[120px] h-[38px] leading-[0px]"
+            className="w-[148px] lg:w-[120px] h-[36px] lg:h-[38px] text-base lg:text-xl !leading-[0px]"
             primary
             onClick={async () => {
               if (event.soldTickets === '0' || event.soldTickets === null) {
@@ -60,7 +62,7 @@ const DeleteModal: React.FC<IProps> = ({
           </SharedBtn>
           <SharedBtn
             type="button"
-            className="w-[120px] h-[38px] leading-[0px]"
+            className="w-[148px] lg:w-[120px] h-[36px] lg:h-[38px] text-base lg:text-xl !leading-[0px]"
             secondary
             onClick={() => {
               setDeletePopUp(false);

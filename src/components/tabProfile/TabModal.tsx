@@ -12,7 +12,7 @@ const TabModal: React.FC<IProps> = ({ isOpen, onClose, clickYes }) => {
   return (
     <Modal isOpen={isOpen} onClose={onClose} hiddenCross>
       <div className="border border-buttonPurple rounded-[20px] bg-lightBlue py-6 px-8 lg:w-[362px] w-[340px] text-center">
-        <p className="lg:text-2xl text-base text-textDark font-lato mx-6">
+        <p className="lg:text-2xl text-base text-textDark font-lato lg:mx-6">
           Ви впевнені, що хочете вийти ?
         </p>
         <div className="flex justify-between lg:mt-6 mt-5">

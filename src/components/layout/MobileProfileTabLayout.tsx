@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { AiOutlineHeart } from 'react-icons/ai';
 import { CgProfile } from 'react-icons/cg';
 import { GoPeople } from 'react-icons/go';
@@ -9,9 +9,11 @@ import { handleLogOut } from '@/redux/auth/authSlice';
 import { useAppDispatch } from '@/redux/hooks';
 
 import MobileProfileTabNavLink from '../header/burgerMenu/MobileProfileTabNavLink';
+import TabModal from '../tabProfile/TabModal';
 
 const MobileProfileTabLayout: React.FC = () => {
   const dispatch = useAppDispatch();
+  const [modalLogout, setModalLogout] = useState(false);
 
   const handleLogout = () => {
     dispatch(handleLogOut());
@@ -42,13 +44,20 @@ const MobileProfileTabLayout: React.FC = () => {
         />
         <button
           className="flex flex-row gap-2 flex-nowrap py-1 focus:outline-none"
-          onClick={handleLogout}
+          onClick={() => setModalLogout(true)}
         >
           <IoExitOutline className="h-6 w-6" />
           <h3 className="text-nowrap text-base text-textDark font-normal">
             Вихід
           </h3>
         </button>
+        {modalLogout && (
+          <TabModal
+            isOpen={modalLogout}
+            clickYes={handleLogout}
+            onClose={() => setModalLogout(false)}
+          />
+        )}
       </aside>
       <div className="px-4 py-6">
         <Outlet />
