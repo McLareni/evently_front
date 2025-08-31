@@ -9,6 +9,7 @@ import { useAppSelector } from '@/redux/hooks';
 
 import { ProfileInput } from '@/components/profile/ProfileInput';
 import { Modal, SharedBtn } from '@/components/ui';
+import Spinner from '../ui/Spinner';
 
 interface IProps {
   closePage: () => void;
@@ -26,7 +27,7 @@ const WithdrawingMoneyModal: React.FC<IProps> = ({
   balance = 0,
 }) => {
   const [agreement, setAgreement] = useState(false);
-  const [createFundRequest] = useCreateFundRequestMutation();
+  const [createFundRequest, { isLoading }] = useCreateFundRequestMutation();
   const { id } = useAppSelector(selectUser);
 
   const {
@@ -56,6 +57,10 @@ const WithdrawingMoneyModal: React.FC<IProps> = ({
   const checkAgreement = () => {
     setAgreement(!agreement);
   };
+
+  if (isLoading) {
+    return <Spinner />;
+  }
 
   return (
     <Modal isOpen onClose={closePage} hiddenCross>

@@ -176,6 +176,7 @@ const MobileList: React.FC<IProps> = ({
                 deleteEvent={deleteEvent}
               />
             )}
+
             {confirmationDeletePopUp && (
               <ConfirmationDeletePopUp
                 popUpIsShow={confirmationDeletePopUp}

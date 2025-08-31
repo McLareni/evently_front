@@ -102,10 +102,10 @@ export const Modal: React.FC<ModalProps> = ({
         {!hiddenCross && (
           <button
             onClick={onClose}
-            className="absolute top-3 right-4 z-10 p-2 text-black bg-transparent hover:text-primary"
+            className="absolute top-0 lg:top-3 right-0 lg:right-4 z-10 p-2 text-black bg-transparent hover:text-primary focus:outline-none"
             aria-label="Close Modal"
           >
-            <RxCross2 className="w-8 h-8" />
+            <RxCross2 className="w-6 lg:w-8 h-6 lg:h-8" />
           </button>
         )}
         {children}

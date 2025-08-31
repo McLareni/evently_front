@@ -10,6 +10,8 @@ import { useAppSelector } from '@/redux/hooks';
 import { ProfileInput } from '@/components/profile/ProfileInput';
 import { SharedBtn } from '@/components/ui';
 
+import Spinner from '../ui/Spinner';
+
 interface IProps {
   closePage: () => void;
   balance?: number;
@@ -23,7 +25,7 @@ interface IForm {
 
 const WithdrawingMoneyPage: React.FC<IProps> = ({ closePage, balance = 0 }) => {
   const [agreement, setAgreement] = useState(false);
-  const [createFundRequest] = useCreateFundRequestMutation();
+  const [createFundRequest, { isLoading }] = useCreateFundRequestMutation();
   const { id } = useAppSelector(selectUser);
 
   const {
@@ -53,6 +55,10 @@ const WithdrawingMoneyPage: React.FC<IProps> = ({ closePage, balance = 0 }) => {
   const checkAgreement = () => {
     setAgreement(!agreement);
   };
+
+  if (isLoading) {
+    return <Spinner />;
+  }
 
   return (
     <div className="absolute left-0 top-[74px] h-full z-30 bg-background p-4">

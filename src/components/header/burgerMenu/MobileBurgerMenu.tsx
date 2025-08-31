@@ -65,24 +65,24 @@ export const MobileBurgerMenu: FC<MobileBurgerMenuProps> = ({
 
   return (
     <div className="p-[16px]">
-      <div className="flex flex-row gap-3 items-center rounded-[10px] bg-lightPurple/50 px-3 py-[10px]">
+      <div
+        onClick={() => {
+          if (isLoggedIn) {
+            navigate('/user_profile');
+            toggleBurgerMenu();
+          } else {
+            setIsModalOpen(true);
+          }
+        }}
+        className="flex flex-row gap-3 items-center rounded-[10px] bg-lightPurple/50 px-3 py-[10px]"
+      >
         <img
           src={avatarImage?.url || userNoPhoto}
           alt=""
           className="w-[70px] h-[70px] rounded-full"
         />
         <div className="">
-          <h2
-            className="text-base text-textDark font-lato cursor-pointer"
-            onClick={() => {
-              if (isLoggedIn) {
-                navigate('/user_profile');
-                toggleBurgerMenu();
-              } else {
-                setIsModalOpen(true);
-              }
-            }}
-          >
+          <h2 className="text-base text-textDark font-lato cursor-pointer">
             {isLoggedIn ? name : 'Увійти'}
           </h2>
           <p className="text-base text-uploadBtnBg">
