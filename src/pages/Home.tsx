@@ -81,7 +81,7 @@ const Home: React.FC = () => {
             В твоєму місті не має подій, тому рекомендуємо
           </h2>
         )}
-        <TopEvents filteredEvents={newEvents} />
+        {!!newEvents.length && <TopEvents filteredEvents={newEvents} />}
 
         {notTopEvents && (
           <Container className="w-fit">

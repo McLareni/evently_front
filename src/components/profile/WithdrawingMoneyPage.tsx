@@ -18,12 +18,11 @@ interface IProps {
 }
 
 interface IForm {
-  sum?: number;
   card?: string;
   agreement: boolean;
 }
 
-const WithdrawingMoneyPage: React.FC<IProps> = ({ closePage, balance = 0 }) => {
+const WithdrawingMoneyPage: React.FC<IProps> = ({ closePage }) => {
   const [agreement, setAgreement] = useState(false);
   const [createFundRequest, { isLoading }] = useCreateFundRequestMutation();
   const { id } = useAppSelector(selectUser);
@@ -34,13 +33,13 @@ const WithdrawingMoneyPage: React.FC<IProps> = ({ closePage, balance = 0 }) => {
     formState: { errors, isValid },
   } = useForm<IForm>({
     mode: 'onChange',
-    defaultValues: { sum: undefined, card: undefined },
+    defaultValues: { card: undefined },
   });
 
   const onSubmit = async (data: IForm) => {
     if (isValid) {
       const response = await createFundRequest({
-        body: { cartNumber: data.card!, amount: data.sum! },
+        body: { cartNumber: data.card! },
         id,
       });
       if (response.data?.status !== 200) {
@@ -65,28 +64,6 @@ const WithdrawingMoneyPage: React.FC<IProps> = ({ closePage, balance = 0 }) => {
       <h1 className="text-[32px] font-normal leading-none">Вивести кошти</h1>
       <form onSubmit={handleSubmit(onSubmit)} className="mt-4 mb-6">
         <div className="flex flex-col gap-0 lg:mb-[8px] mb-0 font-lato">
-          <div>
-            <p className="mb-3 text-base font-bold">Сума</p>
-            <ProfileInput
-              {...register('sum', {
-                validate: {
-                  required: value => true,
-                  max: value =>
-                    (value && value <= balance) || 'Недостатньо коштів',
-                  min: value =>
-                    (value && value >= 100) || 'Мінімальна сума 100₴',
-                },
-              })}
-              placeholder="7000₴"
-              id="sum"
-              htmlFor="sum"
-              autoComplete="sum"
-              type="number"
-              label=""
-              error={errors?.sum?.message}
-            />
-          </div>
-
           <div className="relative">
             <p className="mb-3 text-base font-bold">Номер карти</p>
             <ProfileInput

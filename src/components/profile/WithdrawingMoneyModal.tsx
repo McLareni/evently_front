@@ -17,14 +17,12 @@ interface IProps {
 }
 
 interface IForm {
-  sum?: number;
   card?: string;
   agreement: boolean;
 }
 
 const WithdrawingMoneyModal: React.FC<IProps> = ({
   closePage,
-  balance = 0,
 }) => {
   const [agreement, setAgreement] = useState(false);
   const [createFundRequest, { isLoading }] = useCreateFundRequestMutation();
@@ -36,13 +34,13 @@ const WithdrawingMoneyModal: React.FC<IProps> = ({
     formState: { errors, isValid },
   } = useForm<IForm>({
     mode: 'onChange',
-    defaultValues: { sum: undefined, card: undefined },
+    defaultValues: { card: undefined },
   });
 
   const onSubmit = async (data: IForm) => {
     if (isValid) {
       const response = await createFundRequest({
-        body: { cartNumber: data.card!, amount: data.sum! },
+        body: { cartNumber: data.card! },
         id,
       });
       if (response.data?.status !== 200) {
@@ -76,29 +74,8 @@ const WithdrawingMoneyModal: React.FC<IProps> = ({
           className="mt-6 mb-8 max-w-[312px]"
         >
           <div className="flex flex-col gap-0 lg:mb-[8px] mb-0 font-lato">
-            <div>
-              <p className="mb-3 text-base font-bold">Сума</p>
-              <ProfileInput
-                {...register('sum', {
-                  validate: {
-                    required: value => true,
-                    max: value =>
-                      (value && value <= balance) || 'Недостатньо коштів',
-                    min: value =>
-                      (value && value >= 100) || 'Мінімальна сума 100₴',
-                  },
-                })}
-                placeholder="7000₴"
-                id="sum"
-                htmlFor="sum"
-                autoComplete="sum"
-                label=""
-                error={errors?.sum?.message}
-              />
-            </div>
-
             <div className="relative">
-              <p className="mb-3 text-base font-bold">Змінити пароль</p>
+              <p className="mb-3 text-base font-bold">Номер карти</p>
               <ProfileInput
                 {...register('card', {
                   required: 'Номер картки обовʼязковий',
