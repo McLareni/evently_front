@@ -34,6 +34,7 @@ export default {
         lightRed: '#FF6262',
         uploadBtnBg: '#ABAFB1',
         textGray: '#5A636C',
+        title: '#16528D',
 
         // Other color
         success: '#3BE660',

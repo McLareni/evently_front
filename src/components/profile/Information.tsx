@@ -60,12 +60,10 @@ const Information = () => {
         (isMobile ? (
           <WithdrawingMoneyPage
             closePage={() => setPageMoneyWithdraw(false)}
-            balance={balance?.response}
           />
         ) : (
           <WithdrawingMoneyModal
             closePage={() => setPageMoneyWithdraw(false)}
-            balance={balance?.response}
           />
         ))}
       <WithdrawingMoney

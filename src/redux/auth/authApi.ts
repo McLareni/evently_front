@@ -33,7 +33,6 @@ export const AuthApi = createApi({
       {
         body: {
           cartNumber: string;
-          amount: number;
         };
         id: string;
       }

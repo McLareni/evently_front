@@ -8,6 +8,7 @@ import type { Swiper as SwiperType } from 'swiper/types';
 
 import { Dots } from './Dots';
 import { PrevNextBtn } from './PrevNextBtn';
+import Banner1 from './banners/Banner1';
 
 export const Hero: React.FC = () => {
   const [currentSlide, setCurrentSlide] = useState(0);
@@ -46,12 +47,13 @@ export const Hero: React.FC = () => {
           }}
         >
           {slides.map(item => (
-            <SwiperSlide key={item.id} className="lg:h-[420px] h-[237px]">
-              <img
+            <SwiperSlide key={item.id} className="lg:h-[575px] h-[237px]">
+              <Banner1/>
+              {/* <img
                 src={item.url}
                 alt={item.title}
                 className="w-full h-full object-cover"
-              />
+              /> */}
             </SwiperSlide>
           ))}
         </Swiper>
