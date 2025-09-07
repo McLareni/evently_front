@@ -1,12 +1,27 @@
 import React, { useEffect, useRef } from 'react';
 
+import { usePDF } from '@react-pdf/renderer';
+
+import { PDF } from '../buyTicket/TicketPDF';
+
 interface IProps {
   closePopUp: () => void;
   popUpIsOpen: boolean;
+  event: Event;
 }
 
-const PopUp: React.FC<IProps> = ({ closePopUp, popUpIsOpen }) => {
+const PopUp: React.FC<IProps> = ({ closePopUp, popUpIsOpen, event }) => {
   const popupRef = useRef<HTMLDivElement>(null);
+
+  const [instance, updateInstance] = usePDF({
+    document: undefined,
+  });
+
+  useEffect(() => {
+    if (event) {
+      updateInstance(<PDF event={event} />);
+    }
+  });
 
   useEffect(() => {
     const handleClickOutside = (event: MouseEvent) => {
@@ -37,9 +52,16 @@ const PopUp: React.FC<IProps> = ({ closePopUp, popUpIsOpen }) => {
       <button className="px-6 py-2 text-start focus:outline-none text-sm lg:text-base !leading-loose">
         Повернути квиток
       </button>
-      <button className="px-6 py-2 text-start focus:outline-none text-sm lg:text-base !leading-loose">
-        Скачати PDF
-      </button>
+      {event && instance.url && (
+        <a
+          href={instance.url}
+          target="_blank"
+          rel="noreferrer"
+          className="px-6 py-2 text-start focus:outline-none text-sm lg:text-base !leading-loose"
+        >
+          Скачати PDF
+        </a>
+      )}
     </div>
   );
 };

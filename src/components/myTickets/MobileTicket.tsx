@@ -34,7 +34,11 @@ const MobileTicket: React.FC<IProps> = ({ ticket }) => {
           className="rotate-90 absolute top-[17px] right-[7px] h-6 w-6"
         ></GoKebabHorizontal>
         {popUp && (
-          <PopUp closePopUp={() => setPopUp(false)} popUpIsOpen={popUp} />
+          <PopUp
+            closePopUp={() => setPopUp(false)}
+            popUpIsOpen={popUp}
+            event={event}
+          />
         )}
         <div className="flex flex-col gap-[19px]">
           <div className="flex gap-3">

@@ -36,7 +36,11 @@ const WebTicket: React.FC<IProps> = ({ ticket }) => {
           className="rotate-90 absolute top-6 right-6 h-8 w-8"
         ></GoKebabHorizontal>
         {popUp && (
-          <PopUp closePopUp={() => setPopUp(false)} popUpIsOpen={popUp} />
+          <PopUp
+            closePopUp={() => setPopUp(false)}
+            popUpIsOpen={popUp}
+            event={event}
+          />
         )}
         <div className="flex gap-6">
           <img
