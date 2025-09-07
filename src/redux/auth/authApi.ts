@@ -1,4 +1,5 @@
 import { createApi, fetchBaseQuery } from '@reduxjs/toolkit/query/react';
+import { id } from 'date-fns/locale';
 
 import { RootState } from '../store';
 
@@ -43,6 +44,10 @@ export const AuthApi = createApi({
         body: query.body,
       }),
     }),
+
+    getTickets: builder.query<Ticket[], string>({
+      query: id => `users/orders/${id}`,
+    }),
   }),
 });
 
@@ -51,4 +56,5 @@ export const {
   useGetBalanceQuery,
   useGetWithdrawBalanceQuery,
   useCreateFundRequestMutation,
+  useGetTicketsQuery,
 } = AuthApi;

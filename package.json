@@ -13,6 +13,7 @@
     "toc": "i18next-resources-for-ts toc -i ./src/i18next/locales/ua -o ./src/@types/resources.ts"
   },
   "dependencies": {
+    "@lottielab/lottie-player": "^1.1.3",
     "@react-google-maps/api": "^2.20.3",
     "@react-input/mask": "^2.0.4",
     "@react-oauth/google": "^0.12.1",

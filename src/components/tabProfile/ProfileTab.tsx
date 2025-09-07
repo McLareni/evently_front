@@ -2,6 +2,7 @@ import { useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { AiOutlineHeart } from 'react-icons/ai';
 import { CgProfile } from 'react-icons/cg';
+import { GoPeople } from 'react-icons/go';
 import { GrUserAdmin } from 'react-icons/gr';
 import { HiOutlineUsers } from 'react-icons/hi';
 import {
@@ -34,8 +35,13 @@ const tabUser = [
   },
   {
     title: 'Мої події',
+    icon: <GoPeople className="w-6 h-6" />,
+    url: 'my_event',
+  },
+  {
+    title: 'Мої квитки',
     icon: <IoTicketOutline className="w-6 h-6" />,
-    url: 'my-event',
+    url: 'my_tickets',
   },
   {
     title: 'Адміністрування',
@@ -119,7 +125,7 @@ const ProfileTab = () => {
               {tabAdmin.map((item, index) => (
                 <ItemTab
                   key={item.title}
-                  title={tabs[index + 4]}
+                  title={tabs[index + 5]}
                   item={item}
                   openTab={() => {}}
                   isAdminTab
