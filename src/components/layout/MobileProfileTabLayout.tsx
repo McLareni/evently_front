@@ -33,12 +33,12 @@ const MobileProfileTabLayout: React.FC = () => {
           Icon={AiOutlineHeart}
         />
         <MobileProfileTabNavLink
-          to="/my-event"
+          to="/my_event"
           text="Мої події"
           Icon={GoPeople}
         />
         <MobileProfileTabNavLink
-          to="/my-tickets"
+          to="/my_tickets"
           text="Мої квитки"
           Icon={IoTicketOutline}
         />

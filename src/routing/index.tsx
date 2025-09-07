@@ -71,8 +71,8 @@ const router = createBrowserRouter([
         children: [
           { path: 'user_profile', element: <Profile /> },
           { path: 'favourite', element: <Favourite /> },
-          { path: 'my-event', element: <MyEvent /> },
-          { path: 'my-tickets', element: <MyTicket /> },
+          { path: 'my_event', element: <MyEvent /> },
+          { path: 'my_tickets', element: <MyTicket /> },
           {
             path: 'admin',
             element: <AdminRouter />,

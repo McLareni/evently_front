@@ -1,3 +1,5 @@
+import Lottie from '@lottielab/lottie-player/react';
+
 import tickets from '../../../../public/images/TicketsBanner.png';
 
 const Banner1 = () => {
@@ -18,7 +20,10 @@ const Banner1 = () => {
             Обрати подію
           </button>
         </div>
-        <img src={tickets} alt="banner image" className="w-[479px] h-[340px]" />
+        <Lottie
+          src="https://cdn.lottielab.com/l/5SmcsiuKdxyQoa.json"
+          autoplay
+        />
       </div>
     </div>
   );

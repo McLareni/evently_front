@@ -46,3 +46,13 @@ type BuyTicketUser = Pick<
   User,
   'id' | 'name' | 'surname' | 'email' | 'phoneNumber'
 >;
+
+type Ticket = {
+  id: 'string';
+  orderReference: 'string';
+  orderDate: 'string';
+  productCount: 'string';
+  amount: 'string';
+  event: Event;
+  status: 'string';
+};

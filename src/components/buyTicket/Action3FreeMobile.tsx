@@ -45,7 +45,7 @@ export const Action3FreeMobile: React.FC<Action3FreeMobileProps> = ({
           </a>
         )}
       </div>
-      <Link to="/my-event">
+      <Link to="/my_event">
         <SharedBtn
           type="button"
           primary
