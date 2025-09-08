@@ -30,7 +30,7 @@ const WebTicket: React.FC<IProps> = ({ ticket }) => {
   return (
     <div className="relative">
       <BgTicket />
-      <div className="relative z-20 p-4">
+      <div className="relative p-4">
         <GoKebabHorizontal
           onClick={() => setPopUp(true)}
           className="rotate-90 absolute top-6 right-6 h-8 w-8"

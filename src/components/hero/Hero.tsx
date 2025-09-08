@@ -1,6 +1,5 @@
 import { useState } from 'react';
 
-import { slides } from '@/assets/heroSlides/slides';
 import { useScreenWidth } from '@/hooks/useScreenWidth';
 import { Autoplay } from 'swiper/modules';
 import { Swiper, SwiperSlide } from 'swiper/react';
@@ -9,6 +8,8 @@ import type { Swiper as SwiperType } from 'swiper/types';
 import { Dots } from './Dots';
 import { PrevNextBtn } from './PrevNextBtn';
 import Banner1 from './banners/Banner1';
+import Banner2 from './banners/Banner2';
+import Banner3 from './banners/Banner3';
 
 export const Hero: React.FC = () => {
   const [currentSlide, setCurrentSlide] = useState(0);
@@ -28,6 +29,8 @@ export const Hero: React.FC = () => {
     swiperInstance?.slidePrev();
   };
 
+  const slides = [Banner1, Banner2, Banner3];
+
   return (
     <div className="w-full px-4 lg:px-[41px]">
       <div className="overflow-hidden">
@@ -43,17 +46,13 @@ export const Hero: React.FC = () => {
           }}
           onSwiper={setSwiperInstance}
           onSlideChange={swiper => {
-            setCurrentSlide(swiper.activeIndex);
+            setCurrentSlide(swiper.realIndex);
+            console.log(swiper.realIndex);
           }}
         >
-          {slides.map(item => (
-            <SwiperSlide key={item.id} className="lg:h-[575px] h-[237px]">
-              <Banner1/>
-              {/* <img
-                src={item.url}
-                alt={item.title}
-                className="w-full h-full object-cover"
-              /> */}
+          {slides.map((Slide, index) => (
+            <SwiperSlide key={index} className="lg:h-[575px] h-[237px]">
+              <Slide />
             </SwiperSlide>
           ))}
         </Swiper>

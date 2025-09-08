@@ -78,7 +78,7 @@ const MobileTicket: React.FC<IProps> = ({ ticket }) => {
             </p>
             <p className="text-sm whitespace-pre-line">
               Номер квитка:{'\n'}
-              <span className="font-bold text-base">{ticket.id}</span>
+              <span className="font-bold text-base">{ticket.orderReference}</span>
             </p>
           </div>
         </div>
