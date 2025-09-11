@@ -82,11 +82,11 @@ const MobileTicket: React.FC<IProps> = ({ ticket }) => {
           <div className="flex gap-[14px] items-end ml-1">
             <p
               className={clsx(
-                `border-[2px] border-${STATUSES[ticket.status].color || 'success'} text-${STATUSES[ticket.status].color || 'success'} 
+                `border-[2px] border-${STATUSES[ticket?.status]?.color || 'success'} text-${STATUSES[ticket?.status]?.color || 'success'} 
                 rounded-[10px] px-3 py-1 text-base font-oswald`
               )}
             >
-              {STATUSES[ticket.status as string].text || 'ОПЛАЧЕНО'}
+              {STATUSES[ticket?.status as string]?.text || 'ОПЛАЧЕНО'}
             </p>
             <p className="text-sm whitespace-pre-line">
               Номер квитка:{'\n'}
