@@ -24,7 +24,8 @@ import Profile from '@/pages/user/Profile';
 import { Layout } from '@/components/layout/Layout';
 
 import AdminRouter from './privateRouters/AdminRouter';
-import LoginRouter from './privateRouters/LoginRouter';
+import PrivateRouter from './privateRouters/PrivateRouter';
+import ProfileRouter from './privateRouters/ProfileRouter';
 
 const NotFound = React.lazy(() => import('../pages/NotFoundPage'));
 
@@ -37,14 +38,6 @@ const router = createBrowserRouter([
         index: true,
         element: <Home />,
         // loader: getAllEventsLoader,
-      },
-      {
-        path: 'create_event',
-        element: <CreateEventForm />,
-      },
-      {
-        path: 'edit_event/:idEvent',
-        element: <EditEventPage />,
       },
       {
         path: 'event/:idEvent',
@@ -67,27 +60,40 @@ const router = createBrowserRouter([
       },
       { path: 'event/:idEvent/buy_ticket', element: <BuyTicket /> },
       {
-        element: <LoginRouter />,
+        element: <PrivateRouter />,
         children: [
-          { path: 'user_profile', element: <Profile /> },
-          { path: 'favourite', element: <Favourite /> },
-          { path: 'my_event', element: <MyEvent /> },
-          { path: 'my_tickets', element: <MyTicket /> },
           {
-            path: 'admin',
-            element: <AdminRouter />,
+            path: 'create_event',
+            element: <CreateEventForm />,
+          },
+          {
+            path: 'edit_event/:idEvent',
+            element: <EditEventPage />,
+          },
+          {
+            element: <ProfileRouter />,
             children: [
+              { path: 'user_profile', element: <Profile /> },
+              { path: 'favourite', element: <Favourite /> },
+              { path: 'my_event', element: <MyEvent /> },
+              { path: 'my_tickets', element: <MyTicket /> },
               {
-                path: 'users',
-                element: <AdminUsers />,
+                path: 'admin',
+                element: <AdminRouter />,
+                children: [
+                  {
+                    path: 'users',
+                    element: <AdminUsers />,
+                  },
+                  {
+                    path: 'profile/:userId',
+                    element: <UserProfileAdmin />,
+                  },
+                  { path: 'events', element: <AdminEvents /> },
+                  { path: 'promo-events', element: <PromoEvents /> },
+                  { path: 'notifications', element: <Notifications /> },
+                ],
               },
-              {
-                path: 'profile/:userId',
-                element: <UserProfileAdmin />,
-              },
-              { path: 'events', element: <AdminEvents /> },
-              { path: 'promo-events', element: <PromoEvents /> },
-              { path: 'notifications', element: <Notifications /> },
             ],
           },
         ],

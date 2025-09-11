@@ -1,34 +1,67 @@
+import { useEffect, useRef, useState } from 'react';
+import { Link } from 'react-router-dom';
+
 import Lottie from '@lottielab/lottie-player/react';
 
-const Banner1 = () => {
+const Banner3 = () => {
+  const background = useRef(null);
+  const animation = useRef(null);
+  const [width, setWidth] = useState(0);
+  const [height, setHeight] = useState(0);
+  const [left, setLeft] = useState(0);
+
+  useEffect(() => {
+    if (background.current) {
+      const parentWidth = (background.current as HTMLElement).offsetWidth;
+      const parentHeight = (background.current as HTMLElement).offsetHeight;
+      setWidth(parentWidth);
+      setHeight(parentHeight);
+    }
+    if (animation.current) {
+      const childLeft = (animation.current as HTMLElement).offsetLeft;
+      setLeft(childLeft);
+    }
+  }, []);
+
   return (
-    <div className="w-full h-full rounded-[20px] bg-bg-gradient p-[48px_70px_34px_59px]">
-      <h1 className="text-8xl text-center mb-[56px] text-title">
+    <div
+      ref={background}
+      className="w-full h-full rounded-[20px] bg-bg-gradient p-[43px_10px] lg:p-[48px_70px_34px_59px] relative"
+    >
+      <div
+        ref={animation}
+        style={{
+          backgroundSize: `${width}px ${height}px`,
+          backgroundPosition: `${width - left}px`,
+        }}
+        className="bg-bg-gradient absolute w-[130px] h-[40px] -bottom-5 lg:bottom-10 -right-6 lg:-right-0 z-50"
+      ></div>
+      <h1 className="text-xl lg:text-8xl font-bold font-unifractur text-start ml-5 mb-6 lg:mb-[56px] text-title">
         Квитки — це просто!
       </h1>
       <div className="flex">
-        <div className=" text-center">
-          <h2 className="text-5xl text-title mb-8 mt-[6px]">
+        <div className="text-center mr-[100px] lg:mr-[500px]">
+          <h2 className="text-base lg:text-5xl text-title mb-4 lg:mb-8 lg:mt-[6px] !leading-normal">
             Все просто: створюй подію, керуй учасниками, продавай квитки.
           </h2>
-          <button
-            className={`bg-dark-gradient w-[421px] h-12 rounded-[71px_8px] mx-auto text-background text-2xl
-                hover:shadow-shadowPrimaryBtn focus:outline-none active:shadow-primaryBtnActive`}
+          <Link
+            to={'organizers'}
+            className={`bg-dark-gradient w-[180px] lg:w-[421px] h-8 lg:h-12 rounded-[71px_8px] mx-auto text-background text-sm lg:text-2xl
+                hover:shadow-shadowPrimaryBtn focus:outline-none active:shadow-primaryBtnActive flex items-center justify-center`}
           >
             Як це працює?
-          </button>
+          </Link>
         </div>
-        <div className="relative">
+        <div className="absolute -right-6 lg:-right-10 bottom-3 lg:-bottom-12 w-[180px] lg:w-[600px] bg-transparent">
           <Lottie
-            src="https://cdn.lottielab.com/l/5SmcsiuKdxyQoa.json"
+            src="https://cdn.lottielab.com/l/5BoyVD7deA1Kqj.json"
             autoplay
-            className="w-[400px] bg-transparent -mt-16"
+            className="rotate-12"
           />
-          <div className="w-32 h-12"></div>
         </div>
       </div>
     </div>
   );
 };
 
-export default Banner1;
+export default Banner3;

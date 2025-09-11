@@ -4,7 +4,6 @@ import { BsSearch } from 'react-icons/bs';
 import { CgMenuRightAlt, CgProfile } from 'react-icons/cg';
 import { HiOutlineLocationMarker } from 'react-icons/hi';
 import { RxCross2 } from 'react-icons/rx';
-import { useLocation } from 'react-router';
 
 import { selectIsLoggedIn } from '@/redux/auth/selectors';
 import { useAppSelector } from '@/redux/hooks';
@@ -12,29 +11,19 @@ import { useAppSelector } from '@/redux/hooks';
 import { useGetLikedEventsWithSkip } from '@/hooks/query/useGetLikedEventsWithSkip';
 import { useMediaQuery } from '@/hooks/useMediaQuery';
 
-import { Auth } from '../auth';
-import { Modal } from '../ui';
 import { AuthMobileModal } from '../ui/AuthMobileModal';
 import { IconButton } from '../ui/IconButton';
+import PrivateLink from '../ui/PrivateLink';
 import { MobileBurgerMenu } from './burgerMenu/MobileBurgerMenu';
 
 interface UserNavigationProps {
-  // eslint-disable-next-line no-unused-vars
-  handleLinkClick: (link: string) => void;
-  isModalOpen: boolean;
-  setIsModalOpen: React.Dispatch<React.SetStateAction<boolean>>;
   openCityPicker: () => void;
 }
 
 export const UserNavigation: React.FC<UserNavigationProps> = ({
-  handleLinkClick,
-  isModalOpen,
-  setIsModalOpen,
   openCityPicker,
 }) => {
   const [isInputVisible, setIsInputVisible] = useState(false);
-  const [isEmailConfirmed, setIsEmailConfirmed] = useState(false);
-  const [token, setToken] = useState<string | null>(null);
   const [isBurgerOpen, setIsBurgerOpen] = useState(false);
 
   const toggleBurgerMenu = () => {
@@ -44,8 +33,6 @@ export const UserNavigation: React.FC<UserNavigationProps> = ({
   const IsLoggedIn = useAppSelector(selectIsLoggedIn);
 
   const { data: likedEventsAll } = useGetLikedEventsWithSkip();
-
-  const location = useLocation();
 
   const inputRef = useRef<HTMLDivElement>(null);
 
@@ -69,20 +56,6 @@ export const UserNavigation: React.FC<UserNavigationProps> = ({
       document.removeEventListener('mousedown', handleClickOutside);
     };
   }, [isInputVisible]);
-
-  useEffect(() => {
-    const params = new URLSearchParams(location.search);
-    if (params.get('emailConfirmed') === 'true') {
-      setIsEmailConfirmed(true);
-      setIsModalOpen(true);
-    }
-    if (params.get('token')) {
-      setToken(params.get('token'));
-      setIsModalOpen(true);
-    }
-    return () => setToken(null);
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [location]);
 
   return (
     <div className="flex gap-6 items-center lg:m-0">
@@ -119,51 +92,26 @@ export const UserNavigation: React.FC<UserNavigationProps> = ({
         aria-label="geolocation"
       />
 
-      <IconButton
-        Icon={AiOutlineHeart}
-        onClick={() => handleLinkClick('favourite')}
-        aria-label="favourite"
-      >
-        {likedEventsAll && likedEventsAll.length > 0 && IsLoggedIn && (
-          <div className="absolute -right-2 -top-2 w-[20px] h-[20px] rounded-full bg-borderColor flex items-center justify-center">
-            <span className="text-background text-[10px]">
-              {likedEventsAll.length}
-            </span>
-          </div>
-        )}
-      </IconButton>
-      <IconButton
-        Icon={CgProfile}
-        onClick={() => handleLinkClick('user_profile')}
-        aria-label="user profile"
-      />
+      <PrivateLink to="favourite">
+        <IconButton Icon={AiOutlineHeart} aria-label="favourite">
+          {likedEventsAll && likedEventsAll.length > 0 && IsLoggedIn && (
+            <div className="absolute -right-2 -top-2 w-[20px] h-[20px] rounded-full bg-borderColor flex items-center justify-center">
+              <span className="text-background text-[10px]">
+                {likedEventsAll.length}
+              </span>
+            </div>
+          )}
+        </IconButton>
+      </PrivateLink>
+      <PrivateLink to="user_profile">
+        <IconButton Icon={CgProfile} aria-label="user profile" />
+      </PrivateLink>
       <IconButton
         className="lg:hidden"
         Icon={isBurgerOpen ? AiOutlineClose : CgMenuRightAlt}
         onClick={toggleBurgerMenu}
         aria-label="burger"
       />
-      {isMobile ? (
-        <AuthMobileModal
-          isOpen={isModalOpen}
-          onClose={() => setIsModalOpen(false)}
-          hiddenHeader
-        >
-          <Auth
-            onCloseModal={() => setIsModalOpen(false)}
-            isEmailConfirmed={isEmailConfirmed}
-            resetPasswordByToken={token}
-          />
-        </AuthMobileModal>
-      ) : (
-        <Modal isOpen={isModalOpen} onClose={() => setIsModalOpen(false)}>
-          <Auth
-            onCloseModal={() => setIsModalOpen(false)}
-            isEmailConfirmed={isEmailConfirmed}
-            resetPasswordByToken={token}
-          />
-        </Modal>
-      )}
       {isMobile && isBurgerOpen && (
         <AuthMobileModal
           isOpen={isBurgerOpen}
