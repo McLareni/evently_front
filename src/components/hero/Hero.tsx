@@ -47,7 +47,6 @@ export const Hero: React.FC = () => {
           onSwiper={setSwiperInstance}
           onSlideChange={swiper => {
             setCurrentSlide(swiper.realIndex);
-            console.log(swiper.realIndex);
           }}
         >
           {slides.map((Slide, index) => (

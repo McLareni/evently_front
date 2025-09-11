@@ -15,9 +15,21 @@ interface IProps {
 }
 
 const STATUSES: Record<string, { color: string; text: string }> = {
-  Оплачено: {
+  UNPAID: {
+    color: 'error',
+    text: 'НЕ ОПЛАЧЕНО',
+  },
+  PAID: {
     color: 'success',
     text: 'ОПЛАЧЕНО',
+  },
+  REFUNDED: {
+    color: 'canceled',
+    text: 'ПОВЕРНУТО',
+  },
+  CANCELED: {
+    color: 'canceled',
+    text: 'СКАСОВАНО',
   },
 };
 
@@ -70,15 +82,17 @@ const MobileTicket: React.FC<IProps> = ({ ticket }) => {
           <div className="flex gap-[14px] items-end ml-1">
             <p
               className={clsx(
-                `border-[2px] border-${STATUSES[ticket.status].color} text-${STATUSES[ticket.status].color} 
+                `border-[2px] border-${STATUSES[ticket.status].color || 'success'} text-${STATUSES[ticket.status].color || 'success'} 
                 rounded-[10px] px-3 py-1 text-base font-oswald`
               )}
             >
-              {STATUSES[ticket.status as string].text}
+              {STATUSES[ticket.status as string].text || 'ОПЛАЧЕНО'}
             </p>
             <p className="text-sm whitespace-pre-line">
               Номер квитка:{'\n'}
-              <span className="font-bold text-base">{ticket.orderReference}</span>
+              <span className="font-bold text-base">
+                {ticket.orderReference}
+              </span>
             </p>
           </div>
         </div>
