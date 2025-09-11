@@ -11,15 +11,18 @@ const Banner3 = () => {
   const [left, setLeft] = useState(0);
 
   useEffect(() => {
-    if (background.current) {
+    if (animation.current && background.current) {
+      const rect = (animation.current as HTMLElement).getBoundingClientRect();
+      const parentRect = (
+        background.current as HTMLElement
+      ).getBoundingClientRect();
+
       const parentWidth = (background.current as HTMLElement).offsetWidth;
       const parentHeight = (background.current as HTMLElement).offsetHeight;
+
+      setLeft(rect.left - parentRect.left);
       setWidth(parentWidth);
       setHeight(parentHeight);
-    }
-    if (animation.current) {
-      const childLeft = (animation.current as HTMLElement).offsetLeft;
-      setLeft(childLeft);
     }
   }, []);
 
