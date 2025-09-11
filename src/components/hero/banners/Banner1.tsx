@@ -1,30 +1,48 @@
-import { useEffect, useRef, useState } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import { Link } from 'react-router-dom';
 
 import Lottie from '@lottielab/lottie-player/react';
 
-const Banner1 = () => {
+interface Banner1Props {
+  // eslint-disable-next-line no-unused-vars
+  setUpdatePosition: (fn: () => void) => void;
+}
+
+const Banner1: React.FC<Banner1Props> = ({ setUpdatePosition }) => {
   const background = useRef(null);
   const animation = useRef(null);
   const [width, setWidth] = useState(300);
   const [height, setHeight] = useState(200);
   const [left, setLeft] = useState(0);
 
+  const updatePosition = () => {
+    if (!background.current || !animation.current) return;
+
+    const parentRect = background.current.getBoundingClientRect();
+    const childRect = animation.current.getBoundingClientRect();
+
+    setWidth(parentRect.width);
+    setHeight(parentRect.height);
+    setLeft(childRect.left - parentRect.left);
+  };
+
   useEffect(() => {
-    if (animation.current && background.current) {
-      const rect = (animation.current as HTMLElement).getBoundingClientRect();
-      const parentRect = (
-        background.current as HTMLElement
-      ).getBoundingClientRect();
+    setUpdatePosition(() => updatePosition);
 
-      const parentWidth = (background.current as HTMLElement).offsetWidth;
-      const parentHeight = (background.current as HTMLElement).offsetHeight;
+    updatePosition();
 
-      setLeft(rect.left - parentRect.left);
-      setWidth(parentWidth);
-      setHeight(parentHeight);
-    }
-  }, []);
+    const ro = new ResizeObserver(updatePosition);
+    ro.observe(background.current!);
+    ro.observe(animation.current!);
+
+    window.addEventListener('resize', updatePosition);
+
+    return () => {
+      ro.disconnect();
+      window.removeEventListener('resize', updatePosition);
+    };
+  }, [setUpdatePosition]);
+
   return (
     <div
       ref={background}
@@ -53,7 +71,7 @@ const Banner1 = () => {
           Обрати подію
         </Link>
       </div>
-      <div className="absolute w-[180px] lg:w-[650px] bg-transparent -mt-16 -bottom-0 -right-6 lg:right-8 lg:-bottom-28">
+      <div className="absolute w-[180px] lg:w-[650px] bg-transparent -mt-16 bottom-4 -right-6 lg:right-8 lg:-bottom-28">
         <Lottie
           src="https://cdn.lottielab.com/l/5SmcsiuKdxyQoa.json"
           autoplay
