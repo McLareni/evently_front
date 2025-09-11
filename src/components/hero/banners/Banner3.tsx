@@ -26,7 +26,7 @@ const Banner3 = () => {
   return (
     <div
       ref={background}
-      className="w-full h-full rounded-[20px] bg-bg-gradient p-[43px_10px] lg:p-[48px_70px_34px_59px] relative"
+      className="w-full h-full rounded-[20px] bg-bg-gradient p-[43px_10px] lg:p-[48px_70px_34px_59px] relative overflow-hidden"
     >
       <div
         ref={animation}
