@@ -26,7 +26,6 @@ export const Auth: React.FC<AuthProps> = ({
   resetPasswordByToken,
 }) => {
   const [isLoading, setIsLoading] = useState(false);
-
   const [token] = useState(resetPasswordByToken);
   const [userData, setUserData] = useState({
     name: '',

@@ -17,7 +17,18 @@ export const Modal: React.FC<ModalProps> = ({
   onClose,
   hiddenCross,
 }) => {
-  const [isOpenModal, setIsOpenModal] = useState(false);
+  const [showModal, setShowModal] = useState(false);
+  const [animate, setAnimate] = useState(false);
+  useEffect(() => {
+    if (isOpen) {
+      setShowModal(true);
+      requestAnimationFrame(() => setAnimate(true));
+    } else {
+      setAnimate(false);
+      const timeout = setTimeout(() => setShowModal(false), 0);
+      return () => clearTimeout(timeout);
+    }
+  }, [isOpen]);
 
   const getScrollbarWidth = () => {
     return window.innerWidth - document.documentElement.clientWidth;
@@ -28,13 +39,9 @@ export const Modal: React.FC<ModalProps> = ({
       const scrollbarWidth = getScrollbarWidth();
       document.body.style.overflow = 'hidden'; // Prevent scrolling
       document.body.style.paddingRight = `${scrollbarWidth}px`;
-      setIsOpenModal(true);
     } else {
       document.body.style.overflow = ''; // Re-enable scrolling
       document.body.style.paddingRight = ''; // Reset padding
-      setTimeout(() => {
-        setIsOpenModal(false);
-      }, 100);
     }
 
     return () => {
@@ -47,8 +54,6 @@ export const Modal: React.FC<ModalProps> = ({
     if (onClose) {
       const handleKeyDown = (e: KeyboardEvent) => {
         if (e.key === 'Escape') {
-          setIsOpenModal(false);
-          // Slow close modal
           setTimeout(() => {
             onClose();
           }, 100);
@@ -68,9 +73,7 @@ export const Modal: React.FC<ModalProps> = ({
 
   const modalRoot = document.getElementById('portal-root');
 
-  if ((!isOpen && !isOpenModal) || !modalRoot) {
-    return null;
-  }
+  if (!showModal || !modalRoot) return null;
 
   return createPortal(
     <div
@@ -82,11 +85,7 @@ export const Modal: React.FC<ModalProps> = ({
       {/* Backdrop with blur */}
       <div
         className={clsx(
-          `fixed inset-0 bg-slate-500 bg-opacity-50 transition-all duration-300 ease-in-out`,
-          {
-            'backdrop-blur-md': isOpenModal,
-            'backdrop-none': isOpenModal,
-          }
+          `fixed inset-0 bg-slate-500 bg-opacity-50 transition-all duration-300 ease-in-out backdrop-blur-md backdrop-none`
         )}
         onClick={onClose}
       ></div>
@@ -94,8 +93,8 @@ export const Modal: React.FC<ModalProps> = ({
       {/* Modal content */}
       <div
         className={clsx(
-          `relative z-10 rounded-[20px] shadow-lg bg-white transition-all`,
-          { 'scale-100': isOpenModal, 'scale-75': !isOpenModal }
+          `relative z-10 rounded-[20px] shadow-lg bg-white transform transition-transform duration-100 ease-out`,
+          animate ? 'scale-100 opacity-100' : 'scale-95 opacity-0'
         )}
         onClick={e => e.stopPropagation()} // Prevent closing modal when clicking inside
       >

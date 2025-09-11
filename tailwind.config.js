@@ -14,6 +14,7 @@ export default {
         oswald: ['Oswald', 'sans-serif'],
         lato: ['Lato', 'sans-serif'],
         lora: ['Lora', 'serif'],
+        unifractur: ['UnifrakturCook', 'serif'],
       },
       colors: {
         // Main color
@@ -65,6 +66,7 @@ export default {
           sans: ['Open Sans', 'sans-serif'],
           serif: ['Merriweather', 'serif'],
           lato: ['LatoRegular'],
+          unifractur: ['UnifrakturCook'],
         },
         fontSize: {
           xs: '12px',

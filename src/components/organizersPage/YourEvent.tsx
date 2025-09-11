@@ -1,45 +1,8 @@
-import { useEffect, useState } from 'react';
-import { useNavigate } from 'react-router-dom';
-
-import { selectIsLoggedIn } from '@/redux/auth/selectors';
-import { useAppSelector } from '@/redux/hooks';
-
 import image from '../../../public/images/YourEvent_image.svg';
-import { Auth } from '../auth';
-import { Modal } from '../ui';
+import PrivateLink from '../ui/PrivateLink';
 import { SharedBtn } from '../ui/SharedBtn';
 
 const YourEvent = () => {
-  const [isModalOpen, setIsModalOpen] = useState(false);
-  const [isEmailConfirmed, setIsEmailConfirmed] = useState(false);
-  const [token, setToken] = useState<string | null>(null);
-
-  const isLoggedIn = useAppSelector(selectIsLoggedIn);
-
-  const navigate = useNavigate();
-
-  const handleLinkClick = (link: string) => {
-    if (isLoggedIn) {
-      navigate(link);
-    } else {
-      setIsModalOpen(true);
-    }
-  };
-
-  useEffect(() => {
-    const params = new URLSearchParams(location.search);
-    if (params.get('emailConfirmed') === 'true') {
-      setIsEmailConfirmed(true);
-      setIsModalOpen(true);
-    }
-    if (params.get('token')) {
-      setToken(params.get('token'));
-      setIsModalOpen(true);
-    }
-    return () => setToken(null);
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [location]);
-
   return (
     <>
       <div className="flex mb-16 pt-3 lg:pt-0 lg:flex-row flex-col-reverse">
@@ -53,25 +16,15 @@ const YourEvent = () => {
           <p className="pb-8 lg:text-2xl text-base">
             Збирай гостей, продавай квитки, отримуй прибуток
           </p>
-          <SharedBtn
-            type="button"
-            primary
-            className="w-[312px] h-12"
-            onClick={() => handleLinkClick('/create_event')}
-          >
-            Створити подію
-          </SharedBtn>
+          <PrivateLink to="/create_event">
+            <SharedBtn type="button" primary className="w-[312px] h-12">
+              Створити подію
+            </SharedBtn>
+          </PrivateLink>
         </div>
         <div className="">
           <img src={image} alt="" />
         </div>
-        <Modal isOpen={isModalOpen} onClose={() => setIsModalOpen(false)}>
-          <Auth
-            onCloseModal={() => setIsModalOpen(false)}
-            isEmailConfirmed={isEmailConfirmed}
-            resetPasswordByToken={token}
-          />
-        </Modal>
       </div>
     </>
   );
