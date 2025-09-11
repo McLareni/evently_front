@@ -6,8 +6,8 @@ import Lottie from '@lottielab/lottie-player/react';
 const Banner1 = () => {
   const background = useRef(null);
   const animation = useRef(null);
-  const [width, setWidth] = useState(0);
-  const [height, setHeight] = useState(0);
+  const [width, setWidth] = useState(300);
+  const [height, setHeight] = useState(200);
   const [left, setLeft] = useState(0);
 
   useEffect(() => {
