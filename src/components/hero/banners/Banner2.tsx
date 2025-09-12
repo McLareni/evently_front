@@ -5,11 +5,10 @@ import Lottie from '@lottielab/lottie-player/react';
 import PrivateLink from '@/components/ui/PrivateLink';
 
 interface Banner2Props {
-  // eslint-disable-next-line no-unused-vars
-  setUpdatePosition: (fn: () => void) => void;
+  visible?: boolean;
 }
 
-const Banner2: React.FC<Banner2Props> = ({ setUpdatePosition }) => {
+const Banner2: React.FC<Banner2Props> = ({ visible }) => {
   const background = useRef(null);
   const animation = useRef(null);
   const [width, setWidth] = useState(0);
@@ -18,31 +17,24 @@ const Banner2: React.FC<Banner2Props> = ({ setUpdatePosition }) => {
 
   const updatePosition = () => {
     if (!background.current || !animation.current) return;
-
     const parentRect = background.current.getBoundingClientRect();
     const childRect = animation.current.getBoundingClientRect();
-
     setWidth(parentRect.width);
     setHeight(parentRect.height);
     setLeft(childRect.left - parentRect.left);
   };
 
   useEffect(() => {
-    setUpdatePosition(() => updatePosition);
-
     updatePosition();
-
     const ro = new ResizeObserver(updatePosition);
-    ro.observe(background.current!);
-    ro.observe(animation.current!);
-
+    if (background.current) ro.observe(background.current);
+    if (animation.current) ro.observe(animation.current);
     window.addEventListener('resize', updatePosition);
-
     return () => {
       ro.disconnect();
       window.removeEventListener('resize', updatePosition);
     };
-  }, [setUpdatePosition]);
+  }, []);
 
   return (
     <div
@@ -77,6 +69,10 @@ const Banner2: React.FC<Banner2Props> = ({ setUpdatePosition }) => {
           src="https://cdn.lottielab.com/l/BLYBUKdX2CJM24.json"
           autoplay
           className="w-full -rotate-6"
+          style={{
+            opacity: visible ? 1 : 0,
+            transition: 'opacity 0.3s ease',
+          }}
         />
       </div>
     </div>

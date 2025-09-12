@@ -16,15 +16,7 @@ export const Hero: React.FC = () => {
   const [swiperInstance, setSwiperInstance] = useState<SwiperType | null>(null);
   const width = useScreenWidth();
 
-  const [updateBanner1Position, setUpdateBanner1Position] = useState<
-    () => void
-  >(() => () => {});
-  const [updateBanner2Position, setUpdateBanner2Position] = useState<
-    () => void
-  >(() => () => {});
-  const [updateBanner3Position, setUpdateBanner3Position] = useState<
-    () => void
-  >(() => () => {});
+  const [banner1Visible, setBanner1Visible] = useState(true);
 
   const setSlideByDot = (index: number) => {
     swiperInstance?.slideTo(index);
@@ -40,9 +32,9 @@ export const Hero: React.FC = () => {
   };
 
   const slides = [
-    <Banner1 key={0} setUpdatePosition={setUpdateBanner1Position} />,
-    <Banner2 key={1} setUpdatePosition={setUpdateBanner2Position} />,
-    <Banner3 key={2} setUpdatePosition={setUpdateBanner3Position} />,
+    <Banner1 key={0} visible={banner1Visible} />,
+    <Banner2 key={1} visible={banner1Visible} />,
+    <Banner3 key={2} visible={banner1Visible} />,
   ];
 
   return (
@@ -62,10 +54,11 @@ export const Hero: React.FC = () => {
           onSlideChange={swiper => {
             setCurrentSlide(swiper.realIndex);
           }}
-          onProgress={() => {
-            updateBanner1Position();
-            updateBanner2Position();
-            updateBanner3Position();
+          onSlideChangeTransitionStart={() => {
+            setBanner1Visible(false);
+          }}
+          onSlideChangeTransitionEnd={() => {
+            setBanner1Visible(true);
           }}
         >
           {slides.map((Slide, index) => (
