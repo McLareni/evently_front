@@ -11,14 +11,18 @@ interface Banner2Props {
 const Banner2: React.FC<Banner2Props> = ({ visible }) => {
   const background = useRef(null);
   const animation = useRef(null);
-  const [width, setWidth] = useState(0);
-  const [height, setHeight] = useState(0);
-  const [left, setLeft] = useState(0);
+  const [width, setWidth] = useState(300);
+  const [height, setHeight] = useState(200);
+  const [left, setLeft] = useState(300);
 
   const updatePosition = () => {
     if (!background.current || !animation.current) return;
-    const parentRect = background.current.getBoundingClientRect();
-    const childRect = animation.current.getBoundingClientRect();
+    const parentRect = (
+      background.current as HTMLElement
+    ).getBoundingClientRect();
+    const childRect = (
+      animation.current as HTMLElement
+    ).getBoundingClientRect();
     setWidth(parentRect.width);
     setHeight(parentRect.height);
     setLeft(childRect.left - parentRect.left);
@@ -65,15 +69,13 @@ const Banner2: React.FC<Banner2Props> = ({ visible }) => {
         </PrivateLink>
       </div>
       <div className="absolute -bottom-0 lg:-bottom-40 -left-2 lg:-left-16 w-[180px] lg:w-[800px] bg-transparent -mt-16">
-        <Lottie
-          src="https://cdn.lottielab.com/l/BLYBUKdX2CJM24.json"
-          autoplay
-          className="w-full -rotate-6"
-          style={{
-            opacity: visible ? 1 : 0,
-            transition: 'opacity 0.3s ease',
-          }}
-        />
+        {visible && (
+          <Lottie
+            src="https://cdn.lottielab.com/l/BLYBUKdX2CJM24.json"
+            autoplay
+            className="w-full -rotate-6"
+          />
+        )}
       </div>
     </div>
   );
