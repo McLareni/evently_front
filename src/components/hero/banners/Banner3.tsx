@@ -10,14 +10,18 @@ interface Banner3Props {
 const Banner3: React.FC<Banner3Props> = ({ visible }) => {
   const background = useRef(null);
   const animation = useRef(null);
-  const [width, setWidth] = useState(0);
-  const [height, setHeight] = useState(0);
-  const [left, setLeft] = useState(0);
+  const [width, setWidth] = useState(300);
+  const [height, setHeight] = useState(200);
+  const [left, setLeft] = useState(300);
 
   const updatePosition = () => {
     if (!background.current || !animation.current) return;
-    const parentRect = background.current.getBoundingClientRect();
-    const childRect = animation.current.getBoundingClientRect();
+    const parentRect = (
+      background.current as HTMLElement
+    ).getBoundingClientRect();
+    const childRect = (
+      animation.current as HTMLElement
+    ).getBoundingClientRect();
     setWidth(parentRect.width);
     setHeight(parentRect.height);
     setLeft(childRect.left - parentRect.left);
@@ -65,15 +69,13 @@ const Banner3: React.FC<Banner3Props> = ({ visible }) => {
           </Link>
         </div>
         <div className="absolute -right-6 lg:-right-10 bottom-3 lg:-bottom-12 w-[180px] lg:w-[600px] bg-transparent">
-          <Lottie
-            src="https://cdn.lottielab.com/l/5BoyVD7deA1Kqj.json"
-            autoplay
-            className="rotate-12"
-            style={{
-              opacity: visible ? 1 : 0,
-              transition: 'opacity 0.3s ease',
-            }}
-          />
+          {visible && (
+            <Lottie
+              src="https://cdn.lottielab.com/l/5BoyVD7deA1Kqj.json"
+              autoplay
+              className="rotate-12"
+            />
+          )}
         </div>
       </div>
     </div>
