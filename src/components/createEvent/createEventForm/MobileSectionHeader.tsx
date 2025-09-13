@@ -20,7 +20,7 @@ const MobileSectionHeader: React.FC<IProps> = ({
 }) => {
   return (
     <div
-      className="flex justify-between items-center py-[4px] mb-3 relative"
+      className="flex justify-between items-center py-[4px] relative"
       onClick={() => changeActiveSection()}
     >
       <h2 className="font-bold text-base font-lato text-textDark">{text}</h2>

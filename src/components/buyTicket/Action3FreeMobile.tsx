@@ -32,7 +32,8 @@ export const Action3FreeMobile: React.FC<Action3FreeMobileProps> = ({
         className={`font-lato text-[16px] bg-[url('/images/ticket/downloadMobile.png')] h-[100px]
       bg-[length:100%_100%] bg-fill bg-no-repeat bg-center flex flex-col px-8 mt-auto`}
       >
-        <p>Номер замовлення</p>
+        <h2 className='text-base font-bold font-lato'>Ваш квиток вже чекає вас на пошті!</h2>
+        <p>Номер замовлення<span></span></p>
         {event && instance.url && (
           <a
             href={instance.url}

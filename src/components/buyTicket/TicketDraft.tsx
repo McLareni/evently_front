@@ -32,6 +32,7 @@ export const TicketDraft: React.FC<TicketDraftProps> = ({
   sendEventData,
   isLoading,
 }) => {
+
   const currentActionHandler = () => {
     if (currentAction === 1) {
       setCurrentActionHandler(2);

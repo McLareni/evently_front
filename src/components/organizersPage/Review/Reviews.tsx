@@ -35,11 +35,11 @@ const Reviews: React.FC<ReviewsProps> = ({ data }) => {
         <h1 className="!mb-8 text-[28px] lg:text-[64px] leading-normal">
           Відгуки
         </h1>
-        <div className="absolute top-0 right-0 flex items-center justify-center gap-6">
+        <div className="absolute top-1 right-0 flex items-center justify-center gap-6">
           <PrevNextBtn
             onClick={setPrevSlide}
             className={clsx(
-              'rounded-full',
+              'rounded-full !w-8 !h-8',
               isBeginning ? 'bg-lightGray' : 'bg-borderColor'
             )}
             disabled={isBeginning}
@@ -49,7 +49,7 @@ const Reviews: React.FC<ReviewsProps> = ({ data }) => {
           <PrevNextBtn
             onClick={setNextSlide}
             className={clsx(
-              'rounded-full rotate-180 fill-transparent',
+              'rounded-full rotate-180 fill-transparent !w-8 !h-8',
               isEnd ? 'bg-lightGray' : 'bg-borderColor'
             )}
             disabled={isEnd}
@@ -68,7 +68,7 @@ const Reviews: React.FC<ReviewsProps> = ({ data }) => {
           }}
         >
           {data?.map(item => (
-            <SwiperSlide key={nanoid()} className="p-1">
+            <SwiperSlide key={nanoid()} className="p-1 h-auto">
               <CommentCard item={item} />
             </SwiperSlide>
           ))}

@@ -76,8 +76,7 @@ const TicketPrice: React.FC<TicketPriceProps> = ({
         isMobile && !sectionIsOpen ? setSectionIsOpen(true) : () => {}
       }
       className={clsx(
-        'relative lg:w-[760px] w-full rounded-[20px] lg:border-2 border border-buttonPurple flex flex-col p-3 lg:py-8 lg:px-8 lg:mb-8 mb-4 overflow-hidden',
-        sectionIsOpen || isDesktop ? 'h-auto' : 'h-[56px]'
+        'relative lg:w-[760px] w-full rounded-[20px] lg:border-2 border border-buttonPurple p-3 lg:py-8 lg:pl-8 lg:mb-8 mb-4'
       )}
     >
       {isMobile && (
@@ -88,212 +87,217 @@ const TicketPrice: React.FC<TicketPriceProps> = ({
           dataIsValid={dataIsValid}
         />
       )}
-      {isEdit && ticketsHasBeenSold && sectionIsOpen && (
-        <div className="flex gap-2 mb-[10px]">
-          <AiOutlineExclamation className="rounded-full border border-error fill-error w-6 h-6" />
-          <h3 className="text-error text-base font-normal font-lato">
-            Ви не можете змінити вартість та кількість квитків, оскільки вже
-            мали продажі
-          </h3>
-        </div>
-      )}
-      {isEdit &&
-        +numberOfTickets < +(event?.soldTickets || 0) &&
-        !unlimitedTickets && (
+      <div
+        className={clsx(
+          'overflow-hidden transition-all duration-500 flex flex-col',
+          sectionIsOpen || isDesktop ? 'max-h-[2000px]' : 'max-h-[0px]'
+        )}
+      >
+        {isEdit && ticketsHasBeenSold && sectionIsOpen && (
           <div className="flex gap-2 mb-[10px]">
             <AiOutlineExclamation className="rounded-full border border-error fill-error w-6 h-6" />
             <h3 className="text-error text-base font-normal font-lato">
-              Ви не можете кількість квитків, оскільки кількість квитків менша
-              ніж у вас вже продано білетів
+              Ви не можете змінити вартість та кількість квитків, оскільки вже
+              мали продажі
             </h3>
           </div>
         )}
-      {dataIsValid && isDesktop && (
-        <AiFillCheckCircle
-          size={40}
-          color="#3BE660"
-          style={{ position: 'absolute', right: '8px', top: '8px' }}
-        />
-      )}
-      {isDesktop && (
-        <span className="pb-4 text-2xl">
-          Вартість квитків<span className="star">*</span>
-        </span>
-      )}
-      <div className="lg:pb-6 pb-3">
-        {(!isEdit ||
-          (isEdit && (event?.soldTickets === '0' || freeTickets))) && (
-          <button
-            type="button"
-            className={`${
-              !freeTickets
-                ? 'bg-gradient-to-r from-[#12C2E9] to-[#C471ED] text-[white]'
-                : 'bg-gradient-to-r from-[#E9E6FF] to-[#D5FEFF]'
-            } hover:from-[#12C2E9] hover:to-[#C471ED] transition ease-in-out duration-300 focus:outline-none 
+        {isEdit &&
+          +numberOfTickets < +(event?.soldTickets || 0) &&
+          !unlimitedTickets && (
+            <div className="flex gap-2 mb-[10px]">
+              <AiOutlineExclamation className="rounded-full border border-error fill-error w-6 h-6" />
+              <h3 className="text-error text-base font-normal font-lato">
+                Ви не можете кількість квитків, оскільки кількість квитків менша
+                ніж у вас вже продано білетів
+              </h3>
+            </div>
+          )}
+        {dataIsValid && isDesktop && (
+          <AiFillCheckCircle
+            size={40}
+            color="#3BE660"
+            style={{ position: 'absolute', right: '8px', top: '8px' }}
+          />
+        )}
+        {isDesktop && (
+          <label className="lg:text-2xl text-base" htmlFor="title">
+            Вартість квитків<span className="star">*</span>
+          </label>
+        )}
+        <div className="lg:pb-6 pb-3 mt-3">
+          {(!isEdit ||
+            (isEdit && (event?.soldTickets === '0' || freeTickets))) && (
+            <button
+              type="button"
+              className={`${
+                !freeTickets
+                  ? 'bg-gradient-to-r from-[#12C2E9] to-[#C471ED] text-[white]'
+                  : 'bg-gradient-to-r from-[#E9E6FF] to-[#D5FEFF]'
+              } hover:from-[#12C2E9] hover:to-[#C471ED] transition ease-in-out duration-300 focus:outline-none 
             font-normal lg:text-xl text-base lg:rounded-[20px] rounded-[15px] border-[1px] border-borderColor mr-4 l
             g:py-[9px] py-0 lg:px-[18px] px-4 lg:h-12 h-[36px]`}
-            onClick={() => {
-              setValue('freeTickets', false);
-            }}
-            disabled={isEdit && event?.soldTickets !== '0'}
-          >
-            Платний
-          </button>
-        )}
-        {(!isEdit ||
-          (isEdit && (event?.soldTickets === '0' || !freeTickets))) && (
-          <button
-            type="button"
-            className={`${
-              freeTickets
-                ? 'bg-gradient-to-r from-[#12C2E9] to-[#C471ED] text-[white]'
-                : 'bg-gradient-to-r from-[#E9E6FF] to-[#D5FEFF]'
-            } hover:from-[#12C2E9] hover:to-[#C471ED] transition ease-in-out duration-300 focus:outline-none 
+              onClick={() => {
+                setValue('freeTickets', false);
+              }}
+              disabled={isEdit && event?.soldTickets !== '0'}
+            >
+              Платний
+            </button>
+          )}
+          {(!isEdit ||
+            (isEdit && (event?.soldTickets === '0' || !freeTickets))) && (
+            <button
+              type="button"
+              className={`${
+                freeTickets
+                  ? 'bg-gradient-to-r from-[#12C2E9] to-[#C471ED] text-[white]'
+                  : 'bg-gradient-to-r from-[#E9E6FF] to-[#D5FEFF]'
+              } hover:from-[#12C2E9] hover:to-[#C471ED] transition ease-in-out duration-300 focus:outline-none 
             font-normal lg:text-xl text-base lg:rounded-[20px] rounded-[15px] border-[1px] border-borderColor mr-4 
             lg:py-[9px] py-0 lg:px-[18px] px-4 lg:h-12 h-[36px]`}
-            onClick={() => {
-              setValue('freeTickets', true);
-            }}
-            disabled={isEdit && event?.soldTickets !== '0'}
-          >
-            Безкоштовний
-          </button>
-        )}
-      </div>
-      <div className="flex lg:gap-[16px] gap-[14px] flex-wrap">
-        <div className="flex flex-col flex-1 max-w-[245px]">
-          <label htmlFor="ticketPrice" className="lg:mb-3 mb-[6px]">
-            Ціна
-          </label>
-          <div className="relative w-full">
-            <FaRegMoneyBillAlt
-              color={freeTickets ? '#D0D5D8' : '#000000'}
-              className={clsx(
-                `absolute top-[13.25px] left-[17.25px] w-6 h-6 `,
-                { 'text-uploadBtnBg': isEdit && event?.soldTickets !== '0' }
-              )}
-            />
-            <Controller
-              name="ticketPrice"
-              control={control}
-              rules={{
-                validate: {
-                  isValid: value =>
-                    freeTickets || +value > 0 || 'Невірний формат',
-                },
+              onClick={() => {
+                setValue('freeTickets', true);
               }}
-              render={({ field }) => (
-                <div
-                  className={`lg:w-[245px] w-full h-[48px] p-[2px] ${freeTickets ? 'bg-[#D0D5D8]' : 'bg-createEventInputBorder'}  lg:rounded-[10px] rounded-[7px]`}
-                >
-                  <input
-                    {...field}
-                    id="ticketPrice"
-                    type="number"
-                    className={clsx(
-                      `outline-none pl-[49px] w-full h-full p-4 lg:rounded-[8px] rounded-[5px] [appearance:textfield]
+              disabled={isEdit && event?.soldTickets !== '0'}
+            >
+              Безкоштовний
+            </button>
+          )}
+        </div>
+        <div className="flex lg:gap-[16px] gap-[14px] flex-wrap">
+          <div className="flex flex-col flex-1 max-w-[245px] min-w-24">
+            <label htmlFor="ticketPrice" className="lg:mb-3 mb-[6px]">
+              Ціна
+            </label>
+            <div className="relative w-full">
+              <FaRegMoneyBillAlt
+                color={freeTickets ? '#D0D5D8' : '#000000'}
+                className={clsx(
+                  `absolute top-[13.25px] left-[17.25px] w-6 h-6 `,
+                  { 'text-uploadBtnBg': isEdit && event?.soldTickets !== '0' }
+                )}
+              />
+              <Controller
+                name="ticketPrice"
+                control={control}
+                rules={{
+                  validate: {
+                    isValid: value =>
+                      freeTickets || +value > 0 || 'Невірний формат',
+                  },
+                }}
+                render={({ field }) => (
+                  <div
+                    className={`lg:w-[245px] w-full h-[48px] p-[2px] ${freeTickets ? 'bg-[#D0D5D8]' : 'bg-createEventInputBorder'}  lg:rounded-[10px] rounded-[7px]`}
+                  >
+                    <input
+                      {...field}
+                      id="ticketPrice"
+                      type="number"
+                      className={clsx(
+                        `outline-none pl-[49px] w-full h-full p-4 lg:rounded-[8px] rounded-[5px] [appearance:textfield]
                     [&::-webkit-outer-spin-button]:appearance-none [&::-webkit-inner-spin-button]:appearance-none`,
-                      {
-                        'text-uploadBtnBg':
-                          isEdit && event?.soldTickets !== '0',
+                        {
+                          'text-uploadBtnBg':
+                            isEdit && event?.soldTickets !== '0',
+                        }
+                      )}
+                      placeholder="100 ₴"
+                      disabled={
+                        freeTickets || (isEdit && event?.soldTickets !== '0')
                       }
-                    )}
-                    placeholder="100 ₴"
-                    disabled={
-                      freeTickets || (isEdit && event?.soldTickets !== '0')
-                    }
-                  />
-                </div>
-              )}
-            />
-            <div className="lg:h-[20px] h-[14px]">
-              {errors.ticketPrice && (
-                <p className="text-red-500 lg:text-sm text-xs">
-                  {errors.ticketPrice.message}
-                </p>
-              )}
+                    />
+                  </div>
+                )}
+              />
+              <div className="lg:h-[20px] h-[14px]">
+                {errors.ticketPrice && (
+                  <p className="text-red-500 lg:text-sm text-xs">
+                    {errors.ticketPrice.message}
+                  </p>
+                )}
+              </div>
             </div>
           </div>
-        </div>
 
-        <div className="flex flex-col flex-1 max-w-[245px]">
-          <label htmlFor="numberOfTickets" className="lg:mb-3 mb-[6px]">
-            Кількість квитків
-          </label>
-          <div className="relative">
-            <HiOutlineTicket
-              color={unlimitedTickets ? '#D0D5D8' : '#000000'}
-              className={clsx(
-                `absolute top-[13.25px] left-[17.25px] w-6 h-6 `,
-                { 'text-uploadBtnBg': isEdit && event?.soldTickets !== '0' }
-              )}
-            />
-            <Controller
-              name="numberOfTickets"
-              control={control}
-              rules={{
-                validate: {
-                  isValid: value =>
-                    unlimitedTickets || +value > 0 || 'Невірний формат',
-                },
-              }}
-              render={({ field }) => (
-                <div
-                  className={`lg:w-[245px] w-full h-[48px] p-[2px] ${unlimitedTickets ? 'bg-[#D0D5D8]' : 'bg-createEventInputBorder'} lg:rounded-[10px] rounded-[7px]`}
-                >
-                  <input
-                    id="numberOfTickets"
-                    {...field}
-                    type="number"
-                    min={1}
-                    className={clsx(
-                      `outline-none pl-[49px] w-full h-full p-4 lg:rounded-[8px] rounded-[5px] [appearance:textfield] [&::-webkit-outer-spin-button]:appearance-none 
+          <div className="flex flex-col flex-1 max-w-[245px] min-w-40">
+            <label htmlFor="numberOfTickets" className="lg:mb-3 mb-[6px]">
+              Кількість квитків
+            </label>
+            <div className="relative">
+              <HiOutlineTicket
+                color={unlimitedTickets ? '#D0D5D8' : '#000000'}
+                className={clsx(
+                  `absolute top-[13.25px] left-[17.25px] w-6 h-6 `,
+                  { 'text-uploadBtnBg': isEdit && event?.soldTickets !== '0' }
+                )}
+              />
+              <Controller
+                name="numberOfTickets"
+                control={control}
+                rules={{
+                  validate: {
+                    isValid: value =>
+                      unlimitedTickets || +value > 0 || 'Невірний формат',
+                  },
+                }}
+                render={({ field }) => (
+                  <div
+                    className={`lg:w-[245px] w-full h-[48px] p-[2px] ${unlimitedTickets ? 'bg-[#D0D5D8]' : 'bg-createEventInputBorder'} lg:rounded-[10px] rounded-[7px]`}
+                  >
+                    <input
+                      id="numberOfTickets"
+                      {...field}
+                      type="number"
+                      min={1}
+                      className={clsx(
+                        `outline-none pl-[49px] w-full h-full p-4 lg:rounded-[8px] rounded-[5px] [appearance:textfield] [&::-webkit-outer-spin-button]:appearance-none 
                 [&::-webkit-inner-spin-button]:appearance-none`,
-                      {
-                        'text-uploadBtnBg':
-                          isEdit && event?.soldTickets !== '0',
-                      }
-                    )}
-                    placeholder="100"
-                    disabled={unlimitedTickets}
-                  />
-                </div>
-              )}
-            />
-            <div className="lg:h-[20px] h-[14px]">
-              {errors.numberOfTickets && (
-                <p className="text-red-500 lg:text-sm text-xs">
-                  {errors.numberOfTickets.message}
-                </p>
-              )}
+                        {
+                          'text-uploadBtnBg':
+                            isEdit && event?.soldTickets !== '0',
+                        }
+                      )}
+                      placeholder="100"
+                      disabled={unlimitedTickets}
+                    />
+                  </div>
+                )}
+              />
+              <div className="lg:h-[20px] h-[14px]">
+                {errors.numberOfTickets && (
+                  <p className="text-red-500 lg:text-sm text-xs">
+                    {errors.numberOfTickets.message}
+                  </p>
+                )}
+              </div>
             </div>
           </div>
-        </div>
-      </div>
-      <div>
-        <div className="self-end lg:mb-[32px] mb-0 flex-1">
-          <Controller
-            name="unlimitedTickets"
-            control={control}
-            render={({ field }) => (
-              <label className="flex items-center cursor-pointer">
-                <input
-                  id="unlimitedTickets"
-                  type="checkbox"
-                  className="appearance-none absolute opacity-0 pointer-events-none"
-                  checked={field.value}
-                  onChange={e => field.onChange(e.target.checked)}
-                  disabled={isEdit && event?.soldTickets !== '0'}
-                />
-                <div className="lg:h-5 lg:w-5 w-6 h-6 flex items-center justify-center bg-lightPink rounded-[5px]">
-                  {unlimitedTickets && (
-                    <MdDone className="text-black w-6 h-6" />
-                  )}
-                </div>
-                <span className="ml-2">Необмежена кількість</span>
-              </label>
-            )}
-          />
+          <div className="self-end lg:mb-[32px] mb-0 flex-1 w-1/5">
+            <Controller
+              name="unlimitedTickets"
+              control={control}
+              render={({ field }) => (
+                <label className="flex items-center cursor-pointer">
+                  <input
+                    id="unlimitedTickets"
+                    type="checkbox"
+                    className="appearance-none absolute opacity-0 pointer-events-none"
+                    checked={field.value}
+                    onChange={e => field.onChange(e.target.checked)}
+                    disabled={isEdit && event?.soldTickets !== '0'}
+                  />
+                  <div className="lg:h-5 lg:w-5 w-6 h-6 flex items-center justify-center bg-lightPink rounded-[5px]">
+                    {unlimitedTickets && (
+                      <MdDone className="text-black w-6 h-6" />
+                    )}
+                  </div>
+                  <span className="ml-2 text-nowrap">Необмежена кількість</span>
+                </label>
+              )}
+            />
+          </div>
         </div>
       </div>
     </div>
