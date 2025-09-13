@@ -91,7 +91,7 @@ const Home: React.FC = () => {
         <ShowAllButton />
       </>
       <Organizers />
-      <div className="px-4 lg:px-0">
+      <div className="px-4 lg:px-5">
         <FAQ />
       </div>
     </Main>

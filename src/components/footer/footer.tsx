@@ -11,10 +11,10 @@ export const Footer: React.FC = () => {
   const iconsStyles = 'w-6 h-6 mr-6 hover:[color:#9B8FF3] cursor-pointer';
 
   return (
-    <Container className="relative flex pl-[130px] pb-10 pt-10 bg-background ">
+    <Container className="relative max-w-[1440px] mx-auto  flex pl-[130px] pb-10 pt-10 bg-background ">
       <FooterLines />
       <MainLines />
-      <div className="pr-[175px] flex flex-col gap-[43px] ">
+      <div className="pr-[175px] flex flex-col gap-[43px]">
         <MainLogo className="!h-[68px] !w-[62px]" letters="!w-[10px]" />
         <a href="tel:+380995745676" className="text-sm hover:font-bold">
           +380(99) 574 56 76
