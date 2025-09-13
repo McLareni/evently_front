@@ -15,21 +15,13 @@ interface IProps {
 }
 
 const STATUSES: Record<string, { color: string; text: string }> = {
-  UNPAID: {
+  Повернуто: {
     color: 'error',
     text: 'НЕ ОПЛАЧЕНО',
   },
-  PAID: {
+  Оплачено: {
     color: 'success',
     text: 'ОПЛАЧЕНО',
-  },
-  REFUNDED: {
-    color: 'canceled',
-    text: 'ПОВЕРНУТО',
-  },
-  CANCELED: {
-    color: 'canceled',
-    text: 'СКАСОВАНО',
   },
 };
 

@@ -12,7 +12,7 @@ const Tips = () => {
           <h4 className="w-auto lg:w-[477px] mr-0 lg:mr-[69px] lg:text-4xl text-xl text-nowrap">
             Створюйте привабливий опис події
           </h4>
-          <p className="w-auto lg:w-[615px] text-base lg:text-xl leading-tight lg:leading-normal">
+          <p className="w-auto lg:w-[615px] text-base lg:text-xl leading-tight lg:leading-normal mt-3 lg:mt-0">
             Пишіть опис події, котрий розповідає про суть події, її
             унікальність, та чим вона може бути правблива для участників
           </p>
@@ -24,7 +24,7 @@ const Tips = () => {
           <h4 className="w-auto lg:w-[480px] mr-0 lg:mr-[69px] lg:text-4xl text-xl text-nowrap">
             Якість фото
           </h4>
-          <p className="text-base lg:text-xl w-[648px] leading-tight lg:leading-normal">
+          <p className="text-base lg:text-xl w-[648px] leading-tight lg:leading-normal mt-3 lg:mt-0">
             Обирайте якісні фото, фото які будуть відображати атмосферу та
             тематику події,
           </p>
@@ -36,7 +36,7 @@ const Tips = () => {
           <h4 className="w-auto lg:w-[477px] mr-0 lg:mr-[69px] lg:text-4xl text-xl text-nowrap">
             Соціальні мережі
           </h4>
-          <p className="text-base lg:text-xl leading-tight lg:leading-normal">
+          <p className="text-base lg:text-xl leading-tight lg:leading-normal mt-3 lg:mt-0">
             Поділитися подією зі своїми друзями легко
           </p>
         </div>

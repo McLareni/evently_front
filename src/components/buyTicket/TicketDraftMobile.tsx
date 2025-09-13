@@ -4,6 +4,7 @@ import { BiChevronDown, BiChevronUp } from 'react-icons/bi';
 import { CgShoppingCart } from 'react-icons/cg';
 import { IoTicketOutline } from 'react-icons/io5';
 
+import { useScrollToTop } from '@/hooks/useScrollToTop';
 import { SERVICE } from '@/pages/events/BuyTicket';
 
 import { SharedBtn } from '../ui';
@@ -36,12 +37,15 @@ export const TicketDraftMobile: FC<TicketDraftMobileProps> = ({
   const [isOpen, setIsOpen] = useState(false);
   const [timeLeft, setTimeLeft] = useState(15 * 60);
 
+  const scrollToTop = useScrollToTop();
+
   const currentActionHandler = () => {
     if (currentAction === 1) {
       setCurrentActionHandler(2);
     } else if (currentAction === 2 && price === 0) {
       setCurrentActionHandler(3);
     }
+    scrollToTop();
   };
 
   const toggleIsOpen = () => {
