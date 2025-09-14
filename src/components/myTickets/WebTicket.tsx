@@ -43,7 +43,7 @@ const WebTicket: React.FC<IProps> = ({ ticket }) => {
           <PopUp
             closePopUp={() => setPopUp(false)}
             popUpIsOpen={popUp}
-            event={event}
+            ticket={ticket}
           />
         )}
         <div className="flex gap-6">

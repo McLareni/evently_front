@@ -31,22 +31,26 @@ const styles = StyleSheet.create({
   },
 });
 
-export const PDF = ({ event }: { event: Event }) => (
+export const PDF = ({ ticket }: { ticket: Ticket }) => (
   <Document>
     <Page size="A4" style={styles.page}>
-      {event && (
+      {ticket && (
         <View style={styles.section}>
           <Image
             style={{ width: 200, height: 200 }}
-            src={event.images[0]?.url || '/images/event-placeholder.jpg'}
+            src={ticket.event.images[0]?.url || '/images/event-placeholder.jpg'}
           />
-          <Text style={styles.text}>Назва: {event.title}</Text>
-          <Text style={styles.text}>Ціна: {event.price} грн</Text>
+          <Text style={styles.text}>Назва: {ticket.event.title}</Text>
+          <Text style={styles.text}>Ціна: {ticket.event.price} грн</Text>
           <Text style={styles.text}>
-            Коли: {formatDateToDayMonth(event.date.day)} {event.date.time}
+            Коли: {formatDateToDayMonth(ticket.event.date.day)},
+            {ticket.event.date.time}
           </Text>
           <Text style={styles.text}>
-            Де: {event.location.city}, {event.location.street}
+            Де: {ticket.event.location.city}, {ticket.event.location.street}
+          </Text>
+          <Text style={styles.text}>
+            Кількість квитків: {ticket.productCount} шт.
           </Text>
         </View>
       )}
