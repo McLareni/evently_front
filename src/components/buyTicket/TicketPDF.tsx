@@ -1,6 +1,8 @@
+import { formatDateToDayMonth } from '@/helpers/filters/formatDateToDayMonth';
 import {
   Document,
   Font,
+  Image,
   Page,
   StyleSheet,
   Text,
@@ -34,8 +36,18 @@ export const PDF = ({ event }: { event: Event }) => (
     <Page size="A4" style={styles.page}>
       {event && (
         <View style={styles.section}>
+          <Image
+            style={{ width: 200, height: 200 }}
+            src={event.images[0]?.url || '/images/event-placeholder.jpg'}
+          />
           <Text style={styles.text}>Назва: {event.title}</Text>
-          <Text style={styles.text}>Ціна: {event.price}</Text>
+          <Text style={styles.text}>Ціна: {event.price} грн</Text>
+          <Text style={styles.text}>
+            Коли: {formatDateToDayMonth(event.date.day)} {event.date.time}
+          </Text>
+          <Text style={styles.text}>
+            Де: {event.location.city}, {event.location.street}
+          </Text>
         </View>
       )}
     </Page>
