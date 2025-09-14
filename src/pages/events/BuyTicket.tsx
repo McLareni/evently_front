@@ -7,6 +7,8 @@ import { useAppSelector } from '@/redux/hooks';
 
 import { useSendEventData } from '@/hooks/buyTicket/useSendEventData';
 import { useMediaVariables } from '@/hooks/query/useMediaVariables';
+import { useScrollToTop } from '@/hooks/useScrollToTop';
+import { getFreeTicket } from '@/utils/eventsHttp';
 
 import { Action1 } from '@/components/buyTicket/Action1';
 import { Action2 } from '@/components/buyTicket/Action2';
@@ -17,13 +19,26 @@ import { Action3 } from '@/components/buyTicket/Action3';
 import { Action3FreeMobile } from '@/components/buyTicket/Action3FreeMobile';
 import { BuyTicketTabs } from '@/components/buyTicket/BuyTicketTabs';
 import { MobileTicketInfo } from '@/components/buyTicket/MobileTicketInfo';
+import { TicketDraft } from '@/components/buyTicket/TicketDraft';
 import { TicketDraftMobile } from '@/components/buyTicket/TicketDraftMobile';
 import { Container } from '@/components/container/Container';
 import Spinner from '@/components/ui/Spinner';
 
-import { TicketDraft } from '../../components/buyTicket/TicketDraft';
-
 export const SERVICE = 0.05; //5%
+
+export interface FreeTicketInfo {
+  userId: string;
+  product: {
+    productName: string;
+    productPrice: string;
+    productCount: string;
+    amount: string;
+  };
+  clientFirstName: string;
+  clientLastName: string;
+  clientPhone: string;
+  clientEmail: string;
+}
 
 const BuyTicket: React.FC = () => {
   const [currentAction, setCurrentAction] = useState(1);
@@ -55,6 +70,8 @@ const BuyTicket: React.FC = () => {
 
   const { isMobile } = useMediaVariables();
 
+  const user = useAppSelector(selectUser);
+
   const setNewUserEmailHandler = (email: string) => {
     setNewUserEmail(email);
   };
@@ -79,16 +96,47 @@ const BuyTicket: React.FC = () => {
     setDiscount(value);
   };
 
-  const setCurrentActionHandler = (action: number) => {
-    setCurrentAction(action);
-  };
-
   const getPrice = (price: number) => {
     setPrice(price);
   };
 
   const getTicketCount = (count: number) => {
     setTicketCount(count);
+  };
+
+  const scrollToTop = useScrollToTop();
+
+  const goToSecondAction = () => {
+    setCurrentAction(2);
+    scrollToTop();
+  };
+
+  const getFreeTicketHandler = async () => {
+    if (event && currentAction === 2 && price === 0) {
+      try {
+        const response = await getFreeTicket({
+          eventId: event.id,
+          data: {
+            userId: user.id,
+            product: {
+              productName: event.title,
+              productPrice: event.price.toString(),
+              productCount: ticketCount.toString(),
+              amount: ticketCount.toString(),
+            },
+            clientFirstName: user.name,
+            clientLastName: user.surname,
+            clientPhone: user.phoneNumber,
+            clientEmail: user.email,
+          },
+        });
+        console.log(response);
+      } catch (error) {
+        console.log(error);
+      }
+      // setCurrentAction(3);
+    }
+    scrollToTop();
   };
 
   useEffect(() => {
@@ -156,7 +204,7 @@ const BuyTicket: React.FC = () => {
             {!isMobile && (
               <TicketDraft
                 event={event}
-                setCurrentActionHandler={setCurrentActionHandler}
+                goToSecondAction={goToSecondAction}
                 currentAction={currentAction}
                 ticketCount={ticketCount}
                 price={price}
@@ -165,13 +213,14 @@ const BuyTicket: React.FC = () => {
                 isFormValid={isFormValid}
                 sendEventData={sendEventData}
                 isLoading={sendDataLoading}
+                getFreeTicketHandler={getFreeTicketHandler}
               />
             )}
           </div>
         )}
         {isMobile && currentAction !== 3 && (
           <TicketDraftMobile
-            setCurrentActionHandler={setCurrentActionHandler}
+            goToSecondAction={goToSecondAction}
             currentAction={currentAction}
             ticketCount={ticketCount}
             price={price}
@@ -180,6 +229,7 @@ const BuyTicket: React.FC = () => {
             isFormValid={isFormValid}
             sendEventData={sendEventData}
             isLoading={sendDataLoading}
+            getFreeTicketHandler={getFreeTicketHandler}
           />
         )}
         {isMobile && currentAction === 3 && <Action3FreeMobile event={event} />}

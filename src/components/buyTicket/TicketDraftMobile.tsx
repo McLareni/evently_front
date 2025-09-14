@@ -1,10 +1,8 @@
-/* eslint-disable no-unused-vars */
 import { FC, useEffect, useState } from 'react';
 import { BiChevronDown, BiChevronUp } from 'react-icons/bi';
 import { CgShoppingCart } from 'react-icons/cg';
 import { IoTicketOutline } from 'react-icons/io5';
 
-import { useScrollToTop } from '@/hooks/useScrollToTop';
 import { SERVICE } from '@/pages/events/BuyTicket';
 
 import { SharedBtn } from '../ui';
@@ -12,7 +10,6 @@ import Spinner from '../ui/Spinner';
 import { PaymentInfo } from './PaymentInfo';
 
 interface TicketDraftMobileProps {
-  setCurrentActionHandler: (action: number) => void;
   currentAction: number;
   ticketCount: number;
   price: number;
@@ -21,10 +18,11 @@ interface TicketDraftMobileProps {
   isFormValid: boolean;
   sendEventData: () => Promise<void>;
   isLoading: boolean;
+  goToSecondAction: () => void;
+  getFreeTicketHandler: () => void;
 }
 
 export const TicketDraftMobile: FC<TicketDraftMobileProps> = ({
-  setCurrentActionHandler,
   currentAction,
   ticketCount,
   price,
@@ -33,20 +31,11 @@ export const TicketDraftMobile: FC<TicketDraftMobileProps> = ({
   isFormValid,
   sendEventData,
   isLoading,
+  goToSecondAction,
+  getFreeTicketHandler,
 }) => {
   const [isOpen, setIsOpen] = useState(false);
   const [timeLeft, setTimeLeft] = useState(15 * 60);
-
-  const scrollToTop = useScrollToTop();
-
-  const currentActionHandler = () => {
-    if (currentAction === 1) {
-      setCurrentActionHandler(2);
-    } else if (currentAction === 2 && price === 0) {
-      setCurrentActionHandler(3);
-    }
-    scrollToTop();
-  };
 
   const toggleIsOpen = () => {
     setIsOpen(!isOpen);
@@ -151,7 +140,7 @@ export const TicketDraftMobile: FC<TicketDraftMobileProps> = ({
       <div className="flex">
         {currentAction === 1 ? (
           <SharedBtn
-            onClick={currentActionHandler}
+            onClick={goToSecondAction}
             type="button"
             primary
             className="mt-auto mx-auto bg-gradient-to-r from-[#9B8FF3] to-[#38F6F9] w-[230px] h-[48px]"
@@ -160,7 +149,7 @@ export const TicketDraftMobile: FC<TicketDraftMobileProps> = ({
           </SharedBtn>
         ) : (
           <SharedBtn
-            onClick={price === 0 ? currentActionHandler : sendEventData}
+            onClick={price === 0 ? getFreeTicketHandler : sendEventData}
             type="button"
             primary
             disabled={!isFormValid}

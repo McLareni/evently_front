@@ -1,5 +1,6 @@
 import { store } from '@/redux/store';
 
+import { FreeTicketInfo } from '@/pages/events/BuyTicket';
 import axios from 'axios';
 
 const URL = import.meta.env.VITE_URL;
@@ -97,4 +98,23 @@ export const checkUserExists = async ({ email }: { email: string }) => {
   const response = await axios(`authorize/exist/${email}`);
 
   return response;
+};
+
+export const getFreeTicket = async ({
+  eventId,
+  data,
+}: {
+  eventId: string;
+  data: FreeTicketInfo;
+}) => {
+  const token = store.getState().auth.token;
+
+  const response = await axios.post(`pay/free/${eventId}`, data, {
+    headers: {
+      'Content-Type': 'application/json',
+      Authorization: `Bearer ${token}`,
+    },
+  });
+
+  return response.data;
 };
