@@ -31,7 +31,7 @@ export const Layout = () => {
       <Header />
       <main
         className={`pt-[72px] ${linesShown ? 'lg:pt-[140px]' : 'lg:pt-[108px]'}
-        relative flex-grow lg:w-[1440px] w-full`}
+        relative flex-grow lg:w-[1440px] w-full min-h-screen`}
       >
         {linesShown && <LayoutHorizontalLines />}
         <Suspense fallback={<div>Loading...</div>}>

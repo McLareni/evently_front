@@ -43,7 +43,7 @@ export const Hero: React.FC = () => {
         <Swiper
           modules={[Autoplay]}
           loop={true}
-          speed={2000}
+          speed={1000}
           slidesPerView={1}
           autoplay={{
             delay: 10000,
