@@ -38,7 +38,7 @@ export const Action1: React.FC<Action1Props> = ({
   const isMobile = useMediaQuery('(max-width: 1024px)');
 
   const increment = () => {
-    if (event?.availableTickets === ticketCount) {
+    if (!event?.unlimitedTickets && event?.availableTickets === ticketCount) {
       toast.info('Більше квитків немає в наявності');
       return;
     }

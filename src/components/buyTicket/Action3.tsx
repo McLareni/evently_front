@@ -7,27 +7,28 @@ import { Details } from './Details';
 import { PDF } from './TicketPDF';
 
 interface Action3Props {
-  event: Event | undefined;
+  ticket: Ticket;
 }
 
-export const Action3: React.FC<Action3Props> = ({ event }) => {
+export const Action3: React.FC<Action3Props> = ({ ticket }) => {
   const [instance, updateInstance] = usePDF({
     document: undefined,
   });
 
   useEffect(() => {
-    if (event) {
-      updateInstance(<PDF event={event} />);
+    if (ticket) {
+      updateInstance(<PDF ticket={ticket} />);
     }
   });
+
   return (
     <div className="bg-[url('/images/ticket/download-ticket.svg')] bg-cover bg-center w-full h-[340px] px-[100px] py-[36px] flex justify-between">
       <div className="flex flex-col gap-[16px] items-center justify-center">
-        <p className="text-[36px]">{event?.title}</p>
+        <p className="text-[36px]">{ticket?.event.title}</p>
         {event?.location.street && (
           <Details
             title="Місце "
-            details={`${event?.location.city}, ${event?.location.street}`}
+            details={`${ticket.event.location.city}, ${ticket.event.location.street}`}
           />
         )}
         {event?.eventUrl && (

@@ -8,11 +8,11 @@ import { SharedBtn } from '../ui';
 import { PDF } from './TicketPDF';
 
 interface Action3FreeMobileProps {
-  event: Event | undefined;
+  ticket: Ticket;
 }
 
 export const Action3FreeMobile: React.FC<Action3FreeMobileProps> = ({
-  event,
+  ticket,
 }) => {
   const [instance, updateInstance] = usePDF({
     document: undefined,
@@ -20,7 +20,7 @@ export const Action3FreeMobile: React.FC<Action3FreeMobileProps> = ({
 
   useEffect(() => {
     if (event) {
-      updateInstance(<PDF event={event} />);
+      updateInstance(<PDF ticket={ticket} />);
     }
   });
 

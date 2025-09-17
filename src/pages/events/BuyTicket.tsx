@@ -1,5 +1,6 @@
 import { useEffect, useState } from 'react';
 import { useParams } from 'react-router';
+import { toast } from 'react-toastify';
 
 import { selectIsLoggedIn, selectUser } from '@/redux/auth/selectors';
 import { useLazyGetEventByIdQuery } from '@/redux/events/operations';
@@ -131,10 +132,12 @@ const BuyTicket: React.FC = () => {
           },
         });
         console.log(response);
+
+        setCurrentAction(3);
       } catch (error) {
         console.log(error);
+        toast.error('Не вдалося отримати безкоштовний квиток');
       }
-      // setCurrentAction(3);
     }
     scrollToTop();
   };
@@ -232,8 +235,10 @@ const BuyTicket: React.FC = () => {
             getFreeTicketHandler={getFreeTicketHandler}
           />
         )}
-        {isMobile && currentAction === 3 && <Action3FreeMobile event={event} />}
-        {!isMobile && currentAction === 3 && <Action3 event={event} />}
+        {isMobile && currentAction === 3 && (
+          <Action3FreeMobile ticket={ticket} />
+        )}
+        {!isMobile && currentAction === 3 && <Action3 ticket={ticket} />}
       </Container>
     </div>
   );
