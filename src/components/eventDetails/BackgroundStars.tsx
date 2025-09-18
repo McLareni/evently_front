@@ -3,7 +3,7 @@ import Star from './Star';
 
 const BackgroundStars = () => {
   return (
-    <div className="relative z-0">
+    <div className="absolute inset-0 -bottom-44 overflow-hidden">
       <Star top="686" left="241" />
       <Star top="808" left="828" />
       <Star top="1425" left="408" />

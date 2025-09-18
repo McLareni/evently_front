@@ -8,19 +8,19 @@ interface IProps {
   deleteEvent: () => void;
 }
 
-const PopUp: React.FC<IProps> = ({
-  id,
-  approved = false,
-  deleteEvent,
-}) => {
+const PopUp: React.FC<IProps> = ({ id, approved = false, deleteEvent }) => {
   const navigate = useNavigate();
   const [isOpen, setIsOpen] = React.useState(true);
 
   const copyLink = () => {
-    navigator.clipboard.writeText(
-      `https://evently-book.vercel.app/event/${id}`
-    );
-    toast.success('Посилання скопійовано');
+    if (approved) {
+      navigator.clipboard.writeText(
+        `https://evently-book.vercel.app/event/${id}`
+      );
+      toast.success('Посилання скопійовано');
+    } else {
+      toast.info('Ви не можете копіювати посилання, коли подія на перевірці');
+    }
   };
 
   const handleSeeEvent = () => {

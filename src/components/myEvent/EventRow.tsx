@@ -131,7 +131,7 @@ const EventRow: React.FC<IProps> = ({
         {popUpIsShow && (
           <PopUp
             id={event.id}
-            approved={event.eventStatus !== 'PENDING'}
+            approved={event.eventStatus === 'APPROVED'}
             deleteEvent={handleDeleteEvent}
           />
         )}
