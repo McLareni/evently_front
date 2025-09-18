@@ -39,7 +39,7 @@ const Reviews: React.FC<ReviewsProps> = ({ data }) => {
           <PrevNextBtn
             onClick={setPrevSlide}
             className={clsx(
-              'rounded-full !w-8 !h-8',
+              'rounded-full !w-8 !h-8 lg:!w-10 lg:!h-10',
               isBeginning ? 'bg-lightGray' : 'bg-borderColor'
             )}
             disabled={isBeginning}
@@ -49,7 +49,7 @@ const Reviews: React.FC<ReviewsProps> = ({ data }) => {
           <PrevNextBtn
             onClick={setNextSlide}
             className={clsx(
-              'rounded-full rotate-180 fill-transparent !w-8 !h-8',
+              'rounded-full rotate-180 fill-transparent !w-8 !h-8 lg:!w-10 lg:!h-10',
               isEnd ? 'bg-lightGray' : 'bg-borderColor'
             )}
             disabled={isEnd}

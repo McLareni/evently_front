@@ -16,7 +16,7 @@ export const ProfileInput = forwardRef<HTMLInputElement, ProfileInputProps>(
     const [isFocused, setIsFocused] = useState(false);
     const [passwordVisible, setPasswordVisible] = useState(false);
 
-    const inputStyles = `w-full lg:h-[64px] h-14 border-[2px] rounded-[10px]
+    const inputStyles = `w-full max-w-[312px] lg:h-[64px] h-14 border-[2px] rounded-[10px]
     lg:px-[24px] px-4 outline-none bg-background lg:text-[20px] text-base
     focus:placeholder-transparent
     ${isFocused ? 'border-buttonPurple' : 'border-lightPurple'}

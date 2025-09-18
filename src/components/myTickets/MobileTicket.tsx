@@ -15,13 +15,21 @@ interface IProps {
 }
 
 const STATUSES: Record<string, { color: string; text: string }> = {
-  Повернуто: {
+  'Не оплачено': {
     color: 'error',
     text: 'НЕ ОПЛАЧЕНО',
+  },
+  Повернуто: {
+    color: 'error',
+    text: 'ПОВЕРНУТО',
   },
   Оплачено: {
     color: 'success',
     text: 'ОПЛАЧЕНО',
+  },
+  Скасовано: {
+    color: 'error',
+    text: 'СКАСОВАНО',
   },
 };
 
@@ -62,7 +70,7 @@ const MobileTicket: React.FC<IProps> = ({ ticket }) => {
                 </p>
                 <p className="flex gap-[18px]">
                   <FaRegMoneyBillAlt className="w-[18px] h-[18px]" />
-                  {event.price}
+                  {event.price} ₴
                 </p>
                 <p className="flex gap-[18px]">
                   <GrLocation className="w-[18px] h-[18px]" />
@@ -74,11 +82,11 @@ const MobileTicket: React.FC<IProps> = ({ ticket }) => {
           <div className="flex gap-[14px] items-end ml-1">
             <p
               className={clsx(
-                `border-[2px] border-${STATUSES[ticket?.status]?.color || 'success'} text-${STATUSES[ticket?.status]?.color || 'success'} 
+                `border-[2px] border-${STATUSES[ticket?.status]?.color || 'error'} text-${STATUSES[ticket?.status]?.color || 'error'} 
                 rounded-[10px] px-3 py-1 text-base font-oswald`
               )}
             >
-              {STATUSES[ticket?.status as string]?.text || 'ОПЛАЧЕНО'}
+              {STATUSES[ticket?.status as string]?.text || 'НЕ ОПЛАЧЕНО'}
             </p>
             <p className="text-sm whitespace-pre-line">
               Номер квитка:{'\n'}
