@@ -21,15 +21,16 @@ const MyTicket: React.FC = () => {
 
   return (
     <ul className="flex flex-col gap-6">
-      {tickets?.map(ticket => (
-        <li key={ticket.id}>
-          {isMobile ? (
-            <MobileTicket ticket={ticket} />
-          ) : (
-            <WebTicket ticket={ticket} />
-          )}
-        </li>
-      ))}
+      {tickets &&
+        tickets.map(ticket => (
+          <li key={ticket.id}>
+            {isMobile ? (
+              <MobileTicket ticket={ticket} />
+            ) : (
+              <WebTicket ticket={ticket} />
+            )}
+          </li>
+        ))}
     </ul>
   );
 };

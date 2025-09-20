@@ -53,7 +53,8 @@ const BuyTicket: React.FC = () => {
   const [isFormValid, setIsFormValid] = useState(false);
   const [isEmailExists, setIsEmailExists] = useState<null | boolean>(null);
   const [newUserEmail, setNewUserEmail] = useState('');
-
+  const [ticket, setTicket] = useState<Ticket | null>(null);
+  console.log('ticket', ticket);
   const { idEvent } = useParams();
 
   const [trigger, { data: event, isLoading }] = useLazyGetEventByIdQuery();
@@ -132,8 +133,10 @@ const BuyTicket: React.FC = () => {
           },
         });
         console.log(response);
-
-        setCurrentAction(3);
+        if (response.response) {
+          setTicket(response.response);
+          setCurrentAction(3);
+        }
       } catch (error) {
         console.log(error);
         toast.error('Не вдалося отримати безкоштовний квиток');
@@ -235,10 +238,12 @@ const BuyTicket: React.FC = () => {
             getFreeTicketHandler={getFreeTicketHandler}
           />
         )}
-        {isMobile && currentAction === 3 && (
+        {isMobile && currentAction === 3 && ticket && (
           <Action3FreeMobile ticket={ticket} />
         )}
-        {!isMobile && currentAction === 3 && <Action3 ticket={ticket} />}
+        {!isMobile && currentAction === 3 && ticket && (
+          <Action3 ticket={ticket} />
+        )}
       </Container>
     </div>
   );

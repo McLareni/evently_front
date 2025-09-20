@@ -36,6 +36,9 @@ export const PDF = ({ ticket }: { ticket: Ticket }) => (
     <Page size="A4" style={styles.page}>
       {ticket && (
         <View style={styles.section}>
+          <Text style={styles.text}>
+            Номер замовлення: {ticket.orderReference}
+          </Text>
           <Image
             style={{ width: 200, height: 200 }}
             src={ticket.event.images[0]?.url || '/images/event-placeholder.jpg'}

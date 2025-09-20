@@ -116,5 +116,9 @@ export const getFreeTicket = async ({
     },
   });
 
-  return response.data;
+  return response.data as {
+    timestamp: string;
+    message: string;
+    response?: Ticket;
+  };
 };
