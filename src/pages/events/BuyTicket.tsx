@@ -139,9 +139,12 @@ const BuyTicket: React.FC = () => {
           setTicket(response.response);
           setCurrentAction(3);
         }
+        if (response.status !== 200) {
+          toast.error('Помилка при отриманні безкоштовного квитка');
+        }
       } catch (error) {
         console.log(error);
-        toast.error('Не вдалося отримати безкоштовний квиток');
+        toast.error('Помилка при отриманні безкоштовного квитка');
       } finally {
         setIsGetFreeTicketLoading(false);
       }

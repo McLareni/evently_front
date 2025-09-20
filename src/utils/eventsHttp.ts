@@ -120,5 +120,6 @@ export const getFreeTicket = async ({
     timestamp: string;
     message: string;
     response?: Ticket;
+    status: number;
   };
 };
