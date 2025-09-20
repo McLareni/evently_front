@@ -49,9 +49,14 @@ export const PDF = ({ ticket }: { ticket: Ticket }) => (
             Коли: {formatDateToDayMonth(ticket.event.date.day)},
             {ticket.event.date.time}
           </Text>
-          <Text style={styles.text}>
-            Де: {ticket.event.location.city}, {ticket.event.location.street}
-          </Text>
+          {ticket.event.eventFormat === 'OFFLINE' && (
+            <Text style={styles.text}>
+              Де: {ticket.event.location.city}, {ticket.event.location.street}
+            </Text>
+          )}
+          {ticket.event.eventFormat === 'ONLINE' && (
+            <Text style={styles.text}>Посилання: {ticket.event.eventUrl}</Text>
+          )}
           <Text style={styles.text}>
             Кількість квитків: {ticket.productCount} шт.
           </Text>
