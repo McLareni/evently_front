@@ -3,6 +3,8 @@ import React, { useEffect } from 'react';
 import { useGetNewEventsQuery } from '@/redux/events/operations';
 import { useAppSelector } from '@/redux/hooks';
 
+import { is } from 'date-fns/locale';
+
 import { EventCard } from '../ui';
 
 interface IProps {
@@ -11,7 +13,10 @@ interface IProps {
 
 const RandomTopEvents: React.FC<IProps> = ({ idEvent }) => {
   const city = useAppSelector(state => state.filter.city);
-  const { data: newEvents, refetch } = useGetNewEventsQuery({ city, size: 4 });
+  const {
+    data: newEvents,
+    refetch,
+  } = useGetNewEventsQuery({ city, size: 4 });
 
   useEffect(() => {
     async function fetchTopEvent() {
@@ -28,6 +33,8 @@ const RandomTopEvents: React.FC<IProps> = ({ idEvent }) => {
 
     return () => clearInterval(interval);
   }, [idEvent]);
+
+  if (newEvents?.length === 0) return null;
 
   return (
     <div className="w-[344px] border-2 rounded-[20px] border-buttonPurple p-4 flex flex-col gap-8">
