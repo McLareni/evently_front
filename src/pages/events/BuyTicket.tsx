@@ -54,7 +54,8 @@ const BuyTicket: React.FC = () => {
   const [isEmailExists, setIsEmailExists] = useState<null | boolean>(null);
   const [newUserEmail, setNewUserEmail] = useState('');
   const [ticket, setTicket] = useState<Ticket | null>(null);
-  console.log('ticket', ticket);
+  const [isGetFreeTicketLoading, setIsGetFreeTicketLoading] = useState(false);
+
   const { idEvent } = useParams();
 
   const [trigger, { data: event, isLoading }] = useLazyGetEventByIdQuery();
@@ -115,6 +116,7 @@ const BuyTicket: React.FC = () => {
 
   const getFreeTicketHandler = async () => {
     if (event && currentAction === 2 && price === 0) {
+      setIsGetFreeTicketLoading(true);
       try {
         const response = await getFreeTicket({
           eventId: event.id,
@@ -140,6 +142,8 @@ const BuyTicket: React.FC = () => {
       } catch (error) {
         console.log(error);
         toast.error('Не вдалося отримати безкоштовний квиток');
+      } finally {
+        setIsGetFreeTicketLoading(false);
       }
     }
     scrollToTop();
@@ -172,7 +176,7 @@ const BuyTicket: React.FC = () => {
 
   return (
     <div className="font-oswald leading-none pb-[55px] h-full">
-      {isLoading && <Spinner />}
+      {(isLoading || isGetFreeTicketLoading) && <Spinner />}
       <Container className="h-full flex flex-col">
         {!isMobile && <BuyTicketTabs currentAction={currentAction} />}
         {isMobile && event && <MobileTicketInfo event={event} />}
