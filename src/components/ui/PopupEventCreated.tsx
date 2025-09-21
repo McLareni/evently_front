@@ -55,7 +55,7 @@ export const PopupEventCreated = ({ event }: PopupEventCreatedProps) => {
             Після перевірки подія з’явиться на платформі
           </p>
         </div>
-        <NavLink to={'/my-event'}>
+        <NavLink to={'/my_event'}>
           <SharedBtn primary type="button" className="h-12 w-[265px]">
             Закрити
           </SharedBtn>
