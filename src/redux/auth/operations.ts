@@ -43,6 +43,31 @@ export const logIn = createAsyncThunk(
   }
 );
 
+export const googleLogIn = createAsyncThunk(
+  'auth/login',
+  async (idToken: string, thunkAPI) => {
+    try {
+      const { data } = await axios.post(
+        'authorize/login/google',
+        {},
+        {
+          headers: {
+            'x-id-token': idToken,
+          },
+        }
+      );
+      if (!data.accessToken) {
+        return thunkAPI.rejectWithValue(data);
+      }
+      setAuthToken(data.accessToken);
+      return data;
+    } catch (error) {
+      console.log('ERROR_ON_LOGIN', error);
+      return thunkAPI.rejectWithValue((error as Error).message);
+    }
+  }
+);
+
 export const updateUserInfo = createAsyncThunk<
   User,
   {
