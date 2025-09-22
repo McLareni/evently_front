@@ -1,7 +1,6 @@
 import { FC, useState } from 'react';
 import { Controller, SubmitHandler, useForm } from 'react-hook-form';
 import { AiOutlineExclamationCircle } from 'react-icons/ai';
-import { FcGoogle } from 'react-icons/fc';
 import { toast } from 'react-toastify';
 
 import { getUser, logIn } from '@/redux/auth/operations';
@@ -9,7 +8,7 @@ import { useAppDispatch } from '@/redux/hooks';
 
 import { validateEmail } from '@/utils';
 
-import { SharedBtn } from '../ui';
+import { GoogleLoginButton, SharedBtn } from '../ui';
 import Spinner from '../ui/Spinner';
 import { BuyTicketInput } from './BuyTicketInput';
 
@@ -51,7 +50,7 @@ export const Action2UserExists: FC = () => {
   return (
     <form
       onSubmit={handleSubmit(onSubmit)}
-      className="font-lato flex flex-col border-[2px] border-buttonPurple rounded-[10px] p-[24px] mb-auto gap-[20px]"
+      className="font-lato flex flex-col border-[2px] border-buttonPurple rounded-[10px] p-[24px] mb-auto gap-[20px] w-[860px]"
     >
       {isLoading && <Spinner />}
       <h2 className="font-medium">Контактна інформація</h2>
@@ -104,17 +103,10 @@ export const Action2UserExists: FC = () => {
           width="380"
         />
         <p className="my-[24px] text-center">або</p>
-        <button
-          type="button"
-          className={`mb-[32px] w-full lg:w-[380px] h-[64px] border-[2px] rounded-[10px]
-            px-[24px] outline-none bg-background text-[20px] border-buttonPurple
-            flex justify-center items-center gap-2`}
-        >
-          <FcGoogle className="w-10 h-10" />
-          Продовжити через Google
-        </button>
+        <div className="mb-8">
+          <GoogleLoginButton />
+        </div>
         <SharedBtn
-          // onClick={sendEventData}
           type="submit"
           primary
           disabled={!isValid}

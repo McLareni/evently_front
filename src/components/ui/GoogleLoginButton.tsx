@@ -7,7 +7,7 @@ import { useAppDispatch } from '@/redux/hooks';
 import { GoogleLogin } from '@react-oauth/google';
 
 interface GoogleLoginProps {
-  onCloseModal: () => void;
+  onCloseModal?: () => void;
 }
 
 export const GoogleLoginButton: React.FC<GoogleLoginProps> = ({
@@ -21,7 +21,7 @@ export const GoogleLoginButton: React.FC<GoogleLoginProps> = ({
 
       toast.success(`Вітаю ${payload.userName}`);
       dispatch(getUser());
-      onCloseModal();
+      if (onCloseModal) onCloseModal();
     } catch (error) {
       console.error(error);
     }
@@ -30,6 +30,7 @@ export const GoogleLoginButton: React.FC<GoogleLoginProps> = ({
   return (
     <GoogleLogin
       shape="pill"
+      size="large"
       onSuccess={credentialResponse => {
         console.log(credentialResponse);
         if (credentialResponse.credential) {
