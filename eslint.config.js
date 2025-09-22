@@ -35,6 +35,7 @@ export default [
         FullTicketInfo: true,
         ResponseWithSignature: true,
         NewUserInfo: true,
+        Ticket: true
       },
       parser: typescriptEslintParser,
       sourceType: 'module',

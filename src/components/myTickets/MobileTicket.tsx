@@ -49,7 +49,7 @@ const MobileTicket: React.FC<IProps> = ({ ticket }) => {
           <PopUp
             closePopUp={() => setPopUp(false)}
             popUpIsOpen={popUp}
-            event={event}
+            ticket={ticket}
           />
         )}
         <div className="flex flex-col gap-[19px]">

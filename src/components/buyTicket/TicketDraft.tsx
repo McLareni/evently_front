@@ -1,4 +1,3 @@
-/* eslint-disable no-unused-vars */
 import { formatDateToDayMonth } from '@/helpers/filters/formatDateToDayMonth';
 import { SERVICE } from '@/pages/events/BuyTicket';
 
@@ -9,7 +8,6 @@ import { PaymentInfo } from './PaymentInfo';
 
 interface TicketDraftProps {
   event: Event | undefined;
-  setCurrentActionHandler: (action: number) => void;
   currentAction: number;
   ticketCount: number;
   price: number;
@@ -18,11 +16,12 @@ interface TicketDraftProps {
   isFormValid: boolean;
   sendEventData: () => Promise<void>;
   isLoading: boolean;
+  goToSecondAction: () => void;
+  getFreeTicketHandler: () => void;
 }
 
 export const TicketDraft: React.FC<TicketDraftProps> = ({
   event,
-  setCurrentActionHandler,
   currentAction,
   ticketCount,
   price,
@@ -31,16 +30,9 @@ export const TicketDraft: React.FC<TicketDraftProps> = ({
   isFormValid,
   sendEventData,
   isLoading,
+  goToSecondAction,
+  getFreeTicketHandler,
 }) => {
-
-  const currentActionHandler = () => {
-    if (currentAction === 1) {
-      setCurrentActionHandler(2);
-    } else if (currentAction === 2 && price === 0) {
-      setCurrentActionHandler(3);
-    }
-  };
-
   const formatTicket = () => {
     const countString = ticketCount.toString();
     const lastChar = countString.charAt(countString.length - 1);
@@ -125,7 +117,7 @@ export const TicketDraft: React.FC<TicketDraftProps> = ({
       </div>
       {currentAction === 1 ? (
         <SharedBtn
-          onClick={currentActionHandler}
+          onClick={goToSecondAction}
           type="button"
           primary
           className="mt-auto mx-auto bg-gradient-to-r from-[#9B8FF3] to-[#38F6F9] w-[230px] h-[48px]"
@@ -134,7 +126,7 @@ export const TicketDraft: React.FC<TicketDraftProps> = ({
         </SharedBtn>
       ) : (
         <SharedBtn
-          onClick={price === 0 ? currentActionHandler : sendEventData}
+          onClick={price === 0 ? getFreeTicketHandler : sendEventData}
           type="button"
           primary
           disabled={!isFormValid}

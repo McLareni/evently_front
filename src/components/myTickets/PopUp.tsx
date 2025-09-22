@@ -7,10 +7,10 @@ import { PDF } from '../buyTicket/TicketPDF';
 interface IProps {
   closePopUp: () => void;
   popUpIsOpen: boolean;
-  event: Event;
+  ticket: Ticket;
 }
 
-const PopUp: React.FC<IProps> = ({ closePopUp, popUpIsOpen, event }) => {
+const PopUp: React.FC<IProps> = ({ closePopUp, popUpIsOpen, ticket }) => {
   const popupRef = useRef<HTMLDivElement>(null);
 
   const [instance, updateInstance] = usePDF({
@@ -18,8 +18,8 @@ const PopUp: React.FC<IProps> = ({ closePopUp, popUpIsOpen, event }) => {
   });
 
   useEffect(() => {
-    if (event) {
-      updateInstance(<PDF event={event} />);
+    if (ticket) {
+      updateInstance(<PDF ticket={ticket} />);
     }
   });
 
@@ -52,7 +52,7 @@ const PopUp: React.FC<IProps> = ({ closePopUp, popUpIsOpen, event }) => {
       <button className="px-6 py-2 text-start focus:outline-none text-sm lg:text-base !leading-loose">
         Повернути квиток
       </button>
-      {event && instance.url && (
+      {ticket && instance.url && (
         <a
           href={instance.url}
           target="_blank"

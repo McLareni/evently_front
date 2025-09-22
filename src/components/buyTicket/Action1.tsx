@@ -3,6 +3,7 @@ import { useEffect, useState } from 'react';
 import { AiOutlineMinusCircle, AiOutlinePlusCircle } from 'react-icons/ai';
 import { ImPriceTag } from 'react-icons/im';
 import { RxCrossCircled } from 'react-icons/rx';
+import { toast } from 'react-toastify';
 
 import { useMediaQuery } from '@/hooks/useMediaQuery';
 import { checkPromoCode } from '@/utils/eventsHttp';
@@ -37,6 +38,10 @@ export const Action1: React.FC<Action1Props> = ({
   const isMobile = useMediaQuery('(max-width: 1024px)');
 
   const increment = () => {
+    if (!event?.unlimitedTickets && event?.availableTickets === ticketCount) {
+      toast.info('Більше квитків немає в наявності');
+      return;
+    }
     setTicketCount(ticketCount + 1);
   };
 

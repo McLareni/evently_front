@@ -1,6 +1,8 @@
+import { formatDateToDayMonth } from '@/helpers/filters/formatDateToDayMonth';
 import {
   Document,
   Font,
+  Image,
   Page,
   StyleSheet,
   Text,
@@ -29,13 +31,35 @@ const styles = StyleSheet.create({
   },
 });
 
-export const PDF = ({ event }: { event: Event }) => (
+export const PDF = ({ ticket }: { ticket: Ticket }) => (
   <Document>
     <Page size="A4" style={styles.page}>
-      {event && (
+      {ticket && (
         <View style={styles.section}>
-          <Text style={styles.text}>Назва: {event.title}</Text>
-          <Text style={styles.text}>Ціна: {event.price}</Text>
+          <Text style={styles.text}>
+            Номер замовлення: {ticket.orderReference}
+          </Text>
+          <Image
+            style={{ width: 200, height: 200 }}
+            src={ticket.event.images[0]?.url || '/images/event-placeholder.jpg'}
+          />
+          <Text style={styles.text}>Назва: {ticket.event.title}</Text>
+          <Text style={styles.text}>Ціна: {ticket.event.price} грн</Text>
+          <Text style={styles.text}>
+            Коли: {formatDateToDayMonth(ticket.event.date.day)},
+            {ticket.event.date.time}
+          </Text>
+          {ticket.event.eventFormat === 'OFFLINE' && (
+            <Text style={styles.text}>
+              Де: {ticket.event.location.city}, {ticket.event.location.street}
+            </Text>
+          )}
+          {ticket.event.eventFormat === 'ONLINE' && (
+            <Text style={styles.text}>Посилання: {ticket.event.eventUrl}</Text>
+          )}
+          <Text style={styles.text}>
+            Кількість квитків: {ticket.productCount} шт.
+          </Text>
         </View>
       )}
     </Page>
