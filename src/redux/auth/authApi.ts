@@ -44,9 +44,10 @@ export const AuthApi = createApi({
       }),
     }),
 
-    getTickets: builder.query<Ticket[], string>({
-      query: id => `users/orders/${id}`,
-      transformResponse: (response: { content: Ticket[] }) => response.content,
+    getTickets: builder.query<Ticket[], { id: string; page: number }>({
+      query: ({ id, page }) => `users/orders/${id}?page=${page}&size=${5}`,
+      transformResponse: (result: { content: Ticket[] }) =>
+        result?.content ?? [],
     }),
   }),
 });
@@ -57,4 +58,5 @@ export const {
   useGetWithdrawBalanceQuery,
   useCreateFundRequestMutation,
   useGetTicketsQuery,
+  useLazyGetTicketsQuery,
 } = AuthApi;

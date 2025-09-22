@@ -59,6 +59,7 @@ export default [
       ...typescriptEslintPlugin.configs.recommended.rules,
       ...react.configs.recommended.rules,
       ...reactHooks.configs.recommended.rules,
+      'no-undef': 'off',
       'no-restricted-imports': 'off',
       '@typescript-eslint/no-restricted-imports': [
         'warn',
