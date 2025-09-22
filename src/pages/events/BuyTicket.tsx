@@ -1,5 +1,6 @@
 import { useEffect, useState } from 'react';
 import { useParams } from 'react-router';
+import { toast } from 'react-toastify';
 
 import { selectIsLoggedIn, selectUser } from '@/redux/auth/selectors';
 import { useLazyGetEventByIdQuery } from '@/redux/events/operations';
@@ -7,6 +8,8 @@ import { useAppSelector } from '@/redux/hooks';
 
 import { useSendEventData } from '@/hooks/buyTicket/useSendEventData';
 import { useMediaVariables } from '@/hooks/query/useMediaVariables';
+import { useScrollToTop } from '@/hooks/useScrollToTop';
+import { getFreeTicket } from '@/utils/eventsHttp';
 
 import { Action1 } from '@/components/buyTicket/Action1';
 import { Action2 } from '@/components/buyTicket/Action2';
@@ -17,13 +20,26 @@ import { Action3 } from '@/components/buyTicket/Action3';
 import { Action3FreeMobile } from '@/components/buyTicket/Action3FreeMobile';
 import { BuyTicketTabs } from '@/components/buyTicket/BuyTicketTabs';
 import { MobileTicketInfo } from '@/components/buyTicket/MobileTicketInfo';
+import { TicketDraft } from '@/components/buyTicket/TicketDraft';
 import { TicketDraftMobile } from '@/components/buyTicket/TicketDraftMobile';
 import { Container } from '@/components/container/Container';
 import Spinner from '@/components/ui/Spinner';
 
-import { TicketDraft } from '../../components/buyTicket/TicketDraft';
-
 export const SERVICE = 0.05; //5%
+
+export interface FreeTicketInfo {
+  userId: string;
+  product: {
+    productName: string;
+    productPrice: string;
+    productCount: string;
+    amount: string;
+  };
+  clientFirstName: string;
+  clientLastName: string;
+  clientPhone: string;
+  clientEmail: string;
+}
 
 const BuyTicket: React.FC = () => {
   const [currentAction, setCurrentAction] = useState(1);
@@ -37,6 +53,8 @@ const BuyTicket: React.FC = () => {
   const [isFormValid, setIsFormValid] = useState(false);
   const [isEmailExists, setIsEmailExists] = useState<null | boolean>(null);
   const [newUserEmail, setNewUserEmail] = useState('');
+  const [ticket, setTicket] = useState<Ticket | null>(null);
+  const [isGetFreeTicketLoading, setIsGetFreeTicketLoading] = useState(false);
 
   const { idEvent } = useParams();
 
@@ -54,6 +72,8 @@ const BuyTicket: React.FC = () => {
   const { email } = useAppSelector(selectUser);
 
   const { isMobile } = useMediaVariables();
+
+  const user = useAppSelector(selectUser);
 
   const setNewUserEmailHandler = (email: string) => {
     setNewUserEmail(email);
@@ -79,16 +99,57 @@ const BuyTicket: React.FC = () => {
     setDiscount(value);
   };
 
-  const setCurrentActionHandler = (action: number) => {
-    setCurrentAction(action);
-  };
-
   const getPrice = (price: number) => {
     setPrice(price);
   };
 
   const getTicketCount = (count: number) => {
     setTicketCount(count);
+  };
+
+  const scrollToTop = useScrollToTop();
+
+  const goToSecondAction = () => {
+    setCurrentAction(2);
+    scrollToTop();
+  };
+
+  const getFreeTicketHandler = async () => {
+    if (event && currentAction === 2 && price === 0) {
+      setIsGetFreeTicketLoading(true);
+      try {
+        const response = await getFreeTicket({
+          eventId: event.id,
+          data: {
+            userId: user.id,
+            product: {
+              productName: event.title,
+              productPrice: event.price.toString(),
+              productCount: ticketCount.toString(),
+              amount: ticketCount.toString(),
+            },
+            clientFirstName: user.name,
+            clientLastName: user.surname,
+            clientPhone: user.phoneNumber,
+            clientEmail: user.email,
+          },
+        });
+        console.log(response);
+        if (response.response) {
+          setTicket(response.response);
+          setCurrentAction(3);
+        }
+        if (response.status !== 200) {
+          toast.error('Помилка при отриманні безкоштовного квитка');
+        }
+      } catch (error) {
+        console.log(error);
+        toast.error('Помилка при отриманні безкоштовного квитка');
+      } finally {
+        setIsGetFreeTicketLoading(false);
+      }
+    }
+    scrollToTop();
   };
 
   useEffect(() => {
@@ -118,7 +179,7 @@ const BuyTicket: React.FC = () => {
 
   return (
     <div className="font-oswald leading-none pb-[55px] h-full">
-      {isLoading && <Spinner />}
+      {(isLoading || isGetFreeTicketLoading) && <Spinner />}
       <Container className="h-full flex flex-col">
         {!isMobile && <BuyTicketTabs currentAction={currentAction} />}
         {isMobile && event && <MobileTicketInfo event={event} />}
@@ -156,7 +217,7 @@ const BuyTicket: React.FC = () => {
             {!isMobile && (
               <TicketDraft
                 event={event}
-                setCurrentActionHandler={setCurrentActionHandler}
+                goToSecondAction={goToSecondAction}
                 currentAction={currentAction}
                 ticketCount={ticketCount}
                 price={price}
@@ -165,13 +226,14 @@ const BuyTicket: React.FC = () => {
                 isFormValid={isFormValid}
                 sendEventData={sendEventData}
                 isLoading={sendDataLoading}
+                getFreeTicketHandler={getFreeTicketHandler}
               />
             )}
           </div>
         )}
         {isMobile && currentAction !== 3 && (
           <TicketDraftMobile
-            setCurrentActionHandler={setCurrentActionHandler}
+            goToSecondAction={goToSecondAction}
             currentAction={currentAction}
             ticketCount={ticketCount}
             price={price}
@@ -180,10 +242,15 @@ const BuyTicket: React.FC = () => {
             isFormValid={isFormValid}
             sendEventData={sendEventData}
             isLoading={sendDataLoading}
+            getFreeTicketHandler={getFreeTicketHandler}
           />
         )}
-        {isMobile && currentAction === 3 && <Action3FreeMobile event={event} />}
-        {!isMobile && currentAction === 3 && <Action3 event={event} />}
+        {isMobile && currentAction === 3 && ticket && (
+          <Action3FreeMobile ticket={ticket} />
+        )}
+        {!isMobile && currentAction === 3 && ticket && (
+          <Action3 ticket={ticket} />
+        )}
       </Container>
     </div>
   );

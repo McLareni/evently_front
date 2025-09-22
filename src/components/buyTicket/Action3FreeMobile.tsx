@@ -8,11 +8,11 @@ import { SharedBtn } from '../ui';
 import { PDF } from './TicketPDF';
 
 interface Action3FreeMobileProps {
-  event: Event | undefined;
+  ticket: Ticket;
 }
 
 export const Action3FreeMobile: React.FC<Action3FreeMobileProps> = ({
-  event,
+  ticket,
 }) => {
   const [instance, updateInstance] = usePDF({
     document: undefined,
@@ -20,33 +20,36 @@ export const Action3FreeMobile: React.FC<Action3FreeMobileProps> = ({
 
   useEffect(() => {
     if (event) {
-      updateInstance(<PDF event={event} />);
+      updateInstance(<PDF ticket={ticket} />);
     }
   });
 
   return (
     <div className="flex flex-col gap-4 text-center">
       <h2>Ви придбали квиток!</h2>
-      <p>Ваш квиток вже чекає на вас на пошті</p>
       <div
         className={`font-lato text-[16px] bg-[url('/images/ticket/downloadMobile.png')] h-[100px]
-      bg-[length:100%_100%] bg-fill bg-no-repeat bg-center flex flex-col px-8 mt-auto`}
+      bg-[length:100%_100%] bg-fill bg-no-repeat bg-center flex flex-col gap-[10px] px-8 py-2 mt-auto`}
       >
-        <h2 className='text-base font-bold font-lato'>Ваш квиток вже чекає вас на пошті!</h2>
-        <p>Номер замовлення<span></span></p>
+        <h2 className="text-base font-bold font-lato">
+          Ваш квиток вже чекає вас на пошті!
+        </h2>
+        <p>
+          Номер замовлення<span></span>
+        </p>
         {event && instance.url && (
           <a
             href={instance.url}
             target="_blank"
             rel="noreferrer"
-            className="flex items-center"
+            className="flex items-center mx-auto"
           >
             <span>Скачати</span>
             <CgSoftwareDownload size={24} />
           </a>
         )}
       </div>
-      <Link to="/my_event">
+      <Link to="/my_tickets">
         <SharedBtn
           type="button"
           primary
