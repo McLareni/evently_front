@@ -1,7 +1,6 @@
 import { FC, useEffect, useState } from 'react';
 import { Controller, SubmitHandler, useForm } from 'react-hook-form';
 import { AiOutlineExclamationCircle } from 'react-icons/ai';
-import { FcGoogle } from 'react-icons/fc';
 import { toast } from 'react-toastify';
 
 import { handleLogOut } from '@/redux/auth/authSlice';
@@ -18,7 +17,7 @@ import {
 import { validatePhoneNumber } from '@/utils/validatePhoneNumber';
 import { useMask } from '@react-input/mask';
 
-import { SharedBtn, StatusBarPassword } from '../ui';
+import { GoogleLoginButton, SharedBtn, StatusBarPassword } from '../ui';
 import Spinner from '../ui/Spinner';
 import { BuyTicketInput } from './BuyTicketInput';
 
@@ -98,7 +97,7 @@ export const Action2NewUser: FC<Action2NewUserProps> = ({ newUserEmail }) => {
 
   return (
     <form
-      className="font-lato flex flex-col border-[2px] border-buttonPurple rounded-[10px] p-[24px] mb-auto"
+      className="w-[860px] font-lato flex flex-col border-[2px] border-buttonPurple rounded-[10px] p-[24px] mb-auto"
       onSubmit={handleSubmit(onSubmit)}
     >
       {isLoading && <Spinner />}
@@ -234,20 +233,14 @@ export const Action2NewUser: FC<Action2NewUserProps> = ({ newUserEmail }) => {
             showRequired
           />
           <p className="text-center">або</p>
-          <button
-            type="button"
-            className={`mb-[8px] lg:w-[380px] h-[64px] border-[2px] rounded-[10px]
-                          px-[24px] outline-none bg-background text-[20px] border-buttonPurple
-                          flex justify-center items-center gap-2`}
-          >
-            <FcGoogle className="w-10 h-10" />
-            Продовжити через Google
-          </button>
+          <div className="mb-8">
+            <GoogleLoginButton />
+          </div>
           <SharedBtn
             disabled={!isValid}
             type="submit"
             primary
-            className="mt-auto w-full bg-gradient-to-r from-[#9B8FF3] to-[#38F6F9] w-[230px] h-[48px]"
+            className="mt-auto w-full bg-gradient-to-r from-[#9B8FF3] to-[#38F6F9] h-[48px]"
           >
             Створити акаунт
           </SharedBtn>

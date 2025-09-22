@@ -55,7 +55,10 @@ export const TicketDraft: React.FC<TicketDraftProps> = ({
   const priceWithService = (price * SERVICE).toFixed(2);
 
   return (
-    <div className="font-lato text-[16px] bg-[url('/images/ticket/ticket-background.svg')] bg-cover bg-center min-w-[378px] h-[584px] flex flex-col px-[10px] pb-[54px]">
+    <div
+      className={`font-lato text-[16px] bg-[url('/images/ticket/ticket-background.svg')]
+    bg-contain bg-no-repeat bg-center min-w-[378px] w-[378px] h-[584px] flex flex-col px-[10px] pb-[54px]`}
+    >
       {isLoading && <Spinner />}
       <div className="overflow-scroll overscroll-contain h-[370px] px-[10px] mt-[20px]">
         <img

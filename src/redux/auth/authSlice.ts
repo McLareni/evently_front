@@ -2,18 +2,13 @@
 import {
   clearAuthToken,
   getUser,
+  googleLogIn,
   logIn,
   register,
   updateUserInfo,
 } from '@/redux/auth/operations';
 
 import { PayloadAction, createSlice, isAnyOf } from '@reduxjs/toolkit';
-
-export interface GoogleLoginResponse {
-  name: string;
-  email: string;
-  token: string;
-}
 
 export interface UserLoggingFulfilled {
   user: User;
@@ -26,7 +21,7 @@ const STATUS = {
   REJECTED: 'rejected',
 };
 
-const actionGenerators = [register, logIn];
+const actionGenerators = [register, logIn, googleLogIn];
 
 // eslint-disable-next-line no-unused-vars
 const getActionGeneratorsWithType: (status: string) => any[] = status =>
@@ -35,7 +30,7 @@ const getActionGeneratorsWithType: (status: string) => any[] = status =>
 const authSlice = createSlice({
   name: 'auth',
   initialState: {
-    userId: null as null | number,
+    userId: null as null | string,
     user: { name: '', email: '' } as User,
     token: null as null | string,
     currentDate: Date.now(),
@@ -47,15 +42,6 @@ const authSlice = createSlice({
   reducers: {
     setCurrentDate(state, action) {
       state.currentDate = action.payload;
-    },
-
-    googleLogin(state, action: PayloadAction<GoogleLoginResponse>) {
-      const { name, email, token } = action.payload;
-      state.user.name = name;
-      state.user.email = email;
-      state.token = token;
-      state.isLoggedIn = true;
-      state.error = null;
     },
 
     handleLogOut(state) {
@@ -131,6 +117,6 @@ function handleGetFullInfomation(
   state.user = action.payload;
 }
 
-export const { handleLogOut, setCurrentDate, googleLogin } = authSlice.actions;
+export const { handleLogOut, setCurrentDate } = authSlice.actions;
 
 export const authReducer = authSlice.reducer;
