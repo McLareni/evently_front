@@ -28,18 +28,20 @@ export const GoogleLoginButton: React.FC<GoogleLoginProps> = ({
   };
 
   return (
-    <GoogleLogin
-      shape="pill"
-      size="large"
-      onSuccess={credentialResponse => {
-        console.log(credentialResponse);
-        if (credentialResponse.credential) {
-          onSubmit(credentialResponse.credential);
-        }
-      }}
-      onError={() => {
-        console.log('Login Failed');
-      }}
-    />
+    <div className="flex justify-center">
+      <GoogleLogin
+        shape="pill"
+        size="large"
+        onSuccess={credentialResponse => {
+          console.log(credentialResponse);
+          if (credentialResponse.credential) {
+            onSubmit(credentialResponse.credential);
+          }
+        }}
+        onError={() => {
+          console.log('Login Failed');
+        }}
+      />
+    </div>
   );
 };
