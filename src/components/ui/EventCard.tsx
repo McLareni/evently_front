@@ -1,3 +1,4 @@
+/* eslint-disable no-unused-vars */
 import React, { useEffect, useState } from 'react';
 import { AiOutlineCalendar, AiOutlineExclamation } from 'react-icons/ai';
 import { FaRegMoneyBillAlt } from 'react-icons/fa';
@@ -29,11 +30,8 @@ interface EventCardProps {
   isEventCreated?: boolean;
 
   setEvent?: (
-    // eslint-disable-next-line no-unused-vars
     event: Event,
-    // eslint-disable-next-line no-unused-vars
     target: HTMLElement,
-    // eslint-disable-next-line no-unused-vars
     actionStatus: 'APPROVED' | 'CANCELLED' | ''
   ) => void;
 }
@@ -59,6 +57,7 @@ export const EventCard: React.FC<EventCardProps> = ({
     location,
     type,
     images,
+    availableTickets,
   } = event;
 
   const { id: userId } = useAppSelector(selectUser);
@@ -111,16 +110,14 @@ export const EventCard: React.FC<EventCardProps> = ({
 
   const handleOnClick = (e: React.MouseEvent) => {
     if (isEventCreated) return;
+    if (availableTickets === 0) {
+      return toast.warn('На цей захід більше немає квитків');
+    }
     if (isAdmin) {
       setEvent(event, e.target as HTMLElement, '');
     } else {
       navigate(`/event/${eventId}`);
     }
-  };
-
-  const navigateToEvent = () => {
-    if (isEventCreated) return;
-    navigate(`/event/${eventId}`);
   };
 
   useEffect(() => {
@@ -286,7 +283,6 @@ export const EventCard: React.FC<EventCardProps> = ({
                 type="button"
                 primary
                 className="w-[230px] h-12 mx-auto mt-4"
-                onClick={navigateToEvent}
               >
                 Хочу
               </SharedBtn>

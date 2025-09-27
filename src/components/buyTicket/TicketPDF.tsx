@@ -41,7 +41,7 @@ export const PDF = ({ ticket }: { ticket: Ticket }) => (
           </Text>
           <Image
             style={{ width: 200, height: 200 }}
-            src={ticket.event.images[0]?.url || '/images/event-placeholder.jpg'}
+            src={ticket.event.images[0]?.url.replace('http://', 'https://')}
           />
           <Text style={styles.text}>Назва: {ticket.event.title}</Text>
           <Text style={styles.text}>Ціна: {ticket.event.price} грн</Text>
