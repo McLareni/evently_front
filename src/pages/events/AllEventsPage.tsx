@@ -247,9 +247,14 @@ const AllEventsPage: React.FC = () => {
               <div ref={ref} id="inView"></div>
             </div>
           ) : (
-            <span className="block text-[32px] lg:text-[64px] text-center font-oswald text-buttonPurple">
-              Нічого не знайдено
-            </span>
+            <p>
+              <span className="block text-[32px] lg:text-[64px] text-center font-oswald text-buttonPurple">
+                Нічого не знайдено
+              </span>
+              <span className="block text-[14px] lg:text-[18px] leading-none text-center font-oswald">
+                Вибране місто: {city}
+              </span>
+            </p>
           )}
         </div>
       </div>

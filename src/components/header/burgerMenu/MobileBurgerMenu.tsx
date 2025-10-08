@@ -198,12 +198,12 @@ export const MobileBurgerMenu: FC<MobileBurgerMenuProps> = ({
                   toggleBurgerMenu={toggleBurgerMenu}
                   Icon={GoPeople}
                   text="Мої події"
-                  url="/my-event"
+                  url="/my_event"
                 />
                 <BurgerNav
                   toggleBurgerMenu={toggleBurgerMenu}
                   Icon={IoTicketOutline}
-                  text="Мої квитки"
+                  text="my_tickets"
                   url="/"
                 />
               </>
