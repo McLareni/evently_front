@@ -70,8 +70,6 @@ const TableEvent = () => {
       filterEvents();
     }
 
-    console.log(response);
-
     if ((response?.data?.length || 0) < 5) {
       setIsFullList(true);
     }

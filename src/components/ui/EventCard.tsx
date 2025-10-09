@@ -110,9 +110,6 @@ export const EventCard: React.FC<EventCardProps> = ({
 
   const handleOnClick = (e: React.MouseEvent) => {
     if (isEventCreated) return;
-    if (availableTickets === 0) {
-      return toast.warn('На цей захід більше немає квитків');
-    }
     if (isAdmin) {
       setEvent(event, e.target as HTMLElement, '');
     } else {

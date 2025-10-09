@@ -1,3 +1,5 @@
+import { CreateEventLocation } from './eventTypes';
+
 interface CustomerInfo {
   userId: string;
   clientFirstName: string;
@@ -48,11 +50,24 @@ type BuyTicketUser = Pick<
 >;
 
 type Ticket = {
-  id: 'string';
-  orderReference: 'string';
-  orderDate: 'string';
-  productCount: 'string';
-  amount: 'string';
-  event: Event;
-  status: 'string';
+  date: {
+    day: string;
+    time: string;
+    endTime: string;
+  };
+  eventFormat: string;
+  eventId: string;
+  eventUrl?: string;
+  id: string;
+  images: Image[];
+  location: CreateEventLocation;
+  orderDate: string;
+  orderDetailsId: string;
+  price: number;
+  row: number | null;
+  seat: number | null;
+  status: string;
+  ticketReference: string;
+  title: string;
+  userId: string;
 };

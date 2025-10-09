@@ -20,7 +20,20 @@ export const Action3FreeMobile: React.FC<Action3FreeMobileProps> = ({
 
   useEffect(() => {
     if (event) {
-      updateInstance(<PDF ticket={ticket} />);
+      updateInstance(
+        <PDF
+          ticket={{
+            ticketReference: ticket.orderReference,
+            title: ticket.event.title,
+            price: ticket.event.price,
+            date: ticket.event.date,
+            eventFormat: ticket.event.eventFormat,
+            eventUrl: ticket.event.eventUrl || '',
+            location: ticket.event.location,
+            images: ticket.event.images || [],
+          }}
+        />
+      );
     }
   });
 

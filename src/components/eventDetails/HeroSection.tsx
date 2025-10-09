@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { AiOutlineShareAlt } from 'react-icons/ai';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import { toast } from 'react-toastify';
 
 import { selectUser } from '@/redux/auth/selectors';
@@ -32,6 +32,7 @@ const HeroSection: React.FC<IProps> = ({ idEvent, event }) => {
   const [deleteLikedEvent] = useDeleteLikedEventMutation();
   const user = useAppSelector(selectUser);
   const { count: countLike, getLike } = useGetCountLikeEvent(idEvent || '');
+  const navigate = useNavigate();
 
   const toggleIsLiked = async () => {
     if (!isLiked) {
@@ -84,6 +85,13 @@ const HeroSection: React.FC<IProps> = ({ idEvent, event }) => {
     setPopupShare(false);
   };
 
+  const handleNavigate = () => {
+    if (event.availableTickets === 0) {
+      return toast.warn('На цей захід більше немає квитків');
+    }
+    navigate('buy_ticket');
+  };
+
   return (
     <div className="relative w-auto h-[562px] m-4">
       <div className="absolute inset-0 bg-eventDetails blur-md rounded-[20px]"></div>
@@ -106,17 +114,16 @@ const HeroSection: React.FC<IProps> = ({ idEvent, event }) => {
           <EventTags type={event?.type} eventUrl={event?.eventUrl} />
 
           <MainInfo event={event} />
-          <Link to={`buy_ticket`}>
-            <button
-              type="button"
-              className={`bg-dark-gradient w-[421px] h-12 rounded-[71px_8px] text-background text-2xl
+          <button
+            onClick={handleNavigate}
+            type="button"
+            className={`bg-dark-gradient w-[421px] h-12 rounded-[71px_8px] text-background text-2xl
                 mt-[55px] hover:shadow-shadowPrimaryBtn focus:outline-none active:shadow-primaryBtnActive`}
-            >
-              {event.price === 0 && event.eventFormat === 'ONLINE'
-                ? 'Зареєструватись'
-                : 'Купити квиток'}
-            </button>
-          </Link>
+          >
+            {event.price === 0 && event.eventFormat === 'ONLINE'
+              ? 'Зареєструватись'
+              : 'Купити квиток'}
+          </button>
           <button
             onClick={() => setPopupShare(true)}
             className="focus:outline-0 absolute top-[17px] right-[26px]"
