@@ -78,6 +78,17 @@ const styles = StyleSheet.create({
   },
 });
 
+type Ticket = {
+  ticketReference: string;
+  title: string;
+  price: string;
+  date: { day: string; time: string; endTime?: string };
+  eventFormat: 'ONLINE' | 'OFFLINE';
+  eventUrl: string;
+  location: { city: string; street: string; venue?: string };
+  images: Image[];
+};
+
 interface PDFTicketProps {
   ticket: Ticket;
 }
@@ -85,6 +96,8 @@ interface PDFTicketProps {
 export const PDF: React.FC<PDFTicketProps> = ({ ticket }) => {
   const truncateText = (text: string, maxLength: number) =>
     text.length > maxLength ? text.slice(0, maxLength - 3) + '...' : text;
+
+  console.log(ticket);
 
   return (
     <Document>

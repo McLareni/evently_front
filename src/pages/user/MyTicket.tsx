@@ -14,7 +14,7 @@ import Spinner from '@/components/ui/Spinner';
 
 const MyTicket: React.FC = () => {
   const { id } = useAppSelector(selectUser);
-  const [getTickets, { isLoading }] = useLazyGetTicketsQuery();
+  const [getTickets, { isLoading, isFetching }] = useLazyGetTicketsQuery();
   const { isMobile } = useMediaVariables();
   const [tickets, setTickets] = useState<Ticket[]>([]);
   const [isFullList, setIsFullList] = useState(false);
@@ -60,7 +60,7 @@ const MyTicket: React.FC = () => {
         setIsFullList(true);
       }
     };
-    if (inView && !isLoading && !isFullList) {
+    if (inView && !isLoading && !isFullList && !isFetching) {
       fetchEvents();
     }
 

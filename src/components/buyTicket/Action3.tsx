@@ -17,7 +17,22 @@ export const Action3: React.FC<Action3Props> = ({ ticket }) => {
 
   useEffect(() => {
     if (ticket) {
-      updateInstance(<PDF ticket={ticket} />);
+      console.log(ticket);
+
+      updateInstance(
+        <PDF
+          ticket={{
+            ticketReference: ticket.orderReference,
+            title: ticket.event.title,
+            price: ticket.event.price,
+            date: ticket.event.date,
+            eventFormat: ticket.event.eventFormat,
+            eventUrl: ticket.event.eventUrl || '',
+            location: ticket.event.location,
+            images: ticket.event.images || [],
+          }}
+        />
+      );
     }
   });
 
