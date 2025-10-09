@@ -2,38 +2,46 @@ import React, { useEffect, useRef } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { toast } from 'react-toastify';
 
+import { s } from 'node_modules/vite/dist/node/types.d-aGj9QkWt';
+
 interface IProps {
   id: string;
-  approved?: boolean;
+  status?: string;
   deleteEvent: () => void;
 }
 
-const PopUp: React.FC<IProps> = ({ id, approved = false, deleteEvent }) => {
+const PopUp: React.FC<IProps> = ({ id, status, deleteEvent }) => {
   const navigate = useNavigate();
   const [isOpen, setIsOpen] = React.useState(true);
 
   const copyLink = () => {
-    if (approved) {
+    if (status === 'APPROVED') {
       navigator.clipboard.writeText(
         `https://evently-book.vercel.app/event/${id}`
       );
       toast.success('Посилання скопійовано');
+    } else if (status === 'CANCELLED') {
+      toast.error('Ви не можете копіювати посилання, коли подія скасована');
     } else {
       toast.info('Ви не можете копіювати посилання, коли подія на перевірці');
     }
   };
 
   const handleSeeEvent = () => {
-    if (approved) {
+    if (status === 'APPROVED') {
       navigate(`/event/${id}`);
+    } else if (status === 'CANCELLED') {
+      toast.error('Ви не можете переглядати скасовану подію');
     } else {
       toast.info('Ви не можете переглядати подію, коли вона на перевірці');
     }
   };
 
   const handleEditEvent = () => {
-    if (approved) {
+    if (status === 'APPROVED') {
       navigate(`/edit_event/${id}`);
+    } else if (status === 'CANCELLED') {
+      toast.error('Ви не можете редагувати скасовану подію, створіть нову');
     } else {
       toast.info('Ви не можете редагувати подію, коли вона на перевірці');
     }
