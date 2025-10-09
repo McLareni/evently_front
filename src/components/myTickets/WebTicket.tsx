@@ -34,7 +34,6 @@ const STATUSES: Record<string, { color: string; text: string }> = {
 };
 
 const WebTicket: React.FC<IProps> = ({ ticket }) => {
-  const { event } = ticket;
   const [popUp, setPopUp] = useState(false);
 
   console.log(ticket);
@@ -56,26 +55,28 @@ const WebTicket: React.FC<IProps> = ({ ticket }) => {
         )}
         <div className="flex gap-6">
           <img
-            src={(event.images && event.images[0]?.url) || ''}
-            alt={event.title}
+            src={(ticket.images && ticket.images[0]?.url) || ''}
+            alt={ticket.title}
             className="w-[244px] h-[257px] rounded-[20px]"
           />
           <div className="text-textDark flex flex-col justify-between">
             <div className="flex flex-col gap-[14px]">
               <h2 className="text-2xl font-medium font-oswald">
-                {event.title}
+                {ticket.title}
               </h2>
               <p className="flex gap-[18px]">
                 <AiOutlineCalendar className="w-6 h-6" />
-                {formatDateToDayMonth(event?.date.day)}
+                {formatDateToDayMonth(ticket?.date.day)}
               </p>
               <p className="flex gap-[18px]">
                 <FaRegMoneyBillAlt className="w-6 h-6" />
-                {event.price} ₴
+                {ticket.price > 0 ? `${ticket.price} ₴` : 'Безкоштовно'}
               </p>
               <p className="flex gap-[18px]">
                 <GrLocation className="w-6 h-6" />
-                {event.location.city} {event.location.street}
+                {ticket.eventFormat === 'ONLINE'
+                  ? 'Онлайн захід'
+                  : `${ticket.location.city} ${ticket.location.street}`}
               </p>
             </div>
             <div className="flex justify-between gap-[70px] items-end">
@@ -89,7 +90,7 @@ const WebTicket: React.FC<IProps> = ({ ticket }) => {
               </p>
               <p>
                 Номер квитка:{' '}
-                <span className="font-bold">{ticket.orderReference}</span>
+                <span className="font-bold">{ticket.ticketReference}</span>
               </p>
             </div>
           </div>

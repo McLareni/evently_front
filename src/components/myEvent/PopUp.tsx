@@ -2,7 +2,6 @@ import React, { useEffect, useRef } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { toast } from 'react-toastify';
 
-import { s } from 'node_modules/vite/dist/node/types.d-aGj9QkWt';
 
 interface IProps {
   id: string;

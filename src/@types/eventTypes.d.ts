@@ -111,7 +111,7 @@ interface EventPlaceWithGps {
 }
 
 // create event
-type CreateEventLocation = {
+export type CreateEventLocation = {
   city: string;
   street: string;
   venue: string;
