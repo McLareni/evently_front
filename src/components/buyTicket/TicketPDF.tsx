@@ -97,8 +97,6 @@ export const PDF: React.FC<PDFTicketProps> = ({ ticket }) => {
   const truncateText = (text: string, maxLength: number) =>
     text.length > maxLength ? text.slice(0, maxLength - 3) + '...' : text;
 
-  console.log(ticket);
-
   return (
     <Document>
       <Page size="A4" style={styles.page}>
@@ -116,6 +114,7 @@ export const PDF: React.FC<PDFTicketProps> = ({ ticket }) => {
             <Text>
               <Text style={{ fontWeight: 'bold' }}>Номер замовлення: </Text>
               <Text>{ticket.ticketReference}</Text>
+              <Text>{`\n `}</Text>
             </Text>
 
             <Text>
