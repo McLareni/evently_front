@@ -53,7 +53,7 @@ const PhotoCard: React.FC<PhotoCardProps> = ({
     }
 
     if (invalidFileSize) {
-      return toast.error('Додайте зображення розміром до 1 МБ');
+      return toast.error('Додайте зображення розміром до 10 МБ');
     }
 
     // Перевірка, щоб було від 1 до 3 файлів
