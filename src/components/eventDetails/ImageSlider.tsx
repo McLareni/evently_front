@@ -114,7 +114,7 @@ const ImageSlider: React.FC<IProps> = ({
             src={image || ''}
             onClick={() => changeSlide(images.indexOf(image))}
             className={clsx(
-              'rounded-[20px] absolute top-[calc(50%)] -translate-x-1/2 -translate-y-1/2 object-cover opacity-100',
+              'rounded-[20px] absolute top-[calc(50%)] -translate-x-1/2 -translate-y-1/2 object-cover object-center opacity-100',
               {
                 'left-[50%] lg:w-[312px] w-[320px] lg:h-[514px] h-[540px] z-10 animate-opacity':
                   index === 0,

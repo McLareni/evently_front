@@ -23,7 +23,7 @@ const MobilePhotoPicker: React.FC<IProps> = ({
   const inputRef = useRef<HTMLInputElement | null>(null);
 
   const handlePhotoUpload = (event: React.ChangeEvent<HTMLInputElement>) => {
-    const MAX_FILE_SIZE = 1 * 1024 * 1024;
+    const MAX_FILE_SIZE = 10 * 1024 * 1024;
 
     const files = event.target.files ? Array.from(event.target.files) : [];
 
