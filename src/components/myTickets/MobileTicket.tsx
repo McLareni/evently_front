@@ -69,7 +69,7 @@ const MobileTicket: React.FC<IProps> = ({ ticket }) => {
                 </p>
                 <p className="flex gap-[18px]">
                   <FaRegMoneyBillAlt className="w-[18px] h-[18px]" />
-                  {ticket.price} ₴
+                  {ticket.price > 0 ? `${ticket.price} ₴` : 'Безкоштовно'}
                 </p>
                 <p className="flex gap-[18px]">
                   <GrLocation className="w-[18px] h-[18px]" />

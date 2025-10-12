@@ -136,7 +136,7 @@ export const EventCard: React.FC<EventCardProps> = ({
         <img
           src={images[0].url}
           alt={title}
-          className="w-full lg:min-h-[312px] min-h-[170px]"
+          className="w-full lg:min-h-[312px] min-h-[170px] object-cover object-center"
         />
       )}
       <div className={`flex absolute justify-between lg:p-6 p-3 w-full`}>
