@@ -27,7 +27,7 @@ const WhoWeAre = () => {
           <p
             className={clsx(
               'w-full lg:w-[520px] lg:h-[300px] lg:leading-[25px] leading-[16px] font-normal text-sm lg:text-base whitespace-pre-line',
-              isMobile && isShortAboutUs ? 'h-[85px] overflow-clip' : 'h-auto'
+              isMobile && isShortAboutUs ? 'h-[83px] overflow-clip' : 'h-auto'
             )}
           >
             Ми – команда ентузіастів, які об’єдналися заради спільної ідеї. Усі
