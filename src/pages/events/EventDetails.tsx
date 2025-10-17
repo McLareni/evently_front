@@ -1,6 +1,7 @@
 import { useEffect, useState } from 'react';
 import { FiFlag } from 'react-icons/fi';
 import { useParams } from 'react-router';
+import { Link } from 'react-router-dom';
 import { toast } from 'react-toastify';
 
 import { selectUser } from '@/redux/auth/selectors';
@@ -227,12 +228,13 @@ const EventDetails = () => {
               </div>
             )}
             {isMobile && <CreateBtnSection />}
-            <button
+            <Link
+              to={'/about_us#bug-report'}
               className="flex items-center gap-2 lg:p-3 p-2 lg:mt-8 rounded-[15px] border border-buttonPurple lg:text-xl text-sm
-             text-textDark focus:outline-0"
+             text-textDark focus:outline-0 max-w-[280px]"
             >
               Поскаржитись на подію <FiFlag className="w-6 h-6 stroke-error" />
-            </button>
+            </Link>
           </div>
           {isDesktop && <RandomTopEvents idEvent={idEvent || ''} />}
         </div>

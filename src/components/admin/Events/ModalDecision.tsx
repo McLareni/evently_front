@@ -9,6 +9,7 @@ import {
   useLazyGetReasonQuery,
 } from '@/redux/admin/eventApi';
 
+import { usePreventScroll } from '@/hooks/usePreventScroll';
 import clsx from 'clsx';
 
 import ConfirmationDeletePopUp from '@/components/myEvent/ConfirmationDeletePopUp';
@@ -34,6 +35,8 @@ const ModalDecision: React.FC<IProps> = ({ event, openModal }) => {
 
   const [getEditedEvents, { data: newEvent }] = useLazyGetEditedEventQuery();
   const [getReason, { data: reason }] = useLazyGetReasonQuery();
+
+  usePreventScroll();
 
   useEffect(() => {
     if (event?.hasUpdateRequest) {
@@ -65,16 +68,13 @@ const ModalDecision: React.FC<IProps> = ({ event, openModal }) => {
     setCurrVersionEvent(version === 'NEW' ? newEvent : event);
   };
 
-  console.log(event?.unlimitedTickets);
-
   return (
     <div
       className={clsx(
-        'relative p-8 pr-16 flex gap-10 w-[944px] h-min '
-        // event?.aboutOrganizer ? 'h-[800px]' : 'h-[630px]'
+        'relative p-8 pr-16 flex gap-10 w-[944px] max-h-[calc(100vh-50px)] overflow-scroll scrollbar-hide border-buttonPurple border-2  rounded-[20px]'
       )}
     >
-      <div className="absolute inset-0 border-2 border-buttonPurple rounded-[20px]"></div>
+      <div className="absolute inset-0"></div>
       <div className="relative flex gap-10 w-full h-full">
         <div className="">
           <img
