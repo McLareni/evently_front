@@ -1,4 +1,5 @@
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
+import { useLocation } from 'react-router';
 
 import { sendFeedback } from '@/api/sendFeedback';
 
@@ -8,6 +9,8 @@ const Feedback = () => {
   const [email, setEmail] = useState('');
   const [message, setMessage] = useState('');
   const [isLoading, setIsLoading] = useState(false);
+
+  const location = useLocation();
 
   const handleSubmit = async () => {
     try {
@@ -23,7 +26,14 @@ const Feedback = () => {
     }
   };
 
-
+  useEffect(() => {
+    if (location.hash) {
+      const element = document.querySelector(location.hash);
+      if (element) {
+        element.scrollIntoView({ behavior: 'smooth' });
+      }
+    }
+  }, [location]);
 
   return (
     <div className="mx-0 lg:mx-[108px] mb-6 lg:mb-[64px] relative">
@@ -41,7 +51,10 @@ const Feedback = () => {
               className="mb-4 text-sm lg:text-base leading-none w-full lg:w-[830px] lg:h-16 py-3 lg:py-5 px-4 lg:px-6 rounded-[10px] border-2 border-buttonPurple focus:outline-none transition-all duration-200 ease-in-out outline-none"
               placeholder="Введіть ваш email"
             />
-            <div className="flex flex-col items-center relative">
+            <div
+              id="bug-report"
+              className="flex flex-col items-center relative"
+            >
               <textarea
                 value={message}
                 maxLength={400}

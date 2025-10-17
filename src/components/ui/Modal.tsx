@@ -77,7 +77,9 @@ export const Modal: React.FC<ModalProps> = ({
 
   return createPortal(
     <div
-      className={clsx(`fixed inset-0 z-50 flex items-center justify-center`)}
+      className={clsx(
+        `fixed inset-0 z-50 flex items-center justify-center`
+      )}
       aria-modal="true"
       role="dialog"
       onClick={onClose}
