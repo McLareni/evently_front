@@ -14,12 +14,22 @@ const WhoWeAre = () => {
       <h1 className="pb-4 lg:pb-8 text-[28px] lg:text-[64px] leading-normal">
         Хто ми?
       </h1>
-      <div className="lg:flex lg:gap-20">
-        <img
-          src="/images/photoZoom.png"
-          alt=""
-          className="mr-2 lg:mr-0 float-left lg:float-none"
-        />
+      <div className="flex gap-4 lg:gap-20">
+        <div className="">
+          <img
+            src="/images/photoZoom.png"
+            alt=""
+            className="lg:mt-16 float-left lg:float-none h-[77px] rounded-lg lg:h-auto min-w-[172px] lg:w-auto"
+          />
+          {isMobile && (
+            <img
+              src="/images/photoZoom2.jpg"
+              alt=""
+              className="float-left lg:float-none h-[77px] min-w-[172px] mt-4 rounded-lg"
+            />
+          )}
+        </div>
+
         <div className="">
           <h4 className="pb-2 lg:pb-6 text-base lg:text-4xl font-bold lg:font-normal font-lato">
             Ось більше про нас
