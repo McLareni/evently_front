@@ -230,7 +230,7 @@ const EventDetails = () => {
             {isMobile && <CreateBtnSection />}
             <Link
               to={'/about_us#bug-report'}
-              className="flex items-center gap-2 lg:p-3 p-2 lg:mt-8 rounded-[15px] border border-buttonPurple lg:text-xl text-sm
+              className="w-fit flex items-center gap-2 lg:p-3 p-2 lg:mt-8 rounded-[15px] border border-buttonPurple lg:text-xl text-sm
              text-textDark focus:outline-0 max-w-[280px]"
             >
               Поскаржитись на подію <FiFlag className="w-6 h-6 stroke-error" />
