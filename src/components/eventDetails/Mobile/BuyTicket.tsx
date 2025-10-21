@@ -1,5 +1,5 @@
 import React from 'react';
-import {useNavigate } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 import { toast } from 'react-toastify';
 
 interface IProps {
@@ -27,7 +27,7 @@ const BuyTicket: React.FC<IProps> = ({ price, format, availableTickets }) => {
         <button
           onClick={handleNavigate}
           type="button"
-          className={`bg-dark-gradient min-w-[200px] w-full h-12 rounded-[71px_8px] text-background text-base
+          className={`bg-dark-gradient min-w-[200px] w-1/2 h-12 rounded-[71px_8px] text-background text-base
                       hover:shadow-shadowPrimaryBtn focus:outline-none active:shadow-primaryBtnActive`}
         >
           {price === 0 && format === 'ONLINE'

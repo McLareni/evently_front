@@ -14,18 +14,18 @@ const WhoWeAre = () => {
       <h1 className="pb-4 lg:pb-8 text-[28px] lg:text-[64px] leading-normal">
         Хто ми?
       </h1>
-      <div className="flex gap-4 lg:gap-20">
-        <div className="">
+      <div className="">
+        <div className="float-left h-fit mr-4 lg:mr-16">
           <img
             src="/images/photoZoom.png"
             alt=""
-            className="lg:mt-16 float-left lg:float-none h-[77px] rounded-lg lg:h-auto min-w-[172px] lg:w-auto"
+            className="lg:mt-16 h-[77px] rounded-lg lg:h-auto min-w-[172px] lg:w-auto"
           />
           {isMobile && (
             <img
               src="/images/photoZoom2.jpg"
               alt=""
-              className="float-left lg:float-none h-[77px] min-w-[172px] mt-4 rounded-lg"
+              className="h-[77px] min-w-[172px] mt-4 rounded-lg"
             />
           )}
         </div>
@@ -36,8 +36,8 @@ const WhoWeAre = () => {
           </h4>
           <p
             className={clsx(
-              'w-full lg:w-[520px] lg:h-[300px] lg:leading-[25px] leading-[16px] font-normal text-sm lg:text-base whitespace-pre-line',
-              isMobile && isShortAboutUs ? 'h-[83px] overflow-clip' : 'h-auto'
+              'w-full lg:h-[300px] lg:leading-[25px] leading-[16px] font-normal text-sm lg:text-base whitespace-pre-line',
+              isMobile && isShortAboutUs ? 'h-[80px] overflow-clip' : 'h-auto'
             )}
           >
             Ми – команда ентузіастів, які об’єдналися заради спільної ідеї. Усі
