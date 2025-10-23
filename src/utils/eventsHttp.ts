@@ -53,7 +53,6 @@ export const editEvent = async (
   if (secondImage) formData.append('secondImage', secondImage);
   if (thirdImage) formData.append('thirdImage', thirdImage);
 
-  console.log(event);
 
   try {
     const response = await axios.put(`events/${id}`, formData, {

@@ -163,7 +163,7 @@ const MobileList: React.FC<IProps> = ({
             {popUpId === event.id && (
               <PopUp
                 id={event.id}
-                approved={event.eventStatus === 'APPROVED'}
+                status={event.eventStatus}
                 deleteEvent={handleDeleteEvent}
               />
             )}
