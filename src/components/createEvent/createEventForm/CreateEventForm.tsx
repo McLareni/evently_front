@@ -196,7 +196,6 @@ const CreateEventForm: React.FC<CreateEventFormProps> = ({
         })
         .catch(error => {
           setIsLoading(false);
-          console.error(error);
         });
       return;
     }
@@ -210,7 +209,6 @@ const CreateEventForm: React.FC<CreateEventFormProps> = ({
       })
       .catch(error => {
         setIsLoading(false);
-        console.error(error);
       });
   };
 

@@ -14,7 +14,10 @@ export const IconButton: React.FC<IconButtonProps> = ({
   ...props
 }) => {
   return (
-    <button className={`${className} focus:outline-none relative`} {...props}>
+    <button
+      className={`${className} focus:outline-none relative flex justify-center items-center`}
+      {...props}
+    >
       <Icon className="w-[24px] h-[24px] cursor-pointer hover:[color:#9B8FF3]" />
       {children}
     </button>

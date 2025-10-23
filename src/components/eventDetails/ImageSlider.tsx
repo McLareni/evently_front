@@ -93,52 +93,70 @@ const ImageSlider: React.FC<IProps> = ({
 
   return (
     <>
-      <div className="lg:flex-1 lg:relative">
-        <button
-          type="button"
-          onClick={toggleIsLiked}
-          aria-label="like button"
-          className={`animate-my-bounce focus:outline-none bg-filter-btn-gradient px-4 py-[7px] text-background text-base rounded-[20px] flex gap-[10px] 
-            absolute left-[calc(50%+110px)] lg:left-[calc(50%+100px)] lg:top-[50px] top-[50px] z-20`}
-        >
-          {isLiked ? (
-            <PiHeartFill className={`w-6 h-6 fill-background`} />
-          ) : (
-            <PiHeartLight className="w-6 h-6 fill-background" />
-          )}
-          {countLike}
-        </button>
-        {sliderImage?.map((image, index) => (
-          <img
-            key={`${image}${index}`}
-            src={image || ''}
-            onClick={() => changeSlide(images.indexOf(image))}
-            className={clsx(
-              'rounded-[20px] absolute top-[calc(50%)] -translate-x-1/2 -translate-y-1/2 object-cover object-center opacity-100',
-              {
-                'left-[50%] lg:w-[312px] w-[320px] lg:h-[514px] h-[540px] z-10 animate-opacity':
-                  index === 0,
-                'lg:left-[calc(50%-200px)] left-[calc(50%-80px)] w-[200px] h-[348px] animate-opacity-delay':
-                  index === 1 && sliderImage.length === 3,
-                'lg:left-[calc(50%+200px)] left-[calc(50%+80px)] w-[200px] h-[348px] animate-opacity-delay':
-                  index === 2 && sliderImage.length === 3,
+      <div className="lg:flex-1 lg:relative lg:-mt-12">
+        {sliderImage?.map((image, index) => {
+          if (index === 0) {
+            return (
+              <div
+                key={0}
+                className="absolute top-[calc(50%)] -translate-x-1/2 -translate-y-1/2 left-[50%] lg:w-[312px] w-[320px] lg:h-[514px] h-[540px] z-10 animate-opacity"
+              >
+                <img
+                  key={`${image}${index}`}
+                  src={image || ''}
+                  onClick={() => changeSlide(images.indexOf(image))}
+                  className={clsx(
+                    'rounded-[20px] object-cover object-center opacity-100 w-full h-full'
+                  )}
+                />
+                <button
+                  type="button"
+                  onClick={toggleIsLiked}
+                  aria-label="like button"
+                  className={`focus:outline-none bg-filter-btn-gradient px-4 py-[7px] text-background text-base rounded-[20px] flex gap-[10px] 
+            absolute right-[16px] top-[16px] z-20`}
+                >
+                  {isLiked ? (
+                    <PiHeartFill className={`w-6 h-6 fill-background`} />
+                  ) : (
+                    <PiHeartLight className="w-6 h-6 fill-background" />
+                  )}
+                  {countLike}
+                </button>
+              </div>
+            );
+          } else {
+            return (
+              <img
+                key={`${image}${index}`}
+                src={image || ''}
+                onClick={() => changeSlide(images.indexOf(image))}
+                className={clsx(
+                  'rounded-[20px] absolute top-[calc(50%)] -translate-x-1/2 -translate-y-1/2 object-cover object-center opacity-100',
+                  {
+                    'lg:left-[calc(50%-200px)] left-[calc(50%-80px)] w-[200px] h-[348px] animate-opacity-delay':
+                      index === 1 && sliderImage.length === 3,
+                    'lg:left-[calc(50%+200px)] left-[calc(50%+80px)] w-[200px] h-[348px] animate-opacity-delay':
+                      index === 2 && sliderImage.length === 3,
 
-                'left-[53%] w-[312px] h-[450px]':
-                  index === 1 && sliderImage.length === 2,
-              }
-            )}
-          />
-        ))}
+                    'left-[53%] w-[312px] h-[450px]':
+                      index === 1 && sliderImage.length === 2,
+                  }
+                )}
+              />
+            );
+          }
+        })}
+        {sliderImage.length > 1 && (
+          <div className="absolute bottom-0 lg:-bottom-4 left-1/2 -translate-x-1/2">
+            <Dots
+              slides={images}
+              currentSlide={activeSlide}
+              setSlideByDot={changeSlide}
+            />
+          </div>
+        )}
       </div>
-      {sliderImage.length > 1 && isMobile && (
-        <div className="w-fit mx-auto absolute bottom-0 left-1/2 -translate-x-1/2">
-          <Dots
-            slides={images}
-            currentSlide={activeSlide}
-            setSlideByDot={changeSlide}
-          />
-        </div>
-      )}
     </>
   );
 };

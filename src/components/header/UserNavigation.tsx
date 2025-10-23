@@ -59,9 +59,10 @@ export const UserNavigation: React.FC<UserNavigationProps> = ({
 
   return (
     <div className="flex gap-6 items-center lg:m-0">
-      <button
+      <div className="hidden lg:block w-[24px] h-[24px]"></div>
+      {/* <button
         onClick={toggleInput}
-        className="focus:outline-none"
+        className="focus:outline-none opacity-0"
         aria-label="search"
       >
         <BsSearch className="hidden lg:block w-[24px] h-[24px] cursor-pointer hover:[color:#9B8FF3]" />
@@ -84,7 +85,7 @@ export const UserNavigation: React.FC<UserNavigationProps> = ({
             />
           </div>
         </div>
-      )}
+      )} */}
       <IconButton
         className="lg:hidden"
         Icon={HiOutlineLocationMarker}

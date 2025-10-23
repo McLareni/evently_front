@@ -52,8 +52,6 @@ const EditEventPage: React.FC = () => {
         day: event?.date.day || '',
         time: event?.date.time || '',
       });
-      console.log(await response);
-
       setPhotos(event?.images.map(img => img.url) || []);
       setCountOldPhotos(event?.images.length || 0);
     };
@@ -134,7 +132,7 @@ const EditEventPage: React.FC = () => {
             primary
             onClick={() => {
               setIsSuccessEditEvent(false);
-              navigate('/my-event');
+              navigate('/my_event');
             }}
           >
             Закрити
