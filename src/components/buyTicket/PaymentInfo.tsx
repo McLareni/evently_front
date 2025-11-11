@@ -19,7 +19,7 @@ export const PaymentInfo: React.FC<PaymentInfoProps> = ({ className }) => {
     <div
       onMouseEnter={showTooltip}
       onMouseLeave={hideTooltip}
-      className={`${className} absolute -top-3 border-[1px]
+      className={`${className} absolute -translate-x-1/2 border-[1px]
                 border-buttonPurple w-[14px] h-[14px] rounded-full
                 flex justify-center items-center cursor-help`}
     >

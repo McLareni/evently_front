@@ -50,7 +50,7 @@ export const Action2UserExists: FC = () => {
   return (
     <form
       onSubmit={handleSubmit(onSubmit)}
-      className="font-lato flex flex-col border-[2px] border-buttonPurple rounded-[10px] p-[24px] mb-auto gap-[20px] w-[860px]"
+      className="font-lato flex flex-col border-[2px] border-buttonPurple rounded-[10px] p-[24px] mb-auto gap-[20px] w-full lg:w-[860px]"
     >
       {isLoading && <Spinner />}
       <h2 className="font-medium">Контактна інформація</h2>
