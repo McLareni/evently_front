@@ -82,7 +82,6 @@ export const TicketDraft: React.FC<TicketDraftProps> = ({
             {event?.eventUrl ? (
               <div className="relative">
                 <p>Онлайн</p>
-                <PaymentInfo className="right-7" />
               </div>
             ) : (
               <p>
@@ -100,7 +99,7 @@ export const TicketDraft: React.FC<TicketDraftProps> = ({
             {price > 0 && (
               <div className="relative">
                 <p className="mb-[16px]">Збір за послуги</p>
-                <PaymentInfo className="-right-2" />
+                <PaymentInfo className="-right-7 top-1.5" />
               </div>
             )}
             {discountValue > 0 && <p className="mb-[16px]">Промокод</p>}

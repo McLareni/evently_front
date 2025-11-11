@@ -97,7 +97,7 @@ export const Action2NewUser: FC<Action2NewUserProps> = ({ newUserEmail }) => {
 
   return (
     <form
-      className="w-[860px] font-lato flex flex-col border-[2px] border-buttonPurple rounded-[10px] p-[24px] mb-auto"
+      className="w-full lg:w-[860px] font-lato flex flex-col border-[2px] border-buttonPurple rounded-[10px] p-[24px] mb-auto"
       onSubmit={handleSubmit(onSubmit)}
     >
       {isLoading && <Spinner />}
